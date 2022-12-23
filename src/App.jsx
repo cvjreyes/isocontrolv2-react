@@ -14,12 +14,16 @@ import PrivateRoute from "./router/PrivateRoute";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import { useEffect } from "react";
 // import Signup from "./views/Signup";
 // import Profile from "./views/Profile";
 // import Change from "./views/Change";
 // import Forgot from "./views/Forgot";
 
 export default function App() {
+  useEffect(() => {
+    document.title = `${import.meta.env.VITE_APP_NAMEPROJ} v2`;
+  }, []);
   return (
     <AuthProvider>
       <Router>
