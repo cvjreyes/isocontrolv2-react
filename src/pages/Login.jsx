@@ -1,18 +1,24 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
+import { AuthContext } from "../context/AuthContext";
 import Main from "../components/layouts/Main";
+import Input1 from "../components/general/Input1";
+import Button1 from "../components/general/Button1";
+import WithToast from "../components/modals/Toast";
 
 import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
 import FullTrackerLogo from "../assets/images/3DTracker.svg";
 import Eye from "../assets/images/eye.png";
-import Input1 from "../components/general/Input1";
-import Button1 from "../components/general/Button1";
-import { Link } from "react-router-dom";
+import { getURL } from "../helpers/general";
 
-export default function Login() {
+const LoginComp = ({ setMessage }) => {
+  const { login } = useContext(AuthContext);
+
   const [passwordShown, setPasswordShown] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -23,9 +29,29 @@ export default function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    console.log(form.email, form.password);
+    try {
+      const res = await axios.post(`${getURL()}/users/login`, {
+        email: form.email,
+        password: form.password,
+      });
+      if (!res.data.ok)
+        return setMessage({ ok: res.data.ok, txt: res.data.body });
+      setTimeout(() => login(res.data.body), 1000);
+      setMessage({
+        ok: res.data.ok,
+        // txt: `Welcome back, ${res.data.body.email}`,
+        txt: `Welcome back, ${res.data.data}`,
+      });
+    } catch (err) {
+      setMessage({
+        ok: false,
+        txt: "Something went wrong",
+      });
+      console.error(err);
+    }
   };
 
   return (
@@ -110,7 +136,7 @@ export default function Login() {
       </form>
     </Main>
   );
-}
+};
 
 const mainStyle = {
   // backgroundColor: "red",
@@ -142,3 +168,12 @@ const mainStyle = {
     },
   },
 };
+
+// using this components to use modals
+export default function Login() {
+  return (
+    <WithToast>
+      <LoginComp />
+    </WithToast>
+  );
+}
