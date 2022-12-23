@@ -1,34 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+// PACKAGES
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+// CONTEXT
+import { AuthProvider } from "./context/AuthContext";
+// ROUTER
+import PublicRoute from "./router/PublicRoute";
+import PrivateRoute from "./router/PrivateRoute";
+// COMPONENTS / VIEWS
+import Navbar from "./components/navbar/Navbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+// import Signup from "./views/Signup";
+// import Profile from "./views/Profile";
+// import Change from "./views/Change";
+// import Forgot from "./views/Forgot";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route
+            exact
+            path="/home"
+            element={<PrivateRoute component={Home} />}
+          />
+          <Route
+            exact
+            path="/login"
+            element={<PublicRoute component={Login} />}
+          />
+          <Route
+            exact
+            path={`/${import.meta.env.VITE_PROJECT}/navis`}
+            element={<PublicRoute component={Home} />}
+          />
+          {/* 
+          <Route
+            exact
+            path="/signup"
+            element={<PublicRoute restricted={false} component={Signup} />}
+          />
+          <Route
+            exact
+            path="/profile"
+            element={<PrivateRoute restricted={true} component={Profile} />}
+          />
+          <Route
+            exact
+            path="/change_password"
+            element={<PrivateRoute restricted={true} component={Change} />}
+          />
+          <Route
+            exact
+            path="/forgot_pw"
+            element={<PublicRoute restricted={false} component={Forgot} />}
+          /> */}
+          <Route path="*" element={<Navigate to="/home" replace />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
 }
-
-export default App
