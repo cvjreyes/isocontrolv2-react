@@ -9,3 +9,15 @@
 .pointer {
   cursor: pointer;
 }
+
+.none {
+  display: none;
+}
+
+.removeStyle {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}

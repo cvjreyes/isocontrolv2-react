@@ -2,16 +2,33 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
+import TechnipLogo from "../../assets/images/technip.png";
+import IsoTracker from "../../assets/images/IsoTracker.svg";
 import GreenCircle from "../../assets/images/green_circle.png";
 import BlueCircle from "../../assets/images/blue_circle.png";
-import TechnipLogo from "../../assets/images/technip.png";
 
-export default function Main({ children }) {
+export default function Main({ children, logo, circles }) {
   return (
     <div css={mainStyle}>
-      <img src={TechnipLogo} alt="technipLogo" className="technipLogo" />
-      <img src={GreenCircle} alt="greenCircle" className="greenCircle" />
-      <img src={BlueCircle} alt="blueCircle" className="blueCircle" />
+      {logo === "Technip" ? (
+        <img src={TechnipLogo} alt="technip" className="technipLogo" />
+      ) : (
+        <img src={IsoTracker} alt="isotracker" className="isotrackerLogo" />
+      )}
+      {circles && [
+        <img
+          key="1"
+          src={GreenCircle}
+          alt="greenCircle"
+          className="greenCircle"
+        />,
+        <img
+          key="2"
+          src={BlueCircle}
+          alt="blueCircle"
+          className="blueCircle"
+        />,
+      ]}
 
       {children}
     </div>
@@ -23,6 +40,12 @@ const mainStyle = {
     position: "absolute",
     top: "80px",
     right: "100px",
+  },
+  ".isotrackerLogo": {
+    position: "absolute",
+    top: "80px",
+    left: "100px",
+    width: "200px",
   },
   ".greenCircle": {
     position: "absolute",

@@ -53,7 +53,7 @@ const LoginComp = ({ setMessage }) => {
   };
 
   return (
-    <Main>
+    <Main logo="Technip">
       <form css={mainStyle} onSubmit={handleSubmit}>
         <img
           src={import.meta.env.VITE_PROGRESS ? FullTrackerLogo : IsoTrackerLogo}
