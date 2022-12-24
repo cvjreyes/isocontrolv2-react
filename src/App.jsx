@@ -24,6 +24,7 @@ export default function App() {
   useEffect(() => {
     document.title = `${import.meta.env.VITE_APP_NAMEPROJ} v2`;
   }, []);
+
   return (
     <AuthProvider>
       <Router>
@@ -38,11 +39,6 @@ export default function App() {
             exact
             path="/login"
             element={<PublicRoute component={Login} />}
-          />
-          <Route
-            exact
-            path={`/${import.meta.env.VITE_PROJECT}/navis`}
-            element={<PublicRoute component={Home} />}
           />
           {/* 
           <Route

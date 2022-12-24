@@ -13,10 +13,12 @@ export default function Button1({
   margin,
   className,
   fontWeight,
+  type,
+  padding,
 }) {
   const buttonStyle = {
     width: width || "100%",
-    padding: "10px 20px",
+    padding: padding || "10px 20px",
     backgroundColor: bgColor,
     color,
     border,
@@ -26,7 +28,12 @@ export default function Button1({
   };
 
   return (
-    <button className={className} css={buttonStyle} onClick={onClick}>
+    <button
+      type={type}
+      className={className}
+      css={buttonStyle}
+      onClick={onClick}
+    >
       {text}
     </button>
   );
