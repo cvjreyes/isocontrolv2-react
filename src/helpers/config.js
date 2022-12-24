@@ -1,4 +1,4 @@
-export const getURL = () =>
+export const URL =
   "http://" +
   import.meta.env.VITE_SERVER +
   ":" +

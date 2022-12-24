@@ -10,11 +10,11 @@ import Main from "../components/layouts/Main";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../components/modals/Toast";
+import { URL } from "../helpers/config";
 
 import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
 import FullTrackerLogo from "../assets/images/3DTracker.svg";
 import Eye from "../assets/images/eye.png";
-import { getURL } from "../helpers/general";
 
 const LoginComp = ({ setMessage }) => {
   const { login } = useContext(AuthContext);
@@ -31,9 +31,8 @@ const LoginComp = ({ setMessage }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form.email, form.password);
     try {
-      const res = await axios.post(`${getURL()}/users/login`, {
+      const res = await axios.post(`${URL}/users/login`, {
         email: form.email,
         password: form.password,
       });
@@ -42,8 +41,7 @@ const LoginComp = ({ setMessage }) => {
       setTimeout(() => login(res.data.body), 1000);
       setMessage({
         ok: res.data.ok,
-        // txt: `Welcome back, ${res.data.body.email}`,
-        txt: `Welcome back, ${res.data.data}`,
+        txt: `Welcome back, ${res.data.body.email}`,
       });
     } catch (err) {
       setMessage({
@@ -107,7 +105,9 @@ const LoginComp = ({ setMessage }) => {
           bgColor="white"
           border="1px solid black"
           margin="10px auto 30px"
-          onClick={(e) =>
+          // prevents submit to be called ↓
+          type="button"
+          onClick={() =>
             window.open(
               "http://wks-fr.exnet.technip.com/sites/GLOBALBPMS/EMIA/ML-380-01%20Isotracker%20QuickUsersGuide.pdf",
               "_blank"
@@ -115,31 +115,24 @@ const LoginComp = ({ setMessage }) => {
           }
         />
         <p>Or you can access to NavisattSelect</p>
-        <Link to={`/${import.meta.env.VITE_PROJECT}/navis`}>
+        <Link
+          className="navisattBtn"
+          to={`/${import.meta.env.VITE_PROJECT}/navis`}
+        >
           <Button1
             className="pointer"
             text="NAVISATTSELECT"
-            margin="10px 0 0"
             bgColor="#94DCAA"
             border="1px solid #94DCAA"
             fontWeight="bold"
           />
         </Link>
-        {/*{error && (
-            <p
-              className="error__message"
-              style={{ color: "red", position: "absolute" }}
-            >
-              Email or password incorrect. Try again.
-            </p>
-          )}*/}
       </form>
     </Main>
   );
 };
 
 const mainStyle = {
-  // backgroundColor: "red",
   display: "flex",
   flexDirection: "column",
   alignItems: "left",
@@ -166,6 +159,9 @@ const mainStyle = {
       position: "absolute",
       right: "20px",
     },
+  },
+  ".navisattBtn": {
+    margin: "10px 0 0",
   },
 };
 
