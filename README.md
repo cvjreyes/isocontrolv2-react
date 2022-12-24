@@ -3,7 +3,7 @@
 1. `npm i`
 2. `npm start` => this will run `vite`
 
-[S.O.L.I.D principles:]("https://developero.io/blog/react-solid-example")
+[SOLID principles:]("https://developero.io/blog/react-solid-example")
 
 ### Imports order:
 
