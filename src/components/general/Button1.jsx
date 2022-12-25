@@ -15,6 +15,7 @@ export default function Button1({
   fontWeight,
   type,
   padding,
+  background,
 }) {
   const buttonStyle = {
     width: width || "100%",
@@ -25,6 +26,9 @@ export default function Button1({
     borderRadius: borderRadius || "6px",
     margin,
     fontWeight,
+    ":hover": {
+      background,
+    },
   };
 
   return (

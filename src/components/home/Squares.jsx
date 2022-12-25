@@ -3,13 +3,15 @@
 import { jsx } from "@emotion/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { URL } from "../../helpers/config";
 
+import { URL } from "../../helpers/config";
 import Square from "./Square";
+import ProgressBar from "./ProgressBar";
 
 export default function Squares() {
   const [feedProgress, setFeedProgress] = useState(0);
   const [IFDProgress, setIFDProgress] = useState(0);
+  const [IFCProgress, setIFCProgress] = useState(0);
 
   useEffect(() => {
     let URL1 = `${URL}/feed/get_progress`;
@@ -29,12 +31,36 @@ export default function Squares() {
     getProgresses();
   }, []);
   return (
-    <div css={squaresStyle}>
-      <Square text="FEED" num={feedProgress} />
-      <Square text="IFD" num={IFDProgress} />
-      <Square text="IFC" />
+    <div>
+      <div css={squaresStyle}>
+        <Square
+          text="FEED"
+          subtext="(Front End Engineering Design)"
+          num={feedProgress}
+          to="/feed"
+        />
+        <Square
+          text="IFD"
+          subtext="(Issue For Design)"
+          num={IFDProgress}
+          to="/ifd"
+        />
+        <Square
+          text="IFC"
+          subtext="(Issue For Construction)"
+          num={IFCProgress}
+          to="/ifc"
+        />
+      </div>
+      <ProgressBar
+        feedProgress={feedProgress}
+        IFDProgress={IFDProgress}
+        IFCProgress={IFCProgress}
+      />
     </div>
   );
 }
 
-const squaresStyle = {};
+const squaresStyle = {
+  display: "flex",
+};
