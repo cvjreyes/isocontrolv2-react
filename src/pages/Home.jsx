@@ -3,7 +3,6 @@
 import { jsx } from "@emotion/react";
 
 import Main from "../components/layouts/Main";
-import ProgressBar from "../components/home/ProgressBar";
 import Squares from "../components/home/Squares";
 
 export default function Home() {
@@ -11,10 +10,16 @@ export default function Home() {
     <Main logo="IsoTracker" circles={true}>
       <div css={homestyle}>
         <Squares />
-        <ProgressBar />
       </div>
     </Main>
   );
 }
 
-const homestyle = {};
+const homestyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  // height: "100vh",
+  height: "calc(100vh - 50px)",
+};

@@ -1,0 +1,42 @@
+@property --myColor1 {
+  syntax: '<color>';
+  initial-value: #338DF1;
+  inherits: false;
+}
+
+@property --myColor2 {
+  syntax: '<color>';
+  initial-value: #85BFFF;
+  inherits: false;
+}
+
+.test {
+  background: linear-gradient(var(--myColor1), var(--myColor2));
+  transition: --myColor1 1s, --myColor2 1s;
+}
+
+/* background: "linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)", */
+.test:hover {
+  --myColor1: #9ac8fa;
+  --myColor2: #2b86ee;
+}
+
+.progressbar-container {
+  background: linear-gradient(90deg, rgb(238, 246, 253) 0%, rgb(181, 211, 253) 48%, rgb(237, 242, 245) 100%);
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

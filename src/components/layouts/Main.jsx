@@ -48,18 +48,18 @@ const mainStyle = {
     width: "200px",
   },
   ".greenCircle": {
+    zIndex: "-100",
     position: "absolute",
     width: "205px",
-
     right: "0",
     top: "200px",
     mixBlendMode: "darken",
   },
 
   ".blueCircle": {
+    zIndex: "-100",
     position: "absolute",
     width: "450px",
-
     right: "100px",
     top: "200px",
     mixBlendMode: "darken",
