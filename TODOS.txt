@@ -1,0 +1,13 @@
+- pass progress to feed through url state OR params NOT localStorage
+- 1 make wrapper
+- 2 make routing
+- 3 get and display info
+- 4 implement table
+- 5 modify table
+- 6 delete row
+- 7 submit changes
+
+THEN
+- add new records VIEW
+- actually adding
+- saving

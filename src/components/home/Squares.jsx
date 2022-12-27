@@ -11,7 +11,7 @@ import ProgressBar from "./ProgressBar";
 export default function Squares() {
   const [feedProgress, setFeedProgress] = useState(0);
   const [IFDProgress, setIFDProgress] = useState(0);
-  const [IFCProgress, setIFCProgress] = useState(0);
+  const [IFCProgress, setIFCProgress] = useState(43.28);
 
   useEffect(() => {
     let URL1 = `${URL}/feed/get_progress`;

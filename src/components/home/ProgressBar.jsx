@@ -1,17 +1,22 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx, keyframes } from "@emotion/react";
+import { jsx } from "@emotion/react";
+import { useEffect, useState } from "react";
+import Countup from "react-countup";
 
 export default function ProgressBar({
   feedProgress,
   IFDProgress,
   IFCProgress,
 }) {
-  const totalProgress = (
-    feedProgress * 0.1 +
-    IFDProgress * 0.4 +
-    IFCProgress * 0.5
-  ).toFixed(2);
+  const [totalProgress, setTotalProgress] = useState(0);
+
+  useEffect(() => {
+    if (feedProgress && IFDProgress && IFCProgress)
+      setTotalProgress(
+        (feedProgress * 0.1 + IFDProgress * 0.4 + IFCProgress * 0.5).toFixed(2)
+      );
+  }, [feedProgress, IFDProgress, IFCProgress]);
 
   return (
     <div css={progressStyle}>
@@ -25,25 +30,14 @@ export default function ProgressBar({
         >
           <div className="progressbar-liquid"></div>
         </div>
-        <span className="progress">{totalProgress}%</span>
+        <div>
+          <Countup end={totalProgress} decimals={2} className="progress" />
+          <span>%</span>
+        </div>
       </div>
     </div>
   );
 }
-
-const gradient = keyframes`
-0% {
-  background-position: 0% 50%;
-}
-
-50% {
-  background-position: 100% 50%;
-}
-
-100% {
-  background-position: 0% 50%;
-}
-`;
 
 const progressStyle = {
   margin: "40px auto 0",
@@ -59,10 +53,6 @@ const progressStyle = {
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    // background:
-    //   "linear-gradient(90deg, rgb(238, 246, 253) 0%, rgb(219, 234, 255) 48%, rgb(237, 242, 245) 100%)",
-    // backgroundSize: "400% 400%",
-    // animation: `${gradient} 5s ease infinite`,
   },
   ".progressbar-complete": {
     position: "absolute",
@@ -73,6 +63,7 @@ const progressStyle = {
     borderRadius: "10px",
     animation: "gradient 2500ms infinite ease-in-out",
     zIndex: 2,
+    transition: "width 2s ease",
   },
   ".progressbar-liquid": {
     zIndex: 1,
