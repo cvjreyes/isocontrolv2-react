@@ -14,7 +14,6 @@ export default function FeedPipesExcelTableWrapper({
   diameters,
   handleChange,
   handlePaste,
-  submitChanges,
   filter,
   filterInfo,
   copyToClipBoard,

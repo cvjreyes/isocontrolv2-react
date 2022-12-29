@@ -2,10 +2,10 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import TechnipLogo from "../../assets/images/technip.png";
-import IsoTracker from "../../assets/images/IsoTracker.svg";
-import GreenCircle from "../../assets/images/green_circle.png";
-import BlueCircle from "../../assets/images/blue_circle.png";
+import TechnipLogo from "../assets/images/technip.png";
+import IsoTracker from "../assets/images/IsoTracker.svg";
+import GreenCircle from "../assets/images/green_circle.png";
+import BlueCircle from "../assets/images/blue_circle.png";
 
 export default function Main({ children, logo, circles }) {
   return (

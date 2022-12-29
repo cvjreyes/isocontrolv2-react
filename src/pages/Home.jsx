@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import Main from "../components/layouts/Main";
+import Main from "../layouts/Main";
 import Squares from "../components/home/Squares";
 
 export default function Home() {
