@@ -6,8 +6,8 @@ import { useCallback, useEffect } from "react";
 import Button1 from "../general/Button1";
 
 export default function Dropdown({ closeMenu, logout }) {
-  const escFunction = useCallback((event) => {
-    if (event.key === "Escape") {
+  const escFunction = useCallback((e) => {
+    if (e.key === "Escape") {
       closeMenu();
     }
   }, []);

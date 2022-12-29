@@ -1,0 +1,55 @@
+export const columnsData = ({ lineRefs, areas, diameters }) => [
+  {
+    key: "Empty",
+  },
+  {
+    title: "Line reference",
+    key: "Line reference",
+    // type: "dropdown",
+    source: lineRefs,
+    strict: true,
+  },
+  { title: "Tag", key: "tag", type: "text" },
+  { title: "U", key: "Unit", type: "text" },
+  {
+    title: "A",
+    key: "Area",
+    type: "dropdown",
+    source: areas,
+    strict: true,
+  },
+  { title: "Fl", key: "Fluid", type: "text" },
+  { title: "Se", key: "Seq", type: "text" },
+  { title: "Sp", key: "Spec", type: "text" },
+  {
+    title: "Ty",
+    key: "Type",
+    type: "text",
+    readOnly: true,
+  },
+  {
+    title: "D",
+    key: "Diameter",
+    type: "dropdown",
+    source: diameters,
+    strict: true,
+  },
+  {
+    title: "I",
+    key: "insulation",
+    type: "text",
+  },
+  {
+    title: "Tr",
+    key: "Train",
+    type: "dropdown",
+    source: ["01", "02", "03", "04", "05"],
+    strict: true,
+  },
+  {
+    title: "Stat",
+    key: "Status",
+    type: "dropdown",
+    source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
+  },
+];

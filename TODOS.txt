@@ -1,13 +1,53 @@
+TABLE
 - pass progress to feed through url state OR params NOT localStorage
-- 1 make wrapper
-- 2 make routing
-- 3 get and display info
-- 4 implement table
-- 5 modify table
-- 6 delete row
+- 1 make wrapper ✔
+- 2 make routing ✔
+- 3.1 get info ✔
+- 3.2 display info ✔
+- 4 implement table ✔
+- 5 modify table ✔
+- 6.1 paste from excel ✔
+- 6.2 filter then paste ✔
+- 6.3 paste more than 1 line ✔
+- 6.4 paste more than 1 line on filtered ✔
 - 7 submit changes
+- 8.1 copy 1 row
+- 8.2 copy +1 row
+- 9 delete row
+- 10 add row/s
 
-THEN
+ADDING ROW:
 - add new records VIEW
-- actually adding
-- saving
+- show empty rows
+- able to manually modify BUT most important ↓
+- paste from excel 1 line
+- paste from excel various line
+- save => back to display view with updated results
+
+- copy row on click ID
+- top-left of table => delete button
+  - when click on delete button:
+    - cursor pointer on rows
+    - background reddish
+    - click and appear modal => are you sure you want to delete row ${row}?
+      - no: go back to delete mode
+      - yes: delete row, save and back to editing mode
+    - to exit delete mode click top-left again
+
+- highlight changes:
+  - state array saving objects with id + keys changed
+  - in render => check for id + key
+  - if match: greenish background
+  - this way when saving you only have to go throgh those specific ids + keys
+    - this means building specific fn in backend
+
+OTHER
+- add error handler for when server is down ( something like 'server is down please contact IT )
+
+TABLES que no llegué a probar:
+- react-virtualized
+- react-data-grid
+- react-super-responsive-table
+- react-bootstrap-table
+- react-datasheet
+- react-grid

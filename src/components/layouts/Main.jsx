@@ -40,12 +40,14 @@ const mainStyle = {
     position: "absolute",
     top: "80px",
     right: "100px",
+    zIndex: "-100",
   },
   ".isotrackerLogo": {
     position: "absolute",
     top: "80px",
     left: "100px",
     width: "200px",
+    zIndex: "-100",
   },
   ".greenCircle": {
     zIndex: "-100",

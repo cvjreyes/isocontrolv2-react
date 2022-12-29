@@ -25,16 +25,16 @@ export default function Navbar() {
   return (
     <div css={mainStyle}>
       <div>
-        <NavLink activeclassname="active" to="/">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/">
           Home
         </NavLink>
-        <NavLink activeclassname="active" to="/feed">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/feed">
           FEED
         </NavLink>
-        <NavLink activeclassname="active" to="/ifd">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifd">
           IFD
         </NavLink>
-        <NavLink activeclassname="active" to="/ifc">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
       </div>
