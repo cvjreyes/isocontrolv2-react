@@ -10,11 +10,13 @@ TABLE
 - 6.2 filter then paste ✔
 - 6.3 paste more than 1 line ✔
 - 6.4 paste more than 1 line on filtered ✔
-- 7 submit changes
-- 8.1 copy 1 row
-- 8.2 copy +1 row
+- 7.1 copy 1 row
+- 7.2 copy +1 row
+- 8 submit changes
 - 9 delete row
 - 10 add row/s
+
+! LINE REFERENCE - Tag- when change something => update line_ref + tag
 
 ADDING ROW:
 - add new records VIEW
@@ -51,3 +53,6 @@ TABLES que no llegué a probar:
 - react-bootstrap-table
 - react-datasheet
 - react-grid
+
+MODALS
+- ponder using/trying reapop ( more businessy )

@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import Main from "../components/layouts/Main";
+import Main from "../layouts/Main";
 
 export default function IFD() {
   return (

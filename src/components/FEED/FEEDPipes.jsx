@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "handsontable/dist/handsontable.full.min.css";
 
-import {
-  buildTag,
-  divideLineReference,
-  prepareFeedPipesData,
-  buildRow,
-} from "./feedPipesHelpers";
+import { buildTag, divideLineReference, buildRow } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import { URLold } from "../../helpers/config";
 import { copyToClipboard } from "../../helpers/table";
@@ -30,8 +24,8 @@ export default function FeedPipesExcel(props) {
     try {
       const url = `${URLold}/feedPipes`;
       const res = await fetch(url, getOptions);
-      const { rows: resRows } = await res.json();
-      const { rows } = prepareFeedPipesData(resRows);
+      const { rows } = await res.json();
+      rows.map((row) => (row.tag = buildTag(row)));
       setData(rows);
       setDisplayData(rows);
     } catch (err) {
@@ -120,23 +114,23 @@ export default function FeedPipesExcel(props) {
 
   const checkForEmptyCells = () => {
     let haveToBeFilled = [
-      "Area",
-      "Diameter",
-      "Fluid",
-      "Insulation",
-      "Line reference",
-      "Tag",
-      "Unit",
-      "Seq",
-      "Spec",
-      "Train",
+      "area",
+      "diameter",
+      "fluid",
+      "insulation",
+      "line_reference",
+      "tag",
+      "unit",
+      "seq",
+      "spec",
+      "train",
     ];
 
     let empty = false;
     for (let i = 0; i < data.length; i++) {
       for (let key in data[i]) {
         if (
-          data[i]["Line reference"] !== "deleted" &&
+          data[i].line_reference !== "deleted" &&
           haveToBeFilled.includes(key) &&
           !data[i][key]
         ) {
@@ -177,7 +171,7 @@ export default function FeedPipesExcel(props) {
   const handleDeleteLine = (idx) => {
     let tempData = [...data];
     let tempRow = { ...tempData[idx] };
-    tempRow["Line reference"] = "deleted";
+    tempRow.line_reference = "deleted";
     tempData[idx] = tempRow;
     setData(tempData);
   };
@@ -225,7 +219,6 @@ export default function FeedPipesExcel(props) {
       areas={areas}
       diameters={diameters}
       handleChange={handleChange}
-      submitChanges={submitChanges}
       filter={handleFilter}
       handlePaste={handlePaste}
       filterInfo={filterInfo}

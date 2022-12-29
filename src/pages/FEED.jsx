@@ -3,7 +3,7 @@
 import { jsx } from "@emotion/react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import Main from "../components/layouts/Main";
+import Main from "../layouts/Main";
 import Sidebar from "../components/sidebar/Sidebar";
 import Table from "../components/table/Table";
 import FEEDPipes from "../components/FEED/FEEDPipes";
