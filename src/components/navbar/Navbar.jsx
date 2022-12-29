@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { getName } from "../../helpers/user";
@@ -12,9 +12,12 @@ export default function Navbar() {
 
   const [isMenuOpen, setOpenMenu] = useState(false);
 
+  useEffect(() => {
+    if (!isLoggedIn) setOpenMenu(false);
+  }, [isLoggedIn]);
+
   const toggleMenu = (e) => {
     e.preventDefault();
-    console.log(1);
     setOpenMenu((prev) => !prev);
   };
 
@@ -22,16 +25,16 @@ export default function Navbar() {
   return (
     <div css={mainStyle}>
       <div>
-        <NavLink activeclassname="active" to="/">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/">
           Home
         </NavLink>
-        <NavLink activeclassname="active" to="/feed">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/feed">
           FEED
         </NavLink>
-        <NavLink activeclassname="active" to="/ifd">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifd">
           IFD
         </NavLink>
-        <NavLink activeclassname="active" to="/ifc">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
       </div>

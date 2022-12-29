@@ -35,11 +35,7 @@ export default function App() {
             path="/login"
             element={<PublicRoute component={Login} />}
           />
-          <Route
-            exact
-            path="/feed"
-            element={<PrivateRoute component={FEED} />}
-          />
+          <Route path="/feed/*" element={<PrivateRoute component={FEED} />} />
           <Route exact path="/ifd" element={<PrivateRoute component={IFD} />} />
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           {/* 

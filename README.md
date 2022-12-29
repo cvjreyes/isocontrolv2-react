@@ -79,3 +79,10 @@ import Eye from "../assets/images/eye.png";
 
 - Ideally code is descriptive enough to avoid commenting
 - Comments should only be used if variable naming is not enough
+
+### Help I got online:
+
+- [Borders for fake table:](https://stackoverflow.com/questions/10023799/how-to-collapse-the-borders-of-a-set-of-div-tags-using-css/10023942#10023942)]
+- [How to paste from Excel](https://stackblitz.com/edit/paste-from-excel?file=index.js)
+- [Reset input to defaultValue](https://stackoverflow.com/questions/42706265/react-es6-const-clear-input-defaultvalue-on-focus)
+- [Blur Input on press Esc](https://stackoverflow.com/questions/48961342/how-to-blur-the-input-provided-in-semantic-ui-react)

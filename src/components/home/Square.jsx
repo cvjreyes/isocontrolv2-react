@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { Link } from "react-router-dom";
+import Countup from "react-countup";
 
 import "./home.css";
 
@@ -10,7 +11,11 @@ export default function Square({ to, text, subtext, num }) {
     <Link to={to} css={itemStyle} className="test">
       <p className="big">{text}</p>
       <p className="small">{subtext}</p>
-      <p className="big">{num}%</p>
+      {/* <p className="big">{num}%</p> */}
+      <div>
+        <Countup end={num} decimals={2} className="big" />
+        <span className="big">%</span>
+      </div>
     </Link>
   );
 }
