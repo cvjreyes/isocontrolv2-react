@@ -7,6 +7,8 @@ export default function FeedPipesExcelTableHeader({
   gridSize,
   columns,
   filterInfo,
+  copyMulti,
+  setCopyMulti,
 }) {
   const rowStyle = {
     display: "grid",
@@ -21,9 +23,33 @@ export default function FeedPipesExcelTableHeader({
     },
   };
 
+  const copyWrapper = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderTop: "1px solid black",
+    borderLeft: "1px solid black",
+    backgroundColor: copyMulti && "lightgray",
+    img: {
+      width: "50%",
+    },
+  };
+
   return (
     <div css={rowStyle}>
       {columns.map((x) => {
+        if (x.key === "empty") {
+          return (
+            <div
+              key={x.key}
+              css={copyWrapper}
+              className="pointer"
+              onClick={() => setCopyMulti((prev) => !prev)}
+            >
+              <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" />
+            </div>
+          );
+        }
         return (
           <div className="bold" style={{ width: x.width }} key={x.key}>
             <input

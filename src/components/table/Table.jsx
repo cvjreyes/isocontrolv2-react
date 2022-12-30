@@ -11,6 +11,9 @@ export default function Table({
   gridSize,
   copyToClipBoard,
   id,
+  copyMulti,
+  copied,
+  changed,
 }) {
   return (
     <div css={tableStyle}>
@@ -26,6 +29,9 @@ export default function Table({
             handlePaste={handlePaste}
             copyToClipBoard={copyToClipBoard}
             id={id}
+            copyMulti={copyMulti}
+            copied={copied}
+            changed={changed}
           />
         );
       })}
@@ -36,7 +42,7 @@ export default function Table({
 const tableStyle = {
   border: "solid black",
   borderWidth: "0 1px 1px 0",
-  "div, input": {
+  "*": {
     fontSize: "13px !important",
   },
 };
