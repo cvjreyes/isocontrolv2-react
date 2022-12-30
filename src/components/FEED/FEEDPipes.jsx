@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, useRef } from "react";
 
 import { buildTag, divideLineReference, buildRow } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import { URLold } from "../../helpers/config";
-import { copyToClipboard } from "../../helpers/table";
+import Loading from "react-loading";
+import CopyContext from "../../context/CopyContext";
 
 export default function FeedPipesExcel(props) {
+  const original = useRef(null);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [diameters, setDiameters] = useState(null);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
+  const [changed, setChanged] = useState([]);
 
   const getOptions = {
     method: "GET",
@@ -28,6 +31,7 @@ export default function FeedPipesExcel(props) {
       rows.map((row) => (row.tag = buildTag(row)));
       setData(rows);
       setDisplayData(rows);
+      original.current = [...rows];
     } catch (err) {
       console.error(err);
     }
@@ -73,6 +77,11 @@ export default function FeedPipesExcel(props) {
     getLineRefs();
     getFeedPipes();
   }, []);
+
+  useEffect(() => {
+    // cuando escrbimos en el filtro => actualizar displayData
+    filter();
+  }, [filterInfo]);
 
   const handleFilter = (keyName, val) => {
     if (keyName in filterInfo && !val) {
@@ -176,10 +185,50 @@ export default function FeedPipesExcel(props) {
     setData(tempData);
   };
 
-  const handleChange = ({ target }, i) => {
+  const addToChanged = (rowId, key, val, id) => {
+    let real = original.current;
+    const tempChanged = [...changed];
+    // locate if id exists in changed
+    const idx = tempChanged.findIndex((x) => x.rowId === rowId);
+    // if not, add it with key
+    if (idx < 0) {
+      tempChanged.push({ rowId: rowId, keys: [key] });
+    } else {
+      // find idx in data
+      const idx2 = real.findIndex((x) => x.id === id);
+      // if current value === old value
+      if (val === real[idx2][key]) {
+        console.log(val, key);
+        console.log(real[idx2]);
+        //   if key to remove is only one
+        if (tempChanged[idx].keys.length === 1) {
+          //      delete row
+          tempChanged.splice(idx, 1);
+        } else {
+          //   else remove key
+          let row = tempChanged[idx];
+          let keys = row.keys;
+          keys.splice(keys.indexOf(key), 1);
+          row.keys = [...keys];
+          tempChanged[idx] = row;
+        }
+        // else add it
+      } else {
+        let row = tempChanged[idx];
+        let keys = row.keys;
+        keys.push(key);
+        row.keys = [...keys];
+        tempChanged[idx] = row;
+      }
+    }
+    setChanged(tempChanged);
+  };
+
+  const handleChange = ({ target }, i, rowId, id) => {
     const { name, value } = target;
     const tempData = [...data];
     tempData[i][name] = value;
+    addToChanged(rowId, name, value, id);
     setData(tempData);
     filter(tempData);
   };
@@ -206,24 +255,23 @@ export default function FeedPipesExcel(props) {
     });
   };
 
-  useEffect(() => {
-    // cuando escrbimos en el filtro => actualizar displayData
-    filter();
-  }, [filterInfo]);
-
   return (
-    <FeedPipesExcelTableWrapper
-      title="Line Control"
-      displayData={displayData}
-      lineRefs={lineRefs}
-      areas={areas}
-      diameters={diameters}
-      handleChange={handleChange}
-      filter={handleFilter}
-      handlePaste={handlePaste}
-      filterInfo={filterInfo}
-      copyToClipBoard={copyToClipboard}
-      id={"feed"}
-    />
+    <Suspense fallback={<Loading />}>
+      <CopyContext>
+        <FeedPipesExcelTableWrapper
+          title="Line Control"
+          displayData={displayData}
+          lineRefs={lineRefs}
+          areas={areas}
+          diameters={diameters}
+          handleChange={handleChange}
+          filter={handleFilter}
+          handlePaste={handlePaste}
+          filterInfo={filterInfo}
+          id={"feed"}
+          changed={changed}
+        />
+      </CopyContext>
+    </Suspense>
   );
 }

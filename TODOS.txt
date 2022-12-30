@@ -10,8 +10,8 @@ TABLE
 - 6.2 filter then paste ✔
 - 6.3 paste more than 1 line ✔
 - 6.4 paste more than 1 line on filtered ✔
-- 7.1 copy 1 row
-- 7.2 copy +1 row
+- 7.1 copy 1 row ✔
+- 7.2 copy +1 row ✔
 - 8 submit changes
 - 9 delete row
 - 10 add row/s
@@ -56,3 +56,6 @@ TABLES que no llegué a probar:
 
 MODALS
 - ponder using/trying reapop ( more businessy )
+
+REBUILD:
+- FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading

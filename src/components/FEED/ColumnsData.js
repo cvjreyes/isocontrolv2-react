@@ -1,6 +1,6 @@
 export const columnsData = ({ lineRefs, areas, diameters }) => [
   {
-    key: "Empty",
+    key: "empty",
   },
   {
     title: "Line reference",
