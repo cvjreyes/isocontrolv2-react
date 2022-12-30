@@ -1,4 +1,5 @@
-export const columnsData = ({ lineRefs, areas, diameters }) => [
+export const columnsData = () => [
+  // { lineRefs = [], areas = [], diameters = [] }
   {
     key: "empty",
   },
@@ -6,16 +7,16 @@ export const columnsData = ({ lineRefs, areas, diameters }) => [
     title: "Line reference",
     key: "line_reference",
     // type: "dropdown",
-    source: lineRefs,
+    // source: lineRefs,
     strict: true,
   },
-  { title: "Tag", key: "tag", type: "text" },
+  { title: "Tag", key: "tag", type: "text", readOnly: true },
   { title: "U", key: "unit", type: "text" },
   {
     title: "A",
     key: "area",
     type: "dropdown",
-    source: areas,
+    // source: areas,
     strict: true,
   },
   { title: "Fl", key: "fluid", type: "text" },
@@ -31,7 +32,7 @@ export const columnsData = ({ lineRefs, areas, diameters }) => [
     title: "D",
     key: "diameter",
     type: "dropdown",
-    source: diameters,
+    // source: diameters,
     strict: true,
   },
   {
@@ -43,13 +44,13 @@ export const columnsData = ({ lineRefs, areas, diameters }) => [
     title: "Tr",
     key: "train",
     type: "dropdown",
-    source: ["01", "02", "03", "04", "05"],
+    // source: ["01", "02", "03", "04", "05"],
     strict: true,
   },
   {
     title: "Stat",
     key: "status",
     type: "dropdown",
-    source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
+    // source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
   },
 ];

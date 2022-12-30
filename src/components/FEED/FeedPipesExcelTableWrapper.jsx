@@ -1,10 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useEffect } from "react";
 
 import Table from "../table/Table";
 import { columnsData } from "./ColumnsData";
 import FeedPipesExcelTableHeader from "./FeedPipesExcelTableHeader";
+import FEEDPipesHead from "./FeedPipesHead";
 
 export default function FeedPipesExcelTableWrapper({
   title,
@@ -13,8 +15,8 @@ export default function FeedPipesExcelTableWrapper({
   areas,
   diameters,
   handleChange,
-  handlePaste,
   filter,
+  handlePaste,
   filterInfo,
   copyToClipBoard,
   id,
@@ -22,13 +24,23 @@ export default function FeedPipesExcelTableWrapper({
   setCopyMulti,
   copied,
   changed,
+  submitChanges,
+  deleting,
+  setDeleting,
+  handleDelete,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
   const gridSize = "1fr 4fr 7fr 1fr 1.5fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
 
   return (
     <div css={tableWrapperStyle}>
-      <h3 className="bold">{title}</h3>
+      <FEEDPipesHead
+        title={title}
+        submitChanges={submitChanges}
+        setCopyMulti={setCopyMulti}
+        deleting={deleting}
+        setDeleting={setDeleting}
+      />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
           filter={filter}
@@ -49,6 +61,8 @@ export default function FeedPipesExcelTableWrapper({
           copyMulti={copyMulti}
           copied={copied}
           changed={changed}
+          deleting={deleting}
+          handleDelete={handleDelete}
         />
       </div>
     </div>

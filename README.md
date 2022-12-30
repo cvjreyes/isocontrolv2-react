@@ -80,6 +80,10 @@ import Eye from "../assets/images/eye.png";
 - Ideally code is descriptive enough to avoid commenting
 - Comments should only be used if variable naming is not enough
 
+### Librería de Iconos:
+
+[](https://icons8.com/)
+
 ### Help I got online:
 
 - [Borders for fake table:](https://stackoverflow.com/questions/10023799/how-to-collapse-the-borders-of-a-set-of-div-tags-using-css/10023942#10023942)]

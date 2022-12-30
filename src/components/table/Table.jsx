@@ -14,6 +14,8 @@ export default function Table({
   copyMulti,
   copied,
   changed,
+  deleting,
+  handleDelete,
 }) {
   return (
     <div css={tableStyle}>
@@ -32,6 +34,8 @@ export default function Table({
             copyMulti={copyMulti}
             copied={copied}
             changed={changed}
+            deleting={deleting}
+            handleDelete={handleDelete}
           />
         );
       })}

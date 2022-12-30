@@ -1,12 +1,14 @@
 import React, { useState, useEffect, Suspense, useRef } from "react";
+import Loading from "react-loading";
 
 import { buildTag, divideLineReference, buildRow } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import { URLold } from "../../helpers/config";
-import Loading from "react-loading";
 import CopyContext from "../../context/CopyContext";
+import WithModal from "../../modals/YesNo";
+import { columnsData } from "./ColumnsData";
 
-export default function FeedPipesExcel(props) {
+function FeedPipesExcelComp({ alert, setModalContent }) {
   const original = useRef(null);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
@@ -15,6 +17,7 @@ export default function FeedPipesExcel(props) {
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
+  const [deleting, setDeleting] = useState(false);
 
   const getOptions = {
     method: "GET",
@@ -154,12 +157,13 @@ export default function FeedPipesExcel(props) {
   // ! testear submit
 
   const submitChanges = async () => {
+    return console.log("submitted");
     // chequear que no haya ningún tag que ponga already exists
     const stop = checkForAlreadyExists();
-    if (stop) return props.alert("Repeated pipe!", "error");
+    if (stop) return alert("Repeated pipe!", "error");
     // mover el chequeo de empty cells a otra función
     const stop2 = checkForEmptyCells();
-    if (stop2) return props.alert("All cells must be filled", "warning");
+    if (stop2) return alert("All cells must be filled", "warning");
 
     const options = {
       method: "POST",
@@ -172,9 +176,9 @@ export default function FeedPipesExcel(props) {
     const res = await fetch(url, options);
     const resJson = await res.json();
     if (resJson.success) {
-      props.alert("Changes saved!", "success");
+      alert("Changes saved!", "success");
       // await this.props.updateData();
-    } else props.alert("Something went wrong", "warning");
+    } else alert("Something went wrong", "warning");
   };
 
   const handleDeleteLine = (idx) => {
@@ -186,7 +190,7 @@ export default function FeedPipesExcel(props) {
   };
 
   const addToChanged = (rowId, key, val, id) => {
-    let real = original.current;
+    // let real = original.current;
     const tempChanged = [...changed];
     // locate if id exists in changed
     const idx = tempChanged.findIndex((x) => x.rowId === rowId);
@@ -195,45 +199,56 @@ export default function FeedPipesExcel(props) {
       tempChanged.push({ rowId: rowId, keys: [key] });
     } else {
       // find idx in data
-      const idx2 = real.findIndex((x) => x.id === id);
+      // const idx2 = real.findIndex((x) => x.id === id);
       // if current value === old value
-      if (val === real[idx2][key]) {
-        console.log(val, key);
-        console.log(real[idx2]);
-        //   if key to remove is only one
-        if (tempChanged[idx].keys.length === 1) {
-          //      delete row
-          tempChanged.splice(idx, 1);
-        } else {
-          //   else remove key
-          let row = tempChanged[idx];
-          let keys = row.keys;
-          keys.splice(keys.indexOf(key), 1);
-          row.keys = [...keys];
-          tempChanged[idx] = row;
-        }
-        // else add it
-      } else {
-        let row = tempChanged[idx];
-        let keys = row.keys;
-        keys.push(key);
-        row.keys = [...keys];
-        tempChanged[idx] = row;
-      }
+      // ! THIS IS WHATS FAILING WHYYY
+      // if (val === real[idx2][key]) {
+      //   console.log(val, key);
+      //   console.log(real[idx2]);
+      //   if key to remove is only one
+      // if (tempChanged[idx].keys.length === 1) {
+      //      delete row
+      //   tempChanged.splice(idx, 1);
+      // } else {
+      //   else remove key
+      // let row = tempChanged[idx];
+      // let keys = row.keys;
+      // keys.splice(keys.indexOf(key), 1);
+      // row.keys = [...keys];
+      // tempChanged[idx] = row;
+      // }
+      // else add it
+      // } else {
+      let row = tempChanged[idx];
+      let keys = row.keys;
+      keys.push(key);
+      row.keys = [...keys];
+      tempChanged[idx] = row;
+      // }
     }
     setChanged(tempChanged);
   };
 
-  const handleChange = ({ target }, i, rowId, id) => {
+  const handleChange = ({ target }, rowId, id) => {
     const { name, value } = target;
     const tempData = [...data];
-    tempData[i][name] = value;
+    const idx = tempData.findIndex((x) => x.id === id);
+    const changedRow = tempData[idx];
+    changedRow[name] = value;
+    // cualquier cosa que haya cambiado => hacer el rebuild del tag
+    const newTag = buildTag(changedRow);
+    if (changedRow.tag !== newTag) changedRow.tag = newTag;
+    // una vez con el tag cambiado => chequear que no existan 2 tags iguales
+    if (data.some((x) => x.tag === newTag && x.id !== id))
+      changedRow.tag = "Already exists";
+    // si existe un tag igual ponerlo como 'already exists'
+    tempData[idx] = changedRow;
     addToChanged(rowId, name, value, id);
     setData(tempData);
     filter(tempData);
   };
 
-  const handlePaste = (e, i) => {
+  const handlePaste = (e, i, rowId) => {
     e.preventDefault();
     e.stopPropagation();
     e.clipboardData.items[0].getAsString((text) => {
@@ -245,15 +260,36 @@ export default function FeedPipesExcel(props) {
           (item) => item.id === displayData[i + x].id
         );
         let row = line.split("\t");
+        const cellIdx = columnsData().findIndex(
+          (col) => col.key === e.target.name
+        );
+        console.log(cellIdx);
         const builtRow = buildRow(row, tempData[y]);
+        // const newTag = buildTag(changedRow);
+        // if (builtRow.tag !== newTag) builtRow.tag = newTag;
+        // // una vez con el tag cambiado => chequear que no existan 2 tags iguales
+        // if (data.some((x) => x.tag === newTag)) builtRow.tag = "Already exists";
         tempData[y] = {
           ...builtRow,
         };
       });
+      addToChanged(rowId, "all");
       filter(tempData);
       setData(tempData);
     });
   };
+
+  const handleDelete = (rowId) => {
+    setModalContent({
+      openModal: true,
+      text: `Are you sure you want to delete row with ID: ${rowId}?`,
+      onClick1: console.log("yes"),
+    });
+  };
+
+  useEffect(() => {
+    console.log(deleting);
+  }, [deleting]);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -270,8 +306,21 @@ export default function FeedPipesExcel(props) {
           filterInfo={filterInfo}
           id={"feed"}
           changed={changed}
+          submitChanges={submitChanges}
+          deleting={deleting}
+          setDeleting={setDeleting}
+          handleDelete={handleDelete}
         />
       </CopyContext>
     </Suspense>
+  );
+}
+
+// using this components to use modals
+export default function FeedPipesExcel() {
+  return (
+    <WithModal>
+      <FeedPipesExcelComp />
+    </WithModal>
   );
 }
