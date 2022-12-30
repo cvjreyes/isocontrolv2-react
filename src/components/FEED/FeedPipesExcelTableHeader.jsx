@@ -46,7 +46,7 @@ export default function FeedPipesExcelTableHeader({
               className="pointer"
               onClick={() => setCopyMulti((prev) => !prev)}
             >
-              <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" />
+              {/* <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" /> */}
             </div>
           );
         }

@@ -12,11 +12,14 @@ TABLE
 - 6.4 paste more than 1 line on filtered ✔
 - 7.1 copy 1 row ✔
 - 7.2 copy +1 row ✔
-- 8 submit changes
-- 9 delete row
-- 10 add row/s
+- 8 paste 1 field
+- 9 submit changes
+- 10 delete row 
+- 11 add row/s
 
-! LINE REFERENCE - Tag- when change something => update line_ref + tag
+! FIX HANDLE PASTE FOR 1 CELL
+
+! LINE REFERENCE - Tag- when change something => update line_ref + tag ✔ 
 
 ADDING ROW:
 - add new records VIEW
@@ -26,7 +29,7 @@ ADDING ROW:
 - paste from excel various line
 - save => back to display view with updated results
 
-- copy row on click ID
+- copy row on click ID ✔
 - top-left of table => delete button
   - when click on delete button:
     - cursor pointer on rows
@@ -36,7 +39,7 @@ ADDING ROW:
       - yes: delete row, save and back to editing mode
     - to exit delete mode click top-left again
 
-- highlight changes:
+- highlight changes ✔
   - state array saving objects with id + keys changed
   - in render => check for id + key
   - if match: greenish background

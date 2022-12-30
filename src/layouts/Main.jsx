@@ -45,8 +45,8 @@ const mainStyle = {
   ".isotrackerLogo": {
     position: "absolute",
     top: "80px",
-    left: "100px",
-    width: "200px",
+    left: "50px",
+    width: "180px",
     zIndex: "-100",
   },
   ".greenCircle": {

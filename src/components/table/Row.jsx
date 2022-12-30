@@ -14,13 +14,19 @@ export default function Row({
   copyMulti,
   copied,
   changed,
+  deleting,
+  handleDelete,
 }) {
   const rowId = `${id}${i}`;
 
   const rowStyle = {
     display: "grid",
     gridTemplateColumns: gridSize,
+    ":hover": {
+      backgroundColor: deleting && "red !important",
+    },
     "input, div": {
+      cursor: deleting && "pointer !important",
       width: "100%",
       lineHeight: "50px",
       border: "solid black",
@@ -52,7 +58,12 @@ export default function Row({
   };
 
   return (
-    <form css={rowStyle} onPaste={(e) => handlePaste(e, i, item.id)} id={rowId}>
+    <form
+      css={rowStyle}
+      onPaste={(e) => handlePaste(e, i, rowId)}
+      id={rowId}
+      onClick={() => deleting && handleDelete(rowId)}
+    >
       {columns.map((x, y) => {
         if (x.key === "empty")
           return (
@@ -71,12 +82,17 @@ export default function Row({
             name={x.key}
             key={`${i}${y}`}
             value={item[x.key]}
-            onChange={(e) => handleChange(e, i, rowId, item.id)}
+            onChange={(e) => handleChange(e, rowId, item.id)}
+            readOnly={x.readOnly}
             style={{
               backgroundColor:
-                changed[
+                (changed[
                   changed.findIndex((x) => x.rowId === rowId)
-                ]?.keys.includes(x.key) && "green",
+                ]?.keys.includes(x.key) ||
+                  changed[
+                    changed.findIndex((x) => x.rowId === rowId)
+                  ]?.keys.includes("all")) &&
+                "rgb(0, 188, 6)",
             }}
           />
         );
