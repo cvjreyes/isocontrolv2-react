@@ -161,6 +161,7 @@ const mainStyle = {
     ".eyeStyle": {
       position: "absolute",
       right: "20px",
+      width: "20px",
     },
   },
   ".navisattBtn": {

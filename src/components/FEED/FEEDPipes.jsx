@@ -1,7 +1,13 @@
 import React, { useState, useEffect, Suspense, useRef } from "react";
 import Loading from "react-loading";
 
-import { buildTag, divideLineReference, buildRow } from "./feedPipesHelpers";
+import {
+  buildTag,
+  divideLineReference,
+  buildRow,
+  buildLineRef,
+  divideTag,
+} from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import { URLold } from "../../helpers/config";
 import CopyContext from "../../context/CopyContext";
@@ -9,7 +15,6 @@ import WithModal from "../../modals/YesNo";
 import { columnsData } from "./ColumnsData";
 
 function FeedPipesExcelComp({ alert, setModalContent }) {
-  const original = useRef(null);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [diameters, setDiameters] = useState(null);
@@ -34,7 +39,6 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
       rows.map((row) => (row.tag = buildTag(row)));
       setData(rows);
       setDisplayData(rows);
-      original.current = [...rows];
     } catch (err) {
       console.error(err);
     }
@@ -189,91 +193,137 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
     setData(tempData);
   };
 
-  const addToChanged = (rowId, key, val, id) => {
-    // let real = original.current;
-    const tempChanged = [...changed];
-    // locate if id exists in changed
-    const idx = tempChanged.findIndex((x) => x.rowId === rowId);
-    // if not, add it with key
-    if (idx < 0) {
-      tempChanged.push({ rowId: rowId, keys: [key] });
-    } else {
-      // find idx in data
-      // const idx2 = real.findIndex((x) => x.id === id);
-      // if current value === old value
-      // ! THIS IS WHATS FAILING WHYYY
-      // if (val === real[idx2][key]) {
-      //   console.log(val, key);
-      //   console.log(real[idx2]);
-      //   if key to remove is only one
-      // if (tempChanged[idx].keys.length === 1) {
-      //      delete row
-      //   tempChanged.splice(idx, 1);
-      // } else {
-      //   else remove key
-      // let row = tempChanged[idx];
-      // let keys = row.keys;
-      // keys.splice(keys.indexOf(key), 1);
-      // row.keys = [...keys];
-      // tempChanged[idx] = row;
-      // }
-      // else add it
-      // } else {
-      let row = tempChanged[idx];
-      let keys = row.keys;
-      keys.push(key);
-      row.keys = [...keys];
-      tempChanged[idx] = row;
-      // }
+  const addToChanged = (id) => {
+    if (typeof id === "string" || typeof id === "number") {
+      const tempChanged = [...changed];
+      if (tempChanged.includes(id)) return;
+      tempChanged.push(id);
+      setChanged(tempChanged);
+    } else if (typeof id === "object") {
+      let toAdd = [];
+      id.forEach((x) => !changed.includes(x) && toAdd.push(x));
+      var tempChanged = changed.concat(
+        toAdd.filter((item) => changed.indexOf(item) < 0)
+      );
+      setChanged(tempChanged);
     }
-    setChanged(tempChanged);
   };
 
-  const handleChange = ({ target }, rowId, id) => {
+  const handleChange = ({ target }, id) => {
+    // get name of changed key and its value
     const { name, value } = target;
+    // copy data from state
     const tempData = [...data];
+    // find idx of passed id in data
     const idx = tempData.findIndex((x) => x.id === id);
+    // get the changed row obj from data
     const changedRow = tempData[idx];
+    // change the value of the key in the row
     changedRow[name] = value;
     // cualquier cosa que haya cambiado => hacer el rebuild del tag
-    const newTag = buildTag(changedRow);
-    if (changedRow.tag !== newTag) changedRow.tag = newTag;
+    changedRow.tag = buildTag(changedRow);
+    // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
+    changedRow.line_reference = buildLineRef(changedRow);
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
-    if (data.some((x) => x.tag === newTag && x.id !== id))
+    if (data.some((x) => x.tag === changedRow.tag && x.id !== id))
+      // si existe un tag igual ponerlo como 'already exists'
       changedRow.tag = "Already exists";
-    // si existe un tag igual ponerlo como 'already exists'
+    // update changed row in data copy
     tempData[idx] = changedRow;
-    addToChanged(rowId, name, value, id);
+    // add changed to changed array
+    addToChanged(id);
+    // update data
     setData(tempData);
+    // call filter function to update displayData
     filter(tempData);
   };
 
-  const handlePaste = (e, i, rowId) => {
+  const handlePaste = (e, i, id) => {
     e.preventDefault();
     e.stopPropagation();
+    const pastedData = e.clipboardData.getData("Text").split("\t");
+    if (pastedData.length === 1) {
+      return pasteCell(e.target, i, pastedData[0]);
+    } else if (pastedData.length === 12) {
+      return pasteRow(e, id);
+    } else if (pastedData.length > 12) {
+      return pasteMultipleRows(e, i);
+    }
+  };
+
+  const pasteCell = ({ name }, i, pastedData) => {
+    const tempData = [...data];
+    const idx = tempData.findIndex((item) => item.id === displayData[i].id);
+    let changedRow = { ...tempData[idx] };
+    changedRow[name] = pastedData;
+    if (name !== "line_reference" && name !== "tag") {
+      changedRow.tag = buildTag(changedRow);
+      changedRow.line_reference = buildLineRef(changedRow);
+    } else if (name === "line_reference") {
+      // divide line ref ( get u, fl, seq )
+      const { unit, fluid, sequential } = divideLineReference(changedRow[name]);
+      // update fields
+      changedRow = { ...changedRow, unit, fluid, sequential };
+      // update tag
+      changedRow.tag = buildTag(changedRow);
+    } else if (name === "tag") {
+      // divide tag
+      const dividedTag = divideTag(pastedData);
+      // update rest
+      changedRow = { ...changedRow, ...dividedTag };
+    }
+    if (data.some((x) => x.tag === changedRow.tag && x.id !== tempData[idx].id))
+      changedRow.tag = "Already exists";
+    tempData[idx] = changedRow;
+    addToChanged(changedRow.id);
+    filter(tempData);
+    setData(tempData);
+  };
+
+  const pasteRow = (e, id) => {
     e.clipboardData.items[0].getAsString((text) => {
       const tempData = [...data];
       let lines = text.split("\n");
-      lines.forEach((line, x) => {
+      lines.forEach((line) => {
         if (line.length < 1) return;
+        const y = tempData.findIndex((item) => item.id === id);
+        let row = line.split("\t");
+        const builtRow = buildRow(row, id);
+        if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
+          builtRow.tag = "Already exists";
+        tempData[y] = { ...tempData[y], ...builtRow };
+      });
+      addToChanged(id);
+      filter(tempData);
+      setData(tempData);
+    });
+  };
+
+  const pasteMultipleRows = (e, i) => {
+    e.clipboardData.items[0].getAsString((text) => {
+      const tempData = [...data];
+      // get rows as strings
+      let lines = text.split("\n");
+      lines.pop();
+      let toAdd = [];
+      // loop each row
+      lines.forEach((line, x) => {
+        // get idx of iterated element in data
         const y = tempData.findIndex(
           (item) => item.id === displayData[i + x].id
         );
+        // get row in form of array
         let row = line.split("\t");
-        const cellIdx = columnsData().findIndex(
-          (col) => col.key === e.target.name
-        );
-        console.log(cellIdx);
-        const builtRow = buildRow(row, tempData[y]);
-        // const newTag = buildTag(changedRow);
-        // if (builtRow.tag !== newTag) builtRow.tag = newTag;
-        // // una vez con el tag cambiado => chequear que no existan 2 tags iguales
-        // if (data.some((x) => x.tag === newTag)) builtRow.tag = "Already exists";
-        tempData[y] = {
-          ...builtRow,
-        };
+        // build row as object
+        const builtRow = buildRow(row, tempData[y].id);
+        // check for repeated tag
+        if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
+          builtRow.tag = "Already exists";
+        // update tempData
+        tempData[y] = { ...tempData[y], ...builtRow };
+        toAdd.push(displayData[i + x].id);
       });
-      addToChanged(rowId, "all");
+      addToChanged(toAdd);
       filter(tempData);
       setData(tempData);
     });
@@ -287,13 +337,17 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
     });
   };
 
+  // useEffect(() => {
+  //   console.log(deleting);
+  // }, [deleting]);
+
   useEffect(() => {
-    console.log(deleting);
-  }, [deleting]);
+    console.log(data);
+  }, [data]);
 
   return (
     <Suspense fallback={<Loading />}>
-      <CopyContext>
+      <CopyContext data={displayData} id={"feed"}>
         <FeedPipesExcelTableWrapper
           title="Line Control"
           displayData={displayData}

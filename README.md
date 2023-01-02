@@ -92,3 +92,19 @@ import Eye from "../assets/images/eye.png";
 - [Blur Input on press Esc](https://stackoverflow.com/questions/48961342/how-to-blur-the-input-provided-in-semantic-ui-react)
 - [Paste Table To Clipboard](https://stackoverflow.com/questions/66585315/how-to-copy-table-with-link-to-clipboard-to-paste-it-into-excel)
 - [Export table to Excel](https://stackoverflow.com/questions/11084564/export-html-table-to-excel-javascript-function-special-characters-changed)
+
+### FEED
+
+1. Things you CAN do:
+
+- Copy 1 cell
+- Copy 1 row
+- Copy multiple rows
+- Copy all rows
+- Paste 1 cell
+- Paste 1 row
+- Paste multiple rows
+
+2. Things you can NOT do:
+
+- Copy row and paste it IN APP

@@ -9,6 +9,7 @@ export const columnsData = () => [
     // type: "dropdown",
     // source: lineRefs,
     strict: true,
+    readOnly: true,
   },
   { title: "Tag", key: "tag", type: "text", readOnly: true },
   { title: "U", key: "unit", type: "text" },

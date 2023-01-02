@@ -1,3 +1,23 @@
+const getType = (d) => {
+  if (import.meta.env.VITE_MMDN === "0") {
+    if (d < 2.0) {
+      //Si el diametro es inferior a 2 pulgadas
+      return "TL1";
+    } else {
+      //Superior o igual
+      return "TL2";
+    }
+  } else {
+    if (d < 50) {
+      //Si el diametro es inferior a 50 milimetros
+      return "TL1";
+    } else {
+      //Superior o igual
+      return "TL2";
+    }
+  }
+};
+
 export const buildTag = (row) => {
   let tag = "";
   let tag_order = import.meta.env.VITE_TAG_ORDER.split(/[ -]+/);
@@ -11,6 +31,25 @@ export const buildTag = (row) => {
     }
   }
   return tag;
+};
+
+export const divideTag = (tag) => {
+  const dividedTag = tag.split("-");
+  const [insulation, train] = dividedTag[6].split("_");
+  const row = {
+    line_reference: `${dividedTag[1]}-${dividedTag[2]}-${dividedTag[3]}`,
+    tag: tag.trim(),
+    area: dividedTag[0],
+    unit: dividedTag[1],
+    fluid: dividedTag[2],
+    sequential: dividedTag[3],
+    diameter: dividedTag[4],
+    spec: dividedTag[5],
+    insulation,
+    type: getType(dividedTag[4]),
+    train,
+  };
+  return row;
 };
 
 export const divideLineReference = (ref) => {
@@ -30,7 +69,7 @@ export const divideLineReference = (ref) => {
   return { unit, fluid, sequential };
 };
 
-export const buildRow = (row, old) => {
+export const buildRow = (row, id) => {
   return {
     line_reference: row[0],
     tag: row[1],
@@ -44,6 +83,10 @@ export const buildRow = (row, old) => {
     insulation: row[9],
     train: row[10],
     status: row[11],
-    id: old.id,
+    id,
   };
+};
+
+export const buildLineRef = (row) => {
+  return `${row.unit}-${row.fluid}-${row.sequential}`;
 };
