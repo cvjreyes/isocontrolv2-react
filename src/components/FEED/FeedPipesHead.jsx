@@ -10,6 +10,7 @@ export default function Header({
   setCopyMulti,
   setDeleting,
   deleting,
+  copyAll,
 }) {
   const escFunction = useCallback((e) => {
     if (e.key === "Escape" && deleting) {
@@ -62,7 +63,7 @@ export default function Header({
       </div>
       <h3 className="bold">{title}</h3>
       <div>
-        <button>Copy All</button>
+        <button onClick={copyAll}>Copy All</button>
         <button onClick={escFunction}>Save</button>
       </div>
     </div>

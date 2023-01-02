@@ -25,6 +25,7 @@ export default function Row({
     ":hover": {
       backgroundColor: deleting && "red !important",
     },
+    input: { backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)" },
     "input, div": {
       cursor: deleting && "pointer !important",
       width: "100%",
@@ -60,7 +61,7 @@ export default function Row({
   return (
     <form
       css={rowStyle}
-      onPaste={(e) => handlePaste(e, i, rowId)}
+      onPaste={(e) => handlePaste(e, i, item.id)}
       id={rowId}
       onClick={() => deleting && handleDelete(rowId)}
     >
@@ -82,18 +83,8 @@ export default function Row({
             name={x.key}
             key={`${i}${y}`}
             value={item[x.key]}
-            onChange={(e) => handleChange(e, rowId, item.id)}
+            onChange={(e) => handleChange(e, item.id)}
             readOnly={x.readOnly}
-            style={{
-              backgroundColor:
-                (changed[
-                  changed.findIndex((x) => x.rowId === rowId)
-                ]?.keys.includes(x.key) ||
-                  changed[
-                    changed.findIndex((x) => x.rowId === rowId)
-                  ]?.keys.includes("all")) &&
-                "rgb(0, 188, 6)",
-            }}
           />
         );
       })}

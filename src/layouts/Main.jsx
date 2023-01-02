@@ -41,6 +41,7 @@ const mainStyle = {
     top: "80px",
     right: "100px",
     zIndex: "-100",
+    width: "180px",
   },
   ".isotrackerLogo": {
     position: "absolute",
