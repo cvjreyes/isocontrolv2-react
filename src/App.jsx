@@ -1,22 +1,21 @@
-// PACKAGES
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-// CONTEXT
+
 import { AuthProvider } from "./context/AuthContext";
-// ROUTER
 import PublicRoute from "./router/PublicRoute";
 import PrivateRoute from "./router/PrivateRoute";
-// COMPONENTS / VIEWS
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { useEffect } from "react";
+import FEED from "./pages/FEED";
+import IFD from "./pages/IFD";
+import IFC from "./pages/IFC";
 // import Signup from "./views/Signup";
-// import Profile from "./views/Profile";
 // import Change from "./views/Change";
 // import Forgot from "./views/Forgot";
 
@@ -30,26 +29,20 @@ export default function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route
-            exact
-            path="/home"
-            element={<PrivateRoute component={Home} />}
-          />
+          <Route exact path="/" element={<PrivateRoute component={Home} />} />
           <Route
             exact
             path="/login"
             element={<PublicRoute component={Login} />}
           />
+          <Route path="/feed/*" element={<PrivateRoute component={FEED} />} />
+          <Route exact path="/ifd" element={<PrivateRoute component={IFD} />} />
+          <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           {/* 
           <Route
             exact
             path="/signup"
             element={<PublicRoute restricted={false} component={Signup} />}
-          />
-          <Route
-            exact
-            path="/profile"
-            element={<PrivateRoute restricted={true} component={Profile} />}
           />
           <Route
             exact
@@ -61,7 +54,7 @@ export default function App() {
             path="/forgot_pw"
             element={<PublicRoute restricted={false} component={Forgot} />}
           /> */}
-          <Route path="*" element={<Navigate to="/home" replace />} />
+          <Route path="/*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthProvider>

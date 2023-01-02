@@ -1,0 +1,68 @@
+TABLE
+- pass progress to feed through url state OR params NOT localStorage
+- 1 make wrapper ✔
+- 2 make routing ✔
+- 3.1 get info ✔
+- 3.2 display info ✔
+- 4 implement table ✔
+- 5 modify table ✔
+- 6.1 paste from excel ✔
+- 6.2 filter then paste ✔
+- 6.3 paste more than 1 line ✔
+- 6.4 paste more than 1 line on filtered ✔
+- 7.1 copy 1 row ✔
+- 7.2 copy +1 row ✔
+- 7.3 copy all rows ✔
+- 8.1 paste 1 cell ✔
+- 8.2 paste +1 cell
+- 8.3 paste 1 row ✔
+- 8.4 paste +1 row ✔
+- 9 submit changes
+- 10 delete row 
+- 11 add row/s
+
+! FIX HANDLE PASTE FOR 1 CELL
+
+! LINE REFERENCE - Tag- when change something => update line_ref + tag ✔ 
+
+ADDING ROW:
+- add new records VIEW
+- show empty rows
+- able to manually modify BUT most important ↓
+- paste from excel 1 line
+- paste from excel various line
+- save => back to display view with updated results
+
+- copy row on click ID ✔
+- top-left of table => delete button
+  - when click on delete button:
+    - cursor pointer on rows
+    - background reddish
+    - click and appear modal => are you sure you want to delete row ${row}?
+      - no: go back to delete mode
+      - yes: delete row, save and back to editing mode
+    - to exit delete mode click top-left again
+
+- highlight changes ✔
+  - state array saving objects with id + keys changed
+  - in render => check for id + key
+  - if match: greenish background
+  - this way when saving you only have to go throgh those specific ids + keys
+    - this means building specific fn in backend
+
+OTHER
+- add error handler for when server is down ( something like 'server is down please contact IT )
+
+TABLES que no llegué a probar:
+- react-virtualized
+- react-data-grid
+- react-super-responsive-table
+- react-bootstrap-table
+- react-datasheet
+- react-grid
+
+MODALS
+- ponder using/trying reapop ( more businessy )
+
+REBUILD:
+- FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading

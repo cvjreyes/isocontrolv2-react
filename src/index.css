@@ -6,6 +6,26 @@
   font-size: 16px;
 }
 
+img {
+  width: 100%;
+}
+
 .pointer {
+  cursor: pointer;
+}
+
+.none {
+  display: none;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.removeStyle {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
   cursor: pointer;
 }

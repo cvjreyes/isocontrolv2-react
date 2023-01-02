@@ -1,33 +1,59 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import Button1 from "../general/Button1";
+import { getName } from "../../helpers/user";
+import Dropdown from "./Dropdown";
 
 export default function Navbar() {
   const { user, logout, isLoggedIn } = useContext(AuthContext);
+
+  const [isMenuOpen, setOpenMenu] = useState(false);
+
+  useEffect(() => {
+    if (!isLoggedIn) setOpenMenu(false);
+  }, [isLoggedIn]);
+
+  const toggleMenu = (e) => {
+    e.preventDefault();
+    setOpenMenu((prev) => !prev);
+  };
 
   if (!isLoggedIn) return;
   return (
     <div css={mainStyle}>
       <div>
-        <NavLink to="/home">Home</NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/">
+          Home
+        </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/feed">
+          FEED
+        </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifd">
+          IFD
+        </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
+          IFC
+        </NavLink>
       </div>
       {isLoggedIn && (
-        <form onSubmit={logout} className="right">
-          <span>{user.email}</span>
-          <Button1
-            text="Logout"
-            className="logout pointer"
-            bgColor="transparent"
-            color="white"
-            border="none"
-            padding="none"
-            margin="0 0 0 30px"
-          />
-        </form>
+        <div className="right">
+          <form onSubmit={toggleMenu}>
+            <button className="userWrapper pointer removeStyle" tabIndex="0">
+              <span>{getName(user.email)}</span>
+              <img
+                className="userIcon"
+                alt="user"
+                src="https://img.icons8.com/ios-glyphs/30/null/user--v1.png"
+              />
+            </button>
+          </form>
+          {isMenuOpen && (
+            <Dropdown logout={logout} closeMenu={() => setOpenMenu(false)} />
+          )}
+        </div>
       )}
     </div>
   );
@@ -42,6 +68,9 @@ const mainStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   padding: "0 2%",
+  ".active": {
+    color: "#0070ED",
+  },
   a: {
     color: "white",
     textDecoration: "none",
@@ -53,12 +82,22 @@ const mainStyle = {
   ".right": {
     display: "flex",
     alignItems: "center",
-    span: { marginLeft: "30px" },
+    postion: "relative",
   },
-  ".logout": {
-    outline: "default",
+  ".userWrapper": {
+    display: "flex",
+    alignItems: "center",
     ":hover": {
       color: "#0070ED",
+      img: {
+        filter:
+          "invert(36%) sepia(40%) saturate(7187%) hue-rotate(200deg) brightness(94%) contrast(103%)",
+      },
     },
+  },
+  ".userIcon": {
+    filter: "invert(100%)",
+    width: "25px",
+    marginLeft: "10px",
   },
 };

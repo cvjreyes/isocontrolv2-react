@@ -79,3 +79,32 @@ import Eye from "../assets/images/eye.png";
 
 - Ideally code is descriptive enough to avoid commenting
 - Comments should only be used if variable naming is not enough
+
+### Librería de Iconos:
+
+[](https://icons8.com/)
+
+### Help I got online:
+
+- [Borders for fake table:](https://stackoverflow.com/questions/10023799/how-to-collapse-the-borders-of-a-set-of-div-tags-using-css/10023942#10023942)]
+- [How to paste from Excel](https://stackblitz.com/edit/paste-from-excel?file=index.js)
+- [Reset input to defaultValue](https://stackoverflow.com/questions/42706265/react-es6-const-clear-input-defaultvalue-on-focus)
+- [Blur Input on press Esc](https://stackoverflow.com/questions/48961342/how-to-blur-the-input-provided-in-semantic-ui-react)
+- [Paste Table To Clipboard](https://stackoverflow.com/questions/66585315/how-to-copy-table-with-link-to-clipboard-to-paste-it-into-excel)
+- [Export table to Excel](https://stackoverflow.com/questions/11084564/export-html-table-to-excel-javascript-function-special-characters-changed)
+
+### FEED
+
+1. Things you CAN do:
+
+- Copy 1 cell
+- Copy 1 row
+- Copy multiple rows
+- Copy all rows
+- Paste 1 cell
+- Paste 1 row
+- Paste multiple rows
+
+2. Things you can NOT do:
+
+- Copy row and paste it IN APP
