@@ -29,9 +29,9 @@ TODO ❌
 - TABLE submit changes ⭕
   - test line_ref
   - test area ✔
-  - test diameter
-  - test train
-  - test status
+  - test diameter ✔
+  - test train ✔
+  - test status ✔
 - TABLE add dropdowns to:
   - line_ref
   - area

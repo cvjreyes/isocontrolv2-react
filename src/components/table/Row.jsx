@@ -1,6 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import Select from "react-select";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 
 export default function Row({
   item,
@@ -27,8 +30,6 @@ export default function Row({
     },
     "input, select": {
       backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
-    },
-    "input, div, select": {
       cursor: deleting && "pointer !important",
       width: "100%",
       lineHeight: "50px",
@@ -36,6 +37,15 @@ export default function Row({
       borderWidth: "1px 0 0 1px",
       textAlign: "center",
     },
+    // ".Dropdown-root": {
+    //   backgroundColor: "red",
+    //   width: "100%",
+    //   display: "flex",
+    //   // justifyContent: "center",
+    //   alignItems: "center",
+    //   // display: "grid",
+    //   // gridTemplateColumns: "1fr 1fr",
+    // },
   };
 
   const idWrapper = {
@@ -43,6 +53,12 @@ export default function Row({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: copied.includes(rowId) && "lightgray",
+    cursor: deleting && "pointer !important",
+    width: "100%",
+    lineHeight: "50px",
+    border: "solid black",
+    borderWidth: "1px 0 0 1px",
+    textAlign: "center",
     span: {
       display: copyMulti ? "none" : "block",
     },
@@ -91,21 +107,62 @@ export default function Row({
           );
         }
         return (
-          <select
-            key={`${i}${y}`}
-            value={item[x.key]}
-            onChange={(e) => handleChange(e, item.id)}
-            name={x.key}
-          >
-            {x.source?.map((opt, x) => (
-              <option key={`${opt}${y}${i}${x}`} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-          // <input
-          //   name={x.key}
+          // <Dropdown
           //   key={`${i}${y}`}
+          //   options={x.source}
+          //   onChange={(e) =>
+          //     handleChange({ target: { name: x.key, value: e.label } }, item.id)
+          //   }
+          //   value={item[x.key]}
+          // />
+          <div css={selectWrapper} key={`${i}${y}`}>
+            <input
+              list={x.key}
+              name={x.key}
+              value={item[x.key]}
+              onChange={(e) => handleChange(e, item.id)}
+            />
+            <datalist id={x.key}>
+              {x.source?.map((opt, x) => (
+                <option key={`${opt}${y}${i}${x}`} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </datalist>
+          </div>
+          // <div key={`${i}${y}`} className="selectWrapper">
+          //   <Select
+          //     value={x.source?.find((opt) => {
+          //       return opt.key === item[x.key];
+          //     })}
+          //     defaultValue={x.source?.find((opt) => opt.key === item[x.key])}
+          //     onChange={(e) =>
+          //       handleChange(
+          //         { target: { name: x.key, value: e.label } },
+          //         item.id
+          //       )
+          //     }
+          //     name={x.key}
+          //     options={x.source?.map((opt) => ({ label: opt, key: opt }))}
+          //     openMenuOnFocus={true}
+          //   />
+          // </div>
+
+          // <select
+          //   key={`${i}${y}`}
+          //   value={item[x.key]}
+          //   onChange={(e) => handleChange(e, item.id)}
+          //   name={x.key}
+          // >
+          //   {x.source?.map((opt, x) => (
+          //     <option key={`${opt}${y}${i}${x}`} value={opt}>
+          //       {opt}
+          //     </option>
+          //   ))}
+          // </select>
+          // <input
+          //   key={`${i}${y}`}
+          //   name={x.key}
           //   value={item[x.key]}
           //   onChange={(e) => handleChange(e, item.id)}
           //   readOnly={x.readOnly}
@@ -115,3 +172,8 @@ export default function Row({
     </form>
   );
 }
+
+const selectWrapper = {
+  height: "50px",
+  lineHeight: "16px",
+};

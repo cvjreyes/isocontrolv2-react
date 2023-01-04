@@ -98,25 +98,30 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   // ! testear submit
 
   const submitChanges = async () => {
+    // abstract this into verifyRows or sth
     if (changed.length < 1)
       return setMessage({ txt: "No changes to save", type: "success" });
     const dataToSend = data.filter((x) => changed.includes(x.id));
     const stop = checkForAlreadyExists(dataToSend);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
-    if (stop2)
-      return setMessage({ txt: "All cells must be filled", type: "warn" });
-    const { ok, body: rows } = await api("post", "/feed/submit_feed_pipes", 0, {
-      data: dataToSend,
-    });
+    if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
+    console.log("dataToSend: ", dataToSend);
+    const { ok } = await api(
+      "post",
+      "/feed/submit_feed_pipes",
+      0,
+      { data: dataToSend },
+      setMessage
+    );
     if (ok) {
       setChanged([]);
       // ! update rows or not, thant's the question
       // pros: if error in DB always be detected in UI
       // cons: errors should not be located like that + time & server consuming
-      rows.map((row) => (row.tag = buildTag(row)));
-      setData(rows);
-      filter();
+      // rows.map((row) => (row.tag = buildTag(row)));
+      // setData(rows);
+      // filter();
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
@@ -151,13 +156,22 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     // find idx of passed id in data
     const idx = tempData.findIndex((x) => x.id === id);
     // get the changed row obj from data
-    const changedRow = tempData[idx];
+    let changedRow = tempData[idx];
     // change the value of the key in the row
     changedRow[name] = value;
     // cualquier cosa que haya cambiado => hacer el rebuild del tag
-    changedRow.tag = buildTag(changedRow);
     // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
-    changedRow.line_reference = buildLineRef(changedRow);
+    if (name !== "line_reference") {
+      changedRow.line_reference = buildLineRef(changedRow);
+      changedRow.tag = buildTag(changedRow);
+    } else {
+      // dependiendo del value
+      const { unit, fluid, seq } = divideLineReference(value);
+      console.log(unit, fluid, seq);
+      changedRow = { ...changedRow, unit, fluid, seq };
+      console.log(changedRow);
+      changedRow.tag = buildTag(changedRow);
+    }
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
     if (data.some((x) => x.tag === changedRow.tag && x.id !== id))
       // si existe un tag igual ponerlo como 'already exists'
@@ -275,6 +289,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
   };
 
+  const undoChanges = () => {
+    setChanged([]);
+    getFeedPipes();
+  };
+
   // useEffect(() => {
   //   console.log(deleting);
   // }, [deleting]);
@@ -298,6 +317,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
           deleting={deleting}
           setDeleting={setDeleting}
           handleDelete={handleDelete}
+          undoChanges={undoChanges}
         />
       </CopyContext>
     </Suspense>
