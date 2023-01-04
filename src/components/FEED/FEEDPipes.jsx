@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, useRef } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Loading from "react-loading";
 
 import {
@@ -7,14 +7,16 @@ import {
   buildRow,
   buildLineRef,
   divideTag,
+  checkForAlreadyExists,
+  checkForEmptyCells,
 } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
-import { URLold } from "../../helpers/config";
 import CopyContext from "../../context/CopyContext";
 import WithModal from "../../modals/YesNo";
-import { columnsData } from "./ColumnsData";
+import WithToast from "../../modals/Toast";
+import { api } from "../../helpers/api";
 
-function FeedPipesExcelComp({ alert, setModalContent }) {
+function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [diameters, setDiameters] = useState(null);
@@ -24,60 +26,29 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
 
-  const getOptions = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
   const getFeedPipes = async () => {
-    try {
-      const url = `${URLold}/feedPipes`;
-      const res = await fetch(url, getOptions);
-      const { rows } = await res.json();
-      rows.map((row) => (row.tag = buildTag(row)));
-      setData(rows);
-      setDisplayData(rows);
-    } catch (err) {
-      console.error(err);
-    }
+    const { body: rows } = await api("get", "/feed/get_feed_pipes");
+    rows.map((row) => (row.tag = buildTag(row)));
+    setData(rows);
+    setDisplayData(rows);
   };
 
   // ! promise all?
   useEffect(() => {
     const getAllAreas = async () => {
-      try {
-        const url = `${URLold}/api/areas`;
-        const res = await fetch(url, getOptions);
-        const resJson = await res.json();
-        const areas_options = resJson.map((item) => item.name);
-        setAreas(areas_options);
-      } catch (err) {
-        console.error(err);
-      }
+      const res = await api("get", "/api/areas", true);
+      const areas_options = res.map((item) => item.name);
+      setAreas(areas_options);
     };
     const getDiameters = async () => {
-      try {
-        const url = `${URLold}/api/diameters`;
-        const res = await fetch(url, getOptions);
-        const { diameters: resDiameters } = await res.json();
-        const tempDiameters = resDiameters.map((item) => item.diameter);
-        setDiameters(tempDiameters);
-      } catch (err) {
-        console.error(err);
-      }
+      const { diameters: resDia } = await api("get", "/api/diameters", true);
+      const tempDiameters = resDia.map((item) => item.diameter);
+      setDiameters(tempDiameters);
     };
     const getLineRefs = async () => {
-      try {
-        const url = `${URLold}/api/lineRefs`;
-        const res = await fetch(url, getOptions);
-        const { line_refs: resLineRefs } = await res.json();
-        const tempLineRefs = resLineRefs.map((item) => item.line_ref);
-        setLineRefs(tempLineRefs);
-      } catch (err) {
-        console.error(err);
-      }
+      const { line_refs: resLR } = await api("get", "/api/lineRefs", true);
+      const tempLineRefs = resLR.map((item) => item.line_ref);
+      setLineRefs(tempLineRefs);
     };
     getAllAreas();
     getDiameters();
@@ -124,73 +95,36 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
     setDisplayData(resultData);
   };
 
-  const checkForAlreadyExists = () => {
-    return data.some((item) => item.Tag === "Already exists");
-  };
-
-  const checkForEmptyCells = () => {
-    let haveToBeFilled = [
-      "area",
-      "diameter",
-      "fluid",
-      "insulation",
-      "line_reference",
-      "tag",
-      "unit",
-      "seq",
-      "spec",
-      "train",
-    ];
-
-    let empty = false;
-    for (let i = 0; i < data.length; i++) {
-      for (let key in data[i]) {
-        if (
-          data[i].line_reference !== "deleted" &&
-          haveToBeFilled.includes(key) &&
-          !data[i][key]
-        ) {
-          empty = true;
-          break;
-        }
-      }
-    }
-    return empty;
-  };
-
   // ! testear submit
 
   const submitChanges = async () => {
-    return console.log("submitted");
-    // chequear que no haya ningún tag que ponga already exists
-    const stop = checkForAlreadyExists();
-    if (stop) return alert("Repeated pipe!", "error");
-    // mover el chequeo de empty cells a otra función
-    const stop2 = checkForEmptyCells();
-    if (stop2) return alert("All cells must be filled", "warning");
-
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ rows: data }),
-    };
-    const url = `${URLold}/submitFeedPipes`;
-    const res = await fetch(url, options);
-    const resJson = await res.json();
-    if (resJson.success) {
-      alert("Changes saved!", "success");
-      // await this.props.updateData();
-    } else alert("Something went wrong", "warning");
+    if (changed.length < 1)
+      return setMessage({ txt: "No changes to save", type: "success" });
+    const dataToSend = data.filter((x) => changed.includes(x.id));
+    const stop = checkForAlreadyExists(dataToSend);
+    if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
+    const stop2 = checkForEmptyCells(dataToSend);
+    if (stop2)
+      return setMessage({ txt: "All cells must be filled", type: "warn" });
+    const { ok, body: rows } = await api("post", "/feed/submit_feed_pipes", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      setChanged([]);
+      // ! update rows or not, thant's the question
+      // pros: if error in DB always be detected in UI
+      // cons: errors should not be located like that + time & server consuming
+      rows.map((row) => (row.tag = buildTag(row)));
+      setData(rows);
+      filter();
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  const handleDeleteLine = (idx) => {
-    let tempData = [...data];
-    let tempRow = { ...tempData[idx] };
-    tempRow.line_reference = "deleted";
-    tempData[idx] = tempRow;
-    setData(tempData);
+  const deleteLine = (idx) => {
+    // call to server to remove this line
+    const res = api("");
   };
 
   const addToChanged = (id) => {
@@ -248,6 +182,8 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
       return pasteRow(e, id);
     } else if (pastedData.length > 12) {
       return pasteMultipleRows(e, i);
+    } else {
+      return pasteMultipleCells();
     }
   };
 
@@ -261,9 +197,9 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
       changedRow.line_reference = buildLineRef(changedRow);
     } else if (name === "line_reference") {
       // divide line ref ( get u, fl, seq )
-      const { unit, fluid, sequential } = divideLineReference(changedRow[name]);
+      const { unit, fluid, seq } = divideLineReference(changedRow[name]);
       // update fields
-      changedRow = { ...changedRow, unit, fluid, sequential };
+      changedRow = { ...changedRow, unit, fluid, seq };
       // update tag
       changedRow.tag = buildTag(changedRow);
     } else if (name === "tag") {
@@ -279,6 +215,8 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
     filter(tempData);
     setData(tempData);
   };
+
+  const pasteMultipleCells = () => {};
 
   const pasteRow = (e, id) => {
     e.clipboardData.items[0].getAsString((text) => {
@@ -329,21 +267,17 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
     });
   };
 
-  const handleDelete = (rowId) => {
+  const handleDelete = (id) => {
     setModalContent({
       openModal: true,
-      text: `Are you sure you want to delete row with ID: ${rowId}?`,
-      onClick1: console.log("yes"),
+      text: `Are you sure you want to delete row with ID: ${id}?`,
+      onClick1: deleteLine(id),
     });
   };
 
   // useEffect(() => {
   //   console.log(deleting);
   // }, [deleting]);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <Suspense fallback={<Loading />}>
@@ -371,10 +305,12 @@ function FeedPipesExcelComp({ alert, setModalContent }) {
 }
 
 // using this components to use modals
-export default function FeedPipesExcel() {
+export default function FeedPipesExcel({ setMessage }) {
   return (
     <WithModal>
-      <FeedPipesExcelComp />
+      <WithToast>
+        <FeedPipesExcelComp />
+      </WithToast>
     </WithModal>
   );
 }

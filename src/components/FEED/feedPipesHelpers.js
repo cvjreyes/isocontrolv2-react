@@ -42,7 +42,7 @@ export const divideTag = (tag) => {
     area: dividedTag[0],
     unit: dividedTag[1],
     fluid: dividedTag[2],
-    sequential: dividedTag[3],
+    seq: dividedTag[3],
     diameter: dividedTag[4],
     spec: dividedTag[5],
     insulation,
@@ -64,9 +64,9 @@ export const divideLineReference = (ref) => {
   // coger fluid
   const fluid = newStr.substring(idx1, idx2);
   // coger seq
-  const sequential = newStr.substring(idx2 + 1);
+  const seq = newStr.substring(idx2 + 1);
 
-  return { unit, fluid, sequential };
+  return { unit, fluid, seq };
 };
 
 export const buildRow = (row, id) => {
@@ -76,7 +76,7 @@ export const buildRow = (row, id) => {
     unit: row[2],
     area: row[3],
     fluid: row[4],
-    sequential: row[5],
+    seq: row[5],
     spec: row[6],
     type: row[7],
     diameter: row[8],
@@ -88,5 +88,35 @@ export const buildRow = (row, id) => {
 };
 
 export const buildLineRef = (row) => {
-  return `${row.unit}-${row.fluid}-${row.sequential}`;
+  return `${row.unit}-${row.fluid}-${row.seq}`;
+};
+
+export const checkForAlreadyExists = (data) => {
+  return data.some((item) => item.tag === "Already exists");
+};
+
+export const checkForEmptyCells = (data) => {
+  let haveToBeFilled = [
+    "area",
+    "diameter",
+    "fluid",
+    "insulation",
+    "line_reference",
+    "tag",
+    "unit",
+    "seq",
+    "spec",
+    "train",
+  ];
+
+  let empty = false;
+  for (let i = 0; i < data.length; i++) {
+    for (let key in data[i]) {
+      if (haveToBeFilled.includes(key) && !data[i][key]) {
+        empty = true;
+        break;
+      }
+    }
+  }
+  return empty;
 };

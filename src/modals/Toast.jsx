@@ -4,19 +4,15 @@ import { ToastContainer, toast } from "react-toastify";
 function Toast({ children }) {
   const [message, setMessage] = useState({
     txt: "",
-    ok: null,
+    type: "",
   });
 
   useEffect(() => {
-    if (typeof message.ok === "boolean") {
-      if (message.ok) {
-        toast(message.txt, {
-          toastId: message.txt,
-        });
-      } else
-        toast.error(message.txt, {
-          toastId: message.txt,
-        });
+    if (message.type) {
+      toast[message.type](message.txt, {
+        toastId: message.txt,
+        theme: "dark",
+      });
     }
   }, [message]);
 
@@ -25,7 +21,7 @@ function Toast({ children }) {
       setTimeout(() => {
         setMessage({
           txt: "",
-          ok: null,
+          type: null,
         });
       }, 2000);
     }

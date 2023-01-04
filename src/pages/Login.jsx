@@ -36,16 +36,15 @@ const LoginComp = ({ setMessage }) => {
         email: form.email,
         password: form.password,
       });
-      if (!res.data.ok)
-        return setMessage({ ok: res.data.ok, txt: res.data.body });
+      if (!res.data.ok) return setMessage({ type: "warn", txt: res.data.body });
       setTimeout(() => login(res.data.body), 1000);
       setMessage({
-        ok: res.data.ok,
+        type: "success",
         txt: `Welcome back, ${res.data.body.email}`,
       });
     } catch (err) {
       setMessage({
-        ok: false,
+        type: "error",
         txt: "Something went wrong",
       });
       console.error(err);

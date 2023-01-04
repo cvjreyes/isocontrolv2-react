@@ -4,7 +4,7 @@ import { jsx } from "@emotion/react";
 import React, { useState } from "react";
 import Button from "../components/general/Button1";
 
-function withModal({ setMessage, children }) {
+function withModal({ children }) {
   const [modalContent, setModalContent] = useState({
     openModal: false,
     text: "",
@@ -13,7 +13,7 @@ function withModal({ setMessage, children }) {
 
   return (
     <div>
-      {React.cloneElement(children, { setMessage, setModalContent })}
+      {React.cloneElement(children, { setModalContent })}
       <Modal setModalContent={setModalContent} {...modalContent} />
     </div>
   );

@@ -12,19 +12,19 @@ export default function Header({
   deleting,
   copyAll,
 }) {
-  const escFunction = useCallback((e) => {
-    if (e.key === "Escape" && deleting) {
-      setDeleting(false);
-    }
-  }, []);
+  // const escFunction = useCallback((e) => {
+  //   if (e.key === "Escape" && deleting) {
+  //     setDeleting(false);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    document.addEventListener("keydown", escFunction, false);
+  // useEffect(() => {
+  //   document.addEventListener("keydown", escFunction, false);
 
-    return () => {
-      document.removeEventListener("keydown", escFunction, false);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("keydown", escFunction, false);
+  //   };
+  // }, []);
 
   const selectRef = useRef(null);
 
@@ -64,7 +64,7 @@ export default function Header({
       <h3 className="bold">{title}</h3>
       <div>
         <button onClick={copyAll}>Copy All</button>
-        <button onClick={escFunction}>Save</button>
+        <button onClick={submitChanges}>Save</button>
       </div>
     </div>
   );

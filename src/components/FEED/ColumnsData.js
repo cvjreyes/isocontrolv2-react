@@ -1,28 +1,23 @@
-export const columnsData = () => [
+export const columnsData = (lineRefs, areas, diameters) => [
   // { lineRefs = [], areas = [], diameters = [] }
-  {
-    key: "empty",
-  },
+  { key: "empty" },
   {
     title: "Line reference",
     key: "line_reference",
-    // type: "dropdown",
-    // source: lineRefs,
-    strict: true,
-    readOnly: true,
+    type: "dropdown",
+    source: lineRefs,
   },
   { title: "Tag", key: "tag", type: "text", readOnly: true },
-  { title: "U", key: "unit", type: "text" },
+  { title: "U", key: "unit", type: "text", readOnly: true },
   {
     title: "A",
     key: "area",
     type: "dropdown",
-    // source: areas,
-    strict: true,
+    source: areas,
   },
-  { title: "Fl", key: "fluid", type: "text" },
-  { title: "Se", key: "sequential", type: "text" },
-  { title: "Sp", key: "spec", type: "text" },
+  { title: "Fl", key: "fluid", type: "text", readOnly: true },
+  { title: "Se", key: "seq", type: "text", readOnly: true },
+  { title: "Sp", key: "spec", type: "text", readOnly: true },
   {
     title: "Ty",
     key: "type",
@@ -33,25 +28,24 @@ export const columnsData = () => [
     title: "D",
     key: "diameter",
     type: "dropdown",
-    // source: diameters,
-    strict: true,
+    source: diameters,
   },
   {
     title: "I",
     key: "insulation",
     type: "text",
+    readOnly: true,
   },
   {
     title: "Tr",
     key: "train",
     type: "dropdown",
-    // source: ["01", "02", "03", "04", "05"],
-    strict: true,
+    source: ["01", "02", "03", "04", "05"],
   },
   {
     title: "Stat",
     key: "status",
     type: "dropdown",
-    // source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
+    source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
   },
 ];
