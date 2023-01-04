@@ -31,7 +31,7 @@ export default function CopyContext({ children, data, id }) {
       setCopied(tempCopied);
     }
   };
-  // const copiedEle = document.getElementById(id);
+
   return React.cloneElement(children, {
     setCopyMulti,
     copyToClipBoard,

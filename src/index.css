@@ -14,6 +14,10 @@ img {
   cursor: pointer;
 }
 
+.default {
+  cursor: default;
+}
+
 .none {
   display: none;
 }
