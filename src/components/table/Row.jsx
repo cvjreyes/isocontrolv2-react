@@ -25,8 +25,10 @@ export default function Row({
     ":hover": {
       backgroundColor: deleting && "red !important",
     },
-    input: { backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)" },
-    "input, div": {
+    "input, select": {
+      backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
+    },
+    "input, div, select": {
       cursor: deleting && "pointer !important",
       width: "100%",
       lineHeight: "50px",
@@ -63,7 +65,7 @@ export default function Row({
       css={rowStyle}
       onPaste={(e) => handlePaste(e, i, item.id)}
       id={rowId}
-      onClick={() => deleting && handleDelete(rowId)}
+      onClick={() => deleting && handleDelete(item.id)}
     >
       {columns.map((x, y) => {
         if (x.key === "empty")
@@ -78,14 +80,36 @@ export default function Row({
               <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" />
             </div>
           );
+        if (x.readOnly) {
+          return (
+            <input
+              key={`${i}${y}`}
+              className="default"
+              value={item[x.key]}
+              readOnly
+            />
+          );
+        }
         return (
-          <input
-            name={x.key}
+          <select
             key={`${i}${y}`}
             value={item[x.key]}
             onChange={(e) => handleChange(e, item.id)}
-            readOnly={x.readOnly}
-          />
+            name={x.key}
+          >
+            {x.source?.map((opt, x) => (
+              <option key={`${opt}${y}${i}${x}`} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+          // <input
+          //   name={x.key}
+          //   key={`${i}${y}`}
+          //   value={item[x.key]}
+          //   onChange={(e) => handleChange(e, item.id)}
+          //   readOnly={x.readOnly}
+          // />
         );
       })}
     </form>

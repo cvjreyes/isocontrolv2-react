@@ -26,12 +26,8 @@ export default function FEED() {
           links2={sidebarContent.links2}
         />
         <Routes>
-          <Route
-            path="/line_control"
-            element={<FEEDPipes />}
-            // element={<Table title="Line Control" />}
-          />
-          <Route path="/progress" element={<Table title="FEED Progress" />} />
+          <Route path="/line_control" element={<FEEDPipes />} />
+          <Route path="/progress" element={<div>Elisa</div>} />
           <Route path="/*" element={<Navigate to="/feed/line_control" />} />
         </Routes>
       </div>

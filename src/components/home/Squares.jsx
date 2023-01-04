@@ -30,6 +30,7 @@ export default function Squares() {
     };
     getProgresses();
   }, []);
+
   return (
     <div>
       <div css={squaresStyle}>
