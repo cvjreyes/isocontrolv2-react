@@ -52,7 +52,11 @@ export const divideTag = (tag) => {
   return row;
 };
 
-export const divideLineReference = (ref) => {
+export const divideLineReference = (ref, lineRefs) => {
+  // coger line ref obj de la lista de line refs
+  const idx = lineRefs.findIndex((x) => x.line_ref === ref.trim());
+  // del line ref encontrado, coger spec e insulation
+  const { spec, insulation } = { ...lineRefs[idx] };
   // encontrar primer guión
   const idx1 = ref.indexOf("-");
   // coger unit
@@ -65,8 +69,8 @@ export const divideLineReference = (ref) => {
   const fluid = newStr.substring(idx1, idx2);
   // coger seq
   const seq = newStr.substring(idx2 + 1);
-
-  return { unit, fluid, seq };
+  // devolver todo 🤮
+  return { unit, fluid, seq, spec, insulation };
 };
 
 export const buildRow = (row, id) => {
@@ -89,6 +93,18 @@ export const buildRow = (row, id) => {
 
 export const buildLineRef = (row) => {
   return `${row.unit}-${row.fluid}-${row.seq}`;
+};
+
+export const getTypeFromDiameter = (dia, calc_notes) => {
+  if (calc_notes === "NA" || calc_notes === "unset") {
+    if (import.meta.env.VITE_MMDN == "0") {
+      if (dia < 2.0) return "TL1";
+      else return "TL2";
+    } else {
+      if (dia < 50) return "TL1";
+      else return "TL2";
+    }
+  } else return "TL3";
 };
 
 export const checkForAlreadyExists = (data) => {

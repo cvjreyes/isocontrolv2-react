@@ -23,22 +23,11 @@ DONE ✔
 - HIGHLIGHT CHANGES in render => check for id
 - HIGHLIGHT CHANGES if match: greenish background
 - HIGHLIGHT CHANGES this way when saving you only have to go throgh those specific ids + keys
+- TABLE add dropdowns to: line_ref, area, diameter, train, status
+- TABLE submit changes 
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
-- TABLE submit changes ⭕
-  - test line_ref
-  - test area ✔
-  - test diameter ✔
-  - test train ✔
-  - test status ✔
-- TABLE add dropdowns to:
-  - line_ref
-  - area
-  - diameter
-  - train
-  - status
-
 - TABLE delete row ⭕
 - TABLE add row/s
 

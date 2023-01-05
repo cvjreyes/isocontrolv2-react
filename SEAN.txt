@@ -1,9 +1,16 @@
 Primero de todo, familiarizarse con la forma de estilizar actual.
 - leer código
+- comentar Toni Sean arquitectura actual
+- entender authentication + token
+- entender auth context!!
+- entender copy context!!
+- entender react-toastify modal
+- entender yes/no modal
+
 
 ESTILIZAR:
 - FeedPipesHead
-  - usar el componente Button1 par alos botones de Copy All y Save
+  - usar el componente Button1 para los botones de Copy All y Save
   - combinarlo con emotion
 - Sidebar
-- Table
+- Feed Pipes Table
