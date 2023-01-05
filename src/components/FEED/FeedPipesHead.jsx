@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
 import Select from "react-select";
 
 export default function Header({
@@ -12,21 +12,8 @@ export default function Header({
   deleting,
   copyAll,
   undoChanges,
+  data,
 }) {
-  // const escFunction = useCallback((e) => {
-  //   if (e.key === "Escape" && deleting) {
-  //     setDeleting(false);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   document.addEventListener("keydown", escFunction, false);
-
-  //   return () => {
-  //     document.removeEventListener("keydown", escFunction, false);
-  //   };
-  // }, []);
-
   const selectRef = useRef(null);
 
   const options = [
@@ -44,7 +31,7 @@ export default function Header({
 
   return (
     <div css={headStyle}>
-      <div css={selectWrapper}>
+      <div css={selectWrapper} className="pointer">
         <label htmlFor="mode" onClick={() => selectRef.current.focus()}>
           Mode:
         </label>
@@ -63,10 +50,13 @@ export default function Header({
         />
       </div>
       <h3 className="bold">{title}</h3>
-      <div>
-        <button onClick={undoChanges}>Undo</button>
-        <button onClick={copyAll}>Copy All</button>
-        <button onClick={submitChanges}>Save</button>
+      <div css={rightStyle}>
+        <div>
+          <button onClick={undoChanges}>Undo</button>
+          <button onClick={copyAll}>Copy All</button>
+          <button onClick={submitChanges}>Save</button>
+        </div>
+        <span className="itemsLength">{data.length} items</span>
       </div>
     </div>
   );
@@ -81,7 +71,19 @@ const selectWrapper = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  "*": {
+    cursor: "pointer",
+  },
   label: {
     marginRight: ".5rem",
+  },
+};
+
+const rightStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  ".itemsLength": {
+    marginRight: "1.5rem",
   },
 };
