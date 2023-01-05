@@ -106,7 +106,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
     if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    console.log("dataToSend: ", dataToSend);
     const { ok } = await api(
       "post",
       "/feed/submit_feed_pipes",
@@ -167,9 +166,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     } else {
       // dependiendo del value
       const { unit, fluid, seq } = divideLineReference(value);
-      console.log(unit, fluid, seq);
       changedRow = { ...changedRow, unit, fluid, seq };
-      console.log(changedRow);
       changedRow.tag = buildTag(changedRow);
     }
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
@@ -189,6 +186,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const handlePaste = (e, i, id) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log(e.target);
     const pastedData = e.clipboardData.getData("Text").split("\t");
     if (pastedData.length === 1) {
       return pasteCell(e.target, i, pastedData[0]);
@@ -202,6 +200,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   const pasteCell = ({ name }, i, pastedData) => {
+    console.log("hey");
+    console.log(name, i, pastedData);
     const tempData = [...data];
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
