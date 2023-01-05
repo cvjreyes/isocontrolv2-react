@@ -1,0 +1,9 @@
+Primero de todo, familiarizarse con la forma de estilizar actual.
+- leer código
+
+ESTILIZAR:
+- FeedPipesHead
+  - usar el componente Button1 par alos botones de Copy All y Save
+  - combinarlo con emotion
+- Sidebar
+- Table
