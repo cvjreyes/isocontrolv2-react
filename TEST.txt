@@ -1,0 +1,10 @@
+select dropdown + save + undo // + undo + save
+paste on dropdown + save + undo // + undo + save
+paste on readonly cell + save + undo // + undo + save
+paste row + save + undo // + undo + save
+paste +1 row + save + undo // + undo + save
+
+copy 1 cell + paste on excel
+copy all line + paste on excel
+copy all display items + paste on excel
+
