@@ -126,7 +126,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   const deleteLine = (idx) => {
-    console.log("heyy");
+    console.log("deleteLine");
     // call to server to remove this line
     // const res = api("");
   };
@@ -280,7 +280,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (e, id) => {
+    if (!deleting) return;
+    e.stopPropagation();
+    e.preventDefault();
     setModalContent({
       openModal: true,
       text: `Are you sure you want to delete row with ID: ${id}?`,
@@ -291,6 +294,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const undoChanges = () => {
     setChanged([]);
     getFeedPipes();
+    setFilterInfo({});
   };
 
   // useEffect(() => {
@@ -326,10 +330,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 // using this components to use modals
 export default function FeedPipesExcel({ setMessage }) {
   return (
-    <WithModal>
-      <WithToast>
+    <WithToast>
+      <WithModal>
         <FeedPipesExcelComp />
-      </WithToast>
-    </WithModal>
+      </WithModal>
+    </WithToast>
   );
 }

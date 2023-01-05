@@ -43,7 +43,7 @@ const Row = React.memo(
         lineHeight: "50px",
         position: "relative",
         ".css-13cymwt-control, .css-t3ipsp-control": {
-          cursor: deleting && "pointer !important",
+          cursor: "pointer",
           backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
         },
         "*": {
@@ -97,7 +97,7 @@ const Row = React.memo(
         css={rowStyle}
         onPaste={(e) => handlePaste(e, i, item.id)}
         id={rowId}
-        onClick={() => deleting && handleDelete(item.id)}
+        onClick={(e) => handleDelete(e, item.id)}
       >
         {columns.map((x, y) => {
           if (x.key === "empty")

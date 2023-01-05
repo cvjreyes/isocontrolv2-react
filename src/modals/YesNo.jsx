@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "../components/general/Button1";
 
-function withModal({ children }) {
+function withModal({ setMessage, children }) {
   const [modalContent, setModalContent] = useState({
     openModal: false,
     text: "",
@@ -13,7 +13,7 @@ function withModal({ children }) {
 
   return (
     <div>
-      {React.cloneElement(children, { setModalContent })}
+      {React.cloneElement(children, { setMessage, setModalContent })}
       <Modal setModalContent={setModalContent} {...modalContent} />
     </div>
   );
@@ -26,6 +26,15 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
     setModalContent({ openModal: false, txt: "", onClick1: "" });
   };
 
+  const escFunction = (e) => e.key === "Escape" && resetModalContent();
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, []);
+
   const blurEffect = {
     position: "absolute",
     top: 0,
@@ -36,10 +45,15 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
     backdropFilter: "blur(2px)",
   };
 
+  const preventPropagation = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   if (!openModal) return null;
   return (
-    <div css={blurEffect}>
-      <div css={mainStyle}>
+    <div css={blurEffect} onClick={resetModalContent} className="pointer">
+      <div css={mainStyle} onClick={preventPropagation} className="default">
         <p>{text}</p>
         <div className="buttonWrapper">
           <Button
@@ -50,6 +64,7 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
             color="black"
             border="1px solid black"
             className="pointer"
+            width="150px"
           />
           <Button
             onClick={() => {
@@ -65,6 +80,7 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
             bgColorHover="rgb(240, 10, 10)"
             colorHover="white"
             className="pointer"
+            width="150px"
           />
         </div>
       </div>
@@ -77,13 +93,18 @@ const mainStyle = {
   left: "50%",
   top: "50%",
   transform: "translate(-50%, -50%)",
-  width: "400px",
-  height: "200px",
+  width: "500px",
+  height: "300px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
   zIndex: 9999,
   padding: "2rem",
   borderRadius: "10px",
   backgroundColor: "#030303",
   color: "white",
+  textAlign: "center",
   ".buttonWrapper": {
     display: "flex",
     justifyContent: "center",
