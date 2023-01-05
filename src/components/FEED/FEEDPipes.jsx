@@ -9,6 +9,7 @@ import {
   divideTag,
   checkForAlreadyExists,
   checkForEmptyCells,
+  getTypeFromDiameter,
 } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import CopyContext from "../../context/CopyContext";
@@ -46,8 +47,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       setDiameters(tempDiameters);
     };
     const getLineRefs = async () => {
-      const { line_refs: resLR } = await api("get", "/api/lineRefs", true);
-      const tempLineRefs = resLR.map((item) => item.line_ref);
+      const { body: tempLineRefs } = await api("get", "/lines/get_lines");
       setLineRefs(tempLineRefs);
     };
     getAllAreas();
@@ -95,8 +95,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setDisplayData(resultData);
   };
 
-  // ! testear submit
-
   const submitChanges = async () => {
     // abstract this into verifyRows or sth
     if (changed.length < 1)
@@ -121,14 +119,16 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       // rows.map((row) => (row.tag = buildTag(row)));
       // setData(rows);
       // filter();
+      // getFeedPipes();
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const deleteLine = (idx) => {
+    console.log("heyy");
     // call to server to remove this line
-    const res = api("");
+    // const res = api("");
   };
 
   const addToChanged = (id) => {
@@ -158,15 +158,16 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     let changedRow = tempData[idx];
     // change the value of the key in the row
     changedRow[name] = value;
-    // cualquier cosa que haya cambiado => hacer el rebuild del tag
-    // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
-    if (name !== "line_reference") {
-      changedRow.line_reference = buildLineRef(changedRow);
+    if (name === "diameter") {
+      changedRow.type = getTypeFromDiameter(value, changedRow.calc_notes);
+    } else if (name === "line_reference") {
+      const values = divideLineReference(value, lineRefs);
+      changedRow = { ...changedRow, ...values };
+      // cualquier cosa que haya cambiado => hacer el rebuild del tag
       changedRow.tag = buildTag(changedRow);
     } else {
-      // dependiendo del value
-      const { unit, fluid, seq } = divideLineReference(value);
-      changedRow = { ...changedRow, unit, fluid, seq };
+      // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
+      changedRow.line_reference = buildLineRef(changedRow);
       changedRow.tag = buildTag(changedRow);
     }
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
@@ -186,34 +187,31 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const handlePaste = (e, i, id) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(e.target);
+    const name = e.target.name ? e.target.name : e.target.id;
     const pastedData = e.clipboardData.getData("Text").split("\t");
     if (pastedData.length === 1) {
-      return pasteCell(e.target, i, pastedData[0]);
+      let ind = pastedData.indexOf("\r");
+      pastedData[0] = pastedData[0].slice(0, ind);
+      return pasteCell(name, i, pastedData[0]);
     } else if (pastedData.length === 12) {
       return pasteRow(e, id);
     } else if (pastedData.length > 12) {
       return pasteMultipleRows(e, i);
-    } else {
-      return pasteMultipleCells();
     }
   };
 
-  const pasteCell = ({ name }, i, pastedData) => {
-    console.log("hey");
-    console.log(name, i, pastedData);
+  const pasteCell = (name, i, pastedData) => {
     const tempData = [...data];
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    if (name !== "line_reference" && name !== "tag") {
-      changedRow.tag = buildTag(changedRow);
-      changedRow.line_reference = buildLineRef(changedRow);
+    if (name === "diameter") {
+      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
     } else if (name === "line_reference") {
       // divide line ref ( get u, fl, seq )
-      const { unit, fluid, seq } = divideLineReference(changedRow[name]);
+      const values = divideLineReference(changedRow[name], lineRefs);
       // update fields
-      changedRow = { ...changedRow, unit, fluid, seq };
+      changedRow = { ...changedRow, ...values };
       // update tag
       changedRow.tag = buildTag(changedRow);
     } else if (name === "tag") {
@@ -221,6 +219,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       const dividedTag = divideTag(pastedData);
       // update rest
       changedRow = { ...changedRow, ...dividedTag };
+    } else {
+      changedRow.tag = buildTag(changedRow);
+      changedRow.line_reference = buildLineRef(changedRow);
     }
     if (data.some((x) => x.tag === changedRow.tag && x.id !== tempData[idx].id))
       changedRow.tag = "Already exists";
@@ -229,8 +230,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     filter(tempData);
     setData(tempData);
   };
-
-  const pasteMultipleCells = () => {};
 
   const pasteRow = (e, id) => {
     e.clipboardData.items[0].getAsString((text) => {
