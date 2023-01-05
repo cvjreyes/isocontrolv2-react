@@ -1,6 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import Select from "react-select";
+import "react-dropdown/style.css";
 
 export default function Row({
   item,
@@ -27,8 +29,6 @@ export default function Row({
     },
     "input, select": {
       backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
-    },
-    "input, div, select": {
       cursor: deleting && "pointer !important",
       width: "100%",
       lineHeight: "50px",
@@ -43,6 +43,12 @@ export default function Row({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: copied.includes(rowId) && "lightgray",
+    cursor: deleting && "pointer !important",
+    width: "100%",
+    lineHeight: "50px",
+    border: "solid black",
+    borderWidth: "1px 0 0 1px",
+    textAlign: "center",
     span: {
       display: copyMulti ? "none" : "block",
     },
@@ -91,27 +97,31 @@ export default function Row({
           );
         }
         return (
-          <select
-            key={`${i}${y}`}
-            value={item[x.key]}
-            onChange={(e) => handleChange(e, item.id)}
-            name={x.key}
-          >
-            {x.source?.map((opt, x) => (
-              <option key={`${opt}${y}${i}${x}`} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-          // <input
-          //   name={x.key}
-          //   key={`${i}${y}`}
-          //   value={item[x.key]}
-          //   onChange={(e) => handleChange(e, item.id)}
-          //   readOnly={x.readOnly}
-          // />
+          <div key={`${i}${y}`} className="selectWrapper">
+            <Select
+              value={{ label: item[x.key], value: item[x.key] }}
+              onChange={(e) =>
+                handleChange(
+                  { target: { name: x.key, value: e.label } },
+                  item.id
+                )
+              }
+              name={x.key}
+              options={x.source?.map((opt) => ({ label: opt, value: opt }))}
+              // openMenuOnFocus={true}
+              components={{
+                DropdownIndicator: () => null,
+                IndicatorSeparator: () => null,
+              }}
+            />
+          </div>
         );
       })}
     </form>
   );
 }
+
+const selectWrapper = {
+  height: "50px",
+  lineHeight: "16px",
+};
