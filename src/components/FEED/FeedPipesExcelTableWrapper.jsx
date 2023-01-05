@@ -44,6 +44,7 @@ export default function FeedPipesExcelTableWrapper({
         setDeleting={setDeleting}
         copyAll={copyAll}
         undoChanges={undoChanges}
+        data={displayData}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
