@@ -125,10 +125,13 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  const deleteLine = (idx) => {
-    console.log("deleteLine");
-    // call to server to remove this line
-    // const res = api("");
+  const deleteLine = async (id) => {
+    const idx = data.findIndex((x) => x.id === id);
+    await api("delete", `/feed/delete_pipe/${id}`);
+    const tempData = [...data];
+    tempData.splice(idx, 1);
+    setData(tempData);
+    filter(tempData);
   };
 
   const addToChanged = (id) => {
@@ -287,7 +290,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setModalContent({
       openModal: true,
       text: `Are you sure you want to delete row with ID: ${id}?`,
-      onClick1: deleteLine(id),
+      onClick1: () => deleteLine(id),
     });
   };
 
@@ -296,10 +299,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     getFeedPipes();
     setFilterInfo({});
   };
-
-  // useEffect(() => {
-  //   console.log(deleting);
-  // }, [deleting]);
 
   return (
     <Suspense fallback={<Loading />}>
