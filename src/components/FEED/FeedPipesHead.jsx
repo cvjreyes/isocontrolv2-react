@@ -9,7 +9,6 @@ export default function Header({
   submitChanges,
   setCopyMulti,
   setDeleting,
-  deleting,
   copyAll,
   undoChanges,
   data,
@@ -31,8 +30,12 @@ export default function Header({
 
   return (
     <div css={headStyle}>
-      <div css={selectWrapper} className="pointer">
-        <label htmlFor="mode" onClick={() => selectRef.current.focus()}>
+      <div css={selectWrapper}>
+        <label
+          className="pointer"
+          htmlFor="mode"
+          onClick={() => selectRef.current.focus()}
+        >
           Mode:
         </label>
         <Select
@@ -48,6 +51,7 @@ export default function Header({
           }}
           defaultValue={options[0]}
         />
+        <div>Add</div>
       </div>
       <h3 className="bold">{title}</h3>
       <div css={rightStyle}>
@@ -71,6 +75,9 @@ const selectWrapper = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  ".css-1nmdiq5-menu, .css-1nmdiq3-menu": {
+    cursor: "pointer",
+  },
   "*": {
     cursor: "pointer",
   },

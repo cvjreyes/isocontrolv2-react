@@ -44,7 +44,9 @@ export default function Sidebar({ title1, title2, links1, links2 }) {
 const sidebarStyle = {
   display: "flex",
   flexDirection: "column",
-  width: "160px",
+  width: "80%",
+  maxWidth: "200px",
+  minWidth: "150px",
   borderRadius: "20px",
   padding: "1.5rem 0",
   WebkitBoxShadow: "5px 5px 10px #f0f0f0, -5px -5px 10px #ffffff",

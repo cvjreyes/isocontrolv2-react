@@ -14,3 +14,7 @@ ESTILIZAR:
   - combinarlo con emotion
 - Sidebar
 - Feed Pipes Table
+
+FUNCIONALIDAD:
+- pointer en dropdown de mode
+- close dropdown on click delete table
