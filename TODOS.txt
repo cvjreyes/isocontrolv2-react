@@ -25,28 +25,21 @@ DONE ✔
 - HIGHLIGHT CHANGES this way when saving you only have to go throgh those specific ids + keys
 - TABLE add dropdowns to: line_ref, area, diameter, train, status
 - TABLE submit changes 
+- TABLE delete row 
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
-- TABLE delete row ⭕
-- TABLE add row/s
+- ADDING ROW:
+  - paste from excel 1 cell
+  - paste from excel 1 line
+  - paste from excel various lines
+  - save => back to display view with updated results
+  - no filtrar en el header
 
-ADDING ROW:
-- add new records VIEW
-- show empty rows
-- able to manually modify BUT most important ↓
-- paste from excel 1 line
-- paste from excel various lines
-- save => back to display view with updated results
-
-- top-left of table => delete button
-  - when click on delete button:
-    - cursor pointer on rows ✔
-    - background reddish ✔
-    - click and appear modal => are you sure you want to delete row ${row}? ✔
-      - no: go back to delete mode 
-      - yes: delete row, save and back to editing mode
-    - to exit delete mode click top-left again
+- si already exists cambiar color alerta
+- mover sidebar arriba
+- añadir piecharts
+- añadir logo isocontrol
 
 OTHER
 - add error handler for when server is down ( something like 'server is down please contact IT )

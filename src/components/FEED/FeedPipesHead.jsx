@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import Button from "../general/Button1";
@@ -14,9 +15,9 @@ export default function Header({
   copyAll,
   undoChanges,
   data,
-  goToAddPage,
 }) {
   const selectRef = useRef(null);
+  const navigate = useNavigate();
 
   const options = [
     { value: "default", label: "Default" },
@@ -67,7 +68,7 @@ export default function Header({
             bgColor="rgb(37, 208, 37)"
             border="1px solid black"
             margin="0 5px"
-            onClick={goToAddPage}
+            onClick={() => navigate("/feed/line_control/add")}
             bgHover="rgb(82, 223, 82)"
           />
           <Button
