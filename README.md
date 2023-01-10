@@ -108,3 +108,30 @@ import Eye from "../assets/images/eye.png";
 2. Things you can NOT do:
 
 - Copy row and paste it IN APP
+
+# CAMBIAR FEED PIPES VIEW:
+
+CREATE
+ALGORITHM = UNDEFINED
+DEFINER = `root`@`localhost`
+SQL SECURITY DEFINER
+VIEW `feed_pipes_view` AS
+SELECT
+`feed_pipes`.`id` AS `id`,
+`feed_pipes`.`line_refno` AS `line_refno`,
+`feed_pipes`.`area_id` AS `area_id`,
+`feed_pipes`.`diameter` AS `diameter`,
+`feed_pipes`.`train` AS `train`,
+`feed_pipes`.`status` AS `status`,
+`lines`.`calc_notes` AS `calc_notes`,
+`lines`.`tag` AS `line_reference`,
+`lines`.`unit` AS `unit`,
+`lines`.`fluid` AS `fluid`,
+`lines`.`seq` AS `seq`,
+`lines`.`spec_code` AS `spec`,
+`lines`.`insulation` AS `insulation`,
+`areas`.`name` AS `area`
+FROM
+((`feed_pipes`
+JOIN `lines` ON ((`feed_pipes`.`line_refno` = `lines`.`refno`)))
+JOIN `areas` ON ((`feed_pipes`.`area_id` = `areas`.`id`)))

@@ -9,7 +9,7 @@
 body,
 input,
 select {
-  /* background-color: rgb(155, 155, 155); */
+  /* background-color: #3988e2; */
 }
 
 img {
@@ -38,4 +38,10 @@ img {
   border: none;
   font: inherit;
   cursor: pointer;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

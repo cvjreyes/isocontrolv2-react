@@ -16,6 +16,8 @@ import CopyContext from "../../context/CopyContext";
 import WithModal from "../../modals/YesNo";
 import WithToast from "../../modals/Toast";
 import { api } from "../../helpers/api";
+import { Route, Routes } from "react-router-dom";
+import AddPipe from "./AddPipe/AddPipe";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [data, setData] = useState([]);
@@ -302,32 +304,51 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 
   return (
     <Suspense fallback={<Loading />}>
-      <CopyContext data={displayData} id={"feed"}>
-        <FeedPipesExcelTableWrapper
-          title="Line Control"
-          displayData={displayData}
-          lineRefs={lineRefs}
-          areas={areas}
-          diameters={diameters}
-          handleChange={handleChange}
-          filter={handleFilter}
-          handlePaste={handlePaste}
-          filterInfo={filterInfo}
-          id={"feed"}
-          changed={changed}
-          submitChanges={submitChanges}
-          deleting={deleting}
-          setDeleting={setDeleting}
-          handleDelete={handleDelete}
-          undoChanges={undoChanges}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <CopyContext data={displayData} id={"feed"}>
+              <FeedPipesExcelTableWrapper
+                title="Line Control"
+                displayData={displayData}
+                lineRefs={lineRefs}
+                areas={areas}
+                diameters={diameters}
+                handleChange={handleChange}
+                filter={handleFilter}
+                handlePaste={handlePaste}
+                filterInfo={filterInfo}
+                id={"feed"}
+                changed={changed}
+                submitChanges={submitChanges}
+                deleting={deleting}
+                setDeleting={setDeleting}
+                handleDelete={handleDelete}
+                undoChanges={undoChanges}
+              />
+            </CopyContext>
+          }
         />
-      </CopyContext>
+        <Route
+          path="/add"
+          element={
+            <AddPipe
+              lineRefs={lineRefs}
+              areas={areas}
+              diameters={diameters}
+              setMessage={setMessage}
+              data={data}
+            />
+          }
+        />
+      </Routes>
     </Suspense>
   );
 }
 
 // using this components to use modals
-export default function FeedPipesExcel({ setMessage }) {
+export default function FeedPipesExcel() {
   return (
     <WithToast>
       <WithModal>
