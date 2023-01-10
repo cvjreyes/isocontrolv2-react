@@ -91,21 +91,19 @@ const LoginComp = ({ setMessage }) => {
           ></img>
         </div>
         <Button1
-          className="pointer"
           text="Log In"
           bgColor="#0070ED"
-          background="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
+          bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
           color="white"
           border="1px solid #0070ED"
           margin="10px auto 0"
         />
         <Button1
-          className="pointer"
           text="Download quick user guide"
           bgColor="white"
           border="1px solid black"
           margin="10px auto 30px"
-          background="linear-gradient(180deg, #AAA -2.23%, #DDD -2.22%, #FFF 148.66%)"
+          bgHover="linear-gradient(180deg, #AAA -2.23%, #DDD -2.22%, #FFF 148.66%)"
           // prevents submit to be called ↓
           type="button"
           onClick={() =>
@@ -121,10 +119,9 @@ const LoginComp = ({ setMessage }) => {
           to={`/${import.meta.env.VITE_PROJECT}/navis`}
         >
           <Button1
-            className="pointer"
             text="NAVISATTSELECT"
             bgColor="#94DCAA"
-            background="linear-gradient(180deg, #94DCAA -2.23%, #A4ECBA -2.22%, #FFF 148.66%)"
+            bgHover="linear-gradient(180deg, #94DCAA -2.23%, #A4ECBA -2.22%, #FFF 148.66%)"
             border="1px solid #94DCAA"
             fontWeight="bold"
           />

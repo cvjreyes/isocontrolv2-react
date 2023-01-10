@@ -4,6 +4,8 @@ import { jsx } from "@emotion/react";
 import { useRef } from "react";
 import Select from "react-select";
 
+import Button from "../general/Button1";
+
 export default function Header({
   title,
   submitChanges,
@@ -12,6 +14,7 @@ export default function Header({
   copyAll,
   undoChanges,
   data,
+  goToAddPage,
 }) {
   const selectRef = useRef(null);
 
@@ -51,14 +54,52 @@ export default function Header({
           }}
           defaultValue={options[0]}
         />
-        <div>Add</div>
       </div>
-      <h3 className="bold">{title}</h3>
+      <div className="centerTitle">
+        <h3 className="bold">{title}</h3>
+      </div>
       <div css={rightStyle}>
-        <div>
-          <button onClick={undoChanges}>Undo</button>
-          <button onClick={copyAll}>Copy All</button>
-          <button onClick={submitChanges}>Save</button>
+        <div className="btns_wrapper">
+          <Button
+            width="100px"
+            fontSize="14px"
+            text="Add"
+            bgColor="rgb(37, 208, 37)"
+            border="1px solid black"
+            margin="0 5px"
+            onClick={goToAddPage}
+            bgHover="rgb(82, 223, 82)"
+          />
+          <Button
+            width="100px"
+            fontSize="14px"
+            text="Undo"
+            bgColor="orange"
+            border="1px solid black"
+            margin="0 5px"
+            onClick={undoChanges}
+            bgHover="rgb(255, 182, 45)"
+          />
+          <Button
+            width="100px"
+            fontSize="14px"
+            text="Copy All"
+            bgColor="yellow"
+            border="1px solid black"
+            margin="0 5px"
+            onClick={copyAll}
+            bgHover="rgb(255, 255, 125)"
+          />
+          <Button
+            width="100px"
+            fontSize="14px"
+            text="Save"
+            bgColor="#0070ED"
+            border="1px solid black"
+            margin="0 5px"
+            onClick={submitChanges}
+            bgHover="#3988e2"
+          />
         </div>
         <span className="itemsLength">{data.length} items</span>
       </div>
@@ -68,7 +109,16 @@ export default function Header({
 
 const headStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
+  gridTemplateColumns: "3fr 1fr 5fr",
+  marginBottom: "10px",
+  ".centerTitle": {
+    display: "flex",
+    alignItems: "center",
+  },
+  h3: {
+    fontSize: "1.2rem",
+    whiteSpace: "nowrap",
+  },
 };
 
 const selectWrapper = {
@@ -78,7 +128,7 @@ const selectWrapper = {
   ".css-1nmdiq5-menu, .css-1nmdiq3-menu": {
     cursor: "pointer",
   },
-  "*": {
+  div: {
     cursor: "pointer",
   },
   label: {
@@ -90,7 +140,15 @@ const rightStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
+  width: "100%",
+  ".btns_wrapper": {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   ".itemsLength": {
+    whiteSpace: "nowrap",
     marginRight: "1.5rem",
   },
 };

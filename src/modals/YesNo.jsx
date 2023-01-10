@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../components/general/Button1";
 
 function withModal({ setMessage, children }) {
@@ -62,9 +62,8 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
             margin="0 1rem"
             backgroundColor="white"
             color="black"
-            border="1px solid black"
-            className="pointer"
             width="150px"
+            bgHover="lightgray"
           />
           <Button
             onClick={() => {
@@ -73,13 +72,10 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
             }}
             text="Yes"
             margin="0 1rem"
-            border="1px solid rgb(240, 10, 10)"
-            borderRadius="0"
             color="black"
             backgroundColor="white"
-            bgColorHover="rgb(240, 10, 10)"
+            bgHover="red"
             colorHover="white"
-            className="pointer"
             width="150px"
           />
         </div>
