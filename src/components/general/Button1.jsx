@@ -13,9 +13,10 @@ export default function Button1({
   margin,
   className,
   fontWeight,
+  fontSize,
   type,
   padding,
-  background,
+  bgHover,
 }) {
   const buttonStyle = {
     width: width || "100%",
@@ -26,15 +27,16 @@ export default function Button1({
     borderRadius: borderRadius || "6px",
     margin,
     fontWeight,
+    fontSize,
     ":hover": {
-      background,
+      background: bgHover,
     },
   };
 
   return (
     <button
       type={type}
-      className={className}
+      className={`${className} pointer`}
       css={buttonStyle}
       onClick={onClick}
     >

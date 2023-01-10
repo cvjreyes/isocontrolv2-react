@@ -300,6 +300,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setFilterInfo({});
   };
 
+  const goToAddPage = () => {
+    console.log("go to add page");
+  };
+
   return (
     <Suspense fallback={<Loading />}>
       <CopyContext data={displayData} id={"feed"}>
@@ -320,6 +324,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
           setDeleting={setDeleting}
           handleDelete={handleDelete}
           undoChanges={undoChanges}
+          goToAddPage={goToAddPage}
         />
       </CopyContext>
     </Suspense>

@@ -29,6 +29,7 @@ export default function FeedPipesExcelTableWrapper({
   handleDelete,
   copyAll,
   undoChanges,
+  goToAddPage,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
@@ -45,6 +46,7 @@ export default function FeedPipesExcelTableWrapper({
         copyAll={copyAll}
         undoChanges={undoChanges}
         data={displayData}
+        goToAddPage={goToAddPage}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
@@ -81,10 +83,6 @@ export default function FeedPipesExcelTableWrapper({
 const tableWrapperStyle = {
   textAlign: "center",
   marginLeft: "2rem",
-  h3: {
-    marginBottom: "1rem",
-    fontSize: "1.2rem",
-  },
   ".wrapper": {
     height: "70vh",
     overflowY: "scroll",
