@@ -5,7 +5,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Main from "../layouts/Main";
 import Sidebar from "../components/sidebar/Sidebar";
-import Table from "../components/table/Table";
 import FEEDPipes from "../components/FEED/FEEDPipes";
 
 export default function FEED() {
@@ -26,7 +25,7 @@ export default function FEED() {
           links2={sidebarContent.links2}
         />
         <Routes>
-          <Route path="/line_control" element={<FEEDPipes />} />
+          <Route path="/line_control/*" element={<FEEDPipes />} />
           <Route path="/progress" element={<div>Elisa</div>} />
           <Route path="/*" element={<Navigate to="/feed/line_control" />} />
         </Routes>
@@ -37,7 +36,8 @@ export default function FEED() {
 
 const feedStyle = {
   minHeight: "calc(100vh - 50px)",
-  display: "flex",
+  display: "grid",
+  gridTemplateColumns: "1.2fr 8fr",
   alignItems: "center",
   padding: "0 2%",
 };
