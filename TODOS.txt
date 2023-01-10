@@ -26,6 +26,7 @@ DONE ✔
 - TABLE add dropdowns to: line_ref, area, diameter, train, status
 - TABLE submit changes 
 - TABLE delete row 
+- si already exists cambiar color alerta
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
@@ -33,10 +34,8 @@ TODO ❌
   - paste from excel 1 cell
   - paste from excel 1 line
   - paste from excel various lines
-  - save => back to display view with updated results
   - no filtrar en el header
 
-- si already exists cambiar color alerta
 - mover sidebar arriba
 - añadir piecharts
 - añadir logo isocontrol

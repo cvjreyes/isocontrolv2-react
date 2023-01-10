@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../helpers/api";
 
 import AddTable from "../../table/AddTable";
@@ -18,8 +19,15 @@ import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
 import { row, emptyRows } from "./EmptyRows";
 
-export default function AddPipe({ lineRefs, areas, diameters, setMessage }) {
+export default function AddPipe({
+  lineRefs,
+  areas,
+  diameters,
+  setMessage,
+  data,
+}) {
   const gridSize = ".75fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1.3fr 1fr 1fr .9fr 3fr";
+  const navigate = useNavigate();
 
   const [rows, setRows] = useState(emptyRows);
   const [rowsToAdd, setRowsToAdd] = useState(1);
@@ -40,7 +48,10 @@ export default function AddPipe({ lineRefs, areas, diameters, setMessage }) {
       changedRow.tag = buildTag(changedRow);
       !changedRow.status && (changedRow.status = "ESTIMATED");
     }
-    if (changedRow.tag && rows.some((x) => x.tag === changedRow.tag))
+    if (
+      changedRow.tag &&
+      [...rows, ...data].some((x) => x.tag === changedRow.tag)
+    )
       changedRow.tag = "Already exists";
     tempRows[i] = { ...changedRow };
     setRows(tempRows);
@@ -59,9 +70,21 @@ export default function AddPipe({ lineRefs, areas, diameters, setMessage }) {
   const handleSubmit = async (e) => {
     e && e.preventDefault();
     const data = removeEmpties(rows);
+    if (data.length < 1)
+      return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const { ok } = await api("post", "/feed/add_pipes", false, { data });
+    if (ok) {
+      setMessage({ txt: "Changes saved!", type: "success" });
+      setTimeout(() => {
+        navigate("/feed/line_progress");
+      }, 3000);
+    }
+  };
+
+  const clear = () => {
+    setRows(emptyRows);
   };
 
   return (
@@ -71,6 +94,7 @@ export default function AddPipe({ lineRefs, areas, diameters, setMessage }) {
         changeRowsToAdd={changeRowsToAdd}
         addRows={addRows}
         handleSubmit={handleSubmit}
+        clear={clear}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

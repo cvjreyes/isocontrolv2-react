@@ -21,15 +21,22 @@ const Row = React.memo(
     handleDelete,
   }) => {
     const rowId = `${id}${i}`;
+    console.log(item.tag === "Already exists");
 
     const rowStyle = {
+      transition: "all 200ms linear",
       display: "grid",
       gridTemplateColumns: gridSize,
       ":hover .id": {
         backgroundColor: deleting && "red !important",
       },
       "input, select": {
-        backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
+        backgroundColor:
+          (item.tag === "Already exists" && "orange") ||
+          (changed.includes(item.id) && "rgb(0, 188, 6)"),
+        webkitTransition: "background-color 300ms linear",
+        msTransition: "background-color 300ms linear",
+        transition: "background-color 300ms linear",
         cursor: deleting && "pointer !important",
         width: "100%",
         lineHeight: "50px",
@@ -44,7 +51,12 @@ const Row = React.memo(
         position: "relative",
         ".css-13cymwt-control, .css-t3ipsp-control": {
           cursor: "pointer",
-          backgroundColor: changed.includes(item.id) && "rgb(0, 188, 6)",
+          backgroundColor:
+            (item.tag === "Already exists" && "orange") ||
+            (changed.includes(item.id) && "rgb(0, 188, 6)"),
+          webkitTransition: "background-color 300ms linear",
+          msTransition: "background-color 300ms linear",
+          transition: "background-color 300ms linear",
         },
         "*": {
           color: "black",
