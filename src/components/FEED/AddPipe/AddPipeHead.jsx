@@ -9,6 +9,7 @@ export default function AddPipeHead({
   changeRowsToAdd,
   addRows,
   handleSubmit,
+  clear,
 }) {
   return (
     <div css={headStyle}>
@@ -37,12 +38,19 @@ export default function AddPipeHead({
       <div className="gridRight">
         <Button1
           border="1px solid black"
+          text="Clear"
+          onClick={clear}
+          width="100px"
+          margin="0 10px 0 0"
+        />
+        <Button1
+          border="1px solid black"
           text="Save"
           onClick={handleSubmit}
           width="100px"
           margin="0 10px 0 0"
         />
-        <span>{rows.length} items</span>
+        <p>{rows.length} items</p>
       </div>
     </div>
   );
@@ -54,7 +62,7 @@ const headStyle = {
   marginBottom: "10px",
   ".gridRight": {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    gridTemplateColumns: "repeat(3, 1fr)",
     alignItems: "center",
     justifySelf: "flex-end",
   },

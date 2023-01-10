@@ -338,6 +338,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
               areas={areas}
               diameters={diameters}
               setMessage={setMessage}
+              data={data}
             />
           }
         />
