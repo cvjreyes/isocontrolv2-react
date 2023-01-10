@@ -6,6 +6,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Main from "../layouts/Main";
 import Sidebar from "../components/sidebar/Sidebar";
 import FEEDPipes from "../components/FEED/FEEDPipes";
+import FeedProgress from "../components/FEED/feedProgress/FeedProgress";
 
 export default function FEED() {
   const sidebarContent = {
@@ -26,7 +27,7 @@ export default function FEED() {
         />
         <Routes>
           <Route path="/line_control/*" element={<FEEDPipes />} />
-          <Route path="/progress" element={<div>Elisa</div>} />
+          <Route path="/progress/*" element={<FeedProgress />} />
           <Route path="/*" element={<Navigate to="/feed/line_control" />} />
         </Routes>
       </div>

@@ -21,7 +21,6 @@ const Row = React.memo(
     handleDelete,
   }) => {
     const rowId = `${id}${i}`;
-    console.log(item.tag === "Already exists");
 
     const rowStyle = {
       transition: "all 200ms linear",
