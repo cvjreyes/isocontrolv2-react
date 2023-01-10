@@ -25,7 +25,7 @@ export default function Dropdown({ closeMenu, logout }) {
       <div className="dropdownElement">
         <Button1
           text="Logout"
-          className="logout pointer"
+          className="logout"
           bgColor="transparent"
           color="white"
           border="none"
