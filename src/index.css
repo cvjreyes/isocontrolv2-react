@@ -39,3 +39,9 @@ img {
   font: inherit;
   cursor: pointer;
 }
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -111,6 +111,19 @@ export const checkForAlreadyExists = (data) => {
   return data.some((item) => item.tag === "Already exists");
 };
 
+export const checkForEmptyCellsAdding = (row) => {
+  let haveToBeFilled = ["area", "diameter", "line_reference", "train"];
+
+  let empty = false;
+  for (let key in row) {
+    if (haveToBeFilled.includes(key) && !row[key]) {
+      empty = true;
+      break;
+    }
+  }
+  return empty;
+};
+
 export const checkForEmptyCells = (data) => {
   let haveToBeFilled = [
     "area",
