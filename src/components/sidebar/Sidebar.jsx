@@ -62,6 +62,7 @@ const sidebarStyle = {
     },
     "p, a": {
       fontSize: "14px",
+      lineHeight: "20px",
     },
   },
   ".bold": {

@@ -66,7 +66,7 @@ export default function EditForecast(props) {
 
   return (
     <div className="feed__forecast_container">
-      <HotTable
+      {/* <HotTable
         data={[estimated, forecast]}
         colHeaders={Object.keys(estimated)}
         rowHeaders={["Estimated (%)", "Forecast (%)"]}
@@ -77,7 +77,7 @@ export default function EditForecast(props) {
         manualRowResize={true}
         filters={true}
         className="mat1-table"
-      />
+      /> */}
       <div>
         <button
           className="btn btn-sm btn-info"

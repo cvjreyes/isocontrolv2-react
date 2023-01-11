@@ -85,6 +85,7 @@ export default function AddRow({
               onChange={(e) =>
                 handleChange({ target: { name: col.key, value: e.label } }, i)
               }
+              // falta inputId
               options={col.source?.map((opt) => ({ label: opt, value: opt }))}
               components={{
                 DropdownIndicator: () => null,

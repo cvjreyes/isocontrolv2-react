@@ -27,6 +27,7 @@ DONE ✔
 - TABLE submit changes 
 - TABLE delete row 
 - si already exists cambiar color alerta
+- añadir logo isocontrol
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
@@ -39,7 +40,6 @@ TODO ❌
 - añadir 'copied' 
 - mover sidebar arriba
 - añadir piecharts
-- añadir logo isocontrol
 
 - Crear select de Roles ( Feed: Speciality Lead || IFD: Design)
 
@@ -70,13 +70,6 @@ TODO ❌
 
 OTHER
 - add error handler for when server is down ( something like 'server is down please contact IT )
-
-
-
-
-
-
-
 
 
 TABLES que no llegué a probar:
