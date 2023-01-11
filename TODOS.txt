@@ -36,6 +36,7 @@ TODO ❌
   - paste from excel various lines
   - no filtrar en el header
 
+- añadir 'copied' 
 - mover sidebar arriba
 - añadir piecharts
 - añadir logo isocontrol

@@ -1,9 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -16,40 +15,35 @@ import {
 } from "recharts";
 
 import { api } from "../../../helpers/api";
-import EditForecast from "./EditForecast";
+import Button1 from "../../general/Button1";
+import { prepareRows } from "./feedProgressHelpers";
 
 export default function FeedProgressView() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       const { rows } = await api("get", "/gfeed", true);
-      console.log("Body: ", rows);
-
-      let weeks = [];
-      if (rows) {
-        for (let i = 0; i < rows.length; i++) {
-          //Por cada semana
-          //Creamos el punto en la grafica
-          weeks.push({
-            name: `D${rows[i].id}`,
-            current_weight: rows[i].progress,
-            max_weight: rows[i].max_progress,
-            estimated: (rows[i].max_progress / 100) * rows[i].estimated,
-            forecast: (rows[i].max_progress / 100) * rows[i].forecast,
-          });
-        }
-        setData(weeks);
-      }
+      const weeks = prepareRows(rows);
+      setData(weeks);
     };
-
     getData();
   }, []);
 
   return (
-    <div css={forecastStyles}>
-      <Link to="/feed/progress/edit_forecast">Edit Forecast</Link>
-      <ResponsiveContainer width="100%" height="90%">
+    <div css={forecastStyles} className="flexColumn">
+      <h3>Feed Progress</h3>
+      <Button1
+        text="Edit Forecast"
+        width="150px"
+        border="1px solid white"
+        bgColor="#0070ED"
+        bgHover="#3e96fa"
+        color="white"
+        onClick={() => navigate("/feed/progress/edit_forecast")}
+      />
+      <ResponsiveContainer width="92%" height="70%" className="chart">
         <LineChart
           width={500}
           height={400}
@@ -91,4 +85,14 @@ export default function FeedProgressView() {
 const forecastStyles = {
   width: "100%",
   height: "100%",
+  h3: {
+    fontSize: "20px",
+  },
+  button: {
+    alignSelf: "flex-end",
+    marginRight: "10%",
+  },
+  ".chart": {
+    alignSelf: "flex-start",
+  },
 };
