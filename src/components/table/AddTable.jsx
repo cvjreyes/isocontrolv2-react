@@ -10,6 +10,7 @@ export default function AddTable({
   gridSize,
   handleChange,
   handleSubmit,
+  handlePaste
 }) {
   return (
     <div css={tableStyle}>
@@ -23,6 +24,7 @@ export default function AddTable({
             gridSize={gridSize}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            handlePaste={handlePaste}
           />
         );
       })}

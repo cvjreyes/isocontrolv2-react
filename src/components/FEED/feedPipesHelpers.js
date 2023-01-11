@@ -149,3 +149,12 @@ export const checkForEmptyCells = (data) => {
   }
   return empty;
 };
+
+export const buildTagIfFilled = (row) => {
+  const someEmtpy = checkForEmptyCellsAdding(row);
+    if (!someEmtpy) {
+      row.tag = buildTag(row);
+      !row.status && (row.status = "ESTIMATED");
+    }
+    return row
+}
