@@ -9,7 +9,7 @@
 body,
 input,
 select {
-  /* background-color: #3988e2; */
+  /* background-color: #3e96fa; */
 }
 
 img {
@@ -44,4 +44,11 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.flexColumn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
