@@ -11,6 +11,7 @@ export const row = {
   insulation: "",
   train: "",
   status: "",
+  calc_notes: "unset",
 };
 
 export const emptyRows = [];

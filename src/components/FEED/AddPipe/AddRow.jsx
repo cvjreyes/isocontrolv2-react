@@ -10,6 +10,7 @@ export default function AddRow({
   gridSize,
   handleChange,
   handleSubmit,
+  handlePaste
 }) {
   const rowStyle = {
     display: "grid",
@@ -51,7 +52,7 @@ export default function AddRow({
     <form
       css={rowStyle}
       onSubmit={handleSubmit}
-      // onPaste={(e) => handlePaste(e, i, item.id)}
+      onPaste={(e) => handlePaste(e, i)}
       // id={rowId}
       // onClick={(e) => handleDelete(e, item.id)}
     >
@@ -85,6 +86,7 @@ export default function AddRow({
               onChange={(e) =>
                 handleChange({ target: { name: col.key, value: e.label } }, i)
               }
+              inputId={col.key}
               options={col.source?.map((opt) => ({ label: opt, value: opt }))}
               components={{
                 DropdownIndicator: () => null,
