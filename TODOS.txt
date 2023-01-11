@@ -36,9 +36,37 @@ TODO ❌
   - paste from excel various lines
   - no filtrar en el header
 
+- añadir 'copied' 
 - mover sidebar arriba
 - añadir piecharts
 - añadir logo isocontrol
+
+- Crear select de Roles ( Feed: Speciality Lead || IFD: Design)
+
+- IFD:
+  - Tabla de main (Tambien con la funcionalidad del add and save)
+  - Tabla My tray (Bandeja donde completar las acciones)
+    - Boton Next Step (Pasar a la siguiente bandeja)
+    - Boton Unclaim (Para vuelva a la bandeja en la que estaba)
+    - Boton Return (Para que vaya a la bandeja anterior en la que estaba)
+    - Boton Delete (Para borrarla definitivamente)
+
+    - Columna Actions
+      - V (Llevarlo a la tabla de V, Valvulas)
+      - I (Llevarlo a la tabla de I, Instrumentacion)
+      - N/A 
+
+  - Tabla de Modelled (Claim a MyTray)
+  - Tabla de S-Stress (Claim a MyTray)
+  - Tabla de R-Stress (Claim a MyTray)
+  - Tabla de Stress (Claim a MyTray)
+  - Tabla de Supports (Claim a MyTray)
+  - Tabla de S-Design (Claim a MyTray)
+
+  - Tabla Trash ( Para restaurar los modelled que hayas eliminado)
+  - Tabla Hold
+    - Boton Hold (Abre un modal donde puedes ver la descripcion de los holds, puedes añadir y guardar descripciones )
+
 
 OTHER
 - add error handler for when server is down ( something like 'server is down please contact IT )
