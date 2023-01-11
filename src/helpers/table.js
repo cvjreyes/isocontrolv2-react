@@ -18,9 +18,9 @@ export function copyToClipboard(id, table) {
     inputList[4].value,
     inputList[5].value,
     valuesList[2].innerHTML,
-    inputList[6].value,
     inputList[7].value,
     inputList[8].value,
+    inputList[9].value,
     valuesList[3].innerHTML,
     valuesList[4].innerHTML,
   ];
