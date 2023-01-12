@@ -10,7 +10,7 @@ export default function AddRow({
   gridSize,
   handleChange,
   handleSubmit,
-  handlePaste
+  handlePaste,
 }) {
   const rowStyle = {
     display: "grid",
@@ -73,9 +73,10 @@ export default function AddRow({
               key={`${i}${y}`}
               className="default"
               value={row[col.key]}
-              // readOnly
               name={col.key}
-              onChange={() => console.log("shut")}
+              onChange={() => {
+                return;
+              }}
             />
           );
         }

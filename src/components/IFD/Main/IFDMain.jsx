@@ -12,6 +12,7 @@ export default function IFDMain() {
   const [diameters, setDiameters] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [owners, setOwners] = useState([]);
+  const [filterInfo, setFilterInfo] = useState({});
 
   // const getRoles = async () => {
   //   const { body } = await api("get", "/users/get_user_roles", false);
@@ -42,7 +43,44 @@ export default function IFDMain() {
     getThings();
   }, []);
 
-  // filter fn
+  useEffect(() => {
+    // cuando escrbimos en el filtro => actualizar displayData
+    filter();
+  }, [filterInfo]);
+
+  const handleFilter = (keyName, val) => {
+    if (keyName in filterInfo && !val) {
+      let tempFilterInfo = { ...filterInfo };
+      tempFilterInfo[keyName] = keyName;
+      setFilterInfo(tempFilterInfo);
+    }
+    setFilterInfo({ ...filterInfo, [keyName]: val });
+  };
+
+  const filter = async (passedData) => {
+    if (Object.values(filterInfo).every((x) => !x) && !passedData)
+      return setDisplayData(data);
+    let tempData = passedData || [...data];
+    let resultData = [];
+    tempData.forEach((item) => {
+      let exists = [];
+      // loop through filters keys
+      for (let key in filterInfo) {
+        if (
+          item[key]
+            .toString()
+            .toLowerCase()
+            .includes(filterInfo[key].toLowerCase())
+        ) {
+          exists.push(key);
+        }
+      }
+      if (exists.length === Object.keys(filterInfo).length) {
+        resultData.push(item);
+      }
+    });
+    setDisplayData(resultData);
+  };
 
   // add rows
 
@@ -61,13 +99,13 @@ export default function IFDMain() {
       // ! MISSSING
       changed={[]}
       copied={[]}
+      filter={handleFilter}
+      filterInfo={filterInfo}
       // submitChanges={submitChanges}
       // deleting={deleting}
       // setDeleting={setDeleting}
       // copyAll={copyAll}
       // undoChanges={undoChanges}
-      // filter={filter}
-      // filterInfo={filterInfo}
       // copyMulti={copyMulti}
       // setCopyMulti={setCopyMulti}
       // handleChange={handleChange}
