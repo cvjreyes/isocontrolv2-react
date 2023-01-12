@@ -9,6 +9,7 @@ export default function FeedPipesExcelTableHeader({
   filterInfo,
   copyMulti,
   setCopyMulti,
+  readOnly,
 }) {
   const rowStyle = {
     display: "grid",
@@ -53,13 +54,16 @@ export default function FeedPipesExcelTableHeader({
         return (
           <div className="bold" style={{ width: x.width }} key={x.key}>
             <input
+              readOnly={readOnly}
               defaultValue={x.title}
               onFocus={(e) => {
+                if (readOnly) return;
                 filter(x.key, "");
                 e.target.value = "";
               }}
               onChange={(e) => filter(x.key, e.target.value)}
               onBlur={(e) => {
+                if (readOnly) return;
                 if (!filterInfo[x.key]) {
                   e.target.value = e.target.defaultValue;
                 }
