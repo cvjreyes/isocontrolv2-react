@@ -22,8 +22,8 @@ import AddPipe from "./AddPipe/AddPipe";
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
-  const [diameters, setDiameters] = useState(null);
   const [areas, setAreas] = useState(null);
+  const [diameters, setDiameters] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
@@ -36,25 +36,19 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setDisplayData(rows);
   };
 
-  // ! promise all?
   useEffect(() => {
-    const getAllAreas = async () => {
-      const res = await api("get", "/api/areas", true);
-      const areas_options = res.map((item) => item.name);
-      setAreas(areas_options);
+    const getThings = async () => {
+      await Promise.all([
+        api("get", "/api/areas", true),
+        api("get", "/api/diameters", true),
+        api("get", "/lines/get_lines"),
+      ]).then((values) => {
+        setAreas(values[0].map((item) => item.name));
+        setDiameters(values[1].diameters.map((item) => item.diameter));
+        setLineRefs(values[2].body);
+      });
     };
-    const getDiameters = async () => {
-      const { diameters: resDia } = await api("get", "/api/diameters", true);
-      const tempDiameters = resDia.map((item) => item.diameter);
-      setDiameters(tempDiameters);
-    };
-    const getLineRefs = async () => {
-      const { body: tempLineRefs } = await api("get", "/lines/get_lines");
-      setLineRefs(tempLineRefs);
-    };
-    getAllAreas();
-    getDiameters();
-    getLineRefs();
+    getThings();
     getFeedPipes();
   }, []);
 
@@ -210,8 +204,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    console.log("Feed temp data: ", tempData);
-    console.log("Feed calc notes: ", changedRow.calc_notes);
     if (name === "diameter") {
       changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
     } else if (name === "line_reference") {
@@ -341,7 +333,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
               diameters={diameters}
               setMessage={setMessage}
               data={data}
-
             />
           }
         />

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import { copyToClipboard } from "../helpers/table";
 
 export default function CopyContext({ children, data, id }) {
