@@ -14,15 +14,16 @@ export const prepareRows = (rows) => {
   return weeks;
 };
 
-export const prepareForecast = (data) => {
-  let f = {}; //Diccionario dia-estimacion
-  let d = []; //Array de labels
-  let forecastObj = {};
+// export const prepareForecast = (data) => {
+//   let daysA = []
+//   let estimatedA = []
+//   let forecastA = []
 
-  for (let i = 0; i < data.length; i++) {
-    f["D" + data[i].day] = data[i].estimated;
-    d.push("D" + data[i].day);
-    forecastObj["D" + data[i].day] = data[i].data;
-  }
-  return { f, d, forecastObj };
-};
+//   for (let i = 0; i < data.length; i++) {
+//     daysA.push("D" + data[i].day)
+//     estimatedA.push(data[i].estimated)
+//     forecastA.push(data[i].forecast)    
+//   }
+
+//   return {daysA, estimatedA, forecastA};
+// };
