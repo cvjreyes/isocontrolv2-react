@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { HotTable } from "@handsontable/react";
 
 import { api } from "../../../helpers/api";
-import { prepareForecast } from "./feedProgressHelpers";
-
-// - testear afterChange de HotTable
+import WithToast from "../../../modals/Toast";
 
 // dia 15 feed + ifd
 // propuesta sean:
@@ -12,101 +9,125 @@ import { prepareForecast } from "./feedProgressHelpers";
 // - optimizar feed + ifd
 // +15 días + plan con sean
 
-export default function EditForecast(props) {
-  const [estimated, setEstimated] = useState({});
-  const [days, setDays] = useState({});
-  const [forecast, setForecast] = useState({});
+function EditForecastComp({setMessage}) {
+  const [forecast, setForecast] = useState([]);
+  const [inputValues, setInputValues] = useState({
+    estimated: 0,
+    forecast: 0,
+  });
 
+  const getData = async () => {
+    const { body } = await api("get", "/feed/get_forecast");
+    setForecast(body);
+  };
+  
   useEffect(() => {
-    const getData = async () => {
-      const { forecast } = await api("get", "/getFeedForecast", true);
-      const { f, d, forecastObj } = prepareForecast(forecast);
-      setEstimated(f);
-      setDays(d);
-      setForecast(forecastObj);
-    };
     getData();
+
   }, []);
 
-  const addDay = async () => {
-    if (!estimated[days[days.length - 1]]) return;
-    //Para añadir un nuevo dia al forecast
-    let tempEstimated = estimated;
-    tempEstimated["D" + (days.length + 1)] = ""; //Nuevo elemento en el diccionario
-    setEstimated(tempEstimated);
-
-    let tempDays = days;
-    tempDays.push("D" + (days.length + 1)); //Nueva label
-    setDays({ ...tempDays });
-  };
-
   const submitChanges = async () => {
-    const invalidNum1 = Object.values(estimated).some(
-      (item) => !item || isNaN(item) || Number(item) > 100 || Number(item) < 0
-    );
-    const invalidNum2 = Object.values(forecast).some(
-      (item) => isNaN(item) || Number(item) > 100 || Number(item) < 0
-    );
+    const { estimated: valEstimated, forecast: valForecast } = inputValues;
+    console.log("Value: ", valEstimated, valForecast);
+
+    const invalidNum1 = Number(valEstimated) > 100 || Number(valEstimated) < 0
+    const invalidNum2 = Number(valForecast) > 100 || Number(valForecast) < 0
+
     if (invalidNum1 || invalidNum2)
-      return props.alert("Invalid number", "warning");
-    const { success } = await api("post", "/submitFeedForecast", true, {
-      estimated: estimated,
-      forecast: forecast,
+      return setMessage({ txt: "Use numbers between 0 and 100", type: "warn" });
+
+    const { ok } = await api("post", "/feed/submit_forecast", false, {
+      day: forecast.length + 1,
+      estimated: valEstimated,
+      forecast: valForecast,
     });
-    if (success) {
-      props.alert("Changes saved!", "success");
+    if (ok) {
+      getData()
+      return setMessage({ txt: "Changes saved!", type: "success" });
     }
+    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  const settings = {
-    licenseKey: "non-commercial-and-evaluation",
-    colWidths: 40,
-    rowHeaderWidth: 190,
-  };
+  function handleChange(evt) {
+    const value = evt.target.value;
+    setInputValues({
+      ...inputValues,
+      [evt.target.name]: value,
+    });
+  }
 
   return (
-    <div className="feed__forecast_container">
-      {/* <HotTable
-        data={[estimated, forecast]}
-        colHeaders={Object.keys(estimated)}
-        rowHeaders={["Estimated (%)", "Forecast (%)"]}
-        width="1550"
-        height="160"
-        settings={settings}
-        manualColumnResize={true}
-        manualRowResize={true}
-        filters={true}
-        className="mat1-table"
-      /> */}
+    <div>
       <div>
+        <table style={{ border: "1px solid", margin: "0 auto" }}>
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Estimated</th>
+              <th>Forecast</th>
+            </tr>
+          </thead>
+          <tbody>
+            {forecast.map((x) => (
+              <tr key={x.day}>
+                <td>{x.day}</td>
+                <td>{x.estimated}</td>
+                <td>{x.forecast}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <label>New Forecast</label>
+        <div>
+          <label htmlFor="estimated_input">Estimated: </label>
+          <input
+            id="estimated_input"
+            type="number"
+            name="estimated"
+            value={inputValues.estimated}
+            onChange={handleChange}
+            min="0"
+            max="100"
+          ></input>
+        </div>
+        <div>
+          <label htmlFor="forecast_input">Forecast: </label>
+          <input
+            id="forecast_input"
+            type="number"
+            name="forecast"
+            value={inputValues.forecast}
+            onChange={handleChange}
+            min="0"
+            max="100"
+          ></input>
+        </div>
+      </div>
+      <div style={{ margin: "0 auto" }}>
         <button
-          className="btn btn-sm btn-info"
-          onClick={() => addDay()}
-          style={{
-            marginLeft: "570px",
-            marginRight: "25px",
-            fontSize: "16px",
-            width: "160px",
-            borderRadius: "10px",
-          }}
-          disabled={!estimated[days[days.length - 1]]}
-        >
-          Add
-        </button>
-        <button
-          className="btn btn-sm btn-success"
           onClick={() => submitChanges()}
           style={{
+            margin: "0 auto",
             marginRight: "5px",
             fontSize: "16px",
             width: "160px",
             borderRadius: "10px",
           }}
-          // disabled={Object.values(estimated).some(item => Number(item) > 100 || Number(item) < 0)}
         >
           Save
         </button>
       </div>
     </div>
+  );
+}
+
+// using this components to use modals
+export default function EditForecast() {
+  return (
+    <WithToast>
+        <EditForecastComp />
+    </WithToast>
   );
 }

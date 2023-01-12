@@ -53,14 +53,11 @@ export default function AddRow({
       css={rowStyle}
       onSubmit={handleSubmit}
       onPaste={(e) => handlePaste(e, i)}
-      // id={rowId}
-      // onClick={(e) => handleDelete(e, item.id)}
     >
       {columns.map((col, y) => {
         if (col.key === "empty")
           return (
             <div
-              // onClick={() => copyToClipBoard(rowId)}
               key={`${i}${y}`}
               css={idWrapper}
             >

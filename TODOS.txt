@@ -28,12 +28,10 @@ DONE ✔
 - TABLE delete row 
 - si already exists cambiar color alerta
 - añadir logo isocontrol
+- ADDING ROW
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
-- ADDING ROW:
-  - no filtrar en el header
-
 - añadir 'copied' 
 - mover sidebar arriba
 - añadir piecharts
