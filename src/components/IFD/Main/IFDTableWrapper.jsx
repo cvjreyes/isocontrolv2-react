@@ -18,10 +18,12 @@ export default function IFDTableWrapper({
   owners,
   changed,
   copied,
+  filter,
+  filterInfo,
 }) {
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
-  console.log("title: ", title);
+
   return (
     <div css={tableWrapperStyle}>
       <FeedPipesHead
@@ -38,8 +40,8 @@ export default function IFDTableWrapper({
         <FeedPipesExcelTableHeader
           gridSize={gridSize}
           columns={columnsData(lineRefs, areas, diameters, owners)}
-          // filter={filter}
-          // filterInfo={filterInfo}
+          filter={filter}
+          filterInfo={filterInfo}
           // copyMulti={copyMulti}
           // setCopyMulti={setCopyMulti}
         />

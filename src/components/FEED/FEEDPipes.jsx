@@ -204,8 +204,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    console.log("Feed temp data: ", tempData);
-    console.log("Feed calc notes: ", changedRow.calc_notes);
     if (name === "diameter") {
       changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
     } else if (name === "line_reference") {
@@ -335,7 +333,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
               diameters={diameters}
               setMessage={setMessage}
               data={data}
-
             />
           }
         />
