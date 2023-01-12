@@ -5,5 +5,3 @@ export const removeEmpties = (rows) => {
   });
   return filled;
 };
-
-const checkAlreadyExists = (data) => {};
