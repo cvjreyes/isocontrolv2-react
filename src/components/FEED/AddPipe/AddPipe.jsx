@@ -72,6 +72,7 @@ export default function AddPipe({
       return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
+    console.log("Data: ", data);
     const { ok } = await api("post", "/feed/add_pipes", false, { data });
     if (ok) {
       setMessage({ txt: "Changes saved!", type: "success" });
@@ -94,13 +95,11 @@ export default function AddPipe({
       let ind = pastedData.indexOf("\r");
       pastedData[0] = pastedData[0].slice(0, ind);
       return pasteCell(name, i, pastedData[0]);
+    } else if (pastedData.length === 12) {
+      return pasteRow(e, i);
+    } else if (pastedData.length > 12) {
+      return pasteMultipleRows(e, i);
     }
-    // else if (pastedData.length === 12) {
-    //   return pasteRow(e, id);
-    // } 
-    // else if (pastedData.length > 12) {
-    //   return pasteMultipleRows(e, i);
-    // }
   };
 
   const pasteCell = (name, i, pastedData) => {
@@ -108,10 +107,6 @@ export default function AddPipe({
     const tempData = [...rows];
     let changedRow = { ...tempData[i] };
     changedRow[name] = pastedData;
-    console.log("TempData: ", tempData);
-    console.log("changedRow: ", changedRow);
-    console.log("ChangedRow name: ", changedRow[name]);
-    console.log("Pasted data: ", pastedData);
     if (name === "diameter") {
       changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
     } else if (name === "line_reference") {
@@ -125,7 +120,7 @@ export default function AddPipe({
       // update rest
       changedRow = { ...changedRow, ...dividedTag };
     } else if (name === "train") {
-      if (!(pastedData.includes("0"))) pastedData = "0" + pastedData
+      if (!pastedData.includes("0")) pastedData = "0" + pastedData;
       changedRow[name] = pastedData;
     } else {
       changedRow.line_reference = buildLineRef(changedRow);
@@ -140,22 +135,27 @@ export default function AddPipe({
     setRows(tempData);
   };
 
-  const pasteRow = (e, id) => {
+  const pasteRow = (e, i) => {
     e.clipboardData.items[0].getAsString((text) => {
-      const tempData = [...data];
+      const tempData = [...rows];
       let lines = text.split("\n");
       lines.forEach((line) => {
         if (line.length < 1) return;
-        const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildRow(row, id);
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
+        const builtRow = buildRow(row, i);
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+          console.log(builtRow.train);
+        }
+        if (
+          builtRow.tag &&
+          [...rows, ...data].some((x) => x.tag === builtRow.tag)
+        ) {
           builtRow.tag = "Already exists";
-        tempData[y] = { ...tempData[y], ...builtRow };
+          tempData[i] = { ...tempData[i], ...builtRow };
+        }
       });
-      addToChanged(id);
-      filter(tempData);
-      setData(tempData);
+      setRows(tempData);
     });
   };
 
@@ -165,23 +165,29 @@ export default function AddPipe({
       // get rows as strings
       let lines = text.split("\n");
       lines.pop();
-      let toAdd = [];
       // loop each row
       lines.forEach((line, x) => {
+        const idx = i + x;
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, x.id);
+        const builtRow = buildRow(row, idx);
+        // Ponemos el 0 en el train si no esta
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+        }
         // check for repeated tag
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== x.id))
+        if (
+          builtRow.tag &&
+          [...rows, ...data].some((x) => x.tag === builtRow.tag)
+        ) {
           builtRow.tag = "Already exists";
+        }
         // update tempData
-        tempData[y] = { ...tempData[y], ...builtRow };
-        toAdd.push(rows[i + x].id);
+        console.log(tempData[idx], builtRow);
+        tempData[idx] = { ...tempData[idx], ...builtRow };
       });
-      addToChanged(toAdd);
-      filter(tempData);
-      setData(tempData);
+      setRows(tempData);
     });
   };
 

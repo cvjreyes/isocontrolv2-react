@@ -32,9 +32,6 @@ DONE ✔
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
 - ADDING ROW:
-  - paste from excel 1 cell
-  - paste from excel 1 line
-  - paste from excel various lines
   - no filtrar en el header
 
 - añadir 'copied' 
