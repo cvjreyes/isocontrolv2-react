@@ -204,6 +204,11 @@ export default function AddPipe({
         <FeedPipesExcelTableHeader
           gridSize={gridSize}
           columns={columnsData(lineRefs, areas, diameters)}
+          readOnly={true}
+          filter={() => {
+            return;
+          }}
+          filterInfo={{}}
         />
         <AddTable
           rows={rows}
