@@ -65,11 +65,11 @@ export default function Header({
             width="100px"
             fontSize="14px"
             text="Add"
-            bgColor="rgb(37, 208, 37)"
             border="1px solid black"
             margin="0 5px"
             onClick={() => navigate("/feed/line_control/add")}
-            bgHover="rgb(82, 223, 82)"
+            bgColor="#0070ED"
+            bgHover="#3988e2"
           />
           <Button
             width="100px"
@@ -95,11 +95,11 @@ export default function Header({
             width="100px"
             fontSize="14px"
             text="Save"
-            bgColor="#0070ED"
             border="1px solid black"
             margin="0 5px"
             onClick={submitChanges}
-            bgHover="#3988e2"
+            bgColor="rgb(37, 208, 37)"
+            bgHover="rgb(82, 223, 82)"
           />
         </div>
         <span className="itemsLength">{data.length} items</span>
