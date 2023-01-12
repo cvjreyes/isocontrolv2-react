@@ -10,20 +10,12 @@ export function copyToClipboard(id, table) {
   const valuesList = copiedEle.getElementsByClassName(
     "css-1dimb5e-singleValue"
   );
-  const totalList = [
-    valuesList[0].innerHTML,
-    inputList[1].value,
-    valuesList[1].innerHTML,
-    inputList[3].value,
-    inputList[4].value,
-    inputList[5].value,
-    valuesList[2].innerHTML,
-    inputList[7].value,
-    inputList[8].value,
-    inputList[9].value,
-    valuesList[3].innerHTML,
-    valuesList[4].innerHTML,
-  ];
+
+  const totalList =
+    copiedEle.children.length === 13
+      ? buildFeedList(inputList, valuesList)
+      : buildIFDList(inputList, valuesList);
+
   // loop through selected inputs
   totalList.forEach((item) => {
     // create cell
@@ -44,3 +36,38 @@ export function copyToClipboard(id, table) {
   // write blob to clipboard ( copied! )
   navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
 }
+
+const buildFeedList = (inputList, valuesList) => {
+  return [
+    valuesList[0].innerHTML,
+    inputList[1].value,
+    valuesList[1].innerHTML,
+    inputList[3].value,
+    inputList[4].value,
+    inputList[5].value,
+    valuesList[2].innerHTML,
+    inputList[6].value,
+    inputList[7].value,
+    inputList[8].value,
+    valuesList[3].innerHTML,
+    valuesList[4].innerHTML,
+  ];
+};
+
+const buildIFDList = (inputList, valuesList) => {
+  return [
+    valuesList[0].innerHTML, // line_reference
+    inputList[1].value, // tag
+    valuesList[1].innerHTML, // owner
+    valuesList[2].innerHTML, // area
+    inputList[4].value, // unit
+    inputList[5].value, // fluid
+    inputList[6].value, // seq
+    valuesList[3].innerHTML, // diameter
+    inputList[8].value, // spec
+    inputList[9].value, // type
+    inputList[10].value, // insulation
+    valuesList[4].innerHTML, // train
+    valuesList[5].innerHTML, // status
+  ];
+};

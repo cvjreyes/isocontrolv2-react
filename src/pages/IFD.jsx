@@ -29,7 +29,7 @@ export default function IFD() {
         />
         <IFDLayout>
           <Routes>
-            <Route exact path="/main" element={<IFDMain />} />
+            <Route exact path="/main/*" element={<IFDMain />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/my-tray" element={<MyTray />} />
             <Route path="/modelled" element={<Modelled />} />
