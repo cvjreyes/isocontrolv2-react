@@ -13,56 +13,77 @@ import { prepareForecast } from "./feedProgressHelpers";
 // +15 días + plan con sean
 
 export default function EditForecast(props) {
-  const [estimated, setEstimated] = useState({});
-  const [days, setDays] = useState({});
-  const [forecast, setForecast] = useState({});
+  const [forecastObj, setForecastObj] = useState({});
+
+  const [daysArray, setDaysArray] = useState([]);
+  const [estimatedArray, setEstimatedArray] = useState([]);
+  const [forecastArray, setForecastArray] = useState([]);
+  const [addDayClicked, setAddDayClicked] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
       const { forecast } = await api("get", "/getFeedForecast", true);
-      const { f, d, forecastObj } = prepareForecast(forecast);
-      setEstimated(f);
-      setDays(d);
-      setForecast(forecastObj);
+
+      const { daysA, estimatedA, forecastA } = prepareForecast(forecast);
+      setDaysArray(daysA);
+      setEstimatedArray(estimatedA);
+      setForecastArray(forecastA);
+      setForecastObj(forecast);
     };
+
     getData();
   }, []);
 
+  useEffect(() => {
+    console.log(
+      "Data: ",
+      daysArray,
+      estimatedArray,
+      forecastArray,
+      forecastObj
+    );
+  }, [daysArray, estimatedArray, forecastArray, forecastObj]);
+
   const addDay = async () => {
-    if (!estimated[days[days.length - 1]]) return;
-    //Para añadir un nuevo dia al forecast
-    let tempEstimated = estimated;
-    tempEstimated["D" + (days.length + 1)] = ""; //Nuevo elemento en el diccionario
-    setEstimated(tempEstimated);
+    let tempDaysArray = [...daysArray];
+    let tempEstimatedArray = [...estimatedArray];
+    let tempForecastArray = [...forecastArray];
 
-    let tempDays = days;
-    tempDays.push("D" + (days.length + 1)); //Nueva label
-    setDays({ ...tempDays });
+    let newDay = "D" + (daysArray.length + 1);
+    tempDaysArray.push(newDay);
+    tempEstimatedArray.push("");
+    tempForecastArray.push("");
+
+    setDaysArray(tempDaysArray);
+    setEstimatedArray(tempEstimatedArray);
+    setForecastArray(tempForecastArray);
+
+    setAddDayClicked(true);
   };
 
-  const submitChanges = async () => {
-    const invalidNum1 = Object.values(estimated).some(
-      (item) => !item || isNaN(item) || Number(item) > 100 || Number(item) < 0
-    );
-    const invalidNum2 = Object.values(forecast).some(
-      (item) => isNaN(item) || Number(item) > 100 || Number(item) < 0
-    );
-    if (invalidNum1 || invalidNum2)
-      return props.alert("Invalid number", "warning");
-    const { success } = await api("post", "/submitFeedForecast", true, {
-      estimated: estimated,
-      forecast: forecast,
-    });
-    if (success) {
-      props.alert("Changes saved!", "success");
-    }
-  };
+  // const submitChanges = async () => {
+  //   const invalidNum1 = Object.values(estimated).some(
+  //     (item) => !item || isNaN(item) || Number(item) > 100 || Number(item) < 0
+  //   );
+  //   const invalidNum2 = Object.values(forecast).some(
+  //     (item) => isNaN(item) || Number(item) > 100 || Number(item) < 0
+  //   );
+  //   if (invalidNum1 || invalidNum2)
+  //     return props.alert("Invalid number", "warning");
+  //   const { success } = await api("post", "/submitFeedForecast", true, {
+  //     estimated: estimated,
+  //     forecast: forecast,
+  //   });
+  //   if (success) {
+  //     props.alert("Changes saved!", "success");
+  //   }
+  // };
 
-  const settings = {
-    licenseKey: "non-commercial-and-evaluation",
-    colWidths: 40,
-    rowHeaderWidth: 190,
-  };
+  // const settings = {
+  //   licenseKey: "non-commercial-and-evaluation",
+  //   colWidths: 40,
+  //   rowHeaderWidth: 190,
+  // };
 
   return (
     <div className="feed__forecast_container">
@@ -79,6 +100,45 @@ export default function EditForecast(props) {
         className="mat1-table"
       /> */}
       <div>
+        <table style={{ border: "1px solid" }}>
+          <thead>
+            <tr>
+              {daysArray.map((x) => (
+                <th key={`D${x}`}>{x}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {estimatedArray.map((x, y) => {
+                return (
+                  <td key={`E${x}${y}`}>
+                    {y + 1 === estimatedArray.length && addDayClicked ? (
+                      <input style={{ width: "50px", height: "30px" }} />
+                    ) : (
+                      <span>{x}</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+            <tr>
+              {forecastArray.map((x, y) => {
+                return (
+                  <td key={`E${x}${y}`}>
+                    {y + 1 === forecastArray.length && addDayClicked ? (
+                      <input style={{ width: "50px", height: "30px" }} />
+                    ) : (
+                      <span>{x}</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
         <button
           className="btn btn-sm btn-info"
           onClick={() => addDay()}
@@ -89,20 +149,20 @@ export default function EditForecast(props) {
             width: "160px",
             borderRadius: "10px",
           }}
-          disabled={!estimated[days[days.length - 1]]}
+          disabled={addDayClicked}
         >
           Add
         </button>
         <button
           className="btn btn-sm btn-success"
-          onClick={() => submitChanges()}
+          // onClick={() => submitChanges()}
           style={{
             marginRight: "5px",
             fontSize: "16px",
             width: "160px",
             borderRadius: "10px",
           }}
-          // disabled={Object.values(estimated).some(item => Number(item) > 100 || Number(item) < 0)}
+          disabled={!addDayClicked}
         >
           Save
         </button>
