@@ -11,6 +11,7 @@ import { Suspense } from "react";
 
 export default function IFDTableWrapper({
   title,
+  id,
   displayData,
   lineRefs,
   areas,
@@ -28,6 +29,8 @@ export default function IFDTableWrapper({
   handleDelete,
   copyToClipBoard,
   undoChanges,
+  copyAll,
+  submitChanges,
 }) {
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
@@ -36,11 +39,11 @@ export default function IFDTableWrapper({
     <div css={tableWrapperStyle}>
       <FeedPipesHead
         title={title}
-        // submitChanges={submitChanges}
+        submitChanges={submitChanges}
         setCopyMulti={setCopyMulti}
         deleting={deleting}
         setDeleting={setDeleting}
-        // copyAll={copyAll}
+        copyAll={copyAll}
         undoChanges={undoChanges}
         data={displayData}
       />
@@ -63,7 +66,7 @@ export default function IFDTableWrapper({
             )}
             data={displayData}
             gridSize={gridSize}
-            id={title}
+            id={id}
             copied={copied}
             changed={changed}
             handleChange={handleChange}

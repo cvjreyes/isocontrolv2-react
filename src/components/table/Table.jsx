@@ -25,7 +25,7 @@ const Table = React.memo(
           return (
             <Row
               key={x.id}
-              id={x.id}
+              id={id}
               i={i}
               item={x}
               columns={columns}

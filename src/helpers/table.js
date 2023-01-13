@@ -68,6 +68,6 @@ const buildIFDList = (inputList, valuesList) => {
     inputList[9].value, // type
     inputList[10].value, // insulation
     valuesList[4].innerHTML, // train
-    valuesList[5].innerHTML, // status
+    inputList[12].value, // status
   ];
 };
