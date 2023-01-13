@@ -39,11 +39,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   useEffect(() => {
     const getThings = async () => {
       await Promise.all([
-        api("get", "/api/areas", true),
+        api("get", "/areas/get_all"),
         api("get", "/api/diameters", true),
         api("get", "/lines/get_lines"),
       ]).then((values) => {
-        setAreas(values[0].map((item) => item.name));
+        setAreas(values[0].body.map((item) => item.name));
         setDiameters(values[1].diameters.map((item) => item.diameter));
         setLineRefs(values[2].body);
       });

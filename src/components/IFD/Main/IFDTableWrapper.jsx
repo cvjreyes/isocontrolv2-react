@@ -27,6 +27,7 @@ export default function IFDTableWrapper({
   setDeleting,
   handleDelete,
   copyToClipBoard,
+  undoChanges,
 }) {
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
@@ -40,7 +41,7 @@ export default function IFDTableWrapper({
         deleting={deleting}
         setDeleting={setDeleting}
         // copyAll={copyAll}
-        // undoChanges={undoChanges}
+        undoChanges={undoChanges}
         data={displayData}
       />
       <div className="wrapper">
