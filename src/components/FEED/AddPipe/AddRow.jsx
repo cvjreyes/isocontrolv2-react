@@ -21,6 +21,7 @@ export default function AddRow({
       border: "solid black",
       borderWidth: "1px 0 0 1px",
       textAlign: "center",
+      backgroundColor: row.tag === "Already exists" && "orange",
     },
     ".selectWrapper": {
       border: "solid black",
@@ -29,6 +30,7 @@ export default function AddRow({
       position: "relative",
       ".css-13cymwt-control, .css-t3ipsp-control": {
         cursor: "pointer",
+        backgroundColor: row.tag === "Already exists" && "orange",
       },
       "*": {
         color: "black",
@@ -57,10 +59,7 @@ export default function AddRow({
       {columns.map((col, y) => {
         if (col.key === "empty")
           return (
-            <div
-              key={`${i}${y}`}
-              css={idWrapper}
-            >
+            <div key={`${i}${y}`} css={idWrapper}>
               <span>{i + 1}</span>
             </div>
           );

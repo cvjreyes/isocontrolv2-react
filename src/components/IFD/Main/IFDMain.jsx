@@ -30,6 +30,15 @@ function IFDMainComp({ setMessage, setModalContent }) {
   //   setRoles(body.roles);
   // };
 
+  const getIFDPipes = async () => {
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes");
+    const rows = pipes.map((row) => ({
+      ...row,
+      tag: buildTag(row),
+    }));
+    setData(rows);
+  };
+
   useEffect(() => {
     const getThings = async () => {
       await Promise.all([
@@ -43,7 +52,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
         setDiameters(values[1].diameters.map((item) => item.diameter));
         setLineRefs(values[2].body);
         setOwners(values[3].body);
-        console.log(values[4].body);
         const rows = values[4].body.map((row) => ({
           ...row,
           tag: buildTag(row),
@@ -167,9 +175,13 @@ function IFDMainComp({ setMessage, setModalContent }) {
     filter(tempData);
   };
 
-  // paste
+  const undoChanges = () => {
+    setChanged([]);
+    getIFDPipes();
+    setFilterInfo({});
+  };
 
-  // undo
+  // paste
 
   // copyall
 
@@ -199,11 +211,11 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 deleting={deleting}
                 setDeleting={setDeleting}
                 handleDelete={handleDelete}
+                undoChanges={undoChanges}
                 // ! MISSSING
                 copied={[]}
                 // submitChanges={submitChanges}
                 // copyAll={copyAll}
-                // undoChanges={undoChanges}
                 // handlePaste={handlePaste}
               />
             </CopyContext>

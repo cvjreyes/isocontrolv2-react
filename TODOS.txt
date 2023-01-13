@@ -29,17 +29,27 @@ DONE ✔
 - si already exists cambiar color alerta
 - añadir logo isocontrol
 - ADDING ROW
+- que se vea el owner
 
 TODO ❌
 - pass progress to feed through url state OR params NOT localStorage
-- añadir 'copied' 
+- añadir 'copied' al clicar copiar
 - mover sidebar arriba
 - añadir piecharts
 
 - Crear select de Roles ( Feed: Speciality Lead || IFD: Design)
 
+Edit Forecast: cuando se añade que no se muevan los elementos
+- usar overflow hidden y fixed height
+
 - IFD:
-  - Tabla de main (Tambien con la funcionalidad del add and save)
+  - Main:
+    - status
+    - paste
+    - copy all
+    - submit
+    - add entries?
+
   - Tabla My tray (Bandeja donde completar las acciones)
     - Boton Next Step (Pasar a la siguiente bandeja)
     - Boton Unclaim (Para vuelva a la bandeja en la que estaba)
@@ -65,7 +75,11 @@ TODO ❌
 
 OTHER
 - add error handler for when server is down ( something like 'server is down please contact IT )
+- tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
 
+DUDAS JORGE:
+- PREGUNTAR CÁLCULO IFD WEIGHT + aplicar
+- preguntar sequential número de ceros
 
 TABLES que no llegué a probar:
 - react-virtualized
