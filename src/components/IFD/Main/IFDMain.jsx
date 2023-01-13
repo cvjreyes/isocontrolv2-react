@@ -7,6 +7,8 @@ import { api } from "../../../helpers/api";
 import {
   buildLineRef,
   buildTag,
+  checkForAlreadyExists,
+  checkForEmptyCells,
   divideLineReference,
   getTypeFromDiameter,
 } from "../../FEED/feedPipesHelpers";
@@ -181,11 +183,33 @@ function IFDMainComp({ setMessage, setModalContent }) {
     setFilterInfo({});
   };
 
+  const submitChanges = async () => {
+    // abstract this into verifyRows or sth
+    if (changed.length < 1)
+      return setMessage({ txt: "No changes to save", type: "success" });
+    const dataToSend = data.filter((x) => changed.includes(x.id));
+    const stop = checkForAlreadyExists(dataToSend);
+    if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
+    const stop2 = checkForEmptyCells(dataToSend);
+    if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
+    const { ok } = await api("post", "/ifd/submit_ifd_pipes", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      setChanged([]);
+      // ! update rows or not, thant's the question
+      // pros: if error in DB always be detected in UI
+      // cons: errors should not be located like that + time & server consuming
+      // rows.map((row) => (row.tag = buildTag(row)));
+      // setData(rows);
+      // filter();
+      // getFeedPipes();
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
+
   // paste
-
-  // copyall
-
-  // submit changes
 
   // add rows
 
@@ -198,6 +222,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
             <CopyContext data={displayData} id={"ifd"}>
               <IFDTableWrapper
                 title="IFD"
+                id={"ifd"}
                 lineRefs={lineRefs}
                 areas={areas}
                 diameters={diameters}
@@ -212,10 +237,9 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 setDeleting={setDeleting}
                 handleDelete={handleDelete}
                 undoChanges={undoChanges}
+                submitChanges={submitChanges}
                 // ! MISSSING
                 copied={[]}
-                // submitChanges={submitChanges}
-                // copyAll={copyAll}
                 // handlePaste={handlePaste}
               />
             </CopyContext>
