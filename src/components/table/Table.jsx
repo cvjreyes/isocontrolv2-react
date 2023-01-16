@@ -25,6 +25,7 @@ const Table = React.memo(
           return (
             <Row
               key={x.id}
+              id={id}
               i={i}
               item={x}
               columns={columns}
@@ -32,7 +33,6 @@ const Table = React.memo(
               gridSize={gridSize}
               handlePaste={handlePaste}
               copyToClipBoard={copyToClipBoard}
-              id={id}
               copyMulti={copyMulti}
               copied={copied}
               changed={changed}

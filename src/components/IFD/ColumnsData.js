@@ -39,6 +39,7 @@ export const columnsData = (lineRefs, areas, diameters, owners) => [
   {
     title: "Stat",
     key: "status",
-    source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],
+    readOnly: true,
+    // source: ["ESTIMATED", "MODELLED", "MODELLED*"],
   },
 ];

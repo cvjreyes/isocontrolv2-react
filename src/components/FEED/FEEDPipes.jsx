@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Loading from "react-loading";
+import { Route, Routes } from "react-router-dom";
 
 import {
   buildTag,
@@ -16,10 +17,12 @@ import CopyContext from "../../context/CopyContext";
 import WithModal from "../../modals/YesNo";
 import WithToast from "../../modals/Toast";
 import { api } from "../../helpers/api";
-import { Route, Routes } from "react-router-dom";
 import AddPipe from "./AddPipe/AddPipe";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
+  const id = "feed";
+  const page = "line_control";
+
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [areas, setAreas] = useState(null);
@@ -28,6 +31,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
+
+  // delete all button + not being able to paste?
 
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_feed_pipes");
@@ -39,11 +44,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   useEffect(() => {
     const getThings = async () => {
       await Promise.all([
-        api("get", "/api/areas", true),
+        api("get", "/areas/get_all"),
         api("get", "/api/diameters", true),
         api("get", "/lines/get_lines"),
       ]).then((values) => {
-        setAreas(values[0].map((item) => item.name));
+        setAreas(values[0].body.map((item) => item.name));
         setDiameters(values[1].diameters.map((item) => item.diameter));
         setLineRefs(values[2].body);
       });
@@ -100,13 +105,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
     if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    const { ok } = await api(
-      "post",
-      "/feed/submit_feed_pipes",
-      0,
-      { data: dataToSend },
-      setMessage
-    );
+    const { ok } = await api("post", "/feed/submit_feed_pipes", 0, {
+      data: dataToSend,
+    });
     if (ok) {
       setChanged([]);
       // ! update rows or not, thant's the question
@@ -313,7 +314,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 filter={handleFilter}
                 handlePaste={handlePaste}
                 filterInfo={filterInfo}
-                id={"feed"}
+                id={id}
+                page={page}
                 changed={changed}
                 submitChanges={submitChanges}
                 deleting={deleting}

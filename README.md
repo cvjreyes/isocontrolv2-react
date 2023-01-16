@@ -67,7 +67,11 @@ import Eye from "../assets/images/eye.png";
   /** @jsx jsx */
   import { jsx } from "@emotion/react";
   ```
-  - It removes the need to import react
+  - It removes the need to import reac
+
+### ENV
+
+- NODE_NPSDN means inches or mms
 
 ### Get User Info
 

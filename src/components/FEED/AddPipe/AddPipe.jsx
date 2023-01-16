@@ -48,7 +48,7 @@ export default function AddPipe({
     changedRow = buildTagIfFilled(changedRow);
     if (
       changedRow.tag &&
-      [...rows, ...data].some((x) => x.tag === changedRow.tag)
+      [...rows, ...data].some((x, y) => x.tag === changedRow.tag && i !== y)
     )
       changedRow.tag = "Already exists";
     tempRows[i] = { ...changedRow };
@@ -72,13 +72,13 @@ export default function AddPipe({
       return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
-    console.log("Data: ", data);
+    console.log(data);
     const { ok } = await api("post", "/feed/add_pipes", false, { data });
     if (ok) {
       setMessage({ txt: "Changes saved!", type: "success" });
       setTimeout(() => {
         navigate("/feed/line_progress");
-      }, 3000);
+      }, 2000);
     }
   };
 
@@ -103,10 +103,9 @@ export default function AddPipe({
   };
 
   const pasteCell = (name, i, pastedData) => {
-    console.log(name, i, pastedData);
     const tempData = [...rows];
     let changedRow = { ...tempData[i] };
-    changedRow[name] = pastedData;
+    changedRow[name] = pastedData.trim();
     if (name === "diameter") {
       changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
     } else if (name === "line_reference") {
@@ -128,7 +127,7 @@ export default function AddPipe({
     changedRow = buildTagIfFilled(changedRow);
     if (
       changedRow.tag &&
-      [...rows, ...data].some((x) => x.tag === changedRow.tag)
+      [...rows, ...data].some((x, y) => x.tag === changedRow.tag && i !== y)
     )
       changedRow.tag = "Already exists";
     tempData[i] = changedRow;
@@ -142,18 +141,17 @@ export default function AddPipe({
       lines.forEach((line) => {
         if (line.length < 1) return;
         let row = line.split("\t");
-        const builtRow = buildRow(row, i);
+        const builtRow = buildRow(row, i + 1);
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
-          console.log(builtRow.train);
         }
         if (
           builtRow.tag &&
-          [...rows, ...data].some((x) => x.tag === builtRow.tag)
+          [...rows, ...data].some((x, y) => x.tag === builtRow.tag && i !== y)
         ) {
           builtRow.tag = "Already exists";
-          tempData[i] = { ...tempData[i], ...builtRow };
         }
+        tempData[i] = { ...tempData[i], ...builtRow };
       });
       setRows(tempData);
     });
@@ -164,6 +162,7 @@ export default function AddPipe({
       const tempData = [...rows];
       // get rows as strings
       let lines = text.split("\n");
+      console.log("here");
       lines.pop();
       // loop each row
       lines.forEach((line, x) => {
@@ -179,12 +178,11 @@ export default function AddPipe({
         // check for repeated tag
         if (
           builtRow.tag &&
-          [...rows, ...data].some((x) => x.tag === builtRow.tag)
+          [...rows, ...data].some((x, y) => x.tag === builtRow.tag && i !== y)
         ) {
           builtRow.tag = "Already exists";
         }
         // update tempData
-        console.log(tempData[idx], builtRow);
         tempData[idx] = { ...tempData[idx], ...builtRow };
       });
       setRows(tempData);

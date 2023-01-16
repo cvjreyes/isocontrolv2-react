@@ -1,6 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 import Button1 from "../../general/Button1";
 
@@ -11,9 +12,17 @@ export default function AddPipeHead({
   handleSubmit,
   clear,
 }) {
+  const navigate = useNavigate();
+
   return (
     <div css={headStyle}>
       <div className="flexCenter">
+        <div
+          onClick={() => navigate(-1)}
+          className="flexCenter backWrapper pointer"
+        >
+          <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
+        </div>
         <label htmlFor="num_of_rows">Num of rows:</label>
 
         <select
@@ -60,6 +69,10 @@ const headStyle = {
   display: "grid",
   gridTemplateColumns: "4fr 1fr 4fr",
   marginBottom: "10px",
+  ".backWrapper": {
+    width: "20px",
+    margin: "0 auto 0 0",
+  },
   ".gridRight": {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",

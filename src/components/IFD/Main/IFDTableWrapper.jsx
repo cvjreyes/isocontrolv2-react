@@ -11,6 +11,8 @@ import { Suspense } from "react";
 
 export default function IFDTableWrapper({
   title,
+  id,
+  page,
   displayData,
   lineRefs,
   areas,
@@ -20,6 +22,17 @@ export default function IFDTableWrapper({
   copied,
   filter,
   filterInfo,
+  handleChange,
+  copyMulti,
+  setCopyMulti,
+  deleting,
+  setDeleting,
+  handleDelete,
+  copyToClipBoard,
+  undoChanges,
+  copyAll,
+  submitChanges,
+  handlePaste,
 }) {
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
@@ -28,13 +41,15 @@ export default function IFDTableWrapper({
     <div css={tableWrapperStyle}>
       <FeedPipesHead
         title={title}
-        // submitChanges={submitChanges}
-        // setCopyMulti={setCopyMulti}
-        // deleting={deleting}
-        // setDeleting={setDeleting}
-        // copyAll={copyAll}
-        // undoChanges={undoChanges}
+        submitChanges={submitChanges}
+        setCopyMulti={setCopyMulti}
+        deleting={deleting}
+        setDeleting={setDeleting}
+        copyAll={copyAll}
+        undoChanges={undoChanges}
         data={displayData}
+        id={id}
+        page={page}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
@@ -42,8 +57,8 @@ export default function IFDTableWrapper({
           columns={columnsData(lineRefs, areas, diameters, owners)}
           filter={filter}
           filterInfo={filterInfo}
-          // copyMulti={copyMulti}
-          // setCopyMulti={setCopyMulti}
+          copyMulti={copyMulti}
+          setCopyMulti={setCopyMulti}
         />
         <Suspense fallback={<Loading />}>
           <Table
@@ -55,15 +70,15 @@ export default function IFDTableWrapper({
             )}
             data={displayData}
             gridSize={gridSize}
-            id={title}
+            id={id}
             copied={copied}
             changed={changed}
-            // handleChange={handleChange}
-            // handlePaste={handlePaste}
-            // copyToClipBoard={copyToClipBoard}
-            // copyMulti={copyMulti}
-            // deleting={deleting}
-            // handleDelete={handleDelete}
+            handleChange={handleChange}
+            handlePaste={handlePaste}
+            copyToClipBoard={copyToClipBoard}
+            copyMulti={copyMulti}
+            deleting={deleting}
+            handleDelete={handleDelete}
           />
         </Suspense>
       </div>

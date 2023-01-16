@@ -17,10 +17,11 @@ export default function FeedPipesExcelTableWrapper({
   filter,
   handlePaste,
   filterInfo,
-  copyToClipBoard,
   id,
+  page,
   copyMulti,
   setCopyMulti,
+  copyToClipBoard,
   copied,
   changed,
   submitChanges,
@@ -32,8 +33,7 @@ export default function FeedPipesExcelTableWrapper({
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
-  // const gridSize =
-  // ".8fr 3.5fr 7fr .8fr 1.3fr 2fr .9fr .9fr .8fr .7fr .8fr .7fr 3fr";
+
   return (
     <div css={tableWrapperStyle}>
       <FEEDPipesHead
@@ -45,6 +45,8 @@ export default function FeedPipesExcelTableWrapper({
         copyAll={copyAll}
         undoChanges={undoChanges}
         data={displayData}
+        id={id}
+        page={page}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
