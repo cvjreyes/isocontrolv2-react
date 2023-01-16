@@ -18,6 +18,7 @@ export default function FeedPipesExcelTableWrapper({
   handlePaste,
   filterInfo,
   id,
+  page,
   copyMulti,
   setCopyMulti,
   copyToClipBoard,
@@ -44,6 +45,8 @@ export default function FeedPipesExcelTableWrapper({
         copyAll={copyAll}
         undoChanges={undoChanges}
         data={displayData}
+        id={id}
+        page={page}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

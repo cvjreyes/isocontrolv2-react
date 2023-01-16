@@ -20,6 +20,9 @@ import { api } from "../../helpers/api";
 import AddPipe from "./AddPipe/AddPipe";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
+  const id = "feed";
+  const page = "line_control";
+
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [areas, setAreas] = useState(null);
@@ -28,6 +31,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
+
+  // delete all button + not being able to paste?
 
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_feed_pipes");
@@ -309,7 +314,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 filter={handleFilter}
                 handlePaste={handlePaste}
                 filterInfo={filterInfo}
-                id={"feed"}
+                id={id}
+                page={page}
                 changed={changed}
                 submitChanges={submitChanges}
                 deleting={deleting}

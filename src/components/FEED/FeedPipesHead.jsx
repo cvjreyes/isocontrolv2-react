@@ -15,6 +15,8 @@ export default function Header({
   copyAll,
   undoChanges,
   data,
+  id,
+  page,
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ export default function Header({
             text="Add"
             border="1px solid black"
             margin="0 5px"
-            onClick={() => navigate("/feed/line_control/add")}
+            onClick={() => navigate(`/${id}/${page}/add`)}
             bgColor="#0070ED"
             bgHover="#3988e2"
           />
@@ -151,5 +153,6 @@ const rightStyle = {
   ".itemsLength": {
     whiteSpace: "nowrap",
     marginRight: "1.5rem",
+    minWidth: "150px",
   },
 };

@@ -42,11 +42,10 @@ TODO ❌
 Edit Forecast: cuando se añade que no se muevan los elementos
 - usar overflow hidden y fixed height
 
+- change password
+
 - IFD:
   - Main:
-    - owner
-    - paste
-    - submit
     - add entries?
 
   - Tabla My tray (Bandeja donde completar las acciones)
@@ -71,14 +70,39 @@ Edit Forecast: cuando se añade que no se muevan los elementos
   - Tabla Hold
     - Boton Hold (Abre un modal donde puedes ver la descripcion de los holds, puedes añadir y guardar descripciones )
 
+PARA QUE SALGA MODELLED:
+- se importa un csv de 3d
+- este csv rellena dpipes
+- si la línea ya existe => MODELLED
+- si la línea no existía => MODELLED*
+
+OLD
+- se importa el csv
+- del csv se actualiza tabla dpipes ( CRON )
+- de dpipes se comprueba con ifd_pipes 
+- se decide si modelled o modelled*
+- se pasa a otra tabla
+
+NEW
+- attempt to merge csv import with ifd_pipes => comprobar el code in prod ( node_cron de fmc )
+(NODE-CRON)[https://github.com/cvjreyes/node-cron/blob/main/app/src/resources/cron/cron.controller.js]
+- re-write node-cron for it to update ifd_pipes or fallback to use ifd_pipes_aux
+- if estimated => modelled
+- if _ => modelled*
 
 OTHER
-- add error handler for when server is down ( something like 'server is down please contact IT )
-- tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
+  - add error handler for when server is down ( something like 'please hold on' ) {
+    - mientras se actualiza lista de líneas
+    - encontrar solución para que la gente no pueda cambiar cosas
+  }
+  - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
 
 DUDAS JORGE:
 - PREGUNTAR CÁLCULO IFD WEIGHT + aplicar
 - preguntar sequential número de ceros
+
+FEED:
+  - when paste => get values from line_ref
 
 TABLES que no llegué a probar:
 - react-virtualized
