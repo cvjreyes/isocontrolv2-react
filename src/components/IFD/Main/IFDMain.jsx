@@ -15,8 +15,12 @@ import {
 import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
 import Loading from "../../general/Loading";
+import AddPipe from "../../FEED/AddPipe/AddPipe";
 
 function IFDMainComp({ setMessage, setModalContent }) {
+  const id = "ifd";
+  const page = "main";
+
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [areas, setAreas] = useState(null);
@@ -183,6 +187,102 @@ function IFDMainComp({ setMessage, setModalContent }) {
     setFilterInfo({});
   };
 
+  const handlePaste = (e, i, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const name = e.target.name ? e.target.name : e.target.id;
+    const pastedData = e.clipboardData.getData("Text").split("\t");
+    if (pastedData.length === 1) {
+      let ind = pastedData.indexOf("\r");
+      pastedData[0] = pastedData[0].slice(0, ind);
+      return pasteCell(name, i, pastedData[0]);
+    } else if (pastedData.length === 12) {
+      return pasteRow(e, id);
+    } else if (pastedData.length > 12) {
+      return pasteMultipleRows(e, i);
+    }
+  };
+
+  const pasteCell = (name, i, pastedData) => {
+    const tempData = [...data];
+    const idx = tempData.findIndex((item) => item.id === displayData[i].id);
+    let changedRow = { ...tempData[idx] };
+    changedRow[name] = pastedData;
+    if (name === "diameter") {
+      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
+    } else if (name === "line_reference") {
+      // divide line ref ( get u, fl, seq )
+      const values = divideLineReference(changedRow[name], lineRefs);
+      // update fields
+      changedRow = { ...changedRow, ...values };
+      // update tag
+      changedRow.tag = buildTag(changedRow);
+    } else if (name === "tag") {
+      // divide tag
+      const dividedTag = divideTag(pastedData);
+      // update rest
+      changedRow = { ...changedRow, ...dividedTag };
+    } else {
+      changedRow.tag = buildTag(changedRow);
+      changedRow.line_reference = buildLineRef(changedRow);
+    }
+    if (data.some((x) => x.tag === changedRow.tag && x.id !== tempData[idx].id))
+      changedRow.tag = "Already exists";
+    tempData[idx] = changedRow;
+    addToChanged(changedRow.id);
+    filter(tempData);
+    setData(tempData);
+  };
+
+  const pasteRow = (e, id) => {
+    e.clipboardData.items[0].getAsString((text) => {
+      const tempData = [...data];
+      let lines = text.split("\n");
+      lines.forEach((line) => {
+        if (line.length < 1) return;
+        const y = tempData.findIndex((item) => item.id === id);
+        let row = line.split("\t");
+        const builtRow = buildRow(row, id);
+        if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
+          builtRow.tag = "Already exists";
+        tempData[y] = { ...tempData[y], ...builtRow };
+      });
+      addToChanged(id);
+      filter(tempData);
+      setData(tempData);
+    });
+  };
+
+  const pasteMultipleRows = (e, i) => {
+    e.clipboardData.items[0].getAsString((text) => {
+      const tempData = [...data];
+      // get rows as strings
+      let lines = text.split("\n");
+      lines.pop();
+      let toAdd = [];
+      // loop each row
+      lines.forEach((line, x) => {
+        // get idx of iterated element in data
+        const y = tempData.findIndex(
+          (item) => item.id === displayData[i + x].id
+        );
+        // get row in form of array
+        let row = line.split("\t");
+        // build row as object
+        const builtRow = buildRow(row, tempData[y].id);
+        // check for repeated tag
+        if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
+          builtRow.tag = "Already exists";
+        // update tempData
+        tempData[y] = { ...tempData[y], ...builtRow };
+        toAdd.push(displayData[i + x].id);
+      });
+      addToChanged(toAdd);
+      filter(tempData);
+      setData(tempData);
+    });
+  };
+
   const submitChanges = async () => {
     // abstract this into verifyRows or sth
     if (changed.length < 1)
@@ -209,8 +309,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  // paste
-
   // add rows
 
   return (
@@ -219,10 +317,11 @@ function IFDMainComp({ setMessage, setModalContent }) {
         <Route
           path="/"
           element={
-            <CopyContext data={displayData} id={"ifd"}>
+            <CopyContext data={displayData} id={id}>
               <IFDTableWrapper
                 title="IFD"
-                id={"ifd"}
+                id={id}
+                page={page}
                 lineRefs={lineRefs}
                 areas={areas}
                 diameters={diameters}
@@ -238,8 +337,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 handleDelete={handleDelete}
                 undoChanges={undoChanges}
                 submitChanges={submitChanges}
-                // ! MISSSING
-                copied={[]}
                 // handlePaste={handlePaste}
               />
             </CopyContext>
@@ -248,14 +345,13 @@ function IFDMainComp({ setMessage, setModalContent }) {
         <Route
           path="/add"
           element={
-            <div></div>
-            // <AddPipe
-            //   lineRefs={lineRefs}
-            //   areas={areas}
-            //   diameters={diameters}
-            //   setMessage={setMessage}
-            //   data={data}
-            // />
+            <AddPipe
+              lineRefs={lineRefs}
+              areas={areas}
+              diameters={diameters}
+              setMessage={setMessage}
+              data={data}
+            />
           }
         />
       </Routes>

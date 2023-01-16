@@ -1,5 +1,5 @@
 const getType = (d) => {
-  if (import.meta.env.VITE_MMDN === "0") {
+  if (import.meta.env.VITE_NPSDN === "0") {
     if (d < 2.0) {
       //Si el diametro es inferior a 2 pulgadas
       return "TL1";
@@ -97,7 +97,7 @@ export const buildLineRef = (row) => {
 
 export const getTypeFromDiameter = (dia, calc_notes) => {
   if (calc_notes === "NA" || calc_notes === "unset") {
-    if (import.meta.env.VITE_MMDN == "0") {
+    if (import.meta.env.VITE_NPSDN == "0") {
       if (dia < 2.0) return "TL1";
       else return "TL2";
     } else {
@@ -152,9 +152,9 @@ export const checkForEmptyCells = (data) => {
 
 export const buildTagIfFilled = (row) => {
   const someEmtpy = checkForEmptyCellsAdding(row);
-    if (!someEmtpy) {
-      row.tag = buildTag(row);
-      !row.status && (row.status = "ESTIMATED");
-    }
-    return row
-}
+  if (!someEmtpy) {
+    row.tag = buildTag(row);
+    !row.status && (row.status = "ESTIMATED");
+  }
+  return row;
+};

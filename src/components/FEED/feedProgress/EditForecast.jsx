@@ -14,6 +14,9 @@ function EditForecastComp({ setMessage }) {
     forecast: 0,
   });
 
+  // - reset inputs when saved
+  // - no scroll on table
+
   const getData = async () => {
     const { body } = await api("get", "/feed/get_forecast");
     setForecast(body);
