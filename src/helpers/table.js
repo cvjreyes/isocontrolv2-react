@@ -39,18 +39,18 @@ export function copyToClipboard(id, table) {
 
 const buildFeedList = (inputList, valuesList) => {
   return [
-    valuesList[0].innerHTML,
-    inputList[1].value,
-    valuesList[1].innerHTML,
-    inputList[3].value,
-    inputList[4].value,
-    inputList[5].value,
-    valuesList[2].innerHTML,
-    inputList[6].value,
-    inputList[7].value,
-    inputList[8].value,
-    valuesList[3].innerHTML,
-    valuesList[4].innerHTML,
+    valuesList[0].innerHTML, // line_reference
+    inputList[1].value, // tag
+    valuesList[1].innerHTML, // area
+    inputList[3].value, // unit
+    inputList[4].value, // fluid
+    inputList[5].value, // sequential
+    valuesList[2].innerHTML, // diameter
+    inputList[7].value, // spec
+    inputList[8].value, // type
+    inputList[9].value, // insulation
+    valuesList[3].innerHTML, // train
+    valuesList[4].innerHTML, // status
   ];
 };
 

@@ -5,7 +5,6 @@ import { Navigate, Route, Routes } from "react-router";
 
 import IFDMain from "../components/IFD/Main/IFDMain";
 import MyTray from "../components/IFD/MyTray";
-import Reports from "../components/IFD/Reports";
 import Modelled from "../components/IFD/Modelled/Modelled";
 import SStress from "../components/IFD/SStress";
 import RStress from "../components/IFD/RStress";
@@ -30,7 +29,6 @@ export default function IFD() {
         <IFDLayout>
           <Routes>
             <Route exact path="/main/*" element={<IFDMain />} />
-            <Route path="/reports" element={<Reports />} />
             <Route path="/my-tray" element={<MyTray />} />
             <Route path="/modelled" element={<Modelled />} />
             <Route path="/s-stress" element={<SStress />} />

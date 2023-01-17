@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
 import AddTable from "../../table/AddTable";
-import { columnsData } from "../ColumnsData";
+// import { columnsData } from "../ColumnsData";
 import FeedPipesExcelTableHeader from "../FeedPipesExcelTableHeader";
 import {
   checkForAlreadyExists,
@@ -23,12 +23,14 @@ import { row, emptyRows } from "./EmptyRows";
 
 export default function AddPipe({
   lineRefs,
-  areas,
-  diameters,
   setMessage,
   data,
+  columns,
+  id,
+  page,
+  gridSize,
 }) {
-  const gridSize = ".75fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1.3fr 1fr 1fr .9fr 3fr";
+  // const gridSize = ".75fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1.3fr 1fr 1fr .9fr 3fr";
   const navigate = useNavigate();
 
   const [rows, setRows] = useState(emptyRows);
@@ -72,13 +74,12 @@ export default function AddPipe({
       return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
-    console.log(data);
-    const { ok } = await api("post", "/feed/add_pipes", false, { data });
+    const { ok } = await api("post", `/${id}/add_pipes`, false, { data });
     if (ok) {
       setMessage({ txt: "Changes saved!", type: "success" });
       setTimeout(() => {
-        navigate("/feed/line_progress");
-      }, 2000);
+        navigate(`/${id}/${page}`);
+      }, 3000);
     }
   };
 
@@ -201,7 +202,7 @@ export default function AddPipe({
       <div className="wrapper">
         <FeedPipesExcelTableHeader
           gridSize={gridSize}
-          columns={columnsData(lineRefs, areas, diameters)}
+          columns={columns}
           readOnly={true}
           filter={() => {
             return;
@@ -210,11 +211,7 @@ export default function AddPipe({
         />
         <AddTable
           rows={rows}
-          columns={columnsData(
-            lineRefs.map((x) => x.line_ref),
-            areas,
-            diameters
-          )}
+          columns={columns}
           gridSize={gridSize}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
