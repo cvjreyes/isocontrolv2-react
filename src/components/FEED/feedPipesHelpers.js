@@ -33,6 +33,32 @@ export const buildTag = (row) => {
   return tag;
 };
 
+export const isClaimed = (row) => {
+  let claimed = "";
+  if (row.claimed_by) {
+    claimed = "";
+  } else {
+    claimed = "none";
+  }
+  return claimed;
+};
+
+export const buildDate = (row) => {
+  let date = "";
+  let getDate = new Date(row.updated_at);
+  let day = getDate.getDate();
+  let month = getDate.getMonth() + 1;
+  let year = getDate.getFullYear();
+  let hour = getDate.getHours() - 1;
+  let minute = getDate.getMinutes();
+  let second = getDate.getSeconds();
+
+  date =
+    day + "-" + month + "-" + year + " " + hour + ":" + minute + ":" + second;
+    
+  return date;
+};
+
 export const divideTag = (tag) => {
   const dividedTag = tag.split("-");
   const [insulation, train] = dividedTag[6].split("_");
