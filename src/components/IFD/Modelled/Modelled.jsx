@@ -8,8 +8,6 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import Button1 from "../../general/Button1";
 import ModelledRow from "./ModelledRow";
 
-// -
-
 export default function Modelled() {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
