@@ -17,6 +17,7 @@ export default function Button1({
   type,
   padding,
   bgHover,
+  display,
 }) {
   const buttonStyle = {
     width: width || "100%",
@@ -31,6 +32,7 @@ export default function Button1({
     ":hover": {
       background: bgHover,
     },
+    display: display,
   };
 
   return (
