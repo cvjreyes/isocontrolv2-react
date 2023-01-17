@@ -40,8 +40,9 @@ TODO ❌
     - usar overflow hidden y fixed height
   - change password O
   - IFD
-    - tray 
     - Modelled 
+      - botones cursor default NOT pointer
+    - my tray
     - S-Stress 
     - R-Stress 
     - Stress 
