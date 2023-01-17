@@ -33,16 +33,6 @@ export const buildTag = (row) => {
   return tag;
 };
 
-export const isClaimed = (row) => {
-  let claimed = "";
-  if (row.claimed_by) {
-    claimed = "";
-  } else {
-    claimed = "none";
-  }
-  return claimed;
-};
-
 export const buildDate = (row) => {
   let date = "";
   let getDate = new Date(row.updated_at);
@@ -55,7 +45,7 @@ export const buildDate = (row) => {
 
   date =
     day + "-" + month + "-" + year + " " + hour + ":" + minute + ":" + second;
-    
+
   return date;
 };
 
