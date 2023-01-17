@@ -39,6 +39,8 @@ TODO ❌
 
 - Crear select de Roles ( Feed: Speciality Lead || IFD: Design)
 
+- change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
+
 Edit Forecast: cuando se añade que no se muevan los elementos
 - usar overflow hidden y fixed height
 

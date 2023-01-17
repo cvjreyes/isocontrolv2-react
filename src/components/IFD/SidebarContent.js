@@ -2,7 +2,6 @@ export const sidebarContent = {
   title1: "IFD",
   links1: [
     { text: "Main", to: "/ifd/main" },
-    { text: "Report", to: "/ifd/reports" },
     { text: "My Tray", to: "/ifd/my-tray" },
   ],
   title2: "Trays",
