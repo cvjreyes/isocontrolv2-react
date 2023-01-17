@@ -2,10 +2,13 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 import Button1 from "../general/Button1";
 
 export default function Dropdown({ closeMenu, logout }) {
+  const navigate = useNavigate();
+
   const escFunction = useCallback((e) => {
     if (e.key === "Escape") {
       closeMenu();
@@ -21,7 +24,7 @@ export default function Dropdown({ closeMenu, logout }) {
   }, []);
 
   return (
-    <form onSubmit={logout} css={dropdownStyle}>
+    <div css={dropdownStyle}>
       <div className="dropdownElement">
         <Button1
           text="Logout"
@@ -30,9 +33,21 @@ export default function Dropdown({ closeMenu, logout }) {
           color="white"
           border="none"
           padding="10px"
+          onClick={logout}
         />
       </div>
-    </form>
+      <div className="dropdownElement">
+        <Button1
+          text="Change password"
+          className="logout"
+          bgColor="transparent"
+          color="white"
+          border="none"
+          padding="10px"
+          onClick={() => navigate("/change_password")}
+        />
+      </div>
+    </div>
   );
 }
 

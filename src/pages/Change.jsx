@@ -15,14 +15,17 @@ import { URL } from "../helpers/config";
 import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
 import FullTrackerLogo from "../assets/images/3DTracker.svg";
 import Eye from "../assets/images/eye.png";
+import { api } from "../helpers/api";
 
-const LoginComp = ({ setMessage }) => {
+const ChangeComp = ({ setMessage }) => {
   const { login } = useContext(AuthContext);
 
-  const [passwordShown, setPasswordShown] = useState(false);
+  const [oldPasswordShown, setOldPasswordShown] = useState(false);
+  const [newPasswordShown, setNewPasswordShown] = useState(false);
   const [form, setForm] = useState({
     email: "",
-    password: "",
+    old_password: "",
+    new_password: "",
   });
 
   const handleChange = (e) => {
@@ -31,16 +34,20 @@ const LoginComp = ({ setMessage }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const res = await api("post", "/users/change_password", 0, {
+      email: form.email,
+      old_password: form.old_password,
+      new_password: form.new_password,
+    });
+    console.log(res);
+    return;
     try {
-      const res = await axios.post(`${URL}/users/login`, {
-        email: form.email,
-        password: form.password,
-      });
+      const res = await axios.post(`${URL}/users/login`);
       if (!res.data.ok) return setMessage({ type: "warn", txt: res.data.body });
       setTimeout(() => login(res.data.body), 1000);
       setMessage({
         type: "success",
-        txt: `Welcome back, ${res.data.body.email}`,
+        txt: "Password changed successfully!",
       });
     } catch (err) {
       setMessage({
@@ -60,9 +67,10 @@ const LoginComp = ({ setMessage }) => {
           className="isoTrackerLogo"
         />
 
-        <h3 className="welcome">Welcome</h3>
+        <h3 className="change">Change Password</h3>
         <p className="pleaseEnter">
-          Please, enter your e-mail account and password.
+          Please, enter your current password, new password and new password
+          confirmation.
         </p>
         <label htmlFor="email">E-mail</label>
         <div className="inputWrapper">
@@ -74,58 +82,46 @@ const LoginComp = ({ setMessage }) => {
             onChange={handleChange}
           />
         </div>
-        <label htmlFor="password">Password</label>
+        <label htmlFor="old_password">Old Password</label>
         <div className="inputWrapper">
           <Input1
-            id="password"
-            name="password"
-            value={form.password}
-            type={passwordShown ? "text" : "password"}
+            id="old_password"
+            name="old_password"
+            value={form.old_password}
+            type={oldPasswordShown ? "text" : "password"}
             onChange={handleChange}
           />
           <img
-            onClick={() => setPasswordShown((prevVal) => !prevVal)}
+            onClick={() => setOldPasswordShown((prevVal) => !prevVal)}
+            src={Eye}
+            alt="eye"
+            className="eyeStyle pointer"
+          />
+        </div>
+        <label htmlFor="new_password">New Password</label>
+        <div className="inputWrapper">
+          <Input1
+            id="new_password"
+            name="new_password"
+            value={form.new_password}
+            type={newPasswordShown ? "text" : "password"}
+            onChange={handleChange}
+          />
+          <img
+            onClick={() => setNewPasswordShown((prevVal) => !prevVal)}
             src={Eye}
             alt="eye"
             className="eyeStyle pointer"
           />
         </div>
         <Button1
-          text="Log In"
+          text="Save"
           bgColor="#0070ED"
           bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
           color="white"
           border="1px solid #0070ED"
           margin="10px auto 0"
         />
-        <Button1
-          text="Download quick user guide"
-          bgColor="white"
-          border="1px solid black"
-          margin="10px auto 30px"
-          bgHover="linear-gradient(180deg, #AAA -2.23%, #DDD -2.22%, #FFF 148.66%)"
-          // prevents submit to be called ↓
-          type="button"
-          onClick={() =>
-            window.open(
-              "http://wks-fr.exnet.technip.com/sites/GLOBALBPMS/EMIA/ML-380-01%20Isotracker%20QuickUsersGuide.pdf",
-              "_blank"
-            )
-          }
-        />
-        <p>Or you can access to NavisattSelect</p>
-        <Link
-          className="navisattBtn"
-          to={`/${import.meta.env.VITE_PROJECT}/navis`}
-        >
-          <Button1
-            text="NAVISATTSELECT"
-            bgColor="#94DCAA"
-            bgHover="linear-gradient(180deg, #94DCAA -2.23%, #A4ECBA -2.22%, #FFF 148.66%)"
-            border="1px solid #94DCAA"
-            fontWeight="bold"
-          />
-        </Link>
       </form>
     </Main>
   );
@@ -141,11 +137,11 @@ const mainStyle = {
   ".isoTrackerLogo": {
     width: "343.57px",
   },
-  ".welcome": {
+  ".change": {
     fontSize: "25px",
-    margin: "40px 0 0",
+    margin: "30px 0 0",
   },
-  ".pleaseEnter": { margin: "40px 0 30px" },
+  ".pleaseEnter": { margin: "30px 0 30px" },
   label: { fontWeight: "bold" },
   input: { width: "400px" },
   ".inputWrapper": {
@@ -160,16 +156,13 @@ const mainStyle = {
       width: "20px",
     },
   },
-  ".navisattBtn": {
-    margin: "10px 0 0",
-  },
 };
 
 // using this components to use modals
-export default function Login() {
+export default function Change() {
   return (
     <WithToast>
-      <LoginComp />
+      <ChangeComp />
     </WithToast>
   );
 }

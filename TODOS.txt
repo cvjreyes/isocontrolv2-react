@@ -30,47 +30,25 @@ DONE ✔
 - añadir logo isocontrol
 - ADDING ROW
 - que se vea el owner
+- IFD Main
 
 TODO ❌
-- pass progress to feed through url state OR params NOT localStorage
-- añadir 'copied' al clicar copiar
-- mover sidebar arriba
-- añadir piecharts
-
-- Crear select de Roles ( Feed: Speciality Lead || IFD: Design)
-
-- change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
-
-Edit Forecast: cuando se añade que no se muevan los elementos
-- usar overflow hidden y fixed height
-
-- change password
-
-- IFD:
-  - Main:
-    - add entries?
-
-  - Tabla My tray (Bandeja donde completar las acciones)
-    - Boton Next Step (Pasar a la siguiente bandeja)
-    - Boton Unclaim (Para vuelva a la bandeja en la que estaba)
-    - Boton Return (Para que vaya a la bandeja anterior en la que estaba)
-    - Boton Delete (Para borrarla definitivamente)
-
-    - Columna Actions
-      - V (Llevarlo a la tabla de V, Valvulas)
-      - I (Llevarlo a la tabla de I, Instrumentacion)
-      - N/A 
-
-  - Tabla de Modelled (Claim a MyTray)
-  - Tabla de S-Stress (Claim a MyTray)
-  - Tabla de R-Stress (Claim a MyTray)
-  - Tabla de Stress (Claim a MyTray)
-  - Tabla de Supports (Claim a MyTray)
-  - Tabla de S-Design (Claim a MyTray)
-
-  - Tabla Trash ( Para restaurar los modelled que hayas eliminado)
-  - Tabla Hold
-    - Boton Hold (Abre un modal donde puedes ver la descripcion de los holds, puedes añadir y guardar descripciones )
+  - FEED: 
+    - when paste => get values from line_ref
+  - Edit Forecast: 
+    - cuando se añade que no se muevan los elementos
+    - usar overflow hidden y fixed height
+  - change password
+  - IFD
+    - tray 
+    - Modelled 
+    - S-Stress 
+    - R-Stress 
+    - Stress 
+    - Supports 
+    - S-Design 
+    - Trash 
+    - Hold
 
 PARA QUE SALGA MODELLED:
 - se importa un csv de 3d
@@ -92,19 +70,12 @@ NEW
 - if estimated => modelled
 - if _ => modelled*
 
-OTHER
-  - add error handler for when server is down ( something like 'please hold on' ) {
+FUTURO:
+  - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
+  - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
+  - add error handler for when server is down ( something like 'please hold on' )
     - mientras se actualiza lista de líneas
     - encontrar solución para que la gente no pueda cambiar cosas
-  }
-  - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
-
-DUDAS JORGE:
-- PREGUNTAR CÁLCULO IFD WEIGHT + aplicar
-- preguntar sequential número de ceros
-
-FEED:
-  - when paste => get values from line_ref
 
 TABLES que no llegué a probar:
 - react-virtualized

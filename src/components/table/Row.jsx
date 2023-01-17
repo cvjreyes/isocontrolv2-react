@@ -1,8 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React from "react";
+import React, { useState } from "react";
 import Select from "react-select";
+import Copied from "../../modals/Copied";
 
 const Row = React.memo(
   ({
@@ -21,6 +22,18 @@ const Row = React.memo(
     handleDelete,
   }) => {
     const rowId = `${id}${i}`;
+
+    const [showCopied, setShowCopied] = useState(false);
+
+    const showCopiedFunc = () => {
+      if (!showCopied) {
+        setShowCopied(true);
+        setTimeout(() => {
+          setShowCopied(false);
+        }, 1200);
+      }
+      return true;
+    };
 
     const rowStyle = {
       transition: "all 200ms linear",
@@ -86,6 +99,7 @@ const Row = React.memo(
       border: "solid black",
       borderWidth: "1px 0 0 1px",
       textAlign: "center",
+      position: "relative",
       span: {
         display: copyMulti ? "none" : "block",
       },
@@ -114,13 +128,14 @@ const Row = React.memo(
           if (x.key === "empty")
             return (
               <div
-                onClick={() => copyToClipBoard(rowId)}
+                onClick={() => showCopiedFunc() && copyToClipBoard(rowId)}
                 key={`${i}${y}`}
                 className="pointer id"
                 css={idWrapper}
               >
                 <span>{item.id}</span>
                 <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" />
+                {showCopied && <Copied />}
               </div>
             );
           if (x.readOnly) {
