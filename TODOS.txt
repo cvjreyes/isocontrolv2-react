@@ -38,7 +38,7 @@ TODO ❌
   - Edit Forecast: 
     - cuando se añade que no se muevan los elementos
     - usar overflow hidden y fixed height
-  - change password
+  - change password O
   - IFD
     - tray 
     - Modelled 
