@@ -20,7 +20,7 @@ export default function Modelled() {
     { text: "Tag", key: "tag" },
     { text: "Type", key: "type" },
     { text: "Date", key: "updated_at" },
-    { text: "User", key: "claimed_by" },
+    { text: "User", key: "owner" },
     { text: "%", key: "progress" },
     { text: "Actions", key: "actions" },
   ];
