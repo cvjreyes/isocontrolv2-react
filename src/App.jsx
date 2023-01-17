@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import FEED from "./pages/FEED";
 import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
+import Change from "./pages/Change";
 // import Signup from "./views/Signup";
 // import Change from "./views/Change";
 // import Forgot from "./views/Forgot";
@@ -42,16 +43,16 @@ export default function App() {
             element={<PrivateRoute component={IFD} />}
           />
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
+          <Route
+            exact
+            path="/change_password"
+            element={<PrivateRoute restricted={true} component={Change} />}
+          />
           {/* 
           <Route
             exact
             path="/signup"
             element={<PublicRoute restricted={false} component={Signup} />}
-          />
-          <Route
-            exact
-            path="/change_password"
-            element={<PrivateRoute restricted={true} component={Change} />}
           />
           <Route
             exact

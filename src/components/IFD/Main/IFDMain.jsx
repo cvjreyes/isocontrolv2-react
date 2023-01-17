@@ -27,6 +27,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
 
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
+  const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
   const [diameters, setDiameters] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
@@ -47,6 +48,12 @@ function IFDMainComp({ setMessage, setModalContent }) {
       tag: buildTag(row),
     }));
     setData(rows);
+  };
+
+  const getFeedPipes = async () => {
+    const { body: rows } = await api("get", "/feed/get_feed_pipes");
+    rows.map((row) => (row.tag = buildTag(row)));
+    setFeedPipes(rows);
   };
 
   useEffect(() => {
@@ -70,6 +77,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         setDisplayData(rows);
       });
     };
+    getFeedPipes();
     getThings();
   }, []);
 
@@ -313,8 +321,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  // add rows
-
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
@@ -353,7 +359,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
             <AddPipe
               lineRefs={lineRefs}
               setMessage={setMessage}
-              data={data}
+              data={[...data, ...feedPipes]}
               columns={columnsData(
                 lineRefs.map((x) => x.line_ref),
                 areas,
