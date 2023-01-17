@@ -16,8 +16,12 @@ import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
 import Loading from "../../general/Loading";
 import AddPipe from "../../FEED/AddPipe/AddPipe";
+import { columnsData } from "../ColumnsData";
 
 function IFDMainComp({ setMessage, setModalContent }) {
+  const gridSize =
+    "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
+  const gridSizeAdd = "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr";
   const id = "ifd";
   const page = "main";
 
@@ -337,6 +341,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 handleDelete={handleDelete}
                 undoChanges={undoChanges}
                 submitChanges={submitChanges}
+                gridSize={gridSize}
                 // handlePaste={handlePaste}
               />
             </CopyContext>
@@ -347,10 +352,17 @@ function IFDMainComp({ setMessage, setModalContent }) {
           element={
             <AddPipe
               lineRefs={lineRefs}
-              areas={areas}
-              diameters={diameters}
               setMessage={setMessage}
               data={data}
+              columns={columnsData(
+                lineRefs.map((x) => x.line_ref),
+                areas,
+                diameters,
+                owners.map((x) => x.name)
+              ).slice(0, -1)}
+              id={id}
+              page={page}
+              gridSize={gridSizeAdd}
             />
           }
         />
