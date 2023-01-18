@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import Button1 from "../general/Button1";
+import Button1 from "../../general/Button1";
 
-export default function TrayTableRow({
+export default function ModelledRow({
   row,
   titles,
   addToDataClaim,
@@ -17,10 +17,9 @@ export default function TrayTableRow({
             <div
               key={title.key}
               className="cell flexCenter pointer"
-              onClick={() => !row.owner && addToDataClaim(row.id)}
+              onClick={() => addToDataClaim(row.id)}
             >
               <input
-                disabled={row.owner}
                 type="checkbox"
                 checked={dataToClaim.includes(row.id)}
                 onChange={() => addToDataClaim(row.id)}

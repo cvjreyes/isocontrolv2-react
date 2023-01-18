@@ -3,34 +3,78 @@
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 
+import WithToast from "../../../modals/Toast";
 import Button1 from "../../general/Button1";
+import MyTrayTable from "./MyTrayTable";
+import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 
 // TODOS:
-// - get data
-// - show data
 // - calculate next step and return
 // - functionality unclaim
 // - functionality next step
 // - functionality return
 
-export default function MyTray() {
-  const [pipes, setPipes] = useState(null);
+function MyTrayComp({ setMessage }) {
+  const [data, setData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
+  const [dataToClaim, setDataToClaim] = useState([]);
 
   useEffect(() => {
     const getMyPipes = async () => {
-      const { body: tempPipes } = await api("get", "/ifd/get_my_pipes");
-      console.log(tempPipes);
-      setPipes(tempPipes);
+      const { body: pipes } = await api("get", "/ifd/get_my_pipes");
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
     };
     getMyPipes();
   }, []);
 
-  const unclaim = async () => {};
+  const addToDataClaim = (id) => {
+    const tempDataToClaim = [...dataToClaim];
+    const index = tempDataToClaim.indexOf(id);
+    if (index > -1) tempDataToClaim.splice(index, 1);
+    else tempDataToClaim.push(id);
+    setDataToClaim(tempDataToClaim);
+  };
+
+  const updatePipesDisplay = () => {
+    let results = [];
+    data.forEach((x) => {
+      if (!dataToClaim.includes(x.id)) {
+        results.push(x);
+      }
+    });
+    setData(results);
+    filter(results);
+  };
+
+  const unclaim = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to unclaim", type: "warn" });
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    const { ok } = await api("post", "/ifd/unclaim_ifd_pipes", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      updatePipesDisplay();
+      setDataToClaim([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
 
   const nextStep = async () => {};
 
   const returnPipe = async () => {};
+
+  const filter = (passedData) => {
+    setDisplayData(passedData);
+  };
 
   return (
     <div css={myTrayStyle}>
@@ -60,10 +104,11 @@ export default function MyTray() {
           />
         </div>
       </div>
-      <div className="table">
-        <div>header</div>
-        <div>table</div>
-      </div>
+      <MyTrayTable
+        data={displayData}
+        addToDataClaim={addToDataClaim}
+        dataToClaim={dataToClaim}
+      />
     </div>
   );
 }
@@ -82,3 +127,12 @@ const myTrayStyle = {
     overflowY: "scroll",
   },
 };
+
+// using this components to use modals
+export default function MyTray() {
+  return (
+    <WithToast>
+      <MyTrayComp />
+    </WithToast>
+  );
+}
