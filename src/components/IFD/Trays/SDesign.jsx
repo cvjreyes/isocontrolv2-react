@@ -9,7 +9,7 @@ import { buildDate, buildTag } from "../FEED/feedPipesHelpers";
 import { AuthContext } from "../../context/AuthContext";
 import TrayTable from "./TrayTable";
 
-function ModelledComp({ setMessage }) {
+function SDesignComp({ setMessage }) {
   const { user } = useContext(AuthContext);
 
   const [data, setData] = useState([]);
@@ -17,13 +17,13 @@ function ModelledComp({ setMessage }) {
   const [dataToClaim, setDataToClaim] = useState([]);
 
   useEffect(() => {
-    getModelledIFDPipes();
+    getSDesignIFDPipes();
   }, []);
 
-  const getModelledIFDPipes = async () => {
+  const getSDesignIFDPipes = async () => {
     const { body: pipes } = await api(
       "get",
-      "/ifd/get_ifd_pipes_from_tray/modelled"
+      "/ifd/get_ifd_pipes_from_tray/sdesign"
     );
     const rows = pipes.map((row) => ({
       ...row,
@@ -80,7 +80,7 @@ function ModelledComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="Modelled"
+      title="S-Design"
       data={displayData}
       handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
@@ -90,10 +90,10 @@ function ModelledComp({ setMessage }) {
 }
 
 // using this components to use modals
-export default function Modelled() {
+export default function SDesign() {
   return (
     <WithToast>
-      <ModelledComp />
+      <SDesignComp />
     </WithToast>
   );
 }
