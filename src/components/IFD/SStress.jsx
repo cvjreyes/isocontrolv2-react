@@ -17,10 +17,10 @@ function SStressComp({ setMessage }) {
   const [dataToClaim, setDataToClaim] = useState([]);
 
   useEffect(() => {
-    getModelledIFDPipes();
+    getSStressIFDPipes();
   }, []);
 
-  const getModelledIFDPipes = async () => {
+  const getSStressIFDPipes = async () => {
     const { body: pipes } = await api("get", "/ifd/get_ifd_pipes_from_tray/s-stress");
     const rows = pipes.map((row) => ({
       ...row,
