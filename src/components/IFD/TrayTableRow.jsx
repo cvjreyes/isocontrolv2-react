@@ -1,9 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import Button1 from "../../general/Button1";
+import Button1 from "../general/Button1";
 
-export default function ModelledRow({ row, titles, addToDataClaim, dataToClaim }) {
+export default function TrayTableRow({ row, titles, addToDataClaim, dataToClaim }) {
   return (
     <div className="grid">
       {titles.map((title) => {

@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from "react-router";
 
 import IFDMain from "../components/IFD/Main/IFDMain";
 import MyTray from "../components/IFD/MyTray";
-import Modelled from "../components/IFD/Modelled/Modelled";
+import Modelled from "../components/IFD/Modelled";
 import SStress from "../components/IFD/SStress";
 import RStress from "../components/IFD/RStress";
 import Stress from "../components/IFD/Stress";
