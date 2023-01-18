@@ -3,14 +3,14 @@
 import { jsx } from "@emotion/react";
 import Button1 from "../../general/Button1";
 
-export default function ModelledRow({ row, titles }) {
+export default function ModelledRow({ row, titles, addToDataClaim, dataToClaim }) {
   return (
     <div className="grid">
       {titles.map((title) => {
         if (title.key === "claim") {
           return (
             <div key={title.key} className="flexCenter cell">
-              <input type="checkbox" />
+              <input disabled={row.owner} type="checkbox" checked={dataToClaim.includes(row.id)} onChange={() => addToDataClaim(row.id)}/>
             </div>
           );
         } else if (title.key === "progress") {
