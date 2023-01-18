@@ -9,7 +9,7 @@ export default function MyTrayTable({ data, addToDataClaim, dataToClaim }) {
     { text: "Tag", key: "tag" },
     { text: "Type", key: "type" },
     { text: "Date", key: "updated_at" },
-    { text: "Current Tray", key: "current_tray" },
+    { text: "Current Tray", key: "status" },
     { text: "Next Step", key: "next_step" },
     { text: "%", key: "progress" },
     { text: "IsoTracker", key: "in_isotracker" },
@@ -31,8 +31,6 @@ export default function MyTrayTable({ data, addToDataClaim, dataToClaim }) {
       },
     },
   };
-
-  // console.log(data);
 
   return (
     <div css={modelledStyle}>

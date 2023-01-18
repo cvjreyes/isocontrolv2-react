@@ -10,10 +10,11 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 
 // TODOS:
-// - calculate next step and return
-// - functionality unclaim
-// - functionality next step
-// - functionality return
+// - when next step => remove owner ???
+// - next step to isotracker, alert?
+// - next step update data
+// - return functionality
+// - return update data
 
 function MyTrayComp({ setMessage }) {
   const [data, setData] = useState([]);
@@ -27,6 +28,7 @@ function MyTrayComp({ setMessage }) {
         ...row,
         tag: buildTag(row),
         updated_at: buildDate(row),
+        in_isotracker: row.status.includes("S-Design") ? "Yes" : "No",
       }));
       setData(rows);
       setDisplayData(rows);
@@ -42,7 +44,7 @@ function MyTrayComp({ setMessage }) {
     setDataToClaim(tempDataToClaim);
   };
 
-  const updatePipesDisplay = () => {
+  const updatePipesUnclaim = () => {
     let results = [];
     data.forEach((x) => {
       if (!dataToClaim.includes(x.id)) {
@@ -53,6 +55,10 @@ function MyTrayComp({ setMessage }) {
     filter(results);
   };
 
+  const updatePipesNextStep = () => {
+    console.log("yes");
+  };
+
   const unclaim = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to unclaim", type: "warn" });
@@ -61,16 +67,42 @@ function MyTrayComp({ setMessage }) {
       data: dataToSend,
     });
     if (ok) {
-      updatePipesDisplay();
+      updatePipesUnclaim();
       setDataToClaim([]);
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
-  const nextStep = async () => {};
+  const nextStep = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to unclaim", type: "warn" });
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    const { ok } = await api("post", "/ifd/next_step", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      updatePipesNextStep();
+      setDataToClaim([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
 
-  const returnPipe = async () => {};
+  const returnPipe = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to unclaim", type: "warn" });
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    const { ok } = await api("post", "/ifd/return", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      updatePipesNextStep();
+      setDataToClaim([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
 
   const filter = (passedData) => {
     setDisplayData(passedData);
@@ -87,20 +119,23 @@ function MyTrayComp({ setMessage }) {
           <Button1
             text="Unclaim"
             onClick={unclaim}
-            width="150px"
+            width="130px"
             border="1px solid black"
+            margin="0 10px 0 0"
           />
           <Button1
             text="Next Step"
             onClick={nextStep}
-            width="150px"
+            width="130px"
             border="1px solid black"
+            margin="0 10px 0 0"
           />
           <Button1
             text="Return"
             onClick={returnPipe}
-            width="150px"
+            width="130px"
             border="1px solid black"
+            margin="0 10px 0 0"
           />
         </div>
       </div>
