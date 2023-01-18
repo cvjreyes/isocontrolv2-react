@@ -9,7 +9,7 @@ import { buildDate, buildTag } from "../FEED/feedPipesHelpers";
 import { AuthContext } from "../../context/AuthContext";
 import TrayTable from "./TrayTable";
 
-function SupportsComp({ setMessage }) {
+function StressComp({ setMessage }) {
   const { user } = useContext(AuthContext);
 
   const [data, setData] = useState([]);
@@ -17,11 +17,11 @@ function SupportsComp({ setMessage }) {
   const [dataToClaim, setDataToClaim] = useState([]);
 
   useEffect(() => {
-    getSupportsIFDPipes();
+    getStressIFDPipes();
   }, []);
 
-  const getSupportsIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes_from_tray/supports");
+  const getStressIFDPipes = async () => {
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes_from_tray/stress");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -77,7 +77,7 @@ function SupportsComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="S-Stress"
+      title="Stress"
       data={displayData}
       handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
@@ -87,10 +87,10 @@ function SupportsComp({ setMessage }) {
 }
 
 // using this components to use modals
-export default function Supports() {
+export default function Stress() {
   return (
     <WithToast>
-      <SupportsComp />
+      <StressComp />
     </WithToast>
   );
 }
