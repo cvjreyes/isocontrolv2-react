@@ -1,53 +1,27 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
+import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import Button1 from "../../general/Button1";
-import ModelledRow from "./ModelledRow";
+import { AuthContext } from "../../../context/AuthContext";
+import TrayTable from "../TrayTable";
 
-// -
+function ModelledComp({ setMessage }) {
+  const { user } = useContext(AuthContext);
 
-export default function Modelled() {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
+  const [dataToClaim, setDataToClaim] = useState([]);
 
-  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 1.2fr 0.3fr 0.8fr";
-  const titles = [
-    { text: "Claim", key: "claim" },
-    { text: "Tag", key: "tag" },
-    { text: "Type", key: "type" },
-    { text: "Date", key: "updated_at" },
-    { text: "User", key: "owner" },
-    { text: "%", key: "progress" },
-    { text: "Actions", key: "actions" },
-  ];
-
-  const modelledStyle = {
-    ".head": {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      marginBottom: "10px",
-    },
-    ".table": {
-      border: "solid black",
-      borderWidth: "1px 0 0 1px",
-    },
-    ".grid": {
-      display: "grid",
-      gridTemplateColumns: gridSize,
-      ".cell": {
-        border: "solid black",
-        borderWidth: "0 1px 1px 0",
-        padding: "5%",
-      },
-    },
-  };
+  useEffect(() => {
+    getModelledIFDPipes();
+  }, []);
 
   const getModelledIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_modelled_ifd_pipes");
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes_from_tray/modelled");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -57,33 +31,66 @@ export default function Modelled() {
     setDisplayData(rows);
   };
 
-  useEffect(() => {
-    getModelledIFDPipes();
-  }, []);
+  const updatePipesDisplay = () => {
+    const tempData = [...data];
+    tempData.map((x) => {
+      if (dataToClaim.includes(x.id)) {
+        x.owner = user.name;
+      }
+    });
+    setData(tempData);
+    filter(tempData);
+  };
+
+  const handleClaim = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to claim", type: "warn" });
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    const { ok } = await api("post", "/ifd/claim_ifd_pipes", 0, {
+      data: dataToSend,
+    });
+    if (ok) {
+      updatePipesDisplay();
+      setDataToClaim([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
+
+  const addToDataClaim = (id) => {
+    const tempDataToClaim = [...dataToClaim];
+    const index = tempDataToClaim.indexOf(id);
+
+    if (index > -1) {
+      // only splice array when item is found
+      tempDataToClaim.splice(index, 1); // 2nd parameter means remove one item only
+    } else {
+      tempDataToClaim.push(id);
+    }
+
+    setDataToClaim(tempDataToClaim);
+  };
+
+  const filter = (passedData) => {
+    setDisplayData(passedData);
+  };
 
   return (
-    <div css={modelledStyle}>
-      <div className="head">
-        <div />
-        <div className="flexCenter">Modelled</div>
-        <div className="flexCenter">
-          <Button1 text="Claim" width="150px" border="1px solid black" />
-        </div>
-      </div>
-      <div className="table">
-        <div className="grid">
-          {titles.map((title) => {
-            return (
-              <div key={title.text} className="flexCenter cell">
-                <h4 className="bold">{title.text}</h4>
-              </div>
-            );
-          })}
-        </div>
-        {displayData.map((row) => (
-          <ModelledRow key={row.id} row={row} titles={titles} />
-        ))}
-      </div>
-    </div>
+    <TrayTable
+      title="Modelled"
+      data={displayData}
+      handleClaim={handleClaim}
+      addToDataClaim={addToDataClaim}
+      dataToClaim={dataToClaim}
+    />
+  );
+}
+
+// using this components to use modals
+export default function Modelled() {
+  return (
+    <WithToast>
+      <ModelledComp />
+    </WithToast>
   );
 }

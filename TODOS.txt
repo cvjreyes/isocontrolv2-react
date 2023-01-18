@@ -42,6 +42,8 @@ TODO ❌
   - IFD
     - Modelled 
       - botones cursor default NOT pointer
+      - Boton de claim
+        - Que se escriba el owner y se envie a la bandeja my tray y cambiar el progress
     - my tray
     - S-Stress 
     - R-Stress 

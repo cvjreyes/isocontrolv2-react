@@ -4,7 +4,7 @@ import { jsx } from "@emotion/react";
 import { Navigate, Route, Routes } from "react-router";
 
 import IFDMain from "../components/IFD/Main/IFDMain";
-import MyTray from "../components/IFD/MyTray";
+import MyTray from "../components/IFD/MyTray/MyTray";
 import Modelled from "../components/IFD/Modelled/Modelled";
 import SStress from "../components/IFD/SStress";
 import RStress from "../components/IFD/RStress";
