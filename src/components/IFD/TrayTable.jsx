@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import Button1 from "../general/Button1";
-import ModelledRow from "./Modelled/ModelledRow";
+import RowTray from "./TrayTableRow";
 
 export default function TrayTable({ data, handleClaim, addToDataClaim, title, dataToClaim }) {
   const titles = [
@@ -63,7 +63,7 @@ export default function TrayTable({ data, handleClaim, addToDataClaim, title, da
           })}
         </div>
         {data.map((row) => (
-          <ModelledRow
+          <RowTray
             key={row.id}
             row={row}
             titles={titles}
