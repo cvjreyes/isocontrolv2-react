@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import Button1 from "../general/Button1";
+import Button1 from "../../general/Button1";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({ data, handleClaim, addToDataClaim, title, dataToClaim }) {
