@@ -3,11 +3,11 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
-import WithToast from "../../modals/Toast";
-import { api } from "../../helpers/api";
-import { buildDate, buildTag } from "../FEED/feedPipesHelpers";
-import { AuthContext } from "../../context/AuthContext";
-import TrayTable from "./TrayTable";
+import WithToast from "../../../modals/Toast";
+import { api } from "../../../helpers/api";
+import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
+import { AuthContext } from "../../../context/AuthContext";
+import TrayTable from "../TrayTable/TrayTable";
 
 function RStressComp({ setMessage }) {
   const { user } = useContext(AuthContext);

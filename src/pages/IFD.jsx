@@ -5,12 +5,12 @@ import { Navigate, Route, Routes } from "react-router";
 
 import IFDMain from "../components/IFD/Main/IFDMain";
 import MyTray from "../components/IFD/MyTray/MyTray";
-import Modelled from "../components/IFD/Modelled";
-import SStress from "../components/IFD/SStress";
-import RStress from "../components/IFD/RStress";
-import Stress from "../components/IFD/Stress";
-import Supports from "../components/IFD/Supports";
-import SDesign from "../components/IFD/SDesign";
+import Modelled from "../components/IFD/Trays/Modelled";
+import SStress from "../components/IFD/Trays/SStress";
+import RStress from "../components/IFD/Trays/RStress";
+import Stress from "../components/IFD/Trays/Stress";
+import Supports from "../components/IFD/Trays/Supports";
+import SDesign from "../components/IFD/Trays/SDesign";
 import { sidebarContent } from "../components/IFD/SidebarContent";
 import Sidebar from "../components/sidebar/Sidebar";
 import Main from "../layouts/Main";

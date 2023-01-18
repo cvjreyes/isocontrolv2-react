@@ -3,11 +3,11 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
-import WithToast from "../../modals/Toast";
-import { api } from "../../helpers/api";
-import { buildDate, buildTag } from "../FEED/feedPipesHelpers";
-import { AuthContext } from "../../context/AuthContext";
-import TrayTable from "./TrayTable";
+import WithToast from "../../../modals/Toast";
+import { api } from "../../../helpers/api";
+import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
+import { AuthContext } from "../../../context/AuthContext";
+import TrayTable from "../TrayTable/TrayTable";
 
 function SupportsComp({ setMessage }) {
   const { user } = useContext(AuthContext);
@@ -21,7 +21,10 @@ function SupportsComp({ setMessage }) {
   }, []);
 
   const getSupportsIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes_from_tray/supports");
+    const { body: pipes } = await api(
+      "get",
+      "/ifd/get_ifd_pipes_from_tray/supports"
+    );
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),

@@ -7,7 +7,7 @@ import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { AuthContext } from "../../../context/AuthContext";
-import TrayTable from "../TrayTable";
+import TrayTable from "../TrayTable/TrayTable";
 
 function ModelledComp({ setMessage }) {
   const { user } = useContext(AuthContext);
