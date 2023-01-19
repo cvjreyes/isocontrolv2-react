@@ -45,7 +45,8 @@ const Row = React.memo(
       "input, select": {
         backgroundColor:
           (item.tag === "Already exists" && "orange") ||
-          (changed.includes(item.id) && "rgb(0, 188, 6)"),
+          (changed.includes(item.id) && "rgb(0, 188, 6)") ||
+          (item.ifd_status && item.ifd_status !== "ESTIMATED" && "lightgray"),
         webkitTransition: "background-color 300ms linear",
         msTransition: "background-color 300ms linear",
         transition: "background-color 300ms linear",
@@ -61,6 +62,16 @@ const Row = React.memo(
         borderWidth: "1px 0 0 1px",
         lineHeight: "50px",
         position: "relative",
+        backgroundColor:
+          item.ifd_status &&
+          item.ifd_status !== "ESTIMATED" &&
+          "lightgray !important",
+        div: {
+          backgroundColor:
+            item.ifd_status &&
+            item.ifd_status !== "ESTIMATED" &&
+            "lightgray !important",
+        },
         ".css-13cymwt-control, .css-t3ipsp-control": {
           cursor: "pointer",
           backgroundColor:
@@ -166,6 +177,7 @@ const Row = React.memo(
                   IndicatorSeparator: () => null,
                 }}
                 closeMenuOnScroll={true}
+                isDisabled={item.ifd_status && item.ifd_status !== "ESTIMATED"}
               />
               <img src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png" />
             </div>

@@ -41,15 +41,26 @@ export default function TrayTableRow({
                 bgColor={row.valve && "#28a745"}
                 text="V"
                 border="1px solid black"
-                width="45%"
+                width="30%"
               />
               <Button1
                 color={row.instrument && "white"}
                 bgColor={row.instrument && "#28a745"}
                 text="I"
                 border="1px solid black"
-                width="45%"
+                width="30%"
                 margin="0 0 0 10px"
+              />
+              <Button1
+                color={row.NA && "white"}
+                bgColor={row.NA && "#28a745"}
+                text="N/A"
+                border="1px solid black"
+                width="30%"
+                padding="10px 0"
+                margin="0 0 0 10px"
+                onClick={(e) => handleClick(e, row.id)}
+                name="NA"
               />
             </div>
           );
