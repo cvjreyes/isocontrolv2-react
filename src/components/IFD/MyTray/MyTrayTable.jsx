@@ -3,7 +3,13 @@
 import { jsx } from "@emotion/react";
 import MyTrayRow from "./MyTrayRow";
 
-export default function MyTrayTable({ data, addToDataClaim, dataToClaim }) {
+export default function MyTrayTable({
+  data,
+  addToDataClaim,
+  dataToClaim,
+  handleClick,
+  changed,
+}) {
   const titles = [
     { text: "Claim", key: "claim" },
     { text: "Tag", key: "tag" },
@@ -50,6 +56,9 @@ export default function MyTrayTable({ data, addToDataClaim, dataToClaim }) {
           titles={titles}
           addToDataClaim={addToDataClaim}
           dataToClaim={dataToClaim}
+          handleClick={handleClick}
+          changed={changed}
+          gridSize={gridSize}
         />
       ))}
     </div>
