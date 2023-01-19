@@ -36,19 +36,28 @@ DONE ✔
 TODO ❌
   - change password O
   - FEED: 
-    - style
+    - style:
       - line control
       - add
       - forecast
     - when paste => get values from line_ref
     - forecast value NOT ZERO
   - IFD
+    - style:
+      - main
+      - add
+      - my tray
+        - arriba
+      - trays
+        - title bigger
+        - arriba
+    - Main paste
+    - add ifd => diff component + paste
     - Modelled 
       - botones cursor default NOT pointer
     - my tray
       - return to modelled* once csv is implemented
     - Trash 
-    - Hold
 
 PARA QUE SALGA MODELLED:
 - se importa un csv de 3d
