@@ -3,5 +3,4 @@ ESTILIZAR:
 - IFD Pipes Table
 
 FUNCIONALIDAD:
-- pointer en dropdown de mode
 - close dropdown on click delete table
