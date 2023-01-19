@@ -8,9 +8,23 @@ export default function ModelledRow({
   titles,
   addToDataClaim,
   dataToClaim,
+  handleClick,
+  gridSize,
+  changed,
 }) {
+  const rowStyle = {
+    display: "grid",
+    gridTemplateColumns: gridSize,
+    backgroundColor: changed.includes(row.id) ? "#2fc1383b" : null,
+    ".cell": {
+      border: "solid black",
+      borderWidth: "0 1px 1px 0",
+      padding: "5%",
+    },
+  };
+
   return (
-    <div className="grid">
+    <div css={rowStyle}>
       {titles.map((title) => {
         if (title.key === "claim") {
           return (
@@ -40,15 +54,32 @@ export default function ModelledRow({
                 bgColor={row.valve && "#28a745"}
                 text="V"
                 border="1px solid black"
-                width="45%"
+                width="30%"
+                padding="10px 0"
+                onClick={(e) => handleClick(e, row.id)}
+                name="valve"
               />
               <Button1
                 color={row.instrument && "white"}
                 bgColor={row.instrument && "#28a745"}
                 text="I"
                 border="1px solid black"
-                width="45%"
+                width="30%"
+                padding="10px 0"
                 margin="0 0 0 10px"
+                onClick={(e) => handleClick(e, row.id)}
+                name="instrument"
+              />
+              <Button1
+                color={row.NA && "white"}
+                bgColor={row.NA && "#28a745"}
+                text="N/A"
+                border="1px solid black"
+                width="30%"
+                padding="10px 0"
+                margin="0 0 0 10px"
+                onClick={(e) => handleClick(e, row.id)}
+                name="NA"
               />
             </div>
           );
