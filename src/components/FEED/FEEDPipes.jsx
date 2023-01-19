@@ -38,9 +38,13 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_feed_pipes");
-    rows.map((row) => (row.tag = buildTag(row)));
-    setData(rows);
-    setDisplayData(rows);
+    const rows2 = rows.map((row) => ({
+      ...row,
+      tag: buildTag(row),
+      ifd_modelled: row.ifd_status === "ESTIMATED",
+    }));
+    setData(rows2);
+    setDisplayData(rows2);
   };
 
   useEffect(() => {

@@ -10,10 +10,6 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 import { calculateNextStep } from "../IFDPipeHelpers";
 
-// TODOS:
-// - if modelled in ifd => status unchangeable in feed
-// - return to modelled* ???
-
 function MyTrayComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);

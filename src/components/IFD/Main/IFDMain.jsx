@@ -18,6 +18,10 @@ import Loading from "../../general/Loading";
 import AddPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
 
+// TODOS
+// - si se añade en ifd se añade en feed como modelled?
+// - si se elimina una pipe en ifd se elimina en feed?
+
 function IFDMainComp({ setMessage, setModalContent }) {
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
