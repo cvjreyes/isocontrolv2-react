@@ -10,8 +10,6 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 
 // TODOS:
-// - when next step => remove owner ???
-// - next step to isotracker, alert?
 // - next step update data
 // - return functionality
 // - return update data
@@ -78,6 +76,8 @@ function MyTrayComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to unclaim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    if (dataToSend.some((x) => x.status === "S-Design"))
+      return setMessage({ txt: "Some pipe is complete", type: "warn" });
     const { ok } = await api("post", "/ifd/next_step", 0, {
       data: dataToSend,
     });
