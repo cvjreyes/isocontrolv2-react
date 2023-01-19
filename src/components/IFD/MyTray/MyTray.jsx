@@ -10,27 +10,32 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 
 // TODOS:
+// - boton NA + alerta
+// - if modelled in ifd => status unchangeable in feed
 // - next step update data
 // - return functionality
 // - return update data
+// - return to modelled* ???
 
 function MyTrayComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
 
+  const getMyPipes = async () => {
+    const { body: pipes } = await api("get", "/ifd/get_my_pipes");
+    const rows = pipes.map((row) => ({
+      ...row,
+      tag: buildTag(row),
+      updated_at: buildDate(row),
+      in_isotracker: row.status.includes("S-Design") ? "Yes" : "No",
+    }));
+    console.log(rows);
+    setData(rows);
+    setDisplayData(rows);
+  };
+
   useEffect(() => {
-    const getMyPipes = async () => {
-      const { body: pipes } = await api("get", "/ifd/get_my_pipes");
-      const rows = pipes.map((row) => ({
-        ...row,
-        tag: buildTag(row),
-        updated_at: buildDate(row),
-        in_isotracker: row.status.includes("S-Design") ? "Yes" : "No",
-      }));
-      setData(rows);
-      setDisplayData(rows);
-    };
     getMyPipes();
   }, []);
 
@@ -82,7 +87,8 @@ function MyTrayComp({ setMessage }) {
       data: dataToSend,
     });
     if (ok) {
-      updatePipesNextStep();
+      getMyPipes();
+      // updatePipesNextStep();
       setDataToClaim([]);
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
@@ -93,6 +99,8 @@ function MyTrayComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to unclaim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    if (dataToSend.some((x) => x.status.toLowerCase().includes("modelled")))
+      return setMessage({ txt: "Some pipe is complete", type: "warn" });
     const { ok } = await api("post", "/ifd/return", 0, {
       data: dataToSend,
     });
