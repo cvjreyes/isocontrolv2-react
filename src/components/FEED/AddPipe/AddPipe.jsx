@@ -87,7 +87,7 @@ export default function AddPipe({
     setRows(emptyRows);
   };
 
-  const handlePaste = (e, i, id) => {
+  const handlePaste = (e, i) => {
     e.preventDefault();
     e.stopPropagation();
     const name = e.target.name ? e.target.name : e.target.id;

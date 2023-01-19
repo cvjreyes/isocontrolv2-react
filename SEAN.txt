@@ -4,3 +4,12 @@ ESTILIZAR:
 
 FUNCIONALIDAD:
 - close dropdown on click delete table
+
+FEED_ESTIMATED:
+- modelled en FEED => FEED_MODELLED en IFD
+- FEED_MODELLED se puede editar en FEED
+- si se crea pipe en IFD => se crea pipe en FEED
+- como la pipe creada estará en ESTIMATED NO se podrá editar
+- if delete in ifd => trashed NOT actually delete
+- trashed pipes CAN be recovered
+- if FEED_ESTIMATED in ifd => FEED pipe can be deleted AND IFD pipe

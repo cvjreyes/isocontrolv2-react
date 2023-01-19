@@ -3,6 +3,7 @@
 import { jsx } from "@emotion/react";
 
 export default function Button1({
+  name,
   text,
   onClick,
   bgColor,
@@ -41,6 +42,7 @@ export default function Button1({
       className={`${className} pointer`}
       css={buttonStyle}
       onClick={onClick}
+      name={name}
     >
       {text}
     </button>
