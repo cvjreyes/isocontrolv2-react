@@ -58,18 +58,20 @@ function EditForecastComp({ setMessage }) {
   return (
     <div css={editForecastStyle}>
       <div className="tableStyle">
-        <div className="tableGrid">
+        <div className="tableGrid head">
           <div className="bold">Day</div>
           <div className="bold">Estimated</div>
           <div className="bold">Forecast</div>
         </div>
-        {forecast.map((x) => (
-          <div key={x.day} className="tableGrid">
-            <div>{x.day}</div>
-            <div>{x.estimated}</div>
-            <div>{x.forecast}</div>
-          </div>
-        ))}
+        <div className="tableBody">
+          {forecast.map((x) => (
+            <div key={x.day} className="tableGrid">
+              <div>{x.day}</div>
+              <div>{x.estimated}</div>
+              <div>{x.forecast}</div>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="addBox">
         <div>
@@ -110,12 +112,6 @@ function EditForecastComp({ setMessage }) {
           bgHover="#3988e2"
           color="white"
         />
-        {/* <button
-            style={{
-              // fontSize: "16px",
-              borderRadius: "10px",
-            }}
-          ></button> */}
       </div>
     </div>
   );
@@ -133,10 +129,26 @@ export default function EditForecast() {
 const editForecastStyle = {
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
+  height: "80vh",
   ".tableStyle": {
-    border: "solid black",
-    borderWidth: "0 1px 1px 0",
     margin: "0 auto",
+    ".head": {
+      border: "solid black",
+      borderWidth: "0 1px 0 0",
+    },
+    ".tableBody": {
+      border: "solid black",
+      borderWidth: "0 1px 1px 0",
+      maxHeight: "60vh",
+      overflowY: "auto",
+      /* Hide scrollbar for IE, Edge and Firefox */
+      msOverflowStyle: "none" /* IE and Edge */,
+      scrollbarWidth: "none" /* Firefox */,
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      "::-webkit-scrollbar": {
+        display: "none",
+      },
+    },
     ".tableGrid": {
       display: "grid",
       gridTemplateColumns: "repeat(3, 1fr)",
@@ -149,6 +161,7 @@ const editForecastStyle = {
     },
   },
   ".addBox": {
+    alignSelf: "center",
     padding: "20px",
     border: "1px solid black",
     borderRadius: "15px",

@@ -31,25 +31,16 @@ DONE ✔
 - ADDING ROW
 - que se vea el owner
 - IFD Main
+- Edit Forecast 
 
 TODO ❌
   - FEED: 
     - when paste => get values from line_ref
-  - Edit Forecast: 
-    - cuando se añade que no se muevan los elementos
-    - usar overflow hidden y fixed height
   - change password O
   - IFD
     - Modelled 
       - botones cursor default NOT pointer
-      - Boton de claim
-        - Que se escriba el owner y se envie a la bandeja my tray y cambiar el progress
     - my tray
-    - S-Stress 
-    - R-Stress 
-    - Stress 
-    - Supports 
-    - S-Design 
     - Trash 
     - Hold
 
