@@ -46,7 +46,7 @@ TODO ❌
     - add
     - my tray
       - arriba
-    - trays
+    - trays y trash
       - title bigger
       - arriba
   - my tray
