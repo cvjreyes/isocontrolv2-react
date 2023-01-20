@@ -10,6 +10,7 @@ import {
   checkForAlreadyExists,
   checkForEmptyCells,
   divideLineReference,
+  divideTag,
   getTypeFromDiameter,
 } from "../../FEED/feedPipesHelpers";
 import IFDTableWrapper from "./IFDTableWrapper";
