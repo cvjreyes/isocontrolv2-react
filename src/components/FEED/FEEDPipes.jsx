@@ -41,7 +41,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const rows2 = rows.map((row) => ({
       ...row,
       tag: buildTag(row),
-      ifd_modelled: row.ifd_status === "ESTIMATED",
+      ifd_modelled: row.ifd_status === "FEED_ESTIMATED",
     }));
     setData(rows2);
     setDisplayData(rows2);
