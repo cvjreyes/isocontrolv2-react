@@ -42,6 +42,8 @@ TODO ❌
       - forecast
     - when paste => get values from line_ref
     - forecast value NOT ZERO
+    - ADD PIPE:
+      - When you add a pipe in Modelled(100%) it doesn't add in IFD Pipes
   - IFD
     - style:
       - main
