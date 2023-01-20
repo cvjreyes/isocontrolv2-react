@@ -22,10 +22,11 @@ const ChangeComp = ({ setMessage }) => {
 
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
   const [newPasswordShown, setNewPasswordShown] = useState(false);
+  const [confirmNewPasswordShown, setConfirmNewPasswordShown] = useState(false);
   const [form, setForm] = useState({
-    email: "",
     old_password: "",
     new_password: "",
+    confirm_new_password: "",
   });
 
   const handleChange = (e) => {
@@ -34,21 +35,14 @@ const ChangeComp = ({ setMessage }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await api("post", "/users/change_password", 0, {
-      email: form.email,
-      old_password: form.old_password,
-      new_password: form.new_password,
-    });
-    console.log(res);
-    return;
     try {
-      const res = await axios.post(`${URL}/users/login`);
-      if (!res.data.ok) return setMessage({ type: "warn", txt: res.data.body });
-      setTimeout(() => login(res.data.body), 1000);
-      setMessage({
-        type: "success",
-        txt: "Password changed successfully!",
+      const { ok, body } = await api("post", "/users/change_password", 0, {
+        old_password: form.old_password,
+        new_password: form.new_password,
+        confirm_new_password: form.confirm_new_password,
       });
+      if (!ok) return setMessage({ txt: body, type: "warn" });
+      setMessage({ txt: body, type: "success" });
     } catch (err) {
       setMessage({
         type: "error",
@@ -72,16 +66,9 @@ const ChangeComp = ({ setMessage }) => {
           Please, enter your current password, new password and new password
           confirmation.
         </p>
-        <label htmlFor="email">E-mail</label>
-        <div className="inputWrapper">
-          <Input1
-            id="email"
-            name="email"
-            value={form.email}
-            type="email"
-            onChange={handleChange}
-          />
-        </div>
+        <p className="pleaseEnter">
+          New password should be at least 6 characters long
+        </p>
         <label htmlFor="old_password">Old Password</label>
         <div className="inputWrapper">
           <Input1
@@ -114,13 +101,29 @@ const ChangeComp = ({ setMessage }) => {
             className="eyeStyle pointer"
           />
         </div>
+        <label htmlFor="confirm_new_password">Confirm New Password</label>
+        <div className="inputWrapper">
+          <Input1
+            id="confirm_new_password"
+            name="confirm_new_password"
+            value={form.confirm_new_password}
+            type={confirmNewPasswordShown ? "text" : "password"}
+            onChange={handleChange}
+          />
+          <img
+            onClick={() => setConfirmNewPasswordShown((prevVal) => !prevVal)}
+            src={Eye}
+            alt="eye"
+            className="eyeStyle pointer"
+          />
+        </div>
         <Button1
           text="Save"
           bgColor="#0070ED"
           bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
           color="white"
           border="1px solid #0070ED"
-          margin="10px auto 0"
+          margin="30px auto 0"
         />
       </form>
     </Main>
@@ -141,15 +144,14 @@ const mainStyle = {
     fontSize: "25px",
     margin: "30px 0 0",
   },
-  ".pleaseEnter": { margin: "30px 0 30px" },
-  label: { fontWeight: "bold" },
+  ".pleaseEnter": { margin: "30px 0 0px" },
+  label: { fontWeight: "bold", margin: "20px 0 5px" },
   input: { width: "400px" },
   ".inputWrapper": {
     width: "400px",
     position: "relative",
     display: "flex",
     alignItems: "center",
-    margin: "5px 0 20px",
     ".eyeStyle": {
       position: "absolute",
       right: "20px",
