@@ -17,7 +17,6 @@ import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
 import Change from "./pages/Change";
 // import Signup from "./views/Signup";
-// import Change from "./views/Change";
 // import Forgot from "./views/Forgot";
 
 export default function App() {

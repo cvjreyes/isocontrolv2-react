@@ -2,19 +2,25 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useContext, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+
 import { AuthContext } from "../../context/AuthContext";
 import { getName } from "../../helpers/user";
 import Dropdown from "./Dropdown";
 
 export default function Navbar() {
   const { user, logout, isLoggedIn } = useContext(AuthContext);
+  let location = useLocation();
 
   const [isMenuOpen, setOpenMenu] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn) setOpenMenu(false);
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [location]);
 
   const toggleMenu = (e) => {
     e.preventDefault();
