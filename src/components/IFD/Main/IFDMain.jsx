@@ -44,7 +44,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   // };
 
   const getIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes");
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/0");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -66,7 +66,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/api/diameters", true),
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
-        api("get", "/ifd/get_ifd_pipes"),
+        api("get", "/ifd/get_ifd_pipes/0"),
       ]).then((values) => {
         setAreas(values[0].map((item) => item.name));
         setDiameters(values[1].diameters.map((item) => item.diameter));
