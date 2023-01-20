@@ -10,6 +10,7 @@ export default function TrayTable({
   addToDataClaim,
   title,
   dataToClaim,
+  buttonText,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -55,7 +56,7 @@ export default function TrayTable({
         <div className="flexCenter">
           <Button1
             onClick={handleClaim}
-            text="Claim"
+            text={buttonText || "Claim"}
             width="150px"
             border="1px solid black"
           />
