@@ -32,29 +32,26 @@ DONE ✔
 - que se vea el owner
 - IFD Main
 - Edit Forecast 
+- change password O
 
 TODO ❌
-  - change password O
+  - STYLE:
+    - line control
+    - add
+    - forecast
+    - main
+    - add
+    - my tray
+      - arriba
+    - trays
+      - title bigger
+      - arriba
   - FEED: 
-    - style:
-      - line control
-      - add
-      - forecast
     - when paste => get values from line_ref
     - forecast value NOT ZERO
   - IFD
-    - style:
-      - main
-      - add
-      - my tray
-        - arriba
-      - trays
-        - title bigger
-        - arriba
     - Main paste
     - add ifd => diff component + paste
-    - Modelled 
-      - botones cursor default NOT pointer
     - my tray
       - return to modelled* once csv is implemented
     - Trash 

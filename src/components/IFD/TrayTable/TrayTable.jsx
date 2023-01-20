@@ -4,7 +4,13 @@ import { jsx } from "@emotion/react";
 import Button1 from "../../general/Button1";
 import RowTray from "./TrayTableRow";
 
-export default function TrayTable({ data, handleClaim, addToDataClaim, title, dataToClaim }) {
+export default function TrayTable({
+  data,
+  handleClaim,
+  addToDataClaim,
+  title,
+  dataToClaim,
+}) {
   const titles = [
     { text: "Claim", key: "claim" },
     { text: "Tag", key: "tag" },
@@ -34,6 +40,9 @@ export default function TrayTable({ data, handleClaim, addToDataClaim, title, da
         border: "solid black",
         borderWidth: "0 1px 1px 0",
         padding: "5%",
+        button: {
+          cursor: "default",
+        },
       },
     },
   };
