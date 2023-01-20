@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import {
   buildTag,
   divideLineReference,
-  buildRow,
+  buildFeedRow,
   buildLineRef,
   divideTag,
   checkForAlreadyExists,
@@ -245,7 +245,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildRow(row, id);
+        const builtRow = buildFeedRow(row, id);
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -272,7 +272,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, tempData[y].id);
+        const builtRow = buildFeedRow(row, tempData[y].id);
         // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
           builtRow.tag = "Already exists";

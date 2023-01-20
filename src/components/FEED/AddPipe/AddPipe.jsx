@@ -15,7 +15,7 @@ import {
   divideTag,
   buildLineRef,
   buildTagIfFilled,
-  buildRow,
+  buildFeedRow,
 } from "../feedPipesHelpers";
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
@@ -142,7 +142,7 @@ export default function AddPipe({
       lines.forEach((line) => {
         if (line.length < 1) return;
         let row = line.split("\t");
-        const builtRow = buildRow(row, i + 1);
+        const builtRow = buildFeedRow(row, i + 1);
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
@@ -171,7 +171,7 @@ export default function AddPipe({
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, idx);
+        const builtRow = buildFeedRow(row, idx);
         // Ponemos el 0 en el train si no esta
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
