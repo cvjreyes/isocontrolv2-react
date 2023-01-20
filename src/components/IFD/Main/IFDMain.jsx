@@ -17,10 +17,7 @@ import CopyContext from "../../../context/CopyContext";
 import Loading from "../../general/Loading";
 import AddPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
-
-// TODOS
-// - si se añade en ifd se añade en feed como modelled?
-// - si se elimina una pipe en ifd se elimina en feed?
+import { buildIFDRow } from "../IFDPipeHelpers";
 
 function IFDMainComp({ setMessage, setModalContent }) {
   const gridSize =
@@ -52,6 +49,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
       tag: buildTag(row),
     }));
     setData(rows);
+    filter(rows);
   };
 
   const getFeedPipes = async () => {
@@ -212,9 +210,9 @@ function IFDMainComp({ setMessage, setModalContent }) {
       let ind = pastedData.indexOf("\r");
       pastedData[0] = pastedData[0].slice(0, ind);
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 13) {
       return pasteRow(e, id);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 13) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -258,7 +256,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildRow(row, id);
+        const builtRow = buildIFDRow(row, id);
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -285,7 +283,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, tempData[y].id);
+        const builtRow = buildIFDRow(row, tempData[y].id);
         // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
           builtRow.tag = "Already exists";
@@ -352,7 +350,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 undoChanges={undoChanges}
                 submitChanges={submitChanges}
                 gridSize={gridSize}
-                // handlePaste={handlePaste}
+                handlePaste={handlePaste}
               />
             </CopyContext>
           }

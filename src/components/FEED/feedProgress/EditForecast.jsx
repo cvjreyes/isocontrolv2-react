@@ -14,9 +14,6 @@ function EditForecastComp({ setMessage }) {
     forecast: 0,
   });
 
-  // - reset inputs when saved
-  // - no scroll on table
-
   const getData = async () => {
     const { body } = await api("get", "/feed/get_forecast");
     setForecast(body);
@@ -29,11 +26,11 @@ function EditForecastComp({ setMessage }) {
   const submitChanges = async () => {
     const { estimated: valEstimated, forecast: valForecast } = inputValues;
 
-    const invalidNum1 = Number(valEstimated) > 100 || Number(valEstimated) < 0;
+    const invalidNum1 = Number(valEstimated) > 100 || Number(valEstimated) < 1;
     const invalidNum2 = Number(valForecast) > 100 || Number(valForecast) < 0;
 
     if (invalidNum1 || invalidNum2)
-      return setMessage({ txt: "Use numbers between 0 and 100", type: "warn" });
+      return setMessage({ txt: "Use numbers between 1 and 100", type: "warn" });
 
     const { ok } = await api("post", "/feed/submit_forecast", false, {
       day: forecast.length + 1,
@@ -42,6 +39,10 @@ function EditForecastComp({ setMessage }) {
     });
     if (ok) {
       getData();
+      setInputValues({
+        estimated: 0,
+        forecast: 0,
+      });
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
@@ -84,7 +85,7 @@ function EditForecastComp({ setMessage }) {
               name="estimated"
               value={inputValues.estimated}
               onChange={handleChange}
-              min="0"
+              min="1"
               max="100"
             ></input>
           </div>
@@ -96,7 +97,7 @@ function EditForecastComp({ setMessage }) {
               name="forecast"
               value={inputValues.forecast}
               onChange={handleChange}
-              min="0"
+              min="1"
               max="100"
             ></input>
           </div>

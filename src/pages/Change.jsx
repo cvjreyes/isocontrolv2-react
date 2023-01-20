@@ -2,15 +2,12 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
 import { AuthContext } from "../context/AuthContext";
 import Main from "../layouts/Main";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
-import { URL } from "../helpers/config";
 
 import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
 import FullTrackerLogo from "../assets/images/3DTracker.svg";
@@ -18,7 +15,7 @@ import Eye from "../assets/images/eye.png";
 import { api } from "../helpers/api";
 
 const ChangeComp = ({ setMessage }) => {
-  const { login } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
   const [oldPasswordShown, setOldPasswordShown] = useState(false);
   const [newPasswordShown, setNewPasswordShown] = useState(false);
@@ -43,6 +40,9 @@ const ChangeComp = ({ setMessage }) => {
       });
       if (!ok) return setMessage({ txt: body, type: "warn" });
       setMessage({ txt: body, type: "success" });
+      setTimeout(() => {
+        logout();
+      }, 2000);
     } catch (err) {
       setMessage({
         type: "error",
