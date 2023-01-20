@@ -10,7 +10,7 @@ FEED_ESTIMATED:
 - FEED_ESTIMATED se puede editar en FEED ✔
 - si se crea pipe en IFD => se crea pipe en FEED
 - como la pipe creada estará en ESTIMATED NO se podrá editar ✔
-- ADD PIPE: When you add a pipe in Modelled(100%) it doesn't add in IFD Pipes
-- if delete in ifd => trashed NOT actually delete
+- ADD PIPE: When you add a pipe in Modelled(100%) => add in IFD Pipes ✔
+- if delete in ifd => trashed NOT actually delete 
 - trashed pipes CAN be recovered
 - if FEED_ESTIMATED in ifd => FEED pipe can be deleted AND IFD pipe

@@ -16,7 +16,7 @@ import {
 import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
 import Loading from "../../general/Loading";
-import AddPipe from "../../FEED/AddPipe/AddPipe";
+import AddFeedPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
 import { buildIFDRow } from "../IFDPipeHelpers";
 
@@ -209,7 +209,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
     const pastedData = e.clipboardData.getData("Text").split("\t");
     if (pastedData.length === 1) {
       let ind = pastedData.indexOf("\r");
-      pastedData[0] = pastedData[0].slice(0, ind);
+      pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
     } else if (pastedData.length === 13) {
       return pasteRow(e, id);
@@ -359,7 +359,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         <Route
           path="/add"
           element={
-            <AddPipe
+            <AddFeedPipe
               lineRefs={lineRefs}
               setMessage={setMessage}
               data={[...data, ...feedPipes]}
@@ -372,6 +372,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
               id={id}
               page={page}
               gridSize={gridSizeAdd}
+              buildRow={buildIFDRow}
             />
           }
         />
