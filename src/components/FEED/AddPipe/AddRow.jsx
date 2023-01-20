@@ -70,6 +70,7 @@ export default function AddRow({
               className="default"
               value={row[col.key]}
               name={col.key}
+              readOnly
               onChange={() => {
                 return;
               }}
