@@ -89,7 +89,7 @@ export const divideLineReference = (ref, lineRefs) => {
   return { unit, fluid, seq, spec, insulation };
 };
 
-export const buildRow = (row, id) => {
+export const buildFeedRow = (row, id) => {
   return {
     line_reference: row[0],
     tag: row[1],
