@@ -348,6 +348,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
               id={id}
               page={page}
               gridSize={gridSize}
+              buildRow={buildFeedRow}
             />
           }
         />

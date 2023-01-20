@@ -49,9 +49,9 @@ const sidebarStyle = {
   minWidth: "150px",
   borderRadius: "20px",
   padding: "1.5rem 0",
-  WebkitBoxShadow: "5px 5px 10px #f0f0f0, -5px -5px 10px #ffffff",
-  MozBoxShadow: "5px 5px 10px #f0f0f0, -5px -5px 10px #ffffff",
-  boxShadow: "5px 5px 10px #f0f0f0, -5px -5px 10px #ffffff",
+  WebkitBoxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
+  MozBoxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
+  boxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
   ".section": {
     margin: ".5rem 0",
     div: {

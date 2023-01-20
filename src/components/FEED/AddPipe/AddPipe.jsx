@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
 import AddTable from "../../table/AddTable";
-// import { columnsData } from "../ColumnsData";
 import FeedPipesExcelTableHeader from "../FeedPipesExcelTableHeader";
 import {
   checkForAlreadyExists,
@@ -15,7 +14,7 @@ import {
   divideTag,
   buildLineRef,
   buildTagIfFilled,
-  buildFeedRow,
+  // buildFeedRow,
 } from "../feedPipesHelpers";
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
@@ -29,8 +28,8 @@ export default function AddPipe({
   id,
   page,
   gridSize,
+  buildRow,
 }) {
-  // const gridSize = ".75fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1.3fr 1fr 1fr .9fr 3fr";
   const navigate = useNavigate();
 
   const [rows, setRows] = useState(emptyRows);
@@ -142,7 +141,7 @@ export default function AddPipe({
       lines.forEach((line) => {
         if (line.length < 1) return;
         let row = line.split("\t");
-        const builtRow = buildFeedRow(row, i + 1);
+        const builtRow = buildRow(row, i + 1);
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
@@ -163,7 +162,6 @@ export default function AddPipe({
       const tempData = [...rows];
       // get rows as strings
       let lines = text.split("\n");
-      console.log("here");
       lines.pop();
       // loop each row
       lines.forEach((line, x) => {
@@ -171,7 +169,7 @@ export default function AddPipe({
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildFeedRow(row, idx);
+        const builtRow = buildRow(row, idx);
         // Ponemos el 0 en el train si no esta
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;

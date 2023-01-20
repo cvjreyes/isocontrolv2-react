@@ -32,7 +32,10 @@ DONE ✔
 - que se vea el owner
 - IFD Main
 - Edit Forecast 
-- change password O
+- change password O- paste on IFD Add Pipe
+
+DOING 🔁
+  - Trash SEAN 
 
 TODO ❌
   - STYLE:
@@ -46,11 +49,8 @@ TODO ❌
     - trays
       - title bigger
       - arriba
-  - IFD
-    - add ifd => diff component + paste
-    - my tray
-      - return to modelled* once csv is implemented
-    - Trash 
+  - my tray
+    - return to modelled* once csv is implemented
 
 PARA QUE SALGA MODELLED:
 - se importa un csv de 3d
