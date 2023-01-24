@@ -38,6 +38,8 @@ DOING 🔁
   - Trash SEAN 
 
 TODO ❌
+  - close dropdown on click delete table
+  - copy all not working on feed because of name of className in table.js getElementsByClassName
   - STYLE:
     - line control
     - add

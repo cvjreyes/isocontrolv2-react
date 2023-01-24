@@ -38,6 +38,7 @@ export function copyToClipboard(id, table) {
 }
 
 const buildFeedList = (inputList, valuesList) => {
+  console.log(valuesList);
   return [
     valuesList[0].innerHTML, // line_reference
     inputList[1].value, // tag
