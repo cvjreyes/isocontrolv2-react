@@ -1,10 +1,3 @@
-ESTILIZAR:
-- Feed Pipes Table
-- IFD Pipes Table
-
-FUNCIONALIDAD:
-- close dropdown on click delete table
-
 FEED_ESTIMATED:
 - modelled en FEED => FEED_ESTIMATED en IFD ✔
 - FEED_ESTIMATED se puede editar en FEED ✔
