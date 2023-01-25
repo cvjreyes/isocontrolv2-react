@@ -30,7 +30,7 @@ export default function FeedPipesExcelTableHeader({
     alignItems: "center",
     borderTop: "1px solid black",
     borderLeft: "1px solid black",
-    backgroundColor: copyMulti && "lightgray",
+    backgroundColor: copyMulti && "#D2D2D2",
     img: {
       width: "50%",
     },

@@ -38,10 +38,19 @@ DONE ✔
 - copy all not working on feed because of name of className in table.js getElementsByClassName
 
 DOING 🔁
+  - STYLE:
+    - line control T
 
 TODO ❌
+  - if trashed in IFD => blocked in FEED
+  - Progresses form home ? ? ? when did they stop working
+  - background colors not working on table FEED
+  - background colors not working on table IFD
+  - click away from navbar dropdown => close dropdown
   - STYLE:
     - line control
+      - scroll only on table content, header fixed
+      - work on head => buttons colors and format to fit design
     - add
     - forecast
     - main

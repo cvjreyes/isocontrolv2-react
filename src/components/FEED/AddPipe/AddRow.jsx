@@ -33,7 +33,7 @@ export default function AddRow({
         backgroundColor: row.tag === "Already exists" && "orange",
       },
       "*": {
-        color: "black",
+        color: "#383838",
         border: "none",
       },
       ".css-1nmdiq5-menu": {

@@ -86,9 +86,4 @@ export default function IFDTableWrapper({
 
 const tableWrapperStyle = {
   textAlign: "center",
-  marginLeft: "2rem",
-  ".wrapper": {
-    height: "70vh",
-    overflowY: "scroll",
-  },
 };
