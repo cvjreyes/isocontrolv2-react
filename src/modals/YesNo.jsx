@@ -11,12 +11,10 @@ function withModal({ setMessage, children }) {
     onClick1: "",
   });
 
-  return (
-    <div>
-      {React.cloneElement(children, { setMessage, setModalContent })}
-      <Modal setModalContent={setModalContent} {...modalContent} />
-    </div>
-  );
+  return [
+    React.cloneElement(children, { setMessage, setModalContent, key: 1 }),
+    <Modal setModalContent={setModalContent} {...modalContent} key="2" />,
+  ];
 }
 
 export default withModal;

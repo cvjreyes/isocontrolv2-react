@@ -82,9 +82,4 @@ export default function FeedPipesExcelTableWrapper({
 
 const tableWrapperStyle = {
   textAlign: "center",
-  marginLeft: "2rem",
-  ".wrapper": {
-    height: "70vh",
-    overflowY: "scroll",
-  },
 };

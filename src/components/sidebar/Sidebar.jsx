@@ -3,62 +3,43 @@
 import { jsx } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 
-export default function Sidebar({ title1, title2, links1, links2 }) {
+export default function Sidebar({ data }) {
   return (
     <div css={sidebarStyle}>
-      <div className="section">
-        <p className="bold">{title1}</p>
-
-        <div>
-          {links1.map((link) => (
-            <NavLink
-              exact="true"
-              style={({ isIt }) => isIt && "active"}
-              key={link.text}
-              to={link.to}
-            >
-              {link.text}
-            </NavLink>
-          ))}
+      <div className="fakeHeader" />
+      {data.map(({ title, links }) => (
+        <div className="section" key={title}>
+          <p className="bold">{title}</p>
+          {links.map((link) => {
+            return (
+              <NavLink
+                exact="true"
+                style={({ isIt }) => isIt && "active"}
+                key={link.text}
+                to={link.to}
+              >
+                {link.text}
+              </NavLink>
+            );
+          })}
         </div>
-      </div>
-      <div className="section">
-        <p className="bold">{title2}</p>
-        <div>
-          {links2.map((link) => (
-            <NavLink
-              exact="true"
-              style={({ isIt }) => isIt && "active"}
-              key={link.text}
-              to={link.to}
-            >
-              {link.text}
-            </NavLink>
-          ))}
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
 
 const sidebarStyle = {
+  border: "solid #D2D2D2",
+  borderWidth: "0 0 1px 1px",
   display: "flex",
   flexDirection: "column",
-  width: "80%",
   maxWidth: "200px",
   minWidth: "150px",
-  borderRadius: "20px",
-  padding: "1.5rem 0",
-  WebkitBoxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
-  MozBoxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
-  boxShadow: "1vh 1vh 2vh #f0f0f0, -1vh -1vh 2vh #ffffff",
+  padding: "0 0 1.5rem",
   ".section": {
     margin: ".5rem 0",
-    div: {
-      width: "100%",
-      ".active": {
-        backgroundColor: "#006fed69",
-      },
+    ".active": {
+      backgroundColor: "#66A9F4",
     },
     "p, a": {
       fontSize: "14px",

@@ -58,7 +58,6 @@ const mainStyle = {
     top: "200px",
     mixBlendMode: "darken",
   },
-
   ".blueCircle": {
     zIndex: "-100",
     position: "absolute",

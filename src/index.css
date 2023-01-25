@@ -4,12 +4,7 @@
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
-}
-
-body,
-input,
-select {
-  /* background-color: #2fc1383b; */
+  color: #383838
 }
 
 img {
@@ -51,4 +46,13 @@ img {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+/* TOAST */
+.Toastify {
+  position: absolute;
+}
+
+.Toastify * {
+  color: white;
 }

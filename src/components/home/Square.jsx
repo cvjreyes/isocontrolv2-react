@@ -24,7 +24,6 @@ const itemStyle = {
   textDecoration: "none",
   padding: "10px",
   borderRadius: "20px",
-  color: "white",
   textAlign: "center",
   margin: "0 5%",
   width: "310px",
