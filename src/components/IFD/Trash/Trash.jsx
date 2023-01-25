@@ -21,10 +21,7 @@ function TrashComp({ setMessage }) {
   }, []);
 
   const getTrashedIFDPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifd/get_ifd_pipes/1"
-    );
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/1");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -47,7 +44,6 @@ function TrashComp({ setMessage }) {
     const { ok } = await api("post", "/ifd/restore_ifd_pipes", 0, {
       data: dataToSend,
     });
-    console.log(dataToSend);
     if (ok) {
       updatePipesDisplay();
       setDataToClaim([]);

@@ -33,13 +33,13 @@ DONE ✔
 - IFD Main
 - Edit Forecast 
 - change password O- paste on IFD Add Pipe
+- Trash SEAN 
+- close dropdown on click delete table
+- copy all not working on feed because of name of className in table.js getElementsByClassName
 
 DOING 🔁
-  - Trash SEAN 
 
 TODO ❌
-  - close dropdown on click delete table
-  - copy all not working on feed because of name of className in table.js getElementsByClassName
   - STYLE:
     - line control
     - add
@@ -51,28 +51,9 @@ TODO ❌
     - trays y trash
       - title bigger
       - arriba
-  - my tray
-    - return to modelled* once csv is implemented
 
-PARA QUE SALGA MODELLED:
-- se importa un csv de 3d
-- este csv rellena dpipes
-- si la línea ya existe => MODELLED
-- si la línea no existía => MODELLED*
-
-OLD
-- se importa el csv
-- del csv se actualiza tabla dpipes ( CRON )
-- de dpipes se comprueba con ifd_pipes 
-- se decide si modelled o modelled*
-- se pasa a otra tabla
-
-NEW
-- attempt to merge csv import with ifd_pipes => comprobar el code in prod ( node_cron de fmc )
-(NODE-CRON)[https://github.com/cvjreyes/node-cron/blob/main/app/src/resources/cron/cron.controller.js]
-- re-write node-cron for it to update ifd_pipes or fallback to use ifd_pipes_aux
-- if estimated => modelled
-- if _ => modelled*
+CSV
+- if _ => modelled* ???
 
 FUTURO:
   - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
@@ -82,9 +63,9 @@ FUTURO:
     - encontrar solución para que la gente no pueda cambiar cosas
 
 TABLES que no llegué a probar:
-- react-virtualized
-- react-data-grid
-- react-super-responsive-table
-- react-bootstrap-table
-- react-datasheet
-- react-grid
+  - react-virtualized
+  - react-data-grid
+  - react-super-responsive-table
+  - react-bootstrap-table
+  - react-datasheet
+  - react-grid
