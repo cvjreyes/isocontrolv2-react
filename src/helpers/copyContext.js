@@ -11,9 +11,12 @@ export function copyToClipboard(id, table) {
     "css-1dimb5e-singleValue"
   );
 
+  const testList = copiedEle.getElementsByClassName("select-element");
+  // console.log(testList[0].children[2].children[0].children[0].innerHTML);
+
   const totalList =
     copiedEle.children.length === 13
-      ? buildFeedList(inputList, valuesList)
+      ? buildFeedList(inputList, testList)
       : buildIFDList(inputList, valuesList);
 
   // loop through selected inputs
@@ -39,18 +42,18 @@ export function copyToClipboard(id, table) {
 
 const buildFeedList = (inputList, valuesList) => {
   return [
-    valuesList[0].innerHTML, // line_reference
+    valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
     inputList[1].value, // tag
-    valuesList[1].innerHTML, // area
+    valuesList[1].children[2].children[0].children[0].innerHTML, // area
     inputList[3].value, // unit
     inputList[4].value, // fluid
     inputList[5].value, // sequential
-    valuesList[2].innerHTML, // diameter
+    valuesList[2].children[2].children[0].children[0].innerHTML, // diameter
     inputList[7].value, // spec
     inputList[8].value, // type
     inputList[9].value, // insulation
-    valuesList[3].innerHTML, // train
-    valuesList[4].innerHTML, // status
+    valuesList[3].children[2].children[0].children[0].innerHTML, // train
+    valuesList[4].children[2].children[0].children[0].innerHTML, // status
   ];
 };
 

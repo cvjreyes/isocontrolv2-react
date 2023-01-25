@@ -24,7 +24,6 @@ export const calculateNextStep = (status, type) => {
   const tempStatus = status.replace("-", "").replace("*", "").toLowerCase();
   const idx = list.findIndex((item) => tempStatus == item);
   const nextStep = list[idx + 1];
-  console.log(nextStep);
   return nextStep;
 };
 

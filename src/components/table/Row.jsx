@@ -46,7 +46,9 @@ const Row = React.memo(
         backgroundColor:
           (item.tag === "Already exists" && "orange") ||
           (changed.includes(item.id) && "rgb(0, 188, 6)") ||
-          (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED" && "lightgray"),
+          (item.ifd_status &&
+            item.ifd_status !== "FEED_ESTIMATED" &&
+            "lightgray"),
         webkitTransition: "background-color 300ms linear",
         msTransition: "background-color 300ms linear",
         transition: "background-color 300ms linear",
@@ -58,6 +60,7 @@ const Row = React.memo(
         textAlign: "center",
       },
       ".selectWrapper": {
+        cursor: "pointer",
         border: "solid black",
         borderWidth: "1px 0 0 1px",
         lineHeight: "50px",
@@ -73,7 +76,6 @@ const Row = React.memo(
             "lightgray !important",
         },
         ".css-13cymwt-control, .css-t3ipsp-control": {
-          cursor: "pointer",
           backgroundColor:
             (item.tag === "Already exists" && "orange") ||
             (changed.includes(item.id) && "rgb(0, 188, 6)"),
@@ -84,6 +86,7 @@ const Row = React.memo(
         "*": {
           color: "black",
           border: "none",
+          cursor: "pointer",
         },
         ".css-1nmdiq5-menu": {
           lineHeight: "normal",
@@ -128,6 +131,14 @@ const Row = React.memo(
       },
     };
 
+    const customStyles = {
+      control: (styles) => ({
+        ...styles,
+        cursor: "pointer !important",
+        backgroundColor: "white",
+      }),
+    };
+
     return (
       <form
         css={rowStyle}
@@ -163,6 +174,7 @@ const Row = React.memo(
           return (
             <div key={`${i}${y}`} id={`${i}${y}`} className="selectWrapper">
               <Select
+                className="select-element"
                 value={{ label: item[x.key], value: item[x.key] }}
                 onChange={(e) =>
                   handleChange(
@@ -178,8 +190,10 @@ const Row = React.memo(
                 }}
                 closeMenuOnScroll={true}
                 isDisabled={
-                  (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED")
+                  (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
+                  deleting
                 }
+                styles={customStyles}
               />
               <img src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png" />
             </div>
