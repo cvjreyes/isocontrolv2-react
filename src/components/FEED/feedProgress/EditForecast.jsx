@@ -60,9 +60,9 @@ function EditForecastComp({ setMessage }) {
     <div css={editForecastStyle}>
       <div className="tableStyle">
         <div className="tableGrid head">
-          <div className="bold">Day</div>
+          <div className="bold" >Day</div>
           <div className="bold">Estimated</div>
-          <div className="bold">Forecast</div>
+          <div className="bold" >Forecast</div>
         </div>
         <div className="tableBody">
           {forecast.map((x) => (
@@ -136,6 +136,18 @@ const editForecastStyle = {
     ".head": {
       border: "solid black",
       borderWidth: "0 1px 0 0",
+      borderRadius: "20px 20px 0 0",
+      height: "40px",
+      backgroundColor: "#338DF1",
+      "> div:first-of-type": {
+        borderRadius: "20px 0 0 0",
+      },
+      "> div:last-child": {
+        borderRadius: "0 20px 0 0",
+      },
+      div: {
+        color: "white",
+      },
     },
     ".tableBody": {
       border: "solid black",
