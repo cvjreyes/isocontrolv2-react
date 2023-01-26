@@ -140,7 +140,7 @@ const Row = React.memo(
         css={rowStyle}
         onPaste={(e) => handlePaste(e, i, item.id)}
         id={rowId}
-        onClick={(e) => handleDelete(e, item.id)}
+        onClick={(e) => handleDelete(e, item.id, item.trashed)}
       >
         {columns.map((x, y) => {
           if (x.key === "empty")
