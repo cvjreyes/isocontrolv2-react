@@ -37,7 +37,7 @@ const tableStyle = {
     fontSize: "13px !important",
   },
   // scroll behaviour
-  height: "calc(60vh - 112px)",
+  height: "calc(60vh - 113px)",
   overflowY: "scroll",
   msOverflowStyle: "none" /* Internet Explorer 10+ */,
   scrollbarWidth: "none" /* Firefox */,

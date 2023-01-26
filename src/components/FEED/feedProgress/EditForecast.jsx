@@ -63,7 +63,13 @@ function EditForecastComp({ setMessage }) {
   return (
     <div>
       <div css={headStyle}>
-        <Button1
+        <div
+          onClick={() => navigate(-1)}
+          className="flexCenter backWrapper pointer"
+        >
+          <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
+        </div>
+        {/* <Button1
           text="Back"
           width="100px"
           bgColor="transparent"
@@ -79,7 +85,7 @@ function EditForecastComp({ setMessage }) {
           src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
           imgFilter="invert(100%) brightness(200%)"
           onClick={() => navigate("/feed/progress/")}
-        />
+        /> */}
       </div>
       <div css={editForecastStyle}>
         <div className="tableStyle">
@@ -153,11 +159,22 @@ export default function EditForecast() {
 }
 
 const headStyle = {
-  display:"flex",
+  display: "flex",
   alignItems: "center",
   height: "50px",
   width: "100%",
   backgroundColor: "#338DF1",
+  ".backWrapper": {
+    width: "40px",
+    height: "40px",
+    margin: "0 5% 0 2%",
+    // backgroundColor: "red",
+    borderRadius: "100px",
+    ":hover": {
+      boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
+    },
+    img: { width: "20px", filter: "invert(100%)" },
+  },
   h3: {
     fontSize: "1.2rem",
     whiteSpace: "nowrap",

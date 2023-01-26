@@ -34,7 +34,10 @@ export default function FeedProgressView() {
   return (
     <div css={forecastStyles} className="flexColumn">
       <div css={headStyle}>
-        <h3 className="centerTitle">Feed Progress</h3>
+        <div />
+        <div className="flexCenter">
+          <h3>Feed Progress</h3>
+        </div>
         <Button1
           text="Edit Forecast"
           width="140px"
@@ -48,7 +51,10 @@ export default function FeedProgressView() {
           hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
           // img
           alt="Edit Forecast"
-          src={"https://img.icons8.com/color/search"}
+          src={
+            "https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/null/external-magnifying-glass-interface-kiranshastry-lineal-kiranshastry.png"
+          }
+          // src={"https://img.icons8.com/color/search"} // naranjita por si ak
           imgFilter="invert(100%) brightness(200%)"
           onClick={() => navigate("/feed/progress/edit_forecast")}
         />
@@ -94,19 +100,13 @@ export default function FeedProgressView() {
 
 const headStyle = {
   display: "grid",
-  gridTemplateColumns: "8fr 1fr 1fr 1fr",
+  gridTemplateColumns: "1fr 1fr 1fr",
   height: "50px",
   width: "100%",
   backgroundColor: "#338DF1",
   h3: {
     fontSize: "1.2rem",
-    whiteSpace: "nowrap",
     color: "white",
-    marginLeft: "50%",
-  },
-  ".centerTitle": {
-    display: "flex",
-    alignItems: "center",
   },
 };
 
