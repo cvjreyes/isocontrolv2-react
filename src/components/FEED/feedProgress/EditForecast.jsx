@@ -2,12 +2,16 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
 import WithToast from "../../../modals/Toast";
 import Button from "../../general/Button1";
+import Button1 from "../../general/Button2";
 
 function EditForecastComp({ setMessage }) {
+  const navigate = useNavigate();
+
   const [forecast, setForecast] = useState([]);
   const [inputValues, setInputValues] = useState({
     estimated: 0,
@@ -57,62 +61,83 @@ function EditForecastComp({ setMessage }) {
   }
 
   return (
-    <div css={editForecastStyle}>
-      <div className="tableStyle">
-        <div className="tableGrid head">
-          <div className="bold" >Day</div>
-          <div className="bold">Estimated</div>
-          <div className="bold" >Forecast</div>
-        </div>
-        <div className="tableBody">
-          {forecast.map((x) => (
-            <div key={x.day} className="tableGrid">
-              <div>{x.day}</div>
-              <div>{x.estimated}</div>
-              <div>{x.forecast}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="addBox">
-        <div>
-          <h4>New Forecast</h4>
-          <div className="inputWrapper">
-            <label htmlFor="estimated_input">Estimated: </label>
-            <input
-              id="estimated_input"
-              type="number"
-              name="estimated"
-              value={inputValues.estimated}
-              onChange={handleChange}
-              min="1"
-              max="100"
-            ></input>
-          </div>
-          <div className="inputWrapper">
-            <label htmlFor="forecast_input">Forecast: </label>
-            <input
-              id="forecast_input"
-              type="number"
-              name="forecast"
-              value={inputValues.forecast}
-              onChange={handleChange}
-              min="1"
-              max="100"
-            ></input>
-          </div>
-        </div>
-        <Button
-          text="Save"
-          width="120px"
-          onClick={submitChanges}
-          margin="0 auto"
-          padding="5px"
-          border="1px solid white"
-          bgColor="#0070ED"
-          bgHover="#3988e2"
+    <div>
+      <div css={headStyle}>
+        <Button1
+          text="Back"
+          width="100px"
+          bgColor="transparent"
+          border="none"
           color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 6px"
+          margin="0 0 0 3%"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="back"
+          src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
+          imgFilter="invert(100%) brightness(200%)"
+          onClick={() => navigate("/feed/progress/")}
         />
+      </div>
+      <div css={editForecastStyle}>
+        <div className="tableStyle">
+          <div className="tableGrid head">
+            <div className="bold">Day</div>
+            <div className="bold">Estimated</div>
+            <div className="bold">Forecast</div>
+          </div>
+          <div className="tableBody">
+            {forecast.map((x) => (
+              <div key={x.day} className="tableGrid">
+                <div>{x.day}</div>
+                <div>{x.estimated}</div>
+                <div>{x.forecast}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="addBox">
+          <div>
+            <h4>New Forecast</h4>
+            <div className="inputWrapper">
+              <label htmlFor="estimated_input">Estimated: </label>
+              <input
+                id="estimated_input"
+                type="number"
+                name="estimated"
+                value={inputValues.estimated}
+                onChange={handleChange}
+                min="1"
+                max="100"
+              ></input>
+            </div>
+            <div className="inputWrapper">
+              <label htmlFor="forecast_input">Forecast: </label>
+              <input
+                id="forecast_input"
+                type="number"
+                name="forecast"
+                value={inputValues.forecast}
+                onChange={handleChange}
+                min="1"
+                max="100"
+              ></input>
+            </div>
+          </div>
+          <Button
+            text="Save"
+            width="120px"
+            onClick={submitChanges}
+            margin="0 auto"
+            padding="5px"
+            border="1px solid white"
+            bgColor="#0070ED"
+            bgHover="#3988e2"
+            color="white"
+          />
+        </div>
       </div>
     </div>
   );
@@ -127,12 +152,32 @@ export default function EditForecast() {
   );
 }
 
+const headStyle = {
+  display:"flex",
+  alignItems: "center",
+  height: "50px",
+  width: "100%",
+  backgroundColor: "#338DF1",
+  h3: {
+    fontSize: "1.2rem",
+    whiteSpace: "nowrap",
+    color: "white",
+    marginLeft: "50%",
+  },
+  ".centerTitle": {
+    display: "flex",
+    alignItems: "center",
+  },
+};
+
 const editForecastStyle = {
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
-  height: "80vh",
+  height: "calc(60vh - 50px)",
+  border: "solid #D2D2D2",
+  borderWidth: "0 1px 1px 1px",
   ".tableStyle": {
-    margin: "0 auto",
+    margin: "10px",
     ".head": {
       border: "solid black",
       borderWidth: "0 1px 0 0",
@@ -152,7 +197,7 @@ const editForecastStyle = {
     ".tableBody": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",
-      maxHeight: "60vh",
+      maxHeight: "calc(60vh - 110px)",
       overflowY: "auto",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
@@ -182,6 +227,7 @@ const editForecastStyle = {
     height: "fit-content",
     display: "flex",
     flexDirection: "column",
+    margin: "auto",
     h4: {
       textAlign: "center",
     },
