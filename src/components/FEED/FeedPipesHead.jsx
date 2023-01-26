@@ -146,6 +146,7 @@ const headStyle = {
   gridTemplateColumns: "3fr 1fr 3fr",
   height: "50px",
   backgroundColor: "#338DF1",
+  borderRadius: "0 20px 0 0",
   ".btns_wrapper": {
     width: "100%",
     display: "flex",

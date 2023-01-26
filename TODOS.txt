@@ -51,16 +51,7 @@ TODO ❌
   - toast OR 'copied' on copy all
   - back from forecast
   - deleted pipe modal
-  - STYLE:
-    - add
-    - forecast
-    - main
-    - add
-    - my tray
-      - arriba
-    - trays y trash
-      - title bigger
-      - arriba
+  - when trashed => incapable to delete
 
 CSV
 - if _ => modelled* ???

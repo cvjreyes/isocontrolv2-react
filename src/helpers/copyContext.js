@@ -12,7 +12,6 @@ export function copyToClipboard(id, table) {
   );
 
   const testList = copiedEle.getElementsByClassName("select-element");
-  // console.log(testList[0].children[2].children[0].children[0].innerHTML);
 
   const totalList =
     copiedEle.children.length === 13
