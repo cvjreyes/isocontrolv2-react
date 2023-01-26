@@ -286,10 +286,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, id, trashed) => {
     if (!deleting) return;
     e.stopPropagation();
     e.preventDefault();
+    if (trashed) return;
     setModalContent({
       openModal: true,
       text: `Are you sure you want to delete row with ID: ${id}?`,
