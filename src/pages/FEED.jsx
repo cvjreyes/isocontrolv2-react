@@ -56,7 +56,7 @@ const feedStyle = {
   ".wrapper": {
     padding: "10px 1% 0",
     border: "solid #D2D2D2",
-    borderWidth: "0 0 1px 1px",
+    borderWidth: "0 1px 1px 1px",
     height: "calc(60vh - 50px)",
   },
   // selects table head
