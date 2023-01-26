@@ -4,11 +4,11 @@ import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 
 import WithToast from "../../../modals/Toast";
-import Button1 from "../../general/Button1";
 import MyTrayTable from "./MyTrayTable";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 import { calculateNextStep } from "../IFDPipeHelpers";
+import MyTrayHead from "./MyTrayHead";
 
 function MyTrayComp({ setMessage }) {
   const [data, setData] = useState([]);
@@ -174,50 +174,13 @@ function MyTrayComp({ setMessage }) {
 
   return (
     <div css={myTrayStyle}>
-      <div className="head">
-        <div className="flexCenter">
-          <Button1
-            text="Undo"
-            onClick={undo}
-            width="130px"
-            border="1px solid black"
-            margin="0 10px 0 0"
-          />
-          <Button1
-            text="Save"
-            onClick={submitChanges}
-            width="130px"
-            border="1px solid black"
-            margin="0 10px 0 0"
-          />
-        </div>
-        <div className="flexCenter">
-          <h2>My Tray</h2>
-        </div>
-        <div className="flexCenter">
-          <Button1
-            text="Unclaim"
-            onClick={unclaim}
-            width="130px"
-            border="1px solid black"
-            margin="0 10px 0 0"
-          />
-          <Button1
-            text="Next Step"
-            onClick={nextStep}
-            width="130px"
-            border="1px solid black"
-            margin="0 10px 0 0"
-          />
-          <Button1
-            text="Return"
-            onClick={returnPipe}
-            width="130px"
-            border="1px solid black"
-            margin="0 10px 0 0"
-          />
-        </div>
-      </div>
+      <MyTrayHead
+        undo={undo}
+        submitChanges={submitChanges}
+        unclaim={unclaim}
+        nextStep={nextStep}
+        returnPipe={returnPipe}
+      />
       <MyTrayTable
         data={displayData}
         addToDataClaim={addToDataClaim}
@@ -230,14 +193,6 @@ function MyTrayComp({ setMessage }) {
 }
 
 const myTrayStyle = {
-  ".head": {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    marginBottom: "10px",
-    h2: {
-      fontSize: "20px",
-    },
-  },
   ".table": {
     height: "70vh",
     overflowY: "scroll",
