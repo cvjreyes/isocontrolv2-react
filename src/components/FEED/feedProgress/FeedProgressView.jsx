@@ -124,6 +124,6 @@ const forecastStyles = {
     width: "100%",
     height: "calc(60vh - 50px)",
     border: "solid #D2D2D2",
-    borderWidth: "0 1px 1px 1px"
+    borderWidth: "0 1px 1px 1px",
   },
 };

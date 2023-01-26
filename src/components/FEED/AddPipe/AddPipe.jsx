@@ -220,15 +220,14 @@ export default function AddPipe({
   );
 }
 
+// botones
+// color blanco header
+
 const AddPipeStyle = {
   textAlign: "center",
   width: "100%",
   height: "60vh",
-  // backgroundColor: "red",
   h3: {
     fontSize: "20px",
-  },
-  ".wrapper": {
-    overflowY: "scroll",
   },
 };

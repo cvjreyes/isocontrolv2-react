@@ -3,8 +3,8 @@
 import { jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-import Button1 from "../../general/Button1";
-
+import Button1 from "../../general/Button2";
+import saveImg from "../../../assets/images/save.svg";
 export default function AddPipeHead({
   rows,
   changeRowsToAdd,
@@ -24,18 +24,36 @@ export default function AddPipeHead({
           <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
         </div>
         <Button1
-          border="1px solid black"
+          width="100px"
           text="Clear"
           onClick={clear}
-          width="100px"
-          margin="0 10px 0 0"
+          border="none"
+          bgColor="transparent"
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 5px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
+          imgFilter="invert(100%) brightness(200%)"
         />
         <Button1
-          border="1px solid black"
           text="Save"
           onClick={handleSubmit}
           width="100px"
-          margin="0 10px 0 0"
+          border="none"
+          bgColor="transparent"
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 5px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={saveImg}
+          imgWidth="30px"
         />
       </div>
       <h3 className="flexCenter">Add Pipe</h3>
@@ -68,16 +86,23 @@ export default function AddPipeHead({
 const headStyle = {
   display: "grid",
   gridTemplateColumns: "4fr 1fr 4fr",
-  marginBottom: "10px",
   height: "50px",
   backgroundColor: "#338DF1",
   ".leftSide": {
     justifyContent: "flex-start",
   },
   ".backWrapper": {
-    width: "20px",
+    width: "40px",
+    height: "40px",
     margin: "0 5% 0 0",
+    // backgroundColor: "red",
+    borderRadius: "100px",
+    ":hover": {
+      boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
+    },
+    img: { width: "20px", filter: "invert(100%)" },
   },
+  h3: { color: "white" },
   ".rightSide": {
     display: "flex",
     paddingRight: "1.5rem",
@@ -85,6 +110,9 @@ const headStyle = {
     justifySelf: "flex-end",
     p: {
       width: "150px",
+    },
+    "p, label": {
+      color: "white",
     },
   },
 };

@@ -49,8 +49,8 @@ const Table = React.memo(
 const tableStyle = {
   // border: "solid black",
   // borderWidth: "0 1px 1px 0",
-  overflowY: "scroll",
   height: "calc(60vh - 112px)",
+  overflowY: "scroll",
   msOverflowStyle: "none" /* Internet Explorer 10+ */,
   scrollbarWidth: "none" /* Firefox */,
   "::-webkit-scrollbar": {
