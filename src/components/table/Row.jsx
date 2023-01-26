@@ -65,16 +65,7 @@ const Row = React.memo(
         borderWidth: "1px 0 0 1px",
         lineHeight: "50px",
         position: "relative",
-        div: {
-          backgroundColor:
-            item.ifd_status &&
-            item.ifd_status !== "FEED_ESTIMATED" &&
-            "lightgray !important",
-        },
         ".css-13cymwt-control, .css-t3ipsp-control": {
-          backgroundColor:
-            (item.tag === "Already exists" && "orange") ||
-            (changed.includes(item.id) && "rgb(0, 188, 6)"),
           webkitTransition: "background-color 300ms linear",
           msTransition: "background-color 300ms linear",
           transition: "background-color 300ms linear",
@@ -131,7 +122,15 @@ const Row = React.memo(
       control: (styles) => ({
         ...styles,
         cursor: "pointer !important",
-        backgroundColor: "white",
+        backgroundColor:
+          item.tag === "Already exists"
+            ? "orange"
+            : changed.includes(item.id)
+            ? "rgb(0, 188, 6)"
+            : (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
+              item.trashed
+            ? "lightgray"
+            : "white",
       }),
     };
 
