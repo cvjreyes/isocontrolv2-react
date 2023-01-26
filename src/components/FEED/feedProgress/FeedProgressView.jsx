@@ -33,16 +33,19 @@ export default function FeedProgressView() {
 
   return (
     <div css={forecastStyles} className="flexColumn">
-      <h3>Feed Progress</h3>
-      <Button1
-        text="Edit Forecast"
-        width="150px"
-        border="1px solid white"
-        bgColor="#0070ED"
-        bgHover="#3e96fa"
-        color="white"
-        onClick={() => navigate("/feed/progress/edit_forecast")}
-      />
+      <div css={headStyle}>
+        <h3 className="centerTitle">Feed Progress</h3>
+        <Button1
+          text="Edit Forecast"
+          width="150px"
+          border="1px solid black"
+          bgColor="#0070ED"
+          bgHover="#3e96fa"
+          color="white"
+          margin="auto"
+          onClick={() => navigate("/feed/progress/edit_forecast")}
+        />
+      </div>
       <ResponsiveContainer width="92%" height="70%" className="chart">
         <LineChart
           width={500}
@@ -50,7 +53,7 @@ export default function FeedProgressView() {
           data={data}
           margin={{
             top: 35,
-            right: 30,
+            right: 0,
             left: 20,
             bottom: -15,
           }}
@@ -82,9 +85,28 @@ export default function FeedProgressView() {
   );
 }
 
+const headStyle = {
+  display: "grid",
+  gridTemplateColumns: "8fr 1fr 1fr 1fr",
+  height: "50px",
+  width: "100%",
+  backgroundColor: "#338DF1",
+  borderRadius: "0 20px 0 0",
+  h3: {
+    fontSize: "1.2rem",
+    whiteSpace: "nowrap",
+    color: "white",
+    marginLeft: "41%"
+  },
+  ".centerTitle": {
+    display: "flex",
+    alignItems: "center",
+  },
+};
+
 const forecastStyles = {
   width: "100%",
-  height: "100%",
+  height: "82.5%",
   h3: {
     fontSize: "20px",
   },
