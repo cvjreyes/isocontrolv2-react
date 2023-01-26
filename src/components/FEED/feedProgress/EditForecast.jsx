@@ -168,7 +168,6 @@ const headStyle = {
     width: "40px",
     height: "40px",
     margin: "0 5% 0 2%",
-    // backgroundColor: "red",
     borderRadius: "100px",
     ":hover": {
       boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",

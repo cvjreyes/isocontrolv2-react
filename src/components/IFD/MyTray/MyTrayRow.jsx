@@ -16,10 +16,12 @@ export default function ModelledRow({
     display: "grid",
     gridTemplateColumns: gridSize,
     backgroundColor: changed.includes(row.id) ? "#2fc1383b" : null,
+    borderLeft: "1px solid black",
     ".cell": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",
       padding: "5%",
+      "*": { fontSize: "13px", textAlign: "center" },
     },
   };
 

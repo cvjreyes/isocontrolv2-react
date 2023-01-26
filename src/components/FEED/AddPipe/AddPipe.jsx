@@ -56,8 +56,8 @@ export default function AddPipe({
     setRows(tempRows);
   };
 
-  const changeRowsToAdd = ({ target }) => {
-    setRowsToAdd(target.value);
+  const changeRowsToAdd = ({ value }) => {
+    setRowsToAdd(value);
   };
 
   const addRows = () => {
@@ -219,9 +219,6 @@ export default function AddPipe({
     </div>
   );
 }
-
-// botones
-// color blanco header
 
 const AddPipeStyle = {
   textAlign: "center",

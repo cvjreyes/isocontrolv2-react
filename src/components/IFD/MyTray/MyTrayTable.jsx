@@ -22,18 +22,32 @@ export default function MyTrayTable({
     { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr 1fr 0.8fr";
+  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr .5fr 0.8fr";
 
   const modelledStyle = {
-    border: "solid black",
-    borderWidth: "1px 0 0 1px",
+    padding: "10px 1% 0",
+    border: "solid #D2D2D2",
+    borderWidth: "0 1px 1px 1px",
     ".grid": {
       display: "grid",
       gridTemplateColumns: gridSize,
+      height: "50px",
+      borderLeft: "1px solid black",
+      borderTop: "1px solid black",
       ".cell": {
         border: "solid black",
         borderWidth: "0 1px 1px 0",
-        padding: "5%",
+      },
+    },
+    ".table": {
+      height: "calc(60vh - 111px)",
+      overflowY: "auto",
+      /* Hide scrollbar for IE, Edge and Firefox */
+      msOverflowStyle: "none" /* IE and Edge */,
+      scrollbarWidth: "none" /* Firefox */,
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      "::-webkit-scrollbar": {
+        display: "none",
       },
     },
   };
@@ -49,18 +63,20 @@ export default function MyTrayTable({
           );
         })}
       </div>
-      {data.map((row) => (
-        <MyTrayRow
-          key={row.id}
-          row={row}
-          titles={titles}
-          addToDataClaim={addToDataClaim}
-          dataToClaim={dataToClaim}
-          handleClick={handleClick}
-          changed={changed}
-          gridSize={gridSize}
-        />
-      ))}
+      <div className="table">
+        {data.map((row) => (
+          <MyTrayRow
+            key={row.id}
+            row={row}
+            titles={titles}
+            addToDataClaim={addToDataClaim}
+            dataToClaim={dataToClaim}
+            handleClick={handleClick}
+            changed={changed}
+            gridSize={gridSize}
+          />
+        ))}
+      </div>
     </div>
   );
 }
