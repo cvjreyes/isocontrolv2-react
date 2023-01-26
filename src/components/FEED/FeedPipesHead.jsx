@@ -113,7 +113,8 @@ export default function Header({
 const headStyle = {
   display: "grid",
   gridTemplateColumns: "3fr 1fr 5fr",
-  marginBottom: "10px",
+  height: "50px",
+  backgroundColor: "#338DF1",
   ".centerTitle": {
     display: "flex",
     alignItems: "center",

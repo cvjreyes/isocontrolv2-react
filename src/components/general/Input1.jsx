@@ -18,7 +18,7 @@ export default function Input1({ id, name, value, type, onChange, className }) {
 
 const InputStyle = {
   height: "40px",
-  border: "1px solid lightgray",
+  border: "1px solid #D2D2D2",
   borderRadius: "6px",
   padding: "5px",
 };

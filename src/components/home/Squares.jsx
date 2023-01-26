@@ -60,4 +60,7 @@ export default function Squares() {
 
 const squaresStyle = {
   display: "flex",
+  "*": {
+    color: "white",
+  },
 };

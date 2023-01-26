@@ -5,6 +5,7 @@ FEED_ESTIMATED:
 - como la pipe creada estará en ESTIMATED NO se podrá editar ✔
 - ADD PIPE: When you add a pipe in Modelled(100%) it doesn't add in IFD Pipes ✔
 - if delete in ifd => trashed NOT actually delete ✔
-  - If its trashed not change status in feed
-- trashed pipes CAN be recovered
+  - If its trashed not change status in feed ✔
+- trashed pipes CAN be recovered ✔
 - if feed_pipe not modelled can be deleted
+- if feed_pipe is grey, not possible to delete in feed
