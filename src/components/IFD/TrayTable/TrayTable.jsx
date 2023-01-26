@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import Button1 from "../../general/Button1";
+import Button1 from "../../general/Button2";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({
@@ -25,14 +25,16 @@ export default function TrayTable({
   const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 1.2fr 0.3fr 0.8fr";
 
   const modelledStyle = {
-    ".head": {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      marginBottom: "10px",
-    },
+    border: "solid #D2D2D2",
+    borderWidth: "0 1px 1px 1px",
+    padding: "10px 10px 0",
     ".table": {
       border: "solid black",
-      borderWidth: "1px 0 0 1px",
+      borderWidth: "1px 1px 0 1px",
+      height: "calc(60vh - 61px)",
+    },
+    ".title": {
+      color: "white",
     },
     ".grid": {
       display: "grid",
@@ -48,39 +50,81 @@ export default function TrayTable({
     },
   };
 
+  const headStyle = {
+    display: "grid",
+    gridTemplateColumns: "2fr 1fr ",
+    height: "50px",
+    width: "100%",
+    backgroundColor: "#338DF1",
+    ".backWrapper": {
+      width: "40px",
+      height: "40px",
+      margin: "0 5% 0 2%",
+      borderRadius: "100px",
+      ":hover": {
+        boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
+      },
+      img: { width: "20px", filter: "invert(100%)" },
+    },
+    h3: {
+      fontSize: "1.2rem",
+      whiteSpace: "nowrap",
+      color: "white",
+      marginLeft: "50%",
+    },
+    ".centerTitle": {
+      display: "flex",
+      alignItems: "center",
+    },
+  };
+
   return (
-    <div css={modelledStyle}>
-      <div className="head">
-        <div />
-        <div className="flexCenter">{title}</div>
+    <div>
+      <div css={headStyle}>
+        <div className="flexCenter">
+          <h3 className="bold title">{title}</h3>
+        </div>
         <div className="flexCenter">
           <Button1
             onClick={handleClaim}
             text={buttonText || "Claim"}
-            width="150px"
-            border="1px solid black"
+            width="100px"
+            bgColor="transparent"
+            border="none"
+            color="white"
+            fontWeight="600"
+            fontSize="14px"
+            textMargin="0 0 0 6px"
+            margin="0 0 0 3%"
+            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+            // img
+            alt="claim"
+            src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
+            imgFilter="invert(100%) brightness(200%)"
           />
         </div>
       </div>
-      <div className="table">
-        <div className="grid">
-          {titles.map((title) => {
-            return (
-              <div key={title.text} className="flexCenter cell">
-                <h4 className="bold">{title.text}</h4>
-              </div>
-            );
-          })}
+      <div css={modelledStyle}>
+        <div className="table">
+          <div className="grid">
+            {titles.map((title) => {
+              return (
+                <div key={title.text} className="flexCenter cell">
+                  <h4 className="bold">{title.text}</h4>
+                </div>
+              );
+            })}
+          </div>
+          {data.map((row) => (
+            <RowTray
+              key={row.id}
+              row={row}
+              titles={titles}
+              addToDataClaim={addToDataClaim}
+              dataToClaim={dataToClaim}
+            />
+          ))}
         </div>
-        {data.map((row) => (
-          <RowTray
-            key={row.id}
-            row={row}
-            titles={titles}
-            addToDataClaim={addToDataClaim}
-            dataToClaim={dataToClaim}
-          />
-        ))}
       </div>
     </div>
   );
