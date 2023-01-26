@@ -43,23 +43,24 @@ const feedStyle = {
     alignSelf: "center",
     height: "60vh",
   },
+  // selects sidebar
   "> div:first-of-type": {
     borderRight: "0", // equivale a hacer border-collapse: collapse pero sin table
     borderRadius: "20px 0 0 0",
-    "> div:first-of-type": {
+    ".fakeHeader": {
       height: "50px",
       backgroundColor: "#338DF1",
       borderRadius: "20px 0 0 0",
     },
-  },
-  "> div:last-child": {
-    // borderRadius: "0 20px 0 0",
   },
   ".wrapper": {
     padding: "10px 1% 0",
     border: "solid #D2D2D2",
     borderWidth: "0 0 1px 1px",
     height: "calc(60vh - 50px)",
-    overflowY: "scroll",
+  },
+  // selects table head
+  "> div:nth-of-type(2) > div:first-of-type": {
+    borderRadius: "0 20px 0 0",
   },
 };

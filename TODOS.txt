@@ -43,14 +43,15 @@ DOING 🔁
 
 TODO ❌
   - if trashed in IFD => blocked in FEED
-  - Progresses form home ? ? ? when did they stop working
+  - Progresses from home ? ? ? when did they stop working
   - background colors not working on table FEED
   - background colors not working on table IFD
   - click away from navbar dropdown => close dropdown
+  - toast on undo: undone
+  - toast OR 'copied' on copy all
+  - back from forecast
+  - deleted pipe modal
   - STYLE:
-    - line control
-      - scroll only on table content, header fixed
-      - work on head => buttons colors and format to fit design
     - add
     - forecast
     - main

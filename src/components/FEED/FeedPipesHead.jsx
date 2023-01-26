@@ -5,7 +5,9 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-import Button from "../general/Button1";
+import Button from "../general/Button2";
+import addImg from "../../assets/images/add.svg";
+import saveImg from "../../assets/images/save.svg";
 
 export default function Header({
   title,
@@ -36,72 +38,101 @@ export default function Header({
 
   return (
     <div css={headStyle}>
-      <div css={selectWrapper}>
-        <label
-          className="pointer"
-          htmlFor="mode"
-          onClick={() => selectRef.current.focus()}
-        >
-          Mode:
-        </label>
-        <Select
-          options={options}
-          openMenuOnFocus={true}
-          ref={selectRef}
-          onChange={handleSelectChange}
-          styles={{
-            control: (baseStyles) => ({
-              ...baseStyles,
-              border: "none",
-            }),
-          }}
-          defaultValue={options[0]}
+      <div className="btns_wrapper">
+        <Button
+          text="Add"
+          width="100px"
+          border="none"
+          bgColor="transparent"
+          onClick={() => navigate(`/${id}/${page}/add`)}
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 5px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={addImg}
+          imgFilter="invert(100%) brightness(200%)"
+        />
+        <Button
+          text="Undo"
+          width="100px"
+          bgColor="transparent"
+          onClick={undoChanges}
+          border="none"
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 6px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
+          imgFilter="invert(100%) brightness(200%)"
+        />
+        <Button
+          width="110px"
+          text="Copy All"
+          bgColor="transparent"
+          border="none"
+          onClick={copyAll}
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 7px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={
+            "https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png"
+          }
+          imgFilter="invert(100%) brightness(200%)"
+          imgWidth="18px"
+        />
+        <Button
+          width="100px"
+          text="Save"
+          border="none"
+          onClick={submitChanges}
+          bgColor="transparent"
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 5px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={saveImg}
+          imgWidth="30px"
         />
       </div>
+
+      {/* <div /> */}
       <div className="centerTitle">
         <h3 className="bold">{title}</h3>
       </div>
       <div css={rightStyle}>
-        <div className="btns_wrapper">
-          <Button
-            width="100px"
-            fontSize="14px"
-            text="Add"
-            border="1px solid black"
-            margin="0 5px"
-            onClick={() => navigate(`/${id}/${page}/add`)}
-            bgColor="#0070ED"
-            bgHover="#3988e2"
-          />
-          <Button
-            width="100px"
-            fontSize="14px"
-            text="Undo"
-            bgColor="orange"
-            border="1px solid black"
-            margin="0 5px"
-            onClick={undoChanges}
-            bgHover="rgb(255, 182, 45)"
-          />
-          <Button
-            width="100px"
-            fontSize="14px"
-            text="Copy All"
-            bgColor="yellow"
-            border="1px solid black"
-            margin="0 5px"
-            onClick={copyAll}
-            bgHover="rgb(255, 255, 125)"
-          />
-          <Button
-            width="100px"
-            fontSize="14px"
-            text="Save"
-            border="1px solid black"
-            margin="0 5px"
-            onClick={submitChanges}
-            bgColor="rgb(37, 208, 37)"
-            bgHover="rgb(82, 223, 82)"
+        <div className="selectWrapper">
+          <label
+            className="pointer"
+            htmlFor="mode"
+            onClick={() => selectRef.current.focus()}
+          >
+            Mode:
+          </label>
+          <Select
+            options={options}
+            openMenuOnFocus={true}
+            ref={selectRef}
+            onChange={handleSelectChange}
+            styles={{
+              control: (baseStyles) => ({
+                ...baseStyles,
+                border: "none",
+              }),
+            }}
+            defaultValue={options[0]}
           />
         </div>
         <span className="itemsLength">{data.length} items</span>
@@ -112,48 +143,46 @@ export default function Header({
 
 const headStyle = {
   display: "grid",
-  gridTemplateColumns: "3fr 1fr 5fr",
+  gridTemplateColumns: "3fr 1fr 3fr",
   height: "50px",
   backgroundColor: "#338DF1",
+  ".btns_wrapper": {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
   ".centerTitle": {
     display: "flex",
     alignItems: "center",
-  },
-  h3: {
-    fontSize: "1.2rem",
-    whiteSpace: "nowrap",
-  },
-};
-
-const selectWrapper = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  ".css-1nmdiq5-menu, .css-1nmdiq3-menu": {
-    cursor: "pointer",
-  },
-  div: {
-    cursor: "pointer",
-  },
-  label: {
-    marginRight: ".5rem",
+    h3: { color: "white", fontSize: "1.2rem", whiteSpace: "nowrap" },
   },
 };
 
 const rightStyle = {
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
   width: "100%",
-  ".btns_wrapper": {
-    width: "100%",
+  ".selectWrapper": {
     display: "flex",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    ".css-1nmdiq5-menu, .css-1nmdiq3-menu": {
+      cursor: "pointer",
+    },
+    div: {
+      cursor: "pointer",
+    },
+    label: {
+      marginRight: ".5rem",
+      color: "white",
+    },
   },
   ".itemsLength": {
     whiteSpace: "nowrap",
     marginRight: "1.5rem",
     minWidth: "150px",
+    color: "white",
   },
 };
