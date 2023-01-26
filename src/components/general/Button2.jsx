@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-export default function Button1({
+export default function Button2({
   name,
   text,
   onClick,
