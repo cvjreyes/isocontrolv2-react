@@ -332,7 +332,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
           element={
             <CopyContext data={displayData} id={id}>
               <IFDTableWrapper
-                title="IFD"
+                title="Main"
                 id={id}
                 page={page}
                 lineRefs={lineRefs}

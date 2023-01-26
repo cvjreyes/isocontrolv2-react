@@ -11,6 +11,7 @@ export default function Button2({
   border,
   borderRadius,
   width,
+  height,
   margin,
   className,
   fontWeight,
@@ -27,6 +28,7 @@ export default function Button2({
 }) {
   const buttonStyle = {
     width: width || "100%",
+    height,
     padding: padding || "10px 20px",
     backgroundColor: bgColor,
     border,
