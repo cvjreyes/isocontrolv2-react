@@ -15,6 +15,8 @@ export default function FeedPipesExcelTableHeader({
     display: "grid",
     gridTemplateColumns: gridSize,
     borderRight: "1px solid black",
+    border: "solid black",
+    borderWidth: "0 1px 1px 0",
     input: {
       width: "100%",
       lineHeight: "50px",
