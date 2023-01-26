@@ -1,7 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import WithToast from "../../../modals/Toast";
 import MyTrayTable from "./MyTrayTable";
@@ -173,7 +170,7 @@ function MyTrayComp({ setMessage }) {
   };
 
   return (
-    <div css={myTrayStyle}>
+    <div>
       <MyTrayHead
         undo={undo}
         submitChanges={submitChanges}
@@ -191,13 +188,6 @@ function MyTrayComp({ setMessage }) {
     </div>
   );
 }
-
-const myTrayStyle = {
-  ".table": {
-    height: "70vh",
-    overflowY: "scroll",
-  },
-};
 
 // using this components to use modals
 export default function MyTray() {

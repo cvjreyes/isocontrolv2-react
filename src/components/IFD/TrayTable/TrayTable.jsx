@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import Button1 from "../../general/Button2";
+import Button2 from "../../general/Button2";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({
@@ -22,70 +22,63 @@ export default function TrayTable({
     { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 1.2fr 0.3fr 0.8fr";
+  const gridSize = ".25fr 1.5fr 0.3fr 0.5fr 1.2fr 0.25fr 0.8fr";
 
-  const modelledStyle = {
-    border: "solid #D2D2D2",
-    borderWidth: "0 1px 1px 1px",
-    padding: "10px 10px 0",
-    ".table": {
-      border: "solid black",
-      borderWidth: "1px 1px 0 1px",
-      height: "calc(60vh - 61px)",
-    },
-    ".title": {
-      color: "white",
-    },
-    ".grid": {
+  const trayStyle = {
+    ".head": {
       display: "grid",
-      gridTemplateColumns: gridSize,
-      ".cell": {
-        border: "solid black",
-        borderWidth: "0 1px 1px 0",
-        padding: "5%",
-        button: {
-          cursor: "default",
-        },
-      },
-    },
-  };
-
-  const headStyle = {
-    display: "grid",
-    gridTemplateColumns: "2fr 1fr ",
-    height: "50px",
-    width: "100%",
-    backgroundColor: "#338DF1",
-    ".backWrapper": {
-      width: "40px",
-      height: "40px",
-      margin: "0 5% 0 2%",
-      borderRadius: "100px",
-      ":hover": {
-        boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
-      },
-      img: { width: "20px", filter: "invert(100%)" },
+      gridTemplateColumns: "repeat(3, 1fr) ",
+      height: "50px",
+      width: "100%",
+      backgroundColor: "#338DF1",
     },
     h3: {
       fontSize: "1.2rem",
       whiteSpace: "nowrap",
       color: "white",
-      marginLeft: "50%",
     },
-    ".centerTitle": {
-      display: "flex",
-      alignItems: "center",
+    ".wrapper": {
+      padding: "10px 1% 0",
+      border: "solid #D2D2D2",
+      borderWidth: "0 1px 1px 1px",
+      height: "calc(60vh - 50px)",
+      "> .grid": { borderTop: "1px solid black" },
+    },
+    ".grid": {
+      display: "grid",
+      gridTemplateColumns: gridSize,
+      height: "50px",
+      borderLeft: "1px solid black",
+      ".cell": {
+        border: "solid black",
+        borderWidth: "0 1px 1px 0",
+        button: {
+          cursor: "default",
+        },
+      },
+    },
+    ".table": {
+      maxHeight: "calc(60vh - 111px)",
+      overflowY: "auto",
+      ".cell": { padding: "0 5%" },
+      /* Hide scrollbar for IE, Edge and Firefox */
+      msOverflowStyle: "none" /* IE and Edge */,
+      scrollbarWidth: "none" /* Firefox */,
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      "::-webkit-scrollbar": { display: "none" },
+      "*": { fontSize: "13px" },
     },
   };
 
   return (
-    <div>
-      <div css={headStyle}>
+    <div css={trayStyle}>
+      <div className="head">
+        <div />
         <div className="flexCenter">
-          <h3 className="bold title">{title}</h3>
+          <h3 className="bold">{title}</h3>
         </div>
         <div className="flexCenter">
-          <Button1
+          <Button2
             onClick={handleClaim}
             text={buttonText || "Claim"}
             width="100px"
@@ -104,17 +97,17 @@ export default function TrayTable({
           />
         </div>
       </div>
-      <div css={modelledStyle}>
+      <div className="wrapper">
+        <div className="grid">
+          {titles.map((title) => {
+            return (
+              <div key={title.text} className="flexCenter cell">
+                <h4 className="bold">{title.text}</h4>
+              </div>
+            );
+          })}
+        </div>
         <div className="table">
-          <div className="grid">
-            {titles.map((title) => {
-              return (
-                <div key={title.text} className="flexCenter cell">
-                  <h4 className="bold">{title.text}</h4>
-                </div>
-              );
-            })}
-          </div>
           {data.map((row) => (
             <RowTray
               key={row.id}
