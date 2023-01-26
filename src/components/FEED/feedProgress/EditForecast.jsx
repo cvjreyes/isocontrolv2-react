@@ -168,7 +168,6 @@ const headStyle = {
     width: "40px",
     height: "40px",
     margin: "0 5% 0 2%",
-    // backgroundColor: "red",
     borderRadius: "100px",
     ":hover": {
       boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
@@ -194,7 +193,7 @@ const editForecastStyle = {
   border: "solid #D2D2D2",
   borderWidth: "0 1px 1px 1px",
   ".tableStyle": {
-    margin: "10px",
+    margin: "10px 10px 0 10px",
     ".head": {
       border: "solid black",
       borderWidth: "0 1px 0 0",
@@ -214,7 +213,7 @@ const editForecastStyle = {
     ".tableBody": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",
-      maxHeight: "calc(60vh - 110px)",
+      maxHeight: "calc(60vh - 100px)",
       overflowY: "auto",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
