@@ -93,8 +93,8 @@ export default function Header({
         <Button
           width="100px"
           text="Save"
-          border="none"
           onClick={submitChanges}
+          border="none"
           bgColor="transparent"
           color="white"
           fontWeight="600"
@@ -109,7 +109,7 @@ export default function Header({
       </div>
 
       {/* <div /> */}
-      <div className="centerTitle">
+      <div className="flexCenter">
         <h3 className="bold">{title}</h3>
       </div>
       <div css={rightStyle}>
@@ -135,7 +135,7 @@ export default function Header({
             defaultValue={options[0]}
           />
         </div>
-        <span className="itemsLength">{data.length} items</span>
+        <span className="itemsLength default">{data.length} items</span>
       </div>
     </div>
   );
@@ -152,11 +152,7 @@ const headStyle = {
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  ".centerTitle": {
-    display: "flex",
-    alignItems: "center",
-    h3: { color: "white", fontSize: "1.2rem", whiteSpace: "nowrap" },
-  },
+  h3: { color: "white", fontSize: "1.2rem", whiteSpace: "nowrap" },
 };
 
 const rightStyle = {

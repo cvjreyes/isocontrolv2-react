@@ -15,6 +15,7 @@ export default function AddRow({
   const rowStyle = {
     display: "grid",
     gridTemplateColumns: gridSize,
+    borderRight: "1px solid black",
     "input, select": {
       width: "100%",
       lineHeight: "50px",
