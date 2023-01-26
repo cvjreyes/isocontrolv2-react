@@ -33,8 +33,6 @@ const sidebarStyle = {
   borderWidth: "0 0 1px 1px",
   display: "flex",
   flexDirection: "column",
-  maxWidth: "200px",
-  minWidth: "150px",
   padding: "0 0 1.5rem",
   ".section": {
     margin: ".5rem 0",
