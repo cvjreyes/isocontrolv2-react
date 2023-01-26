@@ -46,8 +46,8 @@ const Row = React.memo(
         backgroundColor:
           (item.tag === "Already exists" && "orange") ||
           (changed.includes(item.id) && "rgb(0, 188, 6)") ||
-          (item.ifd_status &&
-            item.ifd_status !== "FEED_ESTIMATED" &&
+          (((item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
+            item.trashed) &&
             "lightgray"),
         webkitTransition: "background-color 300ms linear",
         msTransition: "background-color 300ms linear",
@@ -65,10 +65,6 @@ const Row = React.memo(
         borderWidth: "1px 0 0 1px",
         lineHeight: "50px",
         position: "relative",
-        backgroundColor:
-          item.ifd_status &&
-          item.ifd_status !== "FEED_ESTIMATED" &&
-          "lightgray !important",
         div: {
           backgroundColor:
             item.ifd_status &&
@@ -190,6 +186,7 @@ const Row = React.memo(
                 }}
                 closeMenuOnScroll={true}
                 isDisabled={
+                  (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
                   (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
                   deleting
                 }
