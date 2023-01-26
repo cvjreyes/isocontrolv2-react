@@ -47,10 +47,10 @@ const Table = React.memo(
 );
 
 const tableStyle = {
-  border: "solid black",
-  borderWidth: "0 1px 1px 0",
+  // border: "solid black",
+  // borderWidth: "0 1px 1px 0",
   overflowY: "scroll",
-  height: "calc(60vh - 111px)",
+  height: "calc(60vh - 112px)",
   msOverflowStyle: "none" /* Internet Explorer 10+ */,
   scrollbarWidth: "none" /* Firefox */,
   "::-webkit-scrollbar": {
@@ -59,9 +59,17 @@ const tableStyle = {
   "*": {
     fontSize: "13px !important",
   },
+  // border right to table
+  "> form": {
+    borderRight: "1px solid black",
+  },
   // to remove top border from first row in table to avoid double border
   "> form:first-of-type": {
     "div, input": { borderWidth: "0 0 0 1px" },
+  },
+  // adding last border bottom
+  "> form:last-child": {
+    "> div, input": { borderBottom: "1px solid black" },
   },
 };
 
