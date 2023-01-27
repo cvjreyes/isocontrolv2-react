@@ -6,11 +6,9 @@ import { useState, useEffect, useContext } from "react";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
 import TrayTable from "../TrayTable/TrayTable";
 
 function TrashComp({ setMessage }) {
-  const { user } = useContext(AuthContext);
 
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
