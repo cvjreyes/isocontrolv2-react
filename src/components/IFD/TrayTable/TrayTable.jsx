@@ -12,6 +12,9 @@ export default function TrayTable({
   dataToClaim,
   buttonText,
   selectAll,
+  filter,
+  filterInfo,
+  actualData,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -55,6 +58,12 @@ export default function TrayTable({
         borderWidth: "0 1px 1px 0",
         button: {
           cursor: "default",
+        },
+        input: {
+          width: "100%",
+          lineHeight: "50px",
+          border: "none",
+          textAlign: "center",
         },
       },
     },
@@ -111,7 +120,8 @@ export default function TrayTable({
                   <input
                     type="checkbox"
                     checked={
-                      data.filter((x) => !x.owner).length === dataToClaim.length
+                      data.filter((x) => !x.owner).length ===
+                        dataToClaim.length && data.length > 1
                     }
                     readOnly
                   />
@@ -120,7 +130,30 @@ export default function TrayTable({
             }
             return (
               <div key={title.text} className="flexCenter cell">
-                <h4 className="bold">{title.text}</h4>
+                <input
+                  readOnly={title.key === "actions" || title.key === "progress"}
+                  className="bold"
+                  defaultValue={title.text}
+                  onFocus={(e) => {
+                    if (title.key === "actions" || title.key === "progress")
+                      return;
+                    filter(title.key, "");
+                    e.target.value = "";
+                  }}
+                  onBlur={(e) => {
+                    if (!filterInfo[title.key]) {
+                      e.target.value = e.target.defaultValue;
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      e.target.value = e.target.defaultValue;
+                      e.target.blur();
+                      filter(title.key, "");
+                    }
+                  }}
+                  onChange={(e) => filter(title.key, e.target.value)}
+                />
               </div>
             );
           })}
