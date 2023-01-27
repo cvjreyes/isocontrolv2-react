@@ -291,7 +291,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   const handleDelete = (e, id, trashed) => {
-    if (!deleting || trashed) return;
+    console.log("Delete: ", !deleting);
+    console.log("trashed: ", trashed);
+    if (!deleting || trashed ) return;
     e.stopPropagation();
     e.preventDefault();
     setModalContent({

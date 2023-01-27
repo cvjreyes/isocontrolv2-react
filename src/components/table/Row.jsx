@@ -133,13 +133,13 @@ const Row = React.memo(
             : "white",
       }),
     };
-
+    
     return (
       <form
         css={rowStyle}
         onPaste={(e) => handlePaste(e, i, item.id)}
         id={rowId}
-        onClick={(e) => handleDelete(e, item.id, item.trashed)}
+        onClick={(e) => (!item.ifd_status || item.ifd_status === "FEED_ESTIMATED") && handleDelete(e, item.id, item.trashed)}
       >
         {columns.map((x, y) => {
           if (x.key === "empty")
