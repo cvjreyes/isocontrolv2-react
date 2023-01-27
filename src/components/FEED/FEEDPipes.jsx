@@ -117,13 +117,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
     if (ok) {
       setChanged([]);
-      // ! update rows or not, thant's the question
-      // pros: if error in DB always be detected in UI
-      // cons: errors should not be located like that + time & server consuming
-      // rows.map((row) => (row.tag = buildTag(row)));
-      // setData(rows);
-      // filter();
-      // getFeedPipes();
+      setTimeout(async () => {
+        const { body } = await api("get", "/feed/get_progress");
+        setProgress(body);
+      }, 100);
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
@@ -323,7 +320,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
           element={
             <CopyContext data={displayData} id={"feed"}>
               <FeedPipesExcelTableWrapper
-                title="Line Control"
+                title="FEED"
                 displayData={displayData}
                 lineRefs={lineRefs}
                 areas={areas}

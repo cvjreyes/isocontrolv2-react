@@ -51,6 +51,9 @@ export default function MyTrayTable({
         display: "none",
       },
     },
+    ".noResults": {
+      margin: "2rem 0 0 2rem",
+    },
   };
 
   return (
@@ -82,18 +85,22 @@ export default function MyTrayTable({
         })}
       </div>
       <div className="table">
-        {data.map((row) => (
-          <MyTrayRow
-            key={row.id}
-            row={row}
-            titles={titles}
-            addToDataClaim={addToDataClaim}
-            dataToClaim={dataToClaim}
-            handleClick={handleClick}
-            changed={changed}
-            gridSize={gridSize}
-          />
-        ))}
+        {data.length > 0 ? (
+          data.map((row) => (
+            <MyTrayRow
+              key={row.id}
+              row={row}
+              titles={titles}
+              addToDataClaim={addToDataClaim}
+              dataToClaim={dataToClaim}
+              handleClick={handleClick}
+              changed={changed}
+              gridSize={gridSize}
+            />
+          ))
+        ) : (
+          <p className="noResults">No results (╯°□°）╯︵ ┻━┻</p>
+        )}
       </div>
     </div>
   );
