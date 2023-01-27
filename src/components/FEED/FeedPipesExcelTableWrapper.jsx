@@ -31,6 +31,7 @@ export default function FeedPipesExcelTableWrapper({
   copyAll,
   undoChanges,
   gridSize,
+  setMessage,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
 
@@ -47,6 +48,7 @@ export default function FeedPipesExcelTableWrapper({
         data={displayData}
         id={id}
         page={page}
+        setMessage={setMessage}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

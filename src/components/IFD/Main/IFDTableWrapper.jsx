@@ -34,6 +34,7 @@ export default function IFDTableWrapper({
   submitChanges,
   handlePaste,
   gridSize,
+  setMessage,
 }) {
   return (
     <div css={tableWrapperStyle}>
@@ -48,6 +49,7 @@ export default function IFDTableWrapper({
         data={displayData}
         id={id}
         page={page}
+        setMessage={setMessage}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

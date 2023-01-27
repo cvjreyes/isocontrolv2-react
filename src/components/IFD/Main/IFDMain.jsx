@@ -189,7 +189,13 @@ function IFDMainComp({ setMessage, setModalContent }) {
 
   const deleteLine = async (id) => {
     const idx = data.findIndex((x) => x.id === id);
-    await api("delete", `/ifd/delete_pipe/${id}`);
+    const { ok } = await api("delete", `/ifd/delete_pipe/${id}`);
+    if (!ok)
+      return setMessage({
+        txt: "Something went wrong please try again",
+        type: "error",
+      });
+    setMessage({ txt: "Row deleted successfully", type: "success" });
     const tempData = [...data];
     tempData.splice(idx, 1);
     setData(tempData);
@@ -200,6 +206,10 @@ function IFDMainComp({ setMessage, setModalContent }) {
     setChanged([]);
     getIFDPipes();
     setFilterInfo({});
+    setMessage({
+      txt: changed.length < 1 ? "No changes to undo!" : "Changes undone!",
+      type: changed.length < 1 ? "warn" : "success",
+    });
   };
 
   const handlePaste = (e, i, id) => {
@@ -352,6 +362,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 submitChanges={submitChanges}
                 gridSize={gridSize}
                 handlePaste={handlePaste}
+                setMessage={setMessage}
               />
             </CopyContext>
           }

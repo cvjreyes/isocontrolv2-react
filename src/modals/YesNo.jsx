@@ -99,6 +99,7 @@ const mainStyle = {
   backgroundColor: "#030303",
   color: "white",
   textAlign: "center",
+  p: { color: "white" },
   ".buttonWrapper": {
     display: "flex",
     justifyContent: "center",
