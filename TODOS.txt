@@ -51,6 +51,7 @@ DONE ✔
 - NO delete in FEED if pipe is gray OR trashed
 - select all
 - FILTRO en trays
+- actualizar progres on update
 
 DOING 🔁
 

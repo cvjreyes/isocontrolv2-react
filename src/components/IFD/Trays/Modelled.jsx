@@ -96,7 +96,7 @@ function ModelledComp({ setMessage }) {
         ) {
           exists.push(key);
         }
-      }
+      } // filters key get added to exists array, then it checks with filterInfo. if same length means MATCH
       if (exists.length === Object.keys(filterInfo).length) {
         resultData.push(item);
       }
@@ -111,12 +111,14 @@ function ModelledComp({ setMessage }) {
   };
 
   const handleFilter = (keyName, val) => {
-    if (keyName in filterInfo && !val) {
+    // if no value in filter input => remove key from filterInfo
+    if (!val) {
       let tempFilterInfo = { ...filterInfo };
       // tempFilterInfo[keyName] = keyName;
       delete tempFilterInfo[keyName];
-      setFilterInfo(tempFilterInfo);
-    }
+      console.log(tempFilterInfo);
+      return setFilterInfo(tempFilterInfo);
+    } // else add it
     setFilterInfo({ ...filterInfo, [keyName]: val });
   };
 

@@ -67,6 +67,13 @@ export default function TrayTable({
         },
       },
     },
+    ".itemsLength": {
+      whiteSpace: "nowrap",
+      marginRight: "1.5rem",
+      minWidth: "150px",
+      color: "white",
+      textAlign: "center",
+    },
     ".table": {
       maxHeight: "calc(60vh - 111px)",
       overflowY: "auto",
@@ -77,6 +84,9 @@ export default function TrayTable({
       /* Hide scrollbar for Chrome, Safari and Opera */
       "::-webkit-scrollbar": { display: "none" },
       "*": { fontSize: "13px" },
+    },
+    ".noResults": {
+      margin: "2rem 0 0 2rem",
     },
   };
 
@@ -105,6 +115,7 @@ export default function TrayTable({
             src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
             imgFilter="invert(100%) brightness(200%)"
           />
+          <div className="itemsLength">{data.length} items</div>
         </div>
       </div>
       <div className="wrapper">
@@ -159,15 +170,19 @@ export default function TrayTable({
           })}
         </div>
         <div className="table">
-          {data.map((row) => (
-            <RowTray
-              key={row.id}
-              row={row}
-              titles={titles}
-              addToDataClaim={addToDataClaim}
-              dataToClaim={dataToClaim}
-            />
-          ))}
+          {data.length > 0 ? (
+            data.map((row) => (
+              <RowTray
+                key={row.id}
+                row={row}
+                titles={titles}
+                addToDataClaim={addToDataClaim}
+                dataToClaim={dataToClaim}
+              />
+            ))
+          ) : (
+            <p className="noResults">No results ╰(*°▽°*)╯</p>
+          )}
         </div>
       </div>
     </div>
