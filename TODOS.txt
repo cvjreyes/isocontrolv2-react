@@ -45,14 +45,14 @@ DONE ✔
 - toast OR 'copied' on copy all
 - back from forecast
 - deleted pipe modal
+- feed progress
+- ifd progress
 
 DOING 🔁
 
 TODO ❌
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select.
-  - feed progress
-  - ifd progress
 
 CSV
 - if _ => modelled* ???

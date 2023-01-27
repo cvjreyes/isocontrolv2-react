@@ -34,8 +34,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
 
-  // delete all button + not being able to paste?
-
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_feed_pipes");
     const rows2 = rows.map((row) => ({
@@ -130,7 +128,13 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 
   const deleteLine = async (id) => {
     const idx = data.findIndex((x) => x.id === id);
-    await api("delete", `/feed/delete_pipe/${id}`);
+    const { ok } = await api("delete", `/feed/delete_pipe/${id}`);
+    if (!ok)
+      return setMessage({
+        txt: "Something went wrong please try again",
+        type: "error",
+      });
+    setMessage({ txt: "Row deleted successfully", type: "success" });
     const tempData = [...data];
     tempData.splice(idx, 1);
     setData(tempData);
@@ -287,10 +291,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   const handleDelete = (e, id, trashed) => {
-    if (!deleting) return;
+    if (!deleting || trashed) return;
     e.stopPropagation();
     e.preventDefault();
-    if (trashed) return;
     setModalContent({
       openModal: true,
       text: `Are you sure you want to delete row with ID: ${id}?`,
@@ -302,6 +305,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setChanged([]);
     getFeedPipes();
     setFilterInfo({});
+    setMessage({
+      txt: changed.length < 1 ? "No changes to undo!" : "Changes undone!",
+      type: changed.length < 1 ? "warn" : "success",
+    });
   };
 
   return (
@@ -330,6 +337,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 handleDelete={handleDelete}
                 undoChanges={undoChanges}
                 gridSize={gridSize}
+                setMessage={setMessage}
               />
             </CopyContext>
           }

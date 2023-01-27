@@ -19,6 +19,7 @@ export default function Header({
   data,
   id,
   page,
+  setMessage,
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();
@@ -34,6 +35,14 @@ export default function Header({
     else setCopyMulti(false);
     if (e.value === "delete") setDeleting(true);
     else setDeleting(false);
+  };
+
+  const handleCopy = () => {
+    copyAll();
+    setMessage({
+      txt: "All rows copied!",
+      type: "success",
+    });
   };
 
   return (
@@ -76,7 +85,7 @@ export default function Header({
           text="Copy All"
           bgColor="transparent"
           border="none"
-          onClick={copyAll}
+          onClick={handleCopy}
           color="white"
           fontWeight="600"
           fontSize="14px"

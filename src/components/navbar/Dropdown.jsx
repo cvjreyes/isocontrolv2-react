@@ -55,6 +55,7 @@ const dropdownStyle = {
   position: "absolute",
   top: "50px",
   right: "2%",
+  zIndex: 3,
   backgroundColor: "#383838",
   width: "200px",
   padding: "0 0 10px",
