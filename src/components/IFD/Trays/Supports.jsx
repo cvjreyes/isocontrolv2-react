@@ -78,6 +78,12 @@ function SupportsComp({ setMessage }) {
     setDisplayData(passedData);
   };
 
+  const selectAll = () => {
+    const rows = data.filter((x) => !x.owner);
+    if (dataToClaim.length === rows.length) setDataToClaim([]);
+    setDataToClaim(rows.map((x) => x.id));
+  };
+
   return (
     <TrayTable
       title="Supports"
@@ -85,6 +91,7 @@ function SupportsComp({ setMessage }) {
       handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      selectAll={selectAll}
     />
   );
 }

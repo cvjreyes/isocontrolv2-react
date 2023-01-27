@@ -78,6 +78,12 @@ function SStressComp({ setMessage }) {
     setDisplayData(passedData);
   };
 
+  const selectAll = () => {
+    const rows = data.filter((x) => !x.owner);
+    if (dataToClaim.length === rows.length) return setDataToClaim([]);
+    setDataToClaim(rows.map((x) => x.id));
+  };
+
   return (
     <TrayTable
       title="S-Stress"
@@ -85,6 +91,7 @@ function SStressComp({ setMessage }) {
       handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      selectAll={selectAll}
     />
   );
 }

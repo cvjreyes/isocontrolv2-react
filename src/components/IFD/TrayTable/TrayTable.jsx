@@ -11,6 +11,7 @@ export default function TrayTable({
   title,
   dataToClaim,
   buttonText,
+  selectAll,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -100,6 +101,23 @@ export default function TrayTable({
       <div className="wrapper">
         <div className="grid">
           {titles.map((title) => {
+            if (title.text === "Claim") {
+              return (
+                <div
+                  key={title.text}
+                  className="flexCenter cell pointer"
+                  onClick={selectAll}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      data.filter((x) => !x.owner).length === dataToClaim.length
+                    }
+                    readOnly
+                  />
+                </div>
+              );
+            }
             return (
               <div key={title.text} className="flexCenter cell">
                 <h4 className="bold">{title.text}</h4>
