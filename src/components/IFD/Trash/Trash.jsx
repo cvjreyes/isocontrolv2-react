@@ -9,7 +9,6 @@ import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import TrayTable from "../TrayTable/TrayTable";
 
 function TrashComp({ setMessage }) {
-
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
@@ -68,6 +67,12 @@ function TrashComp({ setMessage }) {
     setDisplayData(passedData);
   };
 
+  const selectAll = () => {
+    const rows = data.filter((x) => !x.owner);
+    if (dataToClaim.length === rows.length) return setDataToClaim([]);
+    setDataToClaim(rows.map((x) => x.id));
+  };
+
   return (
     <TrayTable
       title="Trash"
@@ -76,6 +81,7 @@ function TrashComp({ setMessage }) {
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
       buttonText="Restore"
+      selectAll={selectAll}
     />
   );
 }

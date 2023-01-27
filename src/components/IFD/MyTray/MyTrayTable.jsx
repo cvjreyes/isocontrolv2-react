@@ -9,6 +9,7 @@ export default function MyTrayTable({
   dataToClaim,
   handleClick,
   changed,
+  selectAll,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -56,6 +57,23 @@ export default function MyTrayTable({
     <div css={modelledStyle}>
       <div className="grid">
         {titles.map((title) => {
+          if (title.text === "Claim") {
+            return (
+              <div
+                key={title.text}
+                className="flexCenter cell pointer"
+                onClick={selectAll}
+              >
+                <input
+                  type="checkbox"
+                  checked={
+                    data.length === dataToClaim.length && data.length > 1
+                  }
+                  readOnly
+                />
+              </div>
+            );
+          }
           return (
             <div key={title.text} className="flexCenter cell">
               <h4 className="bold">{title.text}</h4>

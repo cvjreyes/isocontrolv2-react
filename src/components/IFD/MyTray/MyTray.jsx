@@ -175,6 +175,11 @@ function MyTrayComp({ setMessage }) {
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
+  const selectAll = () => {
+    if (dataToClaim.length === data.length) return setDataToClaim([]);
+    setDataToClaim(data.map((x) => x.id));
+  };
+
   return (
     <div>
       <MyTrayHead
@@ -190,6 +195,7 @@ function MyTrayComp({ setMessage }) {
         dataToClaim={dataToClaim}
         handleClick={handleClick}
         changed={changed}
+        selectAll={selectAll}
       />
     </div>
   );
