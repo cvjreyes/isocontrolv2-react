@@ -30,8 +30,8 @@ export default function ProgressBar({
         >
           <div className="progressbar-liquid"></div>
         </div>
-        <div>
-          <Countup end={totalProgress} decimals={2} className="progress" />
+        <div className="number">
+          <Countup end={totalProgress} decimals={2} />
           <span>%</span>
         </div>
       </div>
@@ -77,7 +77,5 @@ const progressStyle = {
     backgroundColor: "#65ACFA",
     borderRadius: "40%",
   },
-  ".progress": {
-    zIndex: 2,
-  },
+  ".number": { zIndex: 2 },
 };
