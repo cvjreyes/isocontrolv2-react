@@ -38,7 +38,7 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
     top: 0,
     left: 0,
     width: "100vw",
-    height: "100vh",
+    height: "100vh !important",
     backgroundColor: "rgba(0, 0, 0, 0.2)",
     backdropFilter: "blur(2px)",
   };

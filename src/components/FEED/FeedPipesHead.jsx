@@ -20,6 +20,7 @@ export default function Header({
   id,
   page,
   setMessage,
+  progress,
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();
@@ -119,7 +120,9 @@ export default function Header({
 
       {/* <div /> */}
       <div className="flexCenter">
-        <h3 className="bold">{title}</h3>
+        <h3 className="bold">
+          {title} ({progress}%)
+        </h3>
       </div>
       <div css={rightStyle}>
         <div className="selectWrapper">

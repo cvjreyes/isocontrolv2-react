@@ -35,6 +35,7 @@ export default function IFDTableWrapper({
   handlePaste,
   gridSize,
   setMessage,
+  progress,
 }) {
   return (
     <div css={tableWrapperStyle}>
@@ -50,6 +51,7 @@ export default function IFDTableWrapper({
         id={id}
         page={page}
         setMessage={setMessage}
+        progress={progress}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

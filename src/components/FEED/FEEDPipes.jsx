@@ -25,6 +25,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const id = "feed";
   const page = "line_control";
 
+  const [progress, setProgress] = useState(0);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [areas, setAreas] = useState(null);
@@ -51,10 +52,12 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/areas/get_all"),
         api("get", "/api/diameters", true),
         api("get", "/lines/get_lines"),
+        api("get", "/feed/get_progress"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setDiameters(values[1].diameters.map((item) => item.diameter));
         setLineRefs(values[2].body);
+        setProgress(values[3].body);
       });
     };
     getThings();
@@ -170,6 +173,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     changedRow[name] = value;
     if (name === "diameter") {
       changedRow.type = getTypeFromDiameter(value, changedRow.calc_notes);
+      changedRow.tag = buildTag(changedRow);
     } else if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
@@ -290,15 +294,13 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
   };
 
-  const handleDelete = (e, id, trashed) => {
-    console.log("Delete: ", !deleting);
-    console.log("trashed: ", trashed);
-    if (!deleting || trashed ) return;
+  const handleDelete = (e, id, trashed, tag) => {
+    if (!deleting || trashed) return;
     e.stopPropagation();
     e.preventDefault();
     setModalContent({
       openModal: true,
-      text: `Are you sure you want to delete row with ID: ${id}?`,
+      text: `Are you sure you want to delete the following row: ${tag}`,
       onClick1: () => deleteLine(id),
     });
   };
@@ -340,6 +342,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 undoChanges={undoChanges}
                 gridSize={gridSize}
                 setMessage={setMessage}
+                progress={progress}
               />
             </CopyContext>
           }
