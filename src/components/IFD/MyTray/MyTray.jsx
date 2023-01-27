@@ -51,6 +51,8 @@ function MyTrayComp({ setMessage }) {
   const unclaim = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to unclaim", type: "warn" });
+    if (changed.length > 0)
+      return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     const { ok } = await api("post", "/ifd/unclaim_ifd_pipes", 0, {
       data: dataToSend,
@@ -66,6 +68,8 @@ function MyTrayComp({ setMessage }) {
   const nextStep = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes selected", type: "warn" });
+    if (changed.length > 0)
+      return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     if (dataToSend.some((x) => x.status === "S-Design"))
       return setMessage({ txt: "Some pipe is complete", type: "warn" });
@@ -99,6 +103,8 @@ function MyTrayComp({ setMessage }) {
   const returnPipe = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to return", type: "warn" });
+    if (changed.length > 0)
+      return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     if (dataToSend.some((x) => x.status.toLowerCase().includes("modelled")))
       return setMessage({ txt: "Some pipe can't be returned", type: "warn" });
@@ -169,6 +175,11 @@ function MyTrayComp({ setMessage }) {
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
+  const selectAll = () => {
+    if (dataToClaim.length === data.length) return setDataToClaim([]);
+    setDataToClaim(data.map((x) => x.id));
+  };
+
   return (
     <div>
       <MyTrayHead
@@ -184,6 +195,7 @@ function MyTrayComp({ setMessage }) {
         dataToClaim={dataToClaim}
         handleClick={handleClick}
         changed={changed}
+        selectAll={selectAll}
       />
     </div>
   );

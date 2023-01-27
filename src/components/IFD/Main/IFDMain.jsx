@@ -27,6 +27,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const id = "ifd";
   const page = "main";
 
+  const [progress, setProgress] = useState(0);
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [feedPipes, setFeedPipes] = useState([]);
@@ -67,6 +68,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
         api("get", "/ifd/get_ifd_pipes/0"),
+        api("get", "/ifd/get_progress"),
       ]).then((values) => {
         setAreas(values[0].map((item) => item.name));
         setDiameters(values[1].diameters.map((item) => item.diameter));
@@ -78,6 +80,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         }));
         setData(rows);
         setDisplayData(rows);
+        setProgress(values[5].body);
       });
     };
     getFeedPipes();
@@ -176,13 +179,13 @@ function IFDMainComp({ setMessage, setModalContent }) {
     }
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e, id, _, tag) => {
     if (!deleting) return;
     e.stopPropagation();
     e.preventDefault();
     setModalContent({
       openModal: true,
-      text: `Are you sure you want to delete row with ID: ${id}?`,
+      text: `Are you sure you want to delete the following row: ${tag}`,
       onClick1: () => deleteLine(id),
     });
   };
@@ -342,7 +345,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
           element={
             <CopyContext data={displayData} id={id}>
               <IFDTableWrapper
-                title="Main"
+                title="IFD"
                 id={id}
                 page={page}
                 lineRefs={lineRefs}
@@ -363,6 +366,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 gridSize={gridSize}
                 handlePaste={handlePaste}
                 setMessage={setMessage}
+                progress={progress}
               />
             </CopyContext>
           }

@@ -15,24 +15,29 @@ function ModelledComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
+  const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getModelledIFDPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifd/get_ifd_pipes_from_tray/modelled"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getModelledIFDPipes();
   }, []);
 
-  const getModelledIFDPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifd/get_ifd_pipes_from_tray/modelled"
-    );
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
+  useEffect(() => {
+    // cuando escrbimos en el filtro => actualizar displayData
+    filter();
+  }, [filterInfo]);
 
   const updatePipesDisplay = () => {
     const tempData = [...data];
@@ -74,8 +79,47 @@ function ModelledComp({ setMessage }) {
     setDataToClaim(tempDataToClaim);
   };
 
-  const filter = (passedData) => {
-    setDisplayData(passedData);
+  const filter = () => {
+    if (Object.values(filterInfo).every((x) => !x)) return setDisplayData(data);
+    let tempData = [...data];
+    let resultData = [];
+    tempData.forEach((item) => {
+      let exists = [];
+      // loop through filters keys
+      for (let key in filterInfo) {
+        if (
+          item[key] &&
+          item[key]
+            .toString()
+            .toLowerCase()
+            .includes(filterInfo[key].toLowerCase())
+        ) {
+          exists.push(key);
+        }
+      } // filters key get added to exists array, then it checks with filterInfo. if same length means MATCH
+      if (exists.length === Object.keys(filterInfo).length) {
+        resultData.push(item);
+      }
+    });
+    setDisplayData(resultData);
+  };
+
+  const selectAll = () => {
+    const rows = data.filter((x) => !x.owner);
+    if (dataToClaim.length === rows.length) return setDataToClaim([]);
+    setDataToClaim(rows.map((x) => x.id));
+  };
+
+  const handleFilter = (keyName, val) => {
+    // if no value in filter input => remove key from filterInfo
+    if (!val) {
+      let tempFilterInfo = { ...filterInfo };
+      // tempFilterInfo[keyName] = keyName;
+      delete tempFilterInfo[keyName];
+      console.log(tempFilterInfo);
+      return setFilterInfo(tempFilterInfo);
+    } // else add it
+    setFilterInfo({ ...filterInfo, [keyName]: val });
   };
 
   return (
@@ -85,6 +129,9 @@ function ModelledComp({ setMessage }) {
       handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      selectAll={selectAll}
+      filter={handleFilter}
+      filterInfo={filterInfo}
     />
   );
 }

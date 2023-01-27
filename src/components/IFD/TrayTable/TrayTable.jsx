@@ -11,6 +11,10 @@ export default function TrayTable({
   title,
   dataToClaim,
   buttonText,
+  selectAll,
+  filter,
+  filterInfo,
+  actualData,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -55,7 +59,20 @@ export default function TrayTable({
         button: {
           cursor: "default",
         },
+        input: {
+          width: "100%",
+          lineHeight: "50px",
+          border: "none",
+          textAlign: "center",
+        },
       },
+    },
+    ".itemsLength": {
+      whiteSpace: "nowrap",
+      marginRight: "1.5rem",
+      minWidth: "150px",
+      color: "white",
+      textAlign: "center",
     },
     ".table": {
       maxHeight: "calc(60vh - 111px)",
@@ -67,6 +84,9 @@ export default function TrayTable({
       /* Hide scrollbar for Chrome, Safari and Opera */
       "::-webkit-scrollbar": { display: "none" },
       "*": { fontSize: "13px" },
+    },
+    ".noResults": {
+      margin: "2rem 0 0 2rem",
     },
   };
 
@@ -95,28 +115,74 @@ export default function TrayTable({
             src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
             imgFilter="invert(100%) brightness(200%)"
           />
+          <div className="itemsLength">{data.length} items</div>
         </div>
       </div>
       <div className="wrapper">
         <div className="grid">
           {titles.map((title) => {
+            if (title.text === "Claim") {
+              return (
+                <div
+                  key={title.text}
+                  className="flexCenter cell pointer"
+                  onClick={selectAll}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      data.filter((x) => !x.owner).length ===
+                        dataToClaim.length && data.length > 1
+                    }
+                    readOnly
+                  />
+                </div>
+              );
+            }
             return (
               <div key={title.text} className="flexCenter cell">
-                <h4 className="bold">{title.text}</h4>
+                <input
+                  readOnly={title.key === "actions" || title.key === "progress"}
+                  className="bold"
+                  defaultValue={title.text}
+                  onFocus={(e) => {
+                    if (title.key === "actions" || title.key === "progress")
+                      return;
+                    filter(title.key, "");
+                    e.target.value = "";
+                  }}
+                  onBlur={(e) => {
+                    if (!filterInfo[title.key]) {
+                      e.target.value = e.target.defaultValue;
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                      e.target.value = e.target.defaultValue;
+                      e.target.blur();
+                      filter(title.key, "");
+                    }
+                  }}
+                  onChange={(e) => filter(title.key, e.target.value)}
+                />
               </div>
             );
           })}
         </div>
         <div className="table">
-          {data.map((row) => (
-            <RowTray
-              key={row.id}
-              row={row}
-              titles={titles}
-              addToDataClaim={addToDataClaim}
-              dataToClaim={dataToClaim}
-            />
-          ))}
+          {data.length > 0 ? (
+            data.map((row) => (
+              <RowTray
+                key={row.id}
+                row={row}
+                titles={titles}
+                addToDataClaim={addToDataClaim}
+                dataToClaim={dataToClaim}
+              />
+            ))
+          ) : (
+            <p className="noResults">No results ╰(*°▽°*)╯</p>
+          )}
         </div>
       </div>
     </div>

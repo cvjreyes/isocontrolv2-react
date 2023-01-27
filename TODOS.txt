@@ -47,12 +47,20 @@ DONE ✔
 - deleted pipe modal
 - feed progress
 - ifd progress
+- borrar modal id + tag
+- NO delete in FEED if pipe is gray OR trashed
+- select all
+- FILTRO en trays
+- actualizar progres on update
 
 DOING 🔁
 
 TODO ❌
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select.
+  - eliminar old url
+  TRAYS: 
+    - order by en click progress || date
 
 CSV
 - if _ => modelled* ???
