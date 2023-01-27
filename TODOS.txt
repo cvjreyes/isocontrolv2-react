@@ -38,18 +38,21 @@ DONE ✔
 - copy all not working on feed because of name of className in table.js getElementsByClassName
 - if trashed in IFD => blocked in FEED
   - when trashed => incapable to delete
+- background colors not working on table FEED
+- background colors not working on table IFD
+- click away from navbar dropdown => close dropdown
+- toast on undo: undone
+- toast OR 'copied' on copy all
+- back from forecast
+- deleted pipe modal
 
 DOING 🔁
 
 TODO ❌
-  - Progresses from home ? ? ? when did they stop working
-  - background colors not working on table FEED
-  - background colors not working on table IFD
-  - click away from navbar dropdown => close dropdown
-  - toast on undo: undone
-  - toast OR 'copied' on copy all
-  - back from forecast
-  - deleted pipe modal
+  - Two toastify if it's insert and not.
+  - If form is really down you can't see the select.
+  - feed progress
+  - ifd progress
 
 CSV
 - if _ => modelled* ???
