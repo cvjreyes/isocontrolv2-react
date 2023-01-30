@@ -50,7 +50,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const getThings = async () => {
       await Promise.all([
         api("get", "/areas/get_all"),
-        api("get", "/api/diameters", true),
+        api("get", "/diameters/get_diameters"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
       ]).then((values) => {
