@@ -71,8 +71,8 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/ifd/get_ifd_pipes/0"),
         api("get", "/ifd/get_progress"),
       ]).then((values) => {
-        setAreas(values[0].map((item) => item.name));
-        setDiameters(values[1].diameters.map((item) => item.diameter));
+        setAreas(values[0].body.map((item) => item.name));
+        setDiameters(values[1].body.map((item) => item.diameter));
         setLineRefs(values[2].body);
         setOwners(values[3].body);
         const rows = values[4].body.map((row) => ({

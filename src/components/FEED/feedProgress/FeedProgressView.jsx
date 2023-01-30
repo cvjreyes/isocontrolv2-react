@@ -27,10 +27,8 @@ export default function FeedProgressView() {
   }, []);
   
   const getData = async () => {
-    // Falla aqui
-    const { rows } = await api("get", "/feed/get_gfeed");
-    console.log(rows);
-    const weeks = prepareRows(rows);
+    const { body } = await api("get", "/feed/get_gfeed");
+    const weeks = prepareRows(body);
     setData(weeks);
   };
   
