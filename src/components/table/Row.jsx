@@ -133,7 +133,7 @@ const Row = React.memo(
             ? "rgb(0, 188, 6)"
             : (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
               item.trashed
-            ? "rgb(0, 188, 6)"
+            ? "lightgray"
             : (item.feed_id &&
                 !item.status.toLowerCase().includes("estimated")) ||
               item.trashed
