@@ -1,6 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import Loading from "react-loading";
+
+import NoResults from "../../general/NoResults";
 import MyTrayRow from "./MyTrayRow";
 
 export default function MyTrayTable({
@@ -51,9 +54,6 @@ export default function MyTrayTable({
         display: "none",
       },
     },
-    ".noResults": {
-      margin: "2rem 0 0 2rem",
-    },
   };
 
   return (
@@ -85,21 +85,25 @@ export default function MyTrayTable({
         })}
       </div>
       <div className="table">
-        {data.length > 0 ? (
-          data.map((row) => (
-            <MyTrayRow
-              key={row.id}
-              row={row}
-              titles={titles}
-              addToDataClaim={addToDataClaim}
-              dataToClaim={dataToClaim}
-              handleClick={handleClick}
-              changed={changed}
-              gridSize={gridSize}
-            />
-          ))
+        {data ? (
+          data.length > 0 ? (
+            data.map((row) => (
+              <MyTrayRow
+                key={row.id}
+                row={row}
+                titles={titles}
+                addToDataClaim={addToDataClaim}
+                dataToClaim={dataToClaim}
+                handleClick={handleClick}
+                changed={changed}
+                gridSize={gridSize}
+              />
+            ))
+          ) : (
+            <NoResults />
+          )
         ) : (
-          <p className="noResults">No results (╯°□°）╯︵ ┻━┻</p>
+          <Loading />
         )}
       </div>
     </div>

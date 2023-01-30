@@ -147,7 +147,7 @@ export default function Header({
             defaultValue={options[0]}
           />
         </div>
-        <span className="itemsLength default">{data.length} items</span>
+        <span className="itemsLength default">{data?.length} items</span>
       </div>
     </div>
   );

@@ -96,6 +96,7 @@ import Eye from "../assets/images/eye.png";
 - [Blur Input on press Esc](https://stackoverflow.com/questions/48961342/how-to-blur-the-input-provided-in-semantic-ui-react)
 - [Paste Table To Clipboard](https://stackoverflow.com/questions/66585315/how-to-copy-table-with-link-to-clipboard-to-paste-it-into-excel)
 - [Export table to Excel](https://stackoverflow.com/questions/11084564/export-html-table-to-excel-javascript-function-special-characters-changed)
+- [Trigger re-render when location change](https://stackoverflow.com/questions/57986395/react-useeffect-is-not-triggering-on-route-change)
 
 ### FEED
 

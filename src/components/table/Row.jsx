@@ -203,7 +203,10 @@ const Row = React.memo(
                 }
                 styles={customStyles}
               />
-              <img src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png" />
+              <img
+                src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png"
+                onClick={(e) => console.log(e.target)}
+              />
             </div>
           );
         })}

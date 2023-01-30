@@ -1,7 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import Loading from "react-loading";
 import Button2 from "../../general/Button2";
+import NoResults from "../../general/NoResults";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({
@@ -85,9 +87,6 @@ export default function TrayTable({
       "::-webkit-scrollbar": { display: "none" },
       "*": { fontSize: "13px" },
     },
-    ".noResults": {
-      margin: "2rem 0 0 2rem",
-    },
   };
 
   return (
@@ -170,18 +169,22 @@ export default function TrayTable({
           })}
         </div>
         <div className="table">
-          {data.length > 0 ? (
-            data.map((row) => (
-              <RowTray
-                key={row.id}
-                row={row}
-                titles={titles}
-                addToDataClaim={addToDataClaim}
-                dataToClaim={dataToClaim}
-              />
-            ))
+          {data ? (
+            data.length > 0 ? (
+              data.map((row) => (
+                <RowTray
+                  key={row.id}
+                  row={row}
+                  titles={titles}
+                  addToDataClaim={addToDataClaim}
+                  dataToClaim={dataToClaim}
+                />
+              ))
+            ) : (
+              <NoResults />
+            )
           ) : (
-            <p className="noResults">No results ╰(*°▽°*)╯</p>
+            <Loading />
           )}
         </div>
       </div>
