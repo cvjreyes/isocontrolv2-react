@@ -56,8 +56,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/feed/get_progress"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
-        console.log("Diameters: ", values[1].diameter);
-        // setDiameters(values[1].diameters.map((item) => item.diameter));
+        setDiameters(values[1].body.map((item) => item.diameter));
         setLineRefs(values[2].body);
         setProgress(values[3].body);
       });

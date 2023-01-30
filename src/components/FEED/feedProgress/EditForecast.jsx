@@ -17,10 +17,8 @@ function EditForecastComp({ setMessage }) {
     forecast: 0,
   });
 
-  // Ejemplo de que aqui funciona
   const getData = async () => {
     const { body } = await api("get", "/feed/get_forecast");
-    console.log("Body: ", body);
     setForecast(body);
   };
 

@@ -22,7 +22,6 @@ function TrashComp({ setMessage }) {
         tag: buildTag(row),
         updated_at: buildDate(row),
       }));
-      console.log(rows);
       setData(rows);
       setDisplayData(rows);
     };
