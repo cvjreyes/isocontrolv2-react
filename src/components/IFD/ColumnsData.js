@@ -1,4 +1,4 @@
-export const columnsData = (lineRefs, areas, diameters, owners) => [
+export const columnsData = (lineRefs, areas, owners) => [
   { key: "empty" },
   {
     title: "Line reference",
@@ -18,7 +18,7 @@ export const columnsData = (lineRefs, areas, diameters, owners) => [
   {
     title: "D",
     key: "diameter",
-    source: diameters,
+    readOnly: true,
   },
   { title: "Sp", key: "spec", readOnly: true },
   {

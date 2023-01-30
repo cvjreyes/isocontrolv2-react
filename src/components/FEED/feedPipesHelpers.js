@@ -72,21 +72,31 @@ export const divideLineReference = (ref, lineRefs) => {
   // coger line ref obj de la lista de line refs
   const idx = lineRefs.findIndex((x) => x.line_ref === ref.trim());
   // del line ref encontrado, coger spec e insulation
-  const { spec, insulation } = { ...lineRefs[idx] };
-  // encontrar primer guión
-  const idx1 = ref.indexOf("-");
-  // coger unit
-  const unit = ref.substring(0, idx1);
-  // quitar primer guión
-  const newStr = ref.replace("-", "");
-  // encontrar segundo guión
-  const idx2 = newStr.indexOf("-");
-  // coger fluid
-  const fluid = newStr.substring(idx1, idx2);
-  // coger seq
-  const seq = newStr.substring(idx2 + 1);
+  const {
+    spec,
+    insulation,
+    unit,
+    fluid,
+    seq,
+    diameter,
+    calc_notes,
+    line_refno,
+  } = {
+    ...lineRefs[idx],
+  };
+  const type = getTypeFromDiameter(diameter, calc_notes);
   // devolver todo 🤮
-  return { unit, fluid, seq, spec, insulation };
+  return {
+    unit,
+    fluid,
+    seq,
+    spec,
+    insulation,
+    diameter,
+    calc_notes,
+    type,
+    line_refno,
+  };
 };
 
 export const buildFeedRow = (row, id) => {

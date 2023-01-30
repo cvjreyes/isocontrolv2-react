@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { Route, Routes } from "react-router";
+import React, { Suspense, useEffect, useLayoutEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router";
 
 import WithModal from "../../../modals/YesNo";
 import WithToast from "../../../modals/Toast";
@@ -11,7 +11,6 @@ import {
   checkForEmptyCells,
   divideLineReference,
   divideTag,
-  getTypeFromDiameter,
 } from "../../FEED/feedPipesHelpers";
 import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
@@ -21,6 +20,8 @@ import { columnsData } from "../ColumnsData";
 import { buildIFDRow } from "../IFDPipeHelpers";
 
 function IFDMainComp({ setMessage, setModalContent }) {
+  const location = useLocation();
+
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
   const gridSizeAdd = "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr";
@@ -28,21 +29,15 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const page = "main";
 
   const [progress, setProgress] = useState(0);
-  const [data, setData] = useState([]);
-  const [displayData, setDisplayData] = useState([]);
+  const [data, setData] = useState(null);
+  const [displayData, setDisplayData] = useState(null);
   const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
-  const [diameters, setDiameters] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [owners, setOwners] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
-
-  // const getRoles = async () => {
-  //   const { body } = await api("get", "/users/get_user_roles", false);
-  //   setRoles(body.roles);
-  // };
 
   const getIFDPipes = async () => {
     const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/0");
@@ -60,33 +55,30 @@ function IFDMainComp({ setMessage, setModalContent }) {
     setFeedPipes(rows);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getThings = async () => {
       await Promise.all([
         api("get", "/areas/get_all"),
-        api("get", "/diameters/get_diameters"),
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
-        api("get", "/ifd/get_ifd_pipes/0"),
         api("get", "/ifd/get_progress"),
+        api("get", "/ifd/get_ifd_pipes/0"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
-        setDiameters(values[1].body.map((item) => item.diameter));
-        setLineRefs(values[2].body);
-        setOwners(values[3].body);
+        setLineRefs(values[1].body);
+        setOwners(values[2].body);
+        setProgress(values[3].body);
         const rows = values[4].body.map((row) => ({
           ...row,
           tag: buildTag(row),
         }));
         setData(rows);
         setDisplayData(rows);
-        console.log("IFD: ", rows);
-        setProgress(values[5].body);
       });
     };
     getFeedPipes();
     getThings();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     // cuando escrbimos en el filtro => actualizar displayData
@@ -138,13 +130,9 @@ function IFDMainComp({ setMessage, setModalContent }) {
     let changedRow = tempData[idx];
     // change the value of the key in the row
     changedRow[name] = value;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(value, changedRow.calc_notes);
-    } else if (name === "line_reference") {
+    if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // cualquier cosa que haya cambiado => hacer el rebuild del tag
-      changedRow.tag = buildTag(changedRow);
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
@@ -237,15 +225,9 @@ function IFDMainComp({ setMessage, setModalContent }) {
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
-    } else if (name === "line_reference") {
-      // divide line ref ( get u, fl, seq )
-      const values = divideLineReference(changedRow[name], lineRefs);
-      // update fields
+    if (name === "line_reference") {
+      const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // update tag
-      changedRow.tag = buildTag(changedRow);
     } else if (name === "tag") {
       // divide tag
       const dividedTag = divideTag(pastedData);
@@ -351,7 +333,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 page={page}
                 lineRefs={lineRefs}
                 areas={areas}
-                diameters={diameters}
                 owners={owners}
                 displayData={displayData}
                 changed={changed}
@@ -378,11 +359,10 @@ function IFDMainComp({ setMessage, setModalContent }) {
             <AddFeedPipe
               lineRefs={lineRefs}
               setMessage={setMessage}
-              data={[...data, ...feedPipes]}
+              data={data ? [...data, ...feedPipes] : null}
               columns={columnsData(
                 lineRefs.map((x) => x.line_ref),
                 areas,
-                diameters,
                 owners.map((x) => x.name)
               ).slice(0, -1)}
               id={id}
