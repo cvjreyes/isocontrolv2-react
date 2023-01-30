@@ -12,7 +12,6 @@ export default function FeedPipesExcelTableWrapper({
   displayData,
   lineRefs,
   areas,
-  diameters,
   handleChange,
   filter,
   handlePaste,
@@ -56,7 +55,7 @@ export default function FeedPipesExcelTableWrapper({
         <FeedPipesExcelTableHeader
           filter={filter}
           gridSize={gridSize}
-          columns={columnsData(lineRefs, areas, diameters)}
+          columns={columnsData(lineRefs, areas)}
           filterInfo={filterInfo}
           copyMulti={copyMulti}
           setCopyMulti={setCopyMulti}
@@ -64,8 +63,7 @@ export default function FeedPipesExcelTableWrapper({
         <Table
           columns={columnsData(
             lineRefs.map((x) => x.line_ref),
-            areas,
-            diameters
+            areas
           )}
           data={displayData}
           handleChange={handleChange}

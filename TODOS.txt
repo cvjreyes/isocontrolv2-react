@@ -1,3 +1,14 @@
+DOING 🔁
+
+TODO ❌
+  - eliminar diameter de feed_pipes ( ahora viene del lien_refno y este de lines ) 
+  - click dropdown icon also opens dropdown
+  - Two toastify if it's insert and not.
+  - If form is really down you can't see the select.
+  TRAYS: 
+    - order by en click progress || date
+    - filtro en progress
+
 DONE ✔
 - FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading
 - TABLE make wrapper
@@ -52,19 +63,9 @@ DONE ✔
 - select all
 - FILTRO en trays
 - actualizar progres on update
+- eliminar old url
 
-DOING 🔁
-
-TODO ❌
-  - Two toastify if it's insert and not.
-  - If form is really down you can't see the select.
-  - eliminar old url
-  TRAYS: 
-    - order by en click progress || date
-
-CSV
-- if _ => modelled* ???
-
+  - If I update pipe that are in feed pipes and ifd pipes they only update 1.
 FUTURO:
   - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
   - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old

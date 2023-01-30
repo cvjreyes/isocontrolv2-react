@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
 import Loading from "react-loading";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import {
   buildTag,
@@ -10,7 +10,6 @@ import {
   divideTag,
   checkForAlreadyExists,
   checkForEmptyCells,
-  getTypeFromDiameter,
 } from "./feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
 import CopyContext from "../../context/CopyContext";
@@ -21,15 +20,16 @@ import AddPipe from "./AddPipe/AddPipe";
 import { columnsData } from "./ColumnsData";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
+  const location = useLocation();
+
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
   const id = "feed";
   const page = "line_control";
 
   const [progress, setProgress] = useState(0);
-  const [data, setData] = useState([]);
-  const [displayData, setDisplayData] = useState([]);
+  const [data, setData] = useState(null);
+  const [displayData, setDisplayData] = useState(null);
   const [areas, setAreas] = useState(null);
-  const [diameters, setDiameters] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
@@ -42,27 +42,26 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       tag: buildTag(row),
       ifd_modelled: row.ifd_status === "FEED_ESTIMATED",
     }));
+    console.log("Feed: ", rows2 );
     setData(rows2);
     setDisplayData(rows2);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getThings = async () => {
       await Promise.all([
         api("get", "/areas/get_all"),
-        api("get", "/diameters/get_diameters"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
-        setDiameters(values[1].body.map((item) => item.diameter));
-        setLineRefs(values[2].body);
-        setProgress(values[3].body);
+        setLineRefs(values[1].body);
+        setProgress(values[2].body);
       });
     };
     getThings();
     getFeedPipes();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     // cuando escrbimos en el filtro => actualizar displayData
@@ -168,14 +167,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     let changedRow = tempData[idx];
     // change the value of the key in the row
     changedRow[name] = value;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(value, changedRow.calc_notes);
-      changedRow.tag = buildTag(changedRow);
-    } else if (name === "line_reference") {
+    if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // cualquier cosa que haya cambiado => hacer el rebuild del tag
-      changedRow.tag = buildTag(changedRow);
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
@@ -216,15 +210,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
-    } else if (name === "line_reference") {
-      // divide line ref ( get u, fl, seq )
-      const values = divideLineReference(changedRow[name], lineRefs);
-      // update fields
+    if (name === "line_reference") {
+      const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // update tag
-      changedRow.tag = buildTag(changedRow);
     } else if (name === "tag") {
       // divide tag
       const dividedTag = divideTag(pastedData);
@@ -303,8 +291,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   const undoChanges = () => {
-    setChanged([]);
     getFeedPipes();
+    setChanged([]);
     setFilterInfo({});
     setMessage({
       txt: changed.length < 1 ? "No changes to undo!" : "Changes undone!",
@@ -324,7 +312,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 displayData={displayData}
                 lineRefs={lineRefs}
                 areas={areas}
-                diameters={diameters}
                 handleChange={handleChange}
                 filter={handleFilter}
                 handlePaste={handlePaste}
@@ -353,8 +340,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
               data={data}
               columns={columnsData(
                 lineRefs.map((x) => x.line_ref),
-                areas,
-                diameters
+                areas
               )}
               id={id}
               page={page}

@@ -40,9 +40,7 @@ export default function AddPipe({
     const tempRows = [...rows];
     let changedRow = { ...tempRows[i] };
     changedRow[name] = value;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(value, "unset");
-    } else if (name === "line_reference") {
+    if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
     }
@@ -106,12 +104,8 @@ export default function AddPipe({
     const tempData = [...rows];
     let changedRow = { ...tempData[i] };
     changedRow[name] = pastedData.trim();
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
-    } else if (name === "line_reference") {
-      // divide line ref ( get u, fl, seq )
-      const values = divideLineReference(changedRow[name], lineRefs);
-      // update fields
+    if (name === "line_reference") {
+      const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
     } else if (name === "tag") {
       // divide tag

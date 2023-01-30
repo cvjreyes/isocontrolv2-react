@@ -48,6 +48,10 @@ const Row = React.memo(
           (changed.includes(item.id) && "rgb(0, 188, 6)") ||
           (((item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
             item.trashed) &&
+            "lightgray") ||
+          (((item.feed_id &&
+            !item.status.toLowerCase().includes("estimated")) ||
+            item.trashed) &&
             "lightgray"),
         webkitTransition: "background-color 300ms linear",
         msTransition: "background-color 300ms linear",
@@ -130,6 +134,10 @@ const Row = React.memo(
             : (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
               item.trashed
             ? "lightgray"
+            : (item.feed_id &&
+                !item.status.toLowerCase().includes("estimated")) ||
+              item.trashed
+            ? "lightgray"
             : "white",
       }),
     };
@@ -189,12 +197,16 @@ const Row = React.memo(
                 closeMenuOnScroll={true}
                 isDisabled={
                   (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
-                  (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
+                  (item.feed_id &&
+                    !item.status.toLowerCase().includes("estimated")) ||
                   deleting
                 }
                 styles={customStyles}
               />
-              <img src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png" />
+              <img
+                src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png"
+                onClick={(e) => console.log(e.target)}
+              />
             </div>
           );
         })}

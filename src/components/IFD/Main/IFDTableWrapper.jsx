@@ -16,7 +16,6 @@ export default function IFDTableWrapper({
   displayData,
   lineRefs,
   areas,
-  diameters,
   owners,
   changed,
   copied,
@@ -56,7 +55,7 @@ export default function IFDTableWrapper({
       <div className="wrapper">
         <FeedPipesExcelTableHeader
           gridSize={gridSize}
-          columns={columnsData(lineRefs, areas, diameters, owners)}
+          columns={columnsData(lineRefs, areas, owners)}
           filter={filter}
           filterInfo={filterInfo}
           copyMulti={copyMulti}
@@ -67,7 +66,6 @@ export default function IFDTableWrapper({
             columns={columnsData(
               lineRefs.map((x) => x.line_ref),
               areas,
-              diameters,
               owners.map((x) => x.name)
             )}
             data={displayData}
