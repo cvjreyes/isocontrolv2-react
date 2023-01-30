@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../helpers/api";
 import WithToast from "../../../modals/Toast";
 import Button from "../../general/Button1";
-import Button1 from "../../general/Button2";
 
 function EditForecastComp({ setMessage }) {
   const navigate = useNavigate();
@@ -18,8 +17,10 @@ function EditForecastComp({ setMessage }) {
     forecast: 0,
   });
 
+  // Ejemplo de que aqui funciona
   const getData = async () => {
     const { body } = await api("get", "/feed/get_forecast");
+    console.log("Body: ", body);
     setForecast(body);
   };
 

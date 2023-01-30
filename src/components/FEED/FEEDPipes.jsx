@@ -48,14 +48,16 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 
   useEffect(() => {
     const getThings = async () => {
+      // Falla en diameters
       await Promise.all([
         api("get", "/areas/get_all"),
-        api("get", "/api/diameters", true),
+        api("get", "/diameters/get_diameters"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
-        setDiameters(values[1].diameters.map((item) => item.diameter));
+        console.log("Diameters: ", values[1].diameter);
+        // setDiameters(values[1].diameters.map((item) => item.diameter));
         setLineRefs(values[2].body);
         setProgress(values[3].body);
       });
