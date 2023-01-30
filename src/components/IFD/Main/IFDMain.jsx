@@ -62,9 +62,10 @@ function IFDMainComp({ setMessage, setModalContent }) {
 
   useEffect(() => {
     const getThings = async () => {
+      // Falla en diameters
       await Promise.all([
-        api("get", "/api/areas", true),
-        api("get", "/api/diameters", true),
+        api("get", "/areas/get_all"),
+        api("get", "/diameters/get_diameters"),
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
         api("get", "/ifd/get_ifd_pipes/0"),

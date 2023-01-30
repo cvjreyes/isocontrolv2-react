@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -21,16 +21,19 @@ import { prepareRows } from "./feedProgressHelpers";
 export default function FeedProgressView() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
-    const getData = async () => {
-      const { rows } = await api("get", "/gfeed", true);
-      const weeks = prepareRows(rows);
-      setData(weeks);
-    };
     getData();
   }, []);
-
+  
+  const getData = async () => {
+    // Falla aqui
+    const { rows } = await api("get", "/feed/get_gfeed");
+    console.log(rows);
+    const weeks = prepareRows(rows);
+    setData(weeks);
+  };
+  
   return (
     <div css={forecastStyles} className="flexColumn">
       <div css={headStyle}>
