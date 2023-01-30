@@ -42,6 +42,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       tag: buildTag(row),
       ifd_modelled: row.ifd_status === "FEED_ESTIMATED",
     }));
+    console.log("Feed: ", rows2 );
     setData(rows2);
     setDisplayData(rows2);
   };

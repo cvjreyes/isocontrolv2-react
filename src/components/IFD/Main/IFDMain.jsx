@@ -80,6 +80,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         }));
         setData(rows);
         setDisplayData(rows);
+        console.log("IFD: ", rows);
         setProgress(values[5].body);
       });
     };
