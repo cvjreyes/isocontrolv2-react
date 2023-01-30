@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../../helpers/api";
 import WithToast from "../../../modals/Toast";
 import Button from "../../general/Button1";
-import Button1 from "../../general/Button2";
 
 function EditForecastComp({ setMessage }) {
   const navigate = useNavigate();
