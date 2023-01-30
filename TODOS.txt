@@ -59,6 +59,7 @@ TODO ❌
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select.
   - eliminar old url
+  - If I update pipe that are in feed pipes and ifd pipes they only update 1.
   TRAYS: 
     - order by en click progress || date
 
