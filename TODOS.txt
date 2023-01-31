@@ -1,11 +1,12 @@
 DOING 🔁
 
 TODO ❌
-  - eliminar diameter de feed_pipes ( ahora viene del lien_refno y este de lines ) 
   - click dropdown icon also opens dropdown
   - Two toastify if it's insert and not.
-  - If form is really down you can't see the select.
-  - If pipe updated in feed and ifd it only updates 1.
+  - If form is really down you can't see the select
+    - trays
+    - my tray
+  - If pipe updated in feed or ifd it only updates 1.
   TRAYS: 
     - order by en click progress || date
     - filtro en progress
