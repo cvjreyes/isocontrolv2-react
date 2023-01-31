@@ -126,7 +126,10 @@ export default function Header({
       </div>
       <div css={rightStyle}>
         <div className="selectWrapper">
-          <label className="pointer" onClick={() => selectRef.current.focus()}>
+          <label
+            className="pointer"
+            onClick={() => selectRef.current.focus()}
+          >
             Mode:
           </label>
           <Select

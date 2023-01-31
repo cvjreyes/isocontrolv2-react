@@ -16,7 +16,6 @@ export default function TrayTable({
   selectAll,
   filter,
   filterInfo,
-  actualData,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -131,7 +130,7 @@ export default function TrayTable({
                     type="checkbox"
                     checked={
                       data.filter((x) => !x.owner).length ===
-                        dataToClaim.length && data.length > 1
+                        dataToClaim.length && data.length > 0
                     }
                     readOnly
                   />

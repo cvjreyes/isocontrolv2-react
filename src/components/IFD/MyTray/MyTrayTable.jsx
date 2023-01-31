@@ -70,7 +70,7 @@ export default function MyTrayTable({
                 <input
                   type="checkbox"
                   checked={
-                    data.length === dataToClaim.length && data.length > 1
+                    data.length === dataToClaim.length && data.length > 0
                   }
                   readOnly
                 />
