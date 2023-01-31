@@ -1,17 +1,17 @@
 DOING 🔁
 
 TODO ❌
-  - click dropdown icon also opens dropdown
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select
     - trays
     - my tray
-  - If pipe updated in feed or ifd it only updates 1.
   TRAYS: 
     - order by en click progress || date
     - filtro en progress
 
 DONE ✔
+- If pipe updated in feed or ifd it only updates 1.
+- click dropdown icon also opens dropdown
 - FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading
 - TABLE make wrapper
 - TABLE make routing
