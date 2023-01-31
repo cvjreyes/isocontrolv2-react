@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { useState } from "react";
+import { useRef } from "react";
 import Select from "react-select";
 import Copied from "../../modals/Copied";
 
@@ -132,11 +133,8 @@ const Row = React.memo(
             : changed.includes(item.id)
             ? "rgb(0, 188, 6)"
             : (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
-              item.trashed
-            ? "lightgray"
-            : (item.feed_id &&
-                !item.status.toLowerCase().includes("estimated")) ||
-              item.trashed
+              item.trashed ||
+              (item.feed_id && !item.status.toLowerCase().includes("estimated"))
             ? "lightgray"
             : "white",
       }),
