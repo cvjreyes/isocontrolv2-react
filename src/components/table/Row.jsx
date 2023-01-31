@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Select from "react-select";
 import Copied from "../../modals/Copied";
 
@@ -22,6 +22,7 @@ const Row = React.memo(
     handleDelete,
   }) => {
     const rowId = `${id}${i}`;
+    const refDropdown = useRef(0)
 
     const [showCopied, setShowCopied] = useState(false);
 
@@ -188,6 +189,7 @@ const Row = React.memo(
                     item.id
                   )
                 }
+                ref={refDropdown}
                 inputId={x.key}
                 options={x.source?.map((opt) => ({ label: opt, value: opt }))}
                 components={{
@@ -201,11 +203,12 @@ const Row = React.memo(
                     !item.status.toLowerCase().includes("estimated")) ||
                   deleting
                 }
+                openMenuOnFocus={true}
                 styles={customStyles}
               />
               <img
                 src="https://img.icons8.com/ultraviolet/40/null/circled-chevron-down.png"
-                onClick={(e) => console.log(e.target)}
+                onClick={() => refDropdown.current.focus()}
               />
             </div>
           );

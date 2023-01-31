@@ -128,7 +128,6 @@ export default function Header({
         <div className="selectWrapper">
           <label
             className="pointer"
-            htmlFor="mode"
             onClick={() => selectRef.current.focus()}
           >
             Mode:
