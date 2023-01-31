@@ -5,6 +5,7 @@ TODO ❌
   - click dropdown icon also opens dropdown
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select.
+  - If pipe updated in feed and ifd it only updates 1.
   TRAYS: 
     - order by en click progress || date
     - filtro en progress
@@ -65,7 +66,6 @@ DONE ✔
 - actualizar progres on update
 - eliminar old url
 
-  - If I update pipe that are in feed pipes and ifd pipes they only update 1.
 FUTURO:
   - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
   - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
