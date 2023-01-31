@@ -42,9 +42,13 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       tag: buildTag(row),
       ifd_modelled: row.ifd_status === "FEED_ESTIMATED",
     }));
-    console.log("Feed: ", rows2 );
     setData(rows2);
     setDisplayData(rows2);
+  };
+
+  const getLines = async () => {
+    const res = await api("get", "/lines/get_lines");
+    console.log(res);
   };
 
   useLayoutEffect(() => {
@@ -55,7 +59,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/feed/get_progress"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
-        setLineRefs(values[1].body);
+        values[1].body.length > 0 ? setLineRefs(values[1].body) : getLines();
         setProgress(values[2].body);
       });
     };
