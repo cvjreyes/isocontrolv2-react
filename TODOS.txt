@@ -1,6 +1,10 @@
 DOING 🔁
 
 TODO ❌
+  - feed progress node-cron
+  - copy context error diameter
+  - estimated / forecast ? ? ? diferencia ? ? ?
+  - paste 1 cell missing last character
   - Two toastify if it's insert and not.
   - If form is really down you can't see the select
     - trays
@@ -8,8 +12,12 @@ TODO ❌
   TRAYS: 
     - order by en click progress || date
     - filtro en progress
+  STYLE
+    - edit_forecast table => make it F I T and S H I N Y
+  - abort controller for toast
 
 DONE ✔
+- cambiar logo 3d a isoControl
 - If pipe updated in feed or ifd it only updates 1.
 - click dropdown icon also opens dropdown
 - FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading

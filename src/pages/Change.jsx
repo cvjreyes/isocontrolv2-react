@@ -9,8 +9,7 @@ import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
 
-import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
-import FullTrackerLogo from "../assets/images/3DTracker.svg";
+import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
 import { api } from "../helpers/api";
 
@@ -56,9 +55,9 @@ const ChangeComp = ({ setMessage }) => {
     <Main logo="Technip" circles={true}>
       <form css={mainStyle} onSubmit={handleSubmit}>
         <img
-          src={import.meta.env.VITE_PROGRESS ? FullTrackerLogo : IsoTrackerLogo}
-          alt="isoTrackerLogo"
-          className="isoTrackerLogo"
+          src={IsoControlLogo}
+          alt="IsoControlLogo"
+          className="IsoControlLogo"
         />
 
         <h3 className="change">Change Password</h3>
@@ -137,7 +136,7 @@ const mainStyle = {
   padding: "50px",
   width: "500px",
   marginLeft: "10%",
-  ".isoTrackerLogo": {
+  ".IsoControlLogo": {
     width: "343.57px",
   },
   ".change": {

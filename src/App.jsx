@@ -16,8 +16,8 @@ import FEED from "./pages/FEED";
 import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
 import Change from "./pages/Change";
-// import Signup from "./views/Signup";
-// import Forgot from "./views/Forgot";
+// import Signup from "./pages/Signup";
+// import Forgot from "./pages/Forgot";
 
 export default function App() {
   useEffect(() => {

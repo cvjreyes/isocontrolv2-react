@@ -15,11 +15,11 @@ import SDesign from "../components/IFD/Trays/SDesign";
 import { data } from "../components/IFD/SidebarContent";
 import Sidebar from "../components/sidebar/Sidebar";
 import Main from "../layouts/Main";
-import IFDLayout from "../layouts/IFDLayout";
+// import IFDLayout from "../layouts/IFDLayout";
 
 export default function IFD() {
   return (
-    <Main logo="IsoTracker" circles={false}>
+    <Main circles={false}>
       <div css={IFDStyle}>
         <Sidebar data={data} />
         {/* <IFDLayout> */}
