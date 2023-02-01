@@ -33,9 +33,7 @@ export default function AddTable({
 }
 
 const tableStyle = {
-  "*": {
-    fontSize: "13px !important",
-  },
+  paddingBottom: "200px",
   // scroll behaviour
   height: "calc(60vh - 113px)",
   overflowY: "scroll",
@@ -51,5 +49,8 @@ const tableStyle = {
   // for bottom border
   "> form:last-child": {
     borderBottom: "1px solid black",
+  },
+  "*": {
+    fontSize: "13px !important",
   },
 };

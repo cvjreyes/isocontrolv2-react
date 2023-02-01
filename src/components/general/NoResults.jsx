@@ -8,6 +8,6 @@ export default function NoResults() {
 
 const noResultsStyle = {
   margin: "2rem 0 0 2rem",
-  textAlign: "left",
+  textAlign: "left !important",
   fontSize: "14px !important",
 };

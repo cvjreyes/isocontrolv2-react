@@ -7,7 +7,7 @@ import Squares from "../components/home/Squares";
 
 export default function Home() {
   return (
-    <Main logo="IsoTracker" circles={true}>
+    <Main circles={true}>
       <div css={homestyle}>
         <Squares />
       </div>

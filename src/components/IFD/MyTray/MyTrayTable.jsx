@@ -44,6 +44,7 @@ export default function MyTrayTable({
       },
     },
     ".table": {
+      paddingBottom: "200px",
       height: "calc(60vh - 111px)",
       overflowY: "auto",
       /* Hide scrollbar for IE, Edge and Firefox */

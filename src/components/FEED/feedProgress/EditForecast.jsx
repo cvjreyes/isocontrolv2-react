@@ -68,23 +68,6 @@ function EditForecastComp({ setMessage }) {
         >
           <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
         </div>
-        {/* <Button1
-          text="Back"
-          width="100px"
-          bgColor="transparent"
-          border="none"
-          color="white"
-          fontWeight="600"
-          fontSize="14px"
-          textMargin="0 0 0 6px"
-          margin="0 0 0 3%"
-          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-          // img
-          alt="back"
-          src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
-          imgFilter="invert(100%) brightness(200%)"
-          onClick={() => navigate("/feed/progress/")}
-        /> */}
       </div>
       <div css={editForecastStyle}>
         <div className="tableStyle">
@@ -103,7 +86,7 @@ function EditForecastComp({ setMessage }) {
             ))}
           </div>
         </div>
-        <div className="addBox">
+        <form className="addBox" onSubmit={(e) => e.preventDefault()}>
           <div>
             <h4>New Forecast</h4>
             <div className="inputWrapper">
@@ -142,7 +125,7 @@ function EditForecastComp({ setMessage }) {
             bgHover="#3988e2"
             color="white"
           />
-        </div>
+        </form>
       </div>
     </div>
   );
