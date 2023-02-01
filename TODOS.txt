@@ -1,19 +1,25 @@
 DOING 🔁
 
-DUDAS
-  - estimated / forecast ? ? ? diferencia ? ? ?
-  - ability to remove / edit forecast ? 
-
 TODO ❌
+  - demo con 3 tipos de línea
+  - login centrado verticalmente
+  - navis link
+  - FEED FORECAST
+    - cambiar node-cron feed_forecast update semanal todos los viernes
+    - display semanal
+    - ability to remove / edit forecast ? 
+    - ability to paste from excel
   - paste 1 cell missing last character
   - Two toastify if it's insert and not.
   - abort controller for toast
   TRAYS: 
-    - order by en click progress || date
+    - order by progress || date
   STYLE
     - edit_forecast table => make it F I T and S H I N Y
 
 DONE ✔
+- cambiar nombres: area, unit, fluid, seq, spec, diam, type, ins, status, train
+- revisar lógica del fillType
 - filtro en progress
 - if all rows with owner select all appears selected
 - If form is really down you can't see the select
