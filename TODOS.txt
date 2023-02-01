@@ -2,7 +2,6 @@ DOING 🔁
 
 TODO ❌
   - demo con 3 tipos de línea
-  - login centrado verticalmente
   - navis link
   - FEED FORECAST
     - cambiar node-cron feed_forecast update semanal todos los viernes
@@ -18,6 +17,7 @@ TODO ❌
     - edit_forecast table => make it F I T and S H I N Y
 
 DONE ✔
+- login centrado verticalmente
 - cambiar nombres: area, unit, fluid, seq, spec, diam, type, ins, status, train
 - revisar lógica del fillType
 - filtro en progress
