@@ -10,14 +10,14 @@ import {
   divideTag,
   checkForAlreadyExists,
   checkForEmptyCells,
-} from "./feedPipesHelpers";
+} from "../feedPipesHelpers";
 import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
-import CopyContext from "../../context/CopyContext";
-import WithModal from "../../modals/YesNo";
-import WithToast from "../../modals/Toast";
-import { api } from "../../helpers/api";
-import AddPipe from "./AddPipe/AddPipe";
-import { columnsData } from "./ColumnsData";
+import CopyContext from "../../../context/CopyContext";
+import WithModal from "../../../modals/YesNo";
+import WithToast from "../../../modals/Toast";
+import { api } from "../../../helpers/api";
+import AddPipe from "../AddPipe/AddPipe";
+import { columnsData } from "../ColumnsData";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const location = useLocation();

@@ -4,8 +4,8 @@ import { jsx } from "@emotion/react";
 
 import Table from "../../table/Table";
 import Loading from "../../general/Loading";
-import FeedPipesHead from "../../FEED/FeedPipesHead";
-import FeedPipesExcelTableHeader from "../../FEED/FeedPipesExcelTableHeader";
+import FeedPipesHead from "../../FEED/main/FeedPipesHead";
+import FeedPipesExcelTableHeader from "../../FEED/main/FeedPipesExcelTableHeader";
 import { columnsData } from "../ColumnsData";
 import { Suspense } from "react";
 

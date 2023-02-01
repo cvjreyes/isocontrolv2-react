@@ -4,9 +4,9 @@ import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { api } from "../../../helpers/api";
-import WithToast from "../../../modals/Toast";
-import Button from "../../general/Button1";
+import { api } from "../../../../helpers/api";
+import WithToast from "../../../../modals/Toast";
+import Button from "../../../general/Button1";
 
 function EditForecastComp({ setMessage }) {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ function EditForecastComp({ setMessage }) {
       <div css={editForecastStyle}>
         <div className="tableStyle">
           <div className="tableGrid head">
-            <div className="bold">Day</div>
+            <div className="bold">Week</div>
             <div className="bold">Estimated</div>
             <div className="bold">Forecast</div>
           </div>
@@ -155,16 +155,6 @@ const headStyle = {
       boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
     },
     img: { width: "20px", filter: "invert(100%)" },
-  },
-  h3: {
-    fontSize: "1.2rem",
-    whiteSpace: "nowrap",
-    color: "white",
-    marginLeft: "50%",
-  },
-  ".centerTitle": {
-    display: "flex",
-    alignItems: "center",
   },
 };
 

@@ -45,7 +45,7 @@ const Row = React.memo(
       "input, select": {
         backgroundColor:
           (item.tag === "Already exists" && "orange") ||
-          (changed.includes(item.id) && "rgb(0, 188, 6)") ||
+          (changed.includes(item.id) && "#2fc1383b") ||
           (((item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
             item.trashed ||
             (item.feed_id &&

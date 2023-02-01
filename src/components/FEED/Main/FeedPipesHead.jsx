@@ -5,9 +5,9 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-import Button from "../general/Button2";
-import addImg from "../../assets/images/add.svg";
-import saveImg from "../../assets/images/save.svg";
+import Button from "../../general/Button2";
+import addImg from "../../../assets/images/add.svg";
+import saveImg from "../../../assets/images/save.svg";
 
 export default function Header({
   title,
@@ -126,10 +126,7 @@ export default function Header({
       </div>
       <div css={rightStyle}>
         <div className="selectWrapper">
-          <label
-            className="pointer"
-            onClick={() => selectRef.current.focus()}
-          >
+          <label className="pointer" onClick={() => selectRef.current.focus()}>
             Mode:
           </label>
           <Select

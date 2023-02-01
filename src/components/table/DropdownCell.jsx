@@ -20,7 +20,7 @@ export default function DropdownCell({
         item.tag === "Already exists"
           ? "orange"
           : changed.includes(item.id)
-          ? "rgb(0, 188, 6)"
+          ? "#2fc1383b"
           : (item.ifd_status && item.ifd_status !== "FEED_ESTIMATED") ||
             item.trashed ||
             (item.feed_id && !item.status.toLowerCase().includes("estimated"))
