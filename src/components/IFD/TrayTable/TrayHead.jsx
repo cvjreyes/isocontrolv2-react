@@ -18,6 +18,8 @@ export default function TrayHead({
   const options = [
     { value: "new", label: "New First" },
     { value: "old", label: "Old First" },
+    { value: "asc", label: "A - Z" },
+    { value: "desc", label: "Z - A" },
   ];
 
   return (
