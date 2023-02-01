@@ -121,7 +121,7 @@ export const buildLineRef = (row) => {
   return `${row.unit}-${row.fluid}-${row.seq}`;
 };
 
-export const getTypeFromDiameter = (dia, calc_notes) => {
+const getTypeFromDiameter = (dia, calc_notes) => {
   if (calc_notes === "NA" || calc_notes === "unset") {
     if (import.meta.env.VITE_NPSDN == "0") {
       if (dia < 2.0) return "TL1";

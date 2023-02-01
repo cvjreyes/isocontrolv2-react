@@ -10,11 +10,9 @@ import FeedPipesExcelTableHeader from "../FeedPipesExcelTableHeader";
 import {
   checkForAlreadyExists,
   divideLineReference,
-  getTypeFromDiameter,
   divideTag,
   buildLineRef,
   buildTagIfFilled,
-  // buildFeedRow,
 } from "../feedPipesHelpers";
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
