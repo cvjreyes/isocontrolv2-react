@@ -12,8 +12,7 @@ import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
 import { URL } from "../helpers/config";
 
-import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
-import FullTrackerLogo from "../assets/images/3DTracker.svg";
+import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
 
 const LoginComp = ({ setMessage }) => {
@@ -55,9 +54,9 @@ const LoginComp = ({ setMessage }) => {
     <Main logo="Technip" circles={true}>
       <form css={mainStyle} onSubmit={handleSubmit}>
         <img
-          src={import.meta.env.VITE_PROGRESS ? FullTrackerLogo : IsoTrackerLogo}
-          alt="isoTrackerLogo"
-          className="isoTrackerLogo"
+          src={IsoControlLogo}
+          alt="IsoControlLogo"
+          className="IsoControlLogo"
         />
 
         <h3 className="welcome">Welcome</h3>
@@ -138,7 +137,7 @@ const mainStyle = {
   padding: "50px",
   width: "500px",
   marginLeft: "10%",
-  ".isoTrackerLogo": {
+  ".IsoControlLogo": {
     width: "343.57px",
   },
   ".welcome": {

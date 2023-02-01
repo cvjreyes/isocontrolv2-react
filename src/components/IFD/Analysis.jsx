@@ -13,7 +13,6 @@ export default function Analysis() {
   const [weight, setWeight] = useState();
 
   useEffect(() => {
-    console.log("test");
     const getGeneralProgress = async () => {
       const {
         weight: tempWeight,
@@ -24,7 +23,7 @@ export default function Analysis() {
       setProgress(tempProgress);
       setModelledWeight(tempModelledWeight);
     };
-    // getGeneralProgress();
+    getGeneralProgress();
   }, []);
 
   return (

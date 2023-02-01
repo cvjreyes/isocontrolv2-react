@@ -116,7 +116,6 @@ function ModelledComp({ setMessage }) {
       let tempFilterInfo = { ...filterInfo };
       // tempFilterInfo[keyName] = keyName;
       delete tempFilterInfo[keyName];
-      console.log(tempFilterInfo);
       return setFilterInfo(tempFilterInfo);
     } // else add it
     setFilterInfo({ ...filterInfo, [keyName]: val });

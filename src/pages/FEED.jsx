@@ -21,7 +21,7 @@ export default function FEED() {
   ];
 
   return (
-    <Main logo="IsoTracker" circles={false}>
+    <Main circles={false}>
       <div css={feedStyle}>
         <Sidebar data={data} />
         <Routes>
