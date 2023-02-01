@@ -1,22 +1,22 @@
 DOING 🔁
 
-TODO ❌
+DUDAS
   - estimated / forecast ? ? ? diferencia ? ? ?
   - ability to remove / edit forecast ? 
+
+TODO ❌
   - paste 1 cell missing last character
   - Two toastify if it's insert and not.
-  - If form is really down you can't see the select
-    - trays
-    - my tray
-    - add
+  - abort controller for toast
   TRAYS: 
     - order by en click progress || date
-    - filtro en progress
   STYLE
     - edit_forecast table => make it F I T and S H I N Y
-  - abort controller for toast
 
 DONE ✔
+- filtro en progress
+- if all rows with owner select all appears selected
+- If form is really down you can't see the select
 - submit in forecast adding
 - copy context error diameter
 - feed progress node-cron
