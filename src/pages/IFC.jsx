@@ -6,7 +6,7 @@ import Main from "../layouts/Main";
 
 export default function IFC() {
   return (
-    <Main logo="IsoTracker" circles={false}>
+    <Main circles={false}>
       <div css={IFCStyle}>IFC</div>
     </Main>
   );

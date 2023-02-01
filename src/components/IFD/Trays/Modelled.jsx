@@ -79,9 +79,11 @@ function ModelledComp({ setMessage }) {
     setDataToClaim(tempDataToClaim);
   };
 
-  const filter = () => {
-    if (Object.values(filterInfo).every((x) => !x)) return setDisplayData(data);
-    let tempData = [...data];
+  const filter = (passedData) => {
+    let tempData = passedData || [...data];
+    console.log(tempData);
+    if (Object.values(filterInfo).every((x) => !x))
+      return setDisplayData(tempData);
     let resultData = [];
     tempData.forEach((item) => {
       let exists = [];
@@ -116,10 +118,20 @@ function ModelledComp({ setMessage }) {
       let tempFilterInfo = { ...filterInfo };
       // tempFilterInfo[keyName] = keyName;
       delete tempFilterInfo[keyName];
-      console.log(tempFilterInfo);
       return setFilterInfo(tempFilterInfo);
     } // else add it
     setFilterInfo({ ...filterInfo, [keyName]: val });
+  };
+
+  const orderBy = (e) => {
+    let tempData = [...data];
+    if (e.value === "old") {
+      tempData.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+    } else if (e.value === "new") {
+      tempData.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    }
+    setData(tempData);
+    filter(tempData);
   };
 
   return (
@@ -132,6 +144,7 @@ function ModelledComp({ setMessage }) {
       selectAll={selectAll}
       filter={handleFilter}
       filterInfo={filterInfo}
+      orderBy={orderBy}
     />
   );
 }

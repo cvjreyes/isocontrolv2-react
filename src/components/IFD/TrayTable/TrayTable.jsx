@@ -2,8 +2,9 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import Loading from "react-loading";
-import Button2 from "../../general/Button2";
+
 import NoResults from "../../general/NoResults";
+import TrayHead from "./TrayHead";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({
@@ -16,6 +17,7 @@ export default function TrayTable({
   selectAll,
   filter,
   filterInfo,
+  orderBy,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -30,13 +32,6 @@ export default function TrayTable({
   const gridSize = ".25fr 1.5fr 0.3fr 0.5fr 1.2fr 0.25fr 0.8fr";
 
   const trayStyle = {
-    ".head": {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr) ",
-      height: "50px",
-      width: "100%",
-      backgroundColor: "#338DF1",
-    },
     h3: {
       fontSize: "1.2rem",
       whiteSpace: "nowrap",
@@ -76,46 +71,28 @@ export default function TrayTable({
       textAlign: "center",
     },
     ".table": {
+      paddingBottom: "200px",
       maxHeight: "calc(60vh - 111px)",
       overflowY: "auto",
-      ".cell": { padding: "0 5%" },
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,
       /* Hide scrollbar for Chrome, Safari and Opera */
       "::-webkit-scrollbar": { display: "none" },
-      "*": { fontSize: "13px" },
+      ".cell": { padding: "0 5%" },
+      "*": { fontSize: "13px", textAlign: "center" },
     },
   };
 
   return (
     <div css={trayStyle}>
-      <div className="head">
-        <div />
-        <div className="flexCenter">
-          <h3 className="bold">{title}</h3>
-        </div>
-        <div className="flexCenter">
-          <Button2
-            onClick={handleClaim}
-            text={buttonText || "Claim"}
-            width="100px"
-            bgColor="transparent"
-            border="none"
-            color="white"
-            fontWeight="600"
-            fontSize="14px"
-            textMargin="0 0 0 6px"
-            margin="0 0 0 3%"
-            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-            // img
-            alt="claim"
-            src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
-            imgFilter="invert(100%) brightness(200%)"
-          />
-          <div className="itemsLength">{data.length} items</div>
-        </div>
-      </div>
+      <TrayHead
+        handleClaim={handleClaim}
+        buttonText={buttonText}
+        title={title}
+        data={data}
+        orderBy={orderBy}
+      />
       <div className="wrapper">
         <div className="grid">
           {titles.map((title) => {
@@ -130,7 +107,9 @@ export default function TrayTable({
                     type="checkbox"
                     checked={
                       data.filter((x) => !x.owner).length ===
-                        dataToClaim.length && data.length > 0
+                        dataToClaim.length &&
+                      data.length > 0 &&
+                      data.filter((x) => !x.owner).length > 0
                     }
                     readOnly
                   />
@@ -140,12 +119,11 @@ export default function TrayTable({
             return (
               <div key={title.text} className="flexCenter cell">
                 <input
-                  readOnly={title.key === "actions" || title.key === "progress"}
+                  readOnly={title.key === "actions"}
                   className="bold"
                   defaultValue={title.text}
                   onFocus={(e) => {
-                    if (title.key === "actions" || title.key === "progress")
-                      return;
+                    if (title.key === "actions") return;
                     filter(title.key, "");
                     e.target.value = "";
                   }}
