@@ -1,11 +1,9 @@
 DOING 🔁
   - navis link < S > 
-  - FEED FORECAST < T >
-    - display semanal
-    - ability to remove / edit forecast ? 
-    - ability to paste from excel
+  - feed forecast => ORDER BY < T >
 
 TODO ❌
+  - IFD_FORECAST
   - demo con 3 tipos de línea
   - paste 1 cell missing last character
   - Two toastify if it's insert and not.
