@@ -2,22 +2,21 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../../helpers/api";
 import WithToast from "../../../../modals/Toast";
+import WithModal from "../../../../modals/YesNo";
 import EditForecastRow from "./EditForecastRow";
 
+import EditForecastHead from "./EditForecastHead";
+
 // TODO
-// save
-// add
 // paste
 
-function EditForecastComp({ setMessage }) {
-  const navigate = useNavigate();
-
+function EditForecastComp({ setMessage, setModalContent }) {
   const [data, setData] = useState([]);
   const [changed, setChanged] = useState([]);
+  const [rowsToAdd, setRowsToAdd] = useState(1);
 
   const getData = async () => {
     const { body } = await api("get", "/feed/get_forecast");
@@ -28,31 +27,6 @@ function EditForecastComp({ setMessage }) {
     getData();
   }, []);
 
-  const submitChanges = async () => {
-    const { estimated: valEstimated, forecast: valForecast } = inputValues;
-
-    const invalidNum1 = Number(valEstimated) > 100 || Number(valEstimated) < 1;
-    const invalidNum2 = Number(valForecast) > 100 || Number(valForecast) < 0;
-
-    if (invalidNum1 || invalidNum2)
-      return setMessage({ txt: "Use numbers between 1 and 100", type: "warn" });
-
-    const { ok } = await api("post", "/feed/submit_forecast", false, {
-      day: forecast.length + 1,
-      estimated: valEstimated,
-      forecast: valForecast,
-    });
-    if (ok) {
-      getData();
-      setInputValues({
-        estimated: 0,
-        forecast: 0,
-      });
-      return setMessage({ txt: "Changes saved!", type: "success" });
-    }
-    return setMessage({ txt: "Something went wrong", type: "error" });
-  };
-
   function handleChange({ target }, i) {
     const { name, value } = target;
     // check for nums 1-100 or empty string
@@ -60,10 +34,10 @@ function EditForecastComp({ setMessage }) {
     if (regex.test(value) !== true && value) return;
     const tempData = [...data];
     const tempRow = { ...tempData[i] };
-    tempRow[name] = value;
+    tempRow[name] = Number(value);
     tempData[i] = tempRow;
     setData(tempData);
-    addToChanged(i);
+    addToChanged(tempRow.week);
   }
 
   const addToChanged = (i) => {
@@ -75,6 +49,70 @@ function EditForecastComp({ setMessage }) {
     setChanged(tempChanged);
   };
 
+  const changeRowsToAdd = ({ value }) => {
+    setRowsToAdd(value);
+  };
+
+  const addRows = () => {
+    const tempData = [...data];
+    let toAdd = [];
+    [...Array(rowsToAdd).keys()].forEach((_) => {
+      tempData.unshift({
+        id: tempData.length + 1,
+        week: tempData.length + 1,
+        estimated: 0,
+        forecast: 0,
+      });
+      toAdd.push(tempData.length);
+    });
+    setData(tempData);
+    setChanged([...changed, ...toAdd]);
+  };
+
+  const clear = () => {
+    getData();
+    if (changed.length < 1)
+      return setMessage({ txt: "No changes to undo!", type: "warn" });
+    setMessage({ txt: "Changes undone!", type: "success" });
+    setChanged([]);
+  };
+
+  const submitChanges = async () => {
+    if (changed.length < 1)
+      return setMessage({ txt: "No changes to save!", type: "warn" });
+    const dataToSend = data.filter((x) => changed.includes(x.week));
+    const { ok } = await api("post", "/feed/submit_forecast", false, {
+      data: dataToSend,
+    });
+    if (ok) {
+      setChanged([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
+
+  const handleDelete = (week) => {
+    setModalContent({
+      openModal: true,
+      text: `Are you sure you want to delete week: ${week}`,
+      onClick1: () => deleteEntry(week),
+    });
+  };
+
+  const deleteEntry = async (week) => {
+    const { ok } = await api("delete", `/feed/delete_forecast/${week}`);
+    if (ok) {
+      // slice
+      const tempData = [...data];
+      const idx = data.findIndex((x) => x.week === week);
+      tempData.splice(idx, 1);
+      setData(tempData);
+      // message
+      return setMessage({ txt: "Row deleted successfully!", type: "success" });
+    }
+    setMessage({ txt: "Something went wrong", type: "error" });
+  };
+
   const columns = [
     { title: "Week", key: "week", readOnly: true },
     { title: "Estimated", key: "estimated" },
@@ -83,16 +121,14 @@ function EditForecastComp({ setMessage }) {
 
   return (
     <div css={editForecastStyle}>
-      <div className="head">
-        <div
-          onClick={() => navigate(-1)}
-          className="flexCenter backWrapper pointer"
-        >
-          <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
-        </div>
-      </div>
+      <EditForecastHead
+        addRows={addRows}
+        clear={clear}
+        submitChanges={submitChanges}
+        changeRowsToAdd={changeRowsToAdd}
+      />
       <div className="tableWrapper">
-        <div className="tableGrid header">
+        <div className="header">
           {columns.map((col) => {
             return (
               <div key={col.key} className="bold cell">
@@ -111,6 +147,9 @@ function EditForecastComp({ setMessage }) {
                 i={i}
                 changed={changed}
                 handleChange={handleChange}
+                handleDelete={handleDelete}
+                length={data.length}
+                changeRowsToAdd={changeRowsToAdd}
               />
             );
           })}
@@ -124,7 +163,9 @@ function EditForecastComp({ setMessage }) {
 export default function EditForecast() {
   return (
     <WithToast>
-      <EditForecastComp />
+      <WithModal>
+        <EditForecastComp />
+      </WithModal>
     </WithToast>
   );
 }
@@ -133,46 +174,85 @@ const editForecastStyle = {
   ".head": {
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     height: "50px",
+    padding: "0 10% 0 2%",
     backgroundColor: "#338DF1",
-    ".backWrapper": {
-      width: "40px",
-      height: "40px",
-      margin: "0 5% 0 2%",
-      borderRadius: "100px",
-      ":hover": {
-        boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
+    ".left": {
+      display: "flex",
+      ".backWrapper": {
+        width: "40px",
+        height: "40px",
+        borderRadius: "100px",
+        ":hover": {
+          boxShadow: "inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff",
+        },
+        img: { width: "20px", filter: "invert(100%)" },
       },
-      img: { width: "20px", filter: "invert(100%)" },
+      ".selectWrapper": {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginLeft: "20px",
+        ".css-1nmdiq5-menu, .css-1nmdiq3-menu": {
+          cursor: "pointer",
+        },
+        div: {
+          cursor: "pointer",
+        },
+        label: {
+          marginRight: ".5rem",
+          color: "white",
+        },
+      },
+    },
+    ".right": {
+      display: "flex",
     },
   },
   ".tableWrapper": {
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
     height: "calc(60vh - 50px)",
-    padding: "10px 20% 0 10px",
-    ".tableGrid": {
-      display: "grid",
-      gridTemplateColumns: "repeat(3, 1fr)",
-      height: "50px",
-      ".cell": {
-        padding: "10px",
-        textAlign: "center",
-      },
-    },
+    padding: "10px 0 0 10px",
+    ".cell": { padding: "10px", textAlign: "center" },
     ".header": {
       borderRadius: "20px 20px 0 0",
       height: "40px",
       backgroundColor: "#338DF1",
-      div: { color: "white" },
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      width: "80%",
+      ".cell": { color: "white" },
+    },
+    ".addWrapper": {
+      backgroundColor: "#338DF1",
+      borderRadius: "100px",
+      width: "30px",
+      height: "30px",
+      marginLeft: "10px",
+      ":hover": {
+        boxShadow: "inset 7px 7px 13px #2f83e0, inset -7px -7px 13px #3797ff",
+      },
+      img: {
+        padding: "5px",
+      },
     },
     ".table": {
       maxHeight: "calc(60vh - 101px)",
       border: "solid black",
       borderWidth: "0 0 0 1px",
-      ".cell": {
-        border: "solid black",
-        borderWidth: "0 1px 1px 0",
+      ".tableGrid": {
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        height: "50px",
+        width: "80%",
+        ".cell": {
+          padding: "10px",
+          textAlign: "center",
+          border: "solid black",
+          borderWidth: "0 1px 1px 0",
+        },
       },
       overflowY: "auto",
       /* Hide scrollbar for IE, Edge and Firefox */
