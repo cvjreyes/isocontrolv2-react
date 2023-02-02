@@ -2,8 +2,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import Table from "../table/Table";
-import { columnsData } from "./ColumnsData";
+import Table from "../../table/Table";
+import { columnsData } from "../ColumnsData";
 import FeedPipesExcelTableHeader from "./FeedPipesExcelTableHeader";
 import FEEDPipesHead from "./FeedPipesHead";
 
