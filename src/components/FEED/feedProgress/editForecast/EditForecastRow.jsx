@@ -30,9 +30,6 @@ export default function EditForecastRow({
             min="1"
             max="100"
           />
-          // <div key={`${item.id}-${col.key}`} className="cell">
-          //   {item[col.key]}
-          // </div>
         );
       })}
     </div>
