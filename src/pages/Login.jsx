@@ -135,6 +135,7 @@ const mainStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "left",
+  justifyContent: "center",
   padding: "50px",
   width: "500px",
   marginLeft: "10%",

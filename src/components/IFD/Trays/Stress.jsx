@@ -121,6 +121,21 @@ function StressComp({ setMessage }) {
     setFilterInfo({ ...filterInfo, [keyName]: val });
   };
 
+  const orderBy = (e) => {
+    let tempData = [...data];
+    if (e.value === "old") {
+      tempData.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
+    } else if (e.value === "new") {
+      tempData.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    } else if (e.value === "asc") {
+      tempData.sort((a, b) => (a.tag > b.tag ? 1 : b.tag > a.tag ? -1 : 0));
+    } else if (e.value === "desc") {
+      tempData.sort((a, b) => (b.tag > a.tag ? 1 : a.tag > b.tag ? -1 : 0));
+    }
+    setData(tempData);
+    filter(tempData);
+  };
+
   return (
     <TrayTable
       title="Stress"
@@ -131,6 +146,7 @@ function StressComp({ setMessage }) {
       selectAll={selectAll}
       filter={handleFilter}
       filterInfo={filterInfo}
+      orderBy={orderBy}
     />
   );
 }
