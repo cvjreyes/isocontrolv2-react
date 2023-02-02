@@ -21,17 +21,17 @@ import { prepareRows } from "./feedProgressHelpers";
 export default function FeedProgressView() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
-  
+
   useEffect(() => {
     getData();
   }, []);
-  
+
   const getData = async () => {
     const { body } = await api("get", "/feed/get_gfeed");
     const weeks = prepareRows(body);
     setData(weeks);
   };
-  
+
   return (
     <div css={forecastStyles} className="flexColumn">
       <div css={headStyle}>

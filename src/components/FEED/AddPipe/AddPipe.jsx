@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
 import AddTable from "../../table/AddTable";
-import FeedPipesExcelTableHeader from "../FeedPipesExcelTableHeader";
+import FeedPipesExcelTableHeader from "../Main/FeedPipesExcelTableHeader";
 import {
   checkForAlreadyExists,
   divideLineReference,

@@ -1,25 +1,21 @@
 DOING 🔁
-  TRAYS: 
-    - order by progress || date T
-
-TODO ❌
-  - demo con 3 tipos de línea
-  - navis link
-  - FEED FORECAST
-    - cambiar node-cron feed_forecast update semanal todos los viernes
+  - navis link < S > 
+  - FEED FORECAST < T >
     - display semanal
     - ability to remove / edit forecast ? 
     - ability to paste from excel
+
+TODO ❌
+  - demo con 3 tipos de línea
   - paste 1 cell missing last character
   - Two toastify if it's insert and not.
   - abort controller for toast
-  STYLE
-    - edit_forecast table => make it F I T and S H I N Y
 
 DONE ✔
+- order by progress || date T
 - login centrado verticalmente
-- cambiar nombres: area, unit, fluid, seq, spec, diam, type, ins, status, train
 - revisar lógica del fillType
+- cambiar nombres: area, unit, fluid, seq, spec, diam, type, ins, status, train
 - filtro en progress
 - if all rows with owner select all appears selected
 - If form is really down you can't see the select

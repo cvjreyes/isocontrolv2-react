@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Loading from "react-loading";
 import { Route, Routes } from "react-router-dom";
 
-import EditForecast from "./EditForecast";
+import EditForecast from "./editForecast/EditForecast";
 import FeedProgressView from "./FeedProgressView";
 
 export default function FeedProgress() {

@@ -3,7 +3,7 @@
 import { jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-import Button1 from "../../general/Button2";
+import Button2 from "../../general/Button2";
 import saveImg from "../../../assets/images/save.svg";
 import addImg from "../../../assets/images/add.svg";
 import ReactSelect from "react-select";
@@ -35,7 +35,7 @@ export default function AddPipeHead({
         >
           <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
         </div>
-        <Button1
+        <Button2
           width="100px"
           text="Clear"
           onClick={clear}
@@ -51,7 +51,7 @@ export default function AddPipeHead({
           src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
           imgFilter="invert(100%) brightness(200%)"
         />
-        <Button1
+        <Button2
           text="Save"
           onClick={handleSubmit}
           width="100px"
@@ -92,7 +92,7 @@ export default function AddPipeHead({
             defaultValue={options[0]}
           />
         </div>
-        <Button1
+        <Button2
           text="Add"
           onClick={addRows}
           width="100px"
