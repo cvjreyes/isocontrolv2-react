@@ -1,22 +1,25 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import NavisTable from "../components/navis/navisTable";
-import NavisLayout from "../layouts/NavisLayout";
 
+import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
 
-const NavisComp = ({ setMessage }) => {
+function NavisComp() {
   return (
-    <NavisLayout>
-      <div>
-        <NavisTable />
-      </div>
-    </NavisLayout>
+    <div css={navisStyle}>
+      <Button1 text="Generate XML" />
+      <div>Hi</div>
+    </div>
   );
+}
+
+const navisStyle = {
+  backgroundColor: "lightgray",
+  minHeight: "100vh",
+  width: "100vw",
 };
 
-// using this components to use modals
 export default function Navis() {
   return (
     <WithToast>

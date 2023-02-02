@@ -49,6 +49,7 @@ export default function App() {
             element={<PrivateRoute restricted={true} component={Change} />}
           />
           <Route
+            exact
             path="/navis"
             element={<PublicRoute component={Navis} />}
           />
