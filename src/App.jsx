@@ -16,6 +16,7 @@ import FEED from "./pages/FEED";
 import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
 import Change from "./pages/Change";
+import Navis from "./pages/Navis";
 // import Signup from "./pages/Signup";
 // import Forgot from "./pages/Forgot";
 
@@ -46,6 +47,10 @@ export default function App() {
             exact
             path="/change_password"
             element={<PrivateRoute restricted={true} component={Change} />}
+          />
+          <Route
+            path="/navis"
+            element={<PublicRoute component={Navis} />}
           />
           {/* 
           <Route

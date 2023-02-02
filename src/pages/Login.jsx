@@ -2,11 +2,12 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 import { AuthContext } from "../context/AuthContext";
 import Main from "../layouts/Main";
+import Navis from "./Navis";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
@@ -113,9 +114,9 @@ const LoginComp = ({ setMessage }) => {
           }
         />
         <p>Or you can access to NavisattSelect</p>
-        <Link
+        <NavLink
           className="navisattBtn"
-          to={`/${import.meta.env.VITE_PROJECT}/navis`}
+          to={`/navis`}
         >
           <Button1
             text="NAVISATTSELECT"
@@ -124,7 +125,7 @@ const LoginComp = ({ setMessage }) => {
             border="1px solid #94DCAA"
             fontWeight="bold"
           />
-        </Link>
+        </NavLink>
       </form>
     </Main>
   );
