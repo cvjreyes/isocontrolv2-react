@@ -7,7 +7,6 @@ import axios from "axios";
 
 import { AuthContext } from "../context/AuthContext";
 import Main from "../layouts/Main";
-import Navis from "./Navis";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
