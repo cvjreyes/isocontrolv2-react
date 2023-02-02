@@ -149,6 +149,7 @@ const editForecastStyle = {
   ".tableWrapper": {
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
+    height: "calc(60vh - 50px)",
     padding: "10px 20% 0 10px",
     ".tableGrid": {
       display: "grid",
@@ -160,7 +161,6 @@ const editForecastStyle = {
       },
     },
     ".header": {
-      // border: "1px solid #338DF1",
       borderRadius: "20px 20px 0 0",
       height: "40px",
       backgroundColor: "#338DF1",
