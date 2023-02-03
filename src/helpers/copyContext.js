@@ -16,7 +16,7 @@ export function copyToClipboard(id, table) {
   const totalList =
     copiedEle.children.length === 13
       ? buildFeedList(inputList, testList)
-      : buildIFDList(inputList, valuesList);
+      : buildIFDList(inputList, testList);
 
   // loop through selected inputs
   totalList.forEach((item) => {
@@ -40,7 +40,6 @@ export function copyToClipboard(id, table) {
 }
 
 const buildFeedList = (inputList, valuesList) => {
-  console.log(valuesList[4]);
   return [
     valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
     inputList[1].value, // tag
@@ -58,6 +57,7 @@ const buildFeedList = (inputList, valuesList) => {
 };
 
 const buildIFDList = (inputList, valuesList) => {
+  console.log(valuesList[3]);
   return [
     valuesList[0].innerHTML, // line_reference
     inputList[1].value, // tag

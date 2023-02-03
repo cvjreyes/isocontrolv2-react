@@ -1,15 +1,16 @@
 DOING 🔁
-  - navis link < S > 
-  - feed forecast => ORDER BY < T >
+  - IFD_FORECAST < T >
+  - demo con 3 tipos de línea < S >
 
 TODO ❌
-  - IFD_FORECAST
-  - demo con 3 tipos de línea
+  - chart for global progress
   - paste 1 cell missing last character
-  - Two toastify if it's insert and not.
-  - abort controller for toast
+  - copy all in ifd making it weird
 
 DONE ✔
+- Two toastify if it's insert and not ❌
+- feed forecast => ORDER BY < T >
+- navis link < S > 
 - order by progress || date T
 - login centrado verticalmente
 - revisar lógica del fillType
