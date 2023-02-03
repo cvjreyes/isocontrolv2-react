@@ -1,13 +1,21 @@
 DOING 🔁
-  - IFD_FORECAST < T >
-  - demo con 3 tipos de línea < S >
+  - users / admin section
+    - admin creation
+    - leader creation
+    - admin/leader can create other leaders
+    - leader has section for adding emails list
+      - section has input for email + dropdown for role ( design - default, speciality lead ) 
+      - se guarda en users con pw null
+    - user request => check if email is in db users => if exists => send link => click link => navigate to new password
+    - forgot password
 
 TODO ❌
   - chart for global progress
   - paste 1 cell missing last character
-  - copy all in ifd making it weird
 
 DONE ✔
+- copy all in ifd making it weird
+- demo con 3 tipos de línea
 - Two toastify if it's insert and not ❌
 - feed forecast => ORDER BY < T >
 - navis link < S > 
