@@ -27,6 +27,28 @@ export default function Dropdown({ closeMenu, logout }) {
     <div css={dropdownStyle}>
       <div className="dropdownElement">
         <Button1
+          text="Add User"
+          className="logout"
+          bgColor="transparent"
+          color="white"
+          border="none"
+          padding="10px"
+          onClick={() => navigate("/add_user")}
+        />
+      </div>
+      <div className="dropdownElement">
+        <Button1
+          text="Change Password"
+          className="logout"
+          bgColor="transparent"
+          color="white"
+          border="none"
+          padding="10px"
+          onClick={() => navigate("/change_password")}
+        />
+      </div>
+      <div className="dropdownElement">
+        <Button1
           text="Logout"
           className="logout"
           bgColor="transparent"
@@ -34,17 +56,6 @@ export default function Dropdown({ closeMenu, logout }) {
           border="none"
           padding="10px"
           onClick={logout}
-        />
-      </div>
-      <div className="dropdownElement">
-        <Button1
-          text="Change password"
-          className="logout"
-          bgColor="transparent"
-          color="white"
-          border="none"
-          padding="10px"
-          onClick={() => navigate("/change_password")}
         />
       </div>
     </div>
