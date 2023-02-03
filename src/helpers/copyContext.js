@@ -40,6 +40,7 @@ export function copyToClipboard(id, table) {
 }
 
 const buildFeedList = (inputList, valuesList) => {
+  console.log("feed");
   return [
     valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
     inputList[1].value, // tag
@@ -57,12 +58,12 @@ const buildFeedList = (inputList, valuesList) => {
 };
 
 const buildIFDList = (inputList, valuesList) => {
-  console.log(valuesList[3]);
+  console.log("IFD");
   return [
-    valuesList[0].innerHTML, // line_reference
+    valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
     inputList[1].value, // tag
-    valuesList[1].innerHTML, // owner
-    valuesList[2].innerHTML, // area
+    valuesList[1].children[2].children[0].children[0].innerHTML, // owner
+    valuesList[2].children[2].children[0].children[0].innerHTML, // area
     inputList[4].value, // unit
     inputList[5].value, // fluid
     inputList[6].value, // seq
@@ -70,7 +71,7 @@ const buildIFDList = (inputList, valuesList) => {
     inputList[8].value, // spec
     inputList[9].value, // type
     inputList[10].value, // insulation
-    valuesList[3].innerHTML, // train
+    valuesList[3].children[2].children[0].children[0].innerHTML, // train
     inputList[12].value, // status
   ];
 };
