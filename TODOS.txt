@@ -1,17 +1,16 @@
 DOING 🔁
-  - navis link < S > 
-  - FEED FORECAST < T >
-    - display semanal
-    - ability to remove / edit forecast ? 
-    - ability to paste from excel
+  - IFD_FORECAST < T >
+  - demo con 3 tipos de línea < S >
 
 TODO ❌
-  - demo con 3 tipos de línea
+  - chart for global progress
   - paste 1 cell missing last character
-  - Two toastify if it's insert and not.
-  - abort controller for toast
+  - copy all in ifd making it weird
 
 DONE ✔
+- Two toastify if it's insert and not ❌
+- feed forecast => ORDER BY < T >
+- navis link < S > 
 - order by progress || date T
 - login centrado verticalmente
 - revisar lógica del fillType

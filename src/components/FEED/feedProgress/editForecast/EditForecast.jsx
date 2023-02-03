@@ -10,9 +10,6 @@ import EditForecastRow from "./EditForecastRow";
 
 import EditForecastHead from "./EditForecastHead";
 
-// TODO
-// paste
-
 function EditForecastComp({ setMessage, setModalContent }) {
   const [data, setData] = useState([]);
   const [changed, setChanged] = useState([]);
