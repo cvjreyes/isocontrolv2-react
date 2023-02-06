@@ -110,7 +110,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
     if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    const { ok } = await api("post", "/feed/submit_feed_pipes", 0, {
+    const { ok } = await api("post", "/feed/submit_feed_pipes", {
       data: dataToSend,
     });
     if (ok) {

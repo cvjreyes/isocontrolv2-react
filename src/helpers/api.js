@@ -1,9 +1,9 @@
 import axios from "axios";
-import { URL, URLold } from "./config";
+import { URL } from "./config";
 
-export const api = async (action, url, old, body) => {
+export const api = async (action, url, body) => {
   try {
-    const res = await axios[action](`${old ? URLold : URL}${url}`, body);
+    const res = await axios[action](`${URL}${url}`, body);
     return res.data;
   } catch (err) {
     console.error(err);
