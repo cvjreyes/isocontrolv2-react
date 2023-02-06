@@ -43,12 +43,15 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/progress">
+          Progress
+        </NavLink>
       </div>
       {isLoggedIn && (
         <div className="right">
           <form onSubmit={toggleMenu}>
             <button className="userWrapper pointer removeStyle" tabIndex="0">
-              <span>{getName(user.email)}</span>
+              {user.email && <span>{getName(user.email)}</span>}
               <img
                 className="userIcon"
                 alt="user"
@@ -58,6 +61,7 @@ export default function Navbar() {
           </form>
           {isMenuOpen && [
             <Dropdown
+              user={user}
               logout={logout}
               closeMenu={() => setOpenMenu(false)}
               key="1"

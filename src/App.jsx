@@ -17,6 +17,8 @@ import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
 import Change from "./pages/Change";
 import Navis from "./pages/Navis";
+import AddUser from "./pages/AddUser";
+import Progress from "./pages/Progress";
 // import Signup from "./pages/Signup";
 // import Forgot from "./pages/Forgot";
 
@@ -45,6 +47,11 @@ export default function App() {
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           <Route
             exact
+            path="/progress"
+            element={<PrivateRoute component={Progress} />}
+          />
+          <Route
+            exact
             path="/change_password"
             element={<PrivateRoute restricted={true} component={Change} />}
           />
@@ -53,13 +60,13 @@ export default function App() {
             path="/navis"
             element={<PublicRoute component={Navis} />}
           />
-          {/* 
+
           <Route
             exact
-            path="/signup"
-            element={<PublicRoute restricted={false} component={Signup} />}
+            path="/add_user"
+            element={<PrivateRoute restricted={false} component={AddUser} />}
           />
-          <Route
+          {/*  <Route
             exact
             path="/forgot_pw"
             element={<PublicRoute restricted={false} component={Forgot} />}
