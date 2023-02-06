@@ -21,7 +21,6 @@ function NavisComp() {
       ...row,
     }));
     setDisplayData(allRows);
-    console.log("display : ", allRows);
   };
 
   const addToDataSelected = (row) => {
@@ -30,20 +29,26 @@ function NavisComp() {
     if (index > -1) tempDataToSelected.splice(index, 1);
     else tempDataToSelected.push(row);
     setDataToSelected(tempDataToSelected);
-    console.log("Data selected: ", tempDataToSelected);
   };
 
   const generateXML = () => {
-    let xml = '<?xml version="1.0" encoding="UTF-8" ?>\n    <exchange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://download.autodesk.com/us/navisworks/schemas/nw-exchange-12.0.xsd">\n      <optionset name="">\n           <optionset name="interface">\n              <optionset name="smart_tags">\n                     <option name="enabled">\n                           <data type="bool">true</data>\n                     </option>\n                     <option name="hide_category" flags="32">\n                           <data type="bool">false</data>\n                     </option>\n                     <optionarray name="definitions">\n'
-    
-    for(let i = 0; i < dataToSelected.length; i++){
-        let option = dataToSelected[i].value.toLowerCase()
-        xml+= '                                 <optionset name="">\n                                       <option name="category">\n                                          <data type="name">\n                                              <name internal="lcldrvm_props">PDMS</name>\n                                          </data>\n                                       </option>\n                                       <option name="property">\n                                          <data type="name">\n                                              <name internal="lcldrvm_prop_'+option+'">'+option.toUpperCase()+'</name>\n                                          </data>\n                                       </option>\n                                </optionset>\n'
+    let xml =
+      '<?xml version="1.0" encoding="UTF-8" ?>\n    <exchange xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://download.autodesk.com/us/navisworks/schemas/nw-exchange-12.0.xsd">\n      <optionset name="">\n           <optionset name="interface">\n              <optionset name="smart_tags">\n                     <option name="enabled">\n                           <data type="bool">true</data>\n                     </option>\n                     <option name="hide_category" flags="32">\n                           <data type="bool">false</data>\n                     </option>\n                     <optionarray name="definitions">\n';
+
+    for (let i = 0; i < dataToSelected.length; i++) {
+      let option = dataToSelected[i].value.toLowerCase();
+      xml +=
+        '                                 <optionset name="">\n                                       <option name="category">\n                                          <data type="name">\n                                              <name internal="lcldrvm_props">PDMS</name>\n                                          </data>\n                                       </option>\n                                       <option name="property">\n                                          <data type="name">\n                                              <name internal="lcldrvm_prop_' +
+        option +
+        '">' +
+        option.toUpperCase() +
+        "</name>\n                                          </data>\n                                       </option>\n                                </optionset>\n";
     }
-    xml+='                  </optionarray>\n               </optionset>\n         </optionset>\n      </optionset>\n  </exchange>'
-    const data = new Blob([xml], { type: 'xml' });
+    xml +=
+      "                  </optionarray>\n               </optionset>\n         </optionset>\n      </optionset>\n  </exchange>";
+    const data = new Blob([xml], { type: "xml" });
     FileSaver.saveAs(data, "navis.xml");
-  }
+  };
   useEffect(() => {
     getNavisSelect();
   }, []);
@@ -72,7 +77,10 @@ function NavisComp() {
                     key={x.id}
                     className={`row ${i % 2 ? "parColor" : "inparColor"}`}
                   >
-                    <div className="flexCenter pointer" onClick={() => addToDataSelected(x)}>
+                    <div
+                      className="flexCenter pointer"
+                      onClick={() => addToDataSelected(x)}
+                    >
                       <input
                         type="checkbox"
                         checked={dataToSelected.includes(x)}

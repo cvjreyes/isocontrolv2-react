@@ -47,7 +47,7 @@ export default function AddPipeHead({
           textMargin="0 0 0 6px"
           hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
           // img
-          alt="add"
+          alt="clear"
           src={"https://img.icons8.com/ios-filled/50/null/left2.png"}
           imgFilter="invert(100%) brightness(200%)"
         />
@@ -63,7 +63,7 @@ export default function AddPipeHead({
           textMargin="0 0 0 5px"
           hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
           // img
-          alt="add"
+          alt="save"
           src={saveImg}
           imgWidth="30px"
         />

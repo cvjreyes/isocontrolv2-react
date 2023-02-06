@@ -1,5 +1,6 @@
 DOING 🔁
   - users / admin section
+    - see users
     - admin creation
     - leader creation
     - admin/leader can create other leaders
@@ -14,6 +15,7 @@ TODO ❌
   - paste 1 cell missing last character
 
 DONE ✔
+- remove oldUrl from api
 - copy all in ifd making it weird
 - demo con 3 tipos de línea
 - Two toastify if it's insert and not ❌
