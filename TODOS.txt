@@ -1,12 +1,5 @@
 DOING 🔁
   - users / admin section
-    - see users
-    - admin creation
-    - leader creation
-    - admin/leader can create other leaders
-    - leader has section for adding emails list
-      - section has input for email + dropdown for role ( design - default, speciality lead ) 
-      - se guarda en users con pw null
     - user request => check if email is in db users => if exists => send link => click link => navigate to new password
     - forgot password
 
