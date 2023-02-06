@@ -4,7 +4,7 @@ export const prepareRows = (rows) => {
     //Por cada semana
     //Creamos el punto en la grafica
     weeks.push({
-      name: `D${rows[i].id}`,
+      name: `W${rows[i].id}`,
       current_weight: rows[i].progress,
       max_weight: rows[i].max_progress,
       estimated: (rows[i].max_progress / 100) * rows[i].estimated,

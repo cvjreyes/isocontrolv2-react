@@ -104,7 +104,7 @@ function AddUserComp({ setMessage }) {
         txt: "All users must have a role",
         type: "warn",
       });
-    const { ok, body } = await api("post", "/users/create", false, {
+    const { ok, body } = await api("post", "/users/create", {
       data: dataToSend,
     });
     if (ok) {
