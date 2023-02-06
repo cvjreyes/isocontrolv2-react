@@ -43,6 +43,9 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/progress">
+          Progress
+        </NavLink>
       </div>
       {isLoggedIn && (
         <div className="right">
