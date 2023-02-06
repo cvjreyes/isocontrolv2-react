@@ -10,3 +10,12 @@ export const api = async (action, url, body) => {
     return { ok: false };
   }
 };
+
+export const handleFetch = (results) => {
+  const response = [];
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].status === "fulfilled" && results[i].value.ok)
+      response[i] = results[i].value.body;
+  }
+  return response;
+};

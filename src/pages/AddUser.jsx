@@ -1,16 +1,17 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import Loading from "react-loading";
+import ReactSelect from "react-select";
 
 import WithToast from "../modals/Toast";
-import { api } from "../helpers/api";
+import { api, handleFetch } from "../helpers/api";
+import NoResults from "../components/general/NoResults";
 
-import ReactSelect from "react-select";
 import Button2 from "../components/general/Button2";
 import saveImg from "../assets/images/save.svg";
 import addImg from "../assets/images/add.svg";
-import { useEffect } from "react";
 
 function AddUserComp({ setMessage }) {
   const selectRef = useRef(null);
@@ -23,19 +24,25 @@ function AddUserComp({ setMessage }) {
   );
   const [rowsToAdd, setRowsToAdd] = useState(1);
   const [roles, setRoles] = useState([]);
+  const [users, setUsers] = useState(null);
 
   useEffect(() => {
-    const getRoles = async () => {
-      try {
-        const { body } = await api("get", "/roles/get_all");
-        setRoles(body);
-      } catch (err) {
-        console.error(err);
-        throw err;
-      }
+    const getData = async () => {
+      const results = await Promise.allSettled([
+        api("get", "/roles/get_all"),
+        api("get", "/users/get_all"),
+      ]);
+      const [tempRoles, tempUsers] = handleFetch(results);
+      setRoles(tempRoles);
+      setUsers(tempUsers);
     };
-    getRoles();
+    getData();
   }, []);
+
+  const getUsers = async () => {
+    const { body } = await api("get", "/users/get_all");
+    setUsers(body);
+  };
 
   const changeRowsToAdd = ({ value }) => {
     setRowsToAdd(value);
@@ -44,7 +51,10 @@ function AddUserComp({ setMessage }) {
   const addRows = () => {
     const tempData = [...data];
     for (let i = 0; i < rowsToAdd; i++)
-      tempData.push({ email: "", roles: ["Design"] });
+      tempData.push({
+        email: "",
+        roles: [{ label: "Design", value: "Design" }],
+      });
     setData(tempData);
   };
 
@@ -70,7 +80,10 @@ function AddUserComp({ setMessage }) {
       emails.forEach((line, y) => {
         if (line.length < 1) return;
         const newLine = line.replace(/(\r\n|\n|\r)/gm, "");
-        tempData[i + y] = { email: newLine, roles: ["Design"] };
+        tempData[i + y] = {
+          email: newLine,
+          roles: [{ value: "Design", label: "Design" }],
+        };
       });
       setData(tempData);
     });
@@ -104,11 +117,12 @@ function AddUserComp({ setMessage }) {
         txt: "All users must have a role",
         type: "warn",
       });
-    const { ok, body } = await api("post", "/users/create", false, {
+    const { ok, body } = await api("post", "/users/create", {
       data: dataToSend,
     });
     if (ok) {
       clear();
+      getUsers();
       return setMessage({
         txt: "Users added successfully!",
         type: "success",
@@ -185,31 +199,49 @@ function AddUserComp({ setMessage }) {
           </div>
         </div>
       </div>
-      <div className="table">
-        {data.map((item, i) => {
-          return (
-            <div key={i} className="row" onPaste={(e) => handlePaste(e, i)}>
-              <input
-                placeholder="your@email.com"
-                onChange={(e) => handleChange(e, i)}
-                value={item.email}
-                type="email"
-              />
-              <ReactSelect
-                options={[
-                  { value: "All", label: "All" },
-                  ...roles.map((x) => ({ label: x.name, value: x.name })),
-                ]}
-                defaultValue={
-                  [...roles.map((x) => ({ label: x.name, value: x.name }))][0]
-                }
-                value={item.roles}
-                onChange={(e) => handleSelectChange(e, i)}
-                isMulti
-              />
-            </div>
-          );
-        })}
+      <div className="body">
+        <div className="users">
+          {users ? (
+            users.length > 0 ? (
+              users.map((user) => (
+                <div key={user.id} className="user">
+                  <div>{user.name}</div>
+                  <div>{user.email}</div>
+                </div>
+              ))
+            ) : (
+              <NoResults />
+            )
+          ) : (
+            <Loading />
+          )}
+        </div>
+        <div className="table">
+          {data.map((item, i) => {
+            return (
+              <div key={i} className="row" onPaste={(e) => handlePaste(e, i)}>
+                <input
+                  placeholder="your@email.com"
+                  onChange={(e) => handleChange(e, i)}
+                  value={item.email}
+                  type="email"
+                />
+                <ReactSelect
+                  options={[
+                    { value: "All", label: "All" },
+                    ...roles.map((x) => ({ label: x.name, value: x.name })),
+                  ]}
+                  defaultValue={
+                    [...roles.map((x) => ({ label: x.name, value: x.name }))][0]
+                  }
+                  value={item.roles}
+                  onChange={(e) => handleSelectChange(e, i)}
+                  isMulti
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
       <Button2
         width="100px"
@@ -221,7 +253,7 @@ function AddUserComp({ setMessage }) {
         fontWeight="600"
         fontSize="14px"
         textMargin="0 0 0 6px"
-        margin="0 auto"
+        margin="20px auto 0"
         hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
         // img
         alt="add"
@@ -262,32 +294,68 @@ const addUserStyle = {
       },
     },
   },
-  ".table": {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    height: "60vh",
-    width: "60vw",
-    margin: "30px auto",
-    overflowY: "auto",
-    /* Hide scrollbar for IE, Edge and Firefox */
-    msOverflowStyle: "none" /* IE and Edge */,
-    scrollbarWidth: "none" /* Firefox */,
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    "::-webkit-scrollbar": {
-      display: "none",
-    },
-    ".row": {
+  ".body": {
+    display: "grid",
+    gridTemplateColumns: "1.25fr 2fr",
+    gap: "2%",
+    padding: "0 2%",
+    maxHeight: "70vh",
+    "> div": {
+      padding: "2%",
       width: "100%",
-      backgroundColor: "lightgray",
+      justifySelf: "flex-start",
+      overflowY: "auto",
+      overflowX: "hidden",
+      /* Hide scrollbar for IE, Edge and Firefox */
+      // msOverflowStyle: "none" /* IE and Edge */,
+      // scrollbarWidth: "none" /* Firefox */,
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      // "::-webkit-scrollbar": {
+      //   display: "none",
+      // },
+    },
+    ".users": {
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "column",
+      backgroundColor: "#99C6F8",
       borderRadius: "6px",
-      padding: "10px 20px",
-      marginBottom: "20px",
-      textAlign: "left",
-      input: {
-        margin: "0 2rem 1rem 0",
+      margin: "20px auto 0",
+      padding: "20px",
+      ".user": {
         width: "100%",
-        padding: "10px",
+        textAlign: "left",
+        marginBottom: "20px",
+        borderRadius: "6px",
+        padding: "15px",
+        backgroundColor: "#ffffffc5",
+        "> div": {
+          marginBottom: "5px",
+          // color: "white",
+        },
+      },
+    },
+    ".table": {
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "column",
+      backgroundColor: "#99C6F8",
+      borderRadius: "6px",
+      margin: "20px auto 0",
+      ".row": {
+        width: "100%",
+        padding: "10px 20px 0",
+        marginBottom: "20px",
+        textAlign: "left",
+        input: {
+          margin: "0 2rem 1rem 0",
+          width: "100%",
+          lineHeight: "40px",
+          height: "fit-content",
+          padding: "0 10px",
+          borderRadius: "6px",
+          borderWidth: "0",
+        },
       },
     },
   },
