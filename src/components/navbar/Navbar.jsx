@@ -48,7 +48,7 @@ export default function Navbar() {
         <div className="right">
           <form onSubmit={toggleMenu}>
             <button className="userWrapper pointer removeStyle" tabIndex="0">
-              <span>{getName(user.email)}</span>
+              {user.email && <span>{getName(user.email)}</span>}
               <img
                 className="userIcon"
                 alt="user"
@@ -58,6 +58,7 @@ export default function Navbar() {
           </form>
           {isMenuOpen && [
             <Dropdown
+              user={user}
               logout={logout}
               closeMenu={() => setOpenMenu(false)}
               key="1"

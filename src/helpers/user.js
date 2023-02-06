@@ -3,6 +3,10 @@ export function getName(email) {
   return tempEmail.charAt(0).toUpperCase() + tempEmail.slice(1);
 }
 
-export function userHasRoles(roles) {
-  return true;
+export function userHasRoles(user, roles, isAdmin) {
+  const hasAllRoles = roles.every((x) =>
+    user.roles.find((role) => role.name === x)
+  );
+  const adminMatch = isAdmin === !!user.admin;
+  return hasAllRoles && adminMatch;
 }

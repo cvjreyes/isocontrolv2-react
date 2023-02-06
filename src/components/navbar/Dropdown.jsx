@@ -7,7 +7,7 @@ import { userHasRoles } from "../../helpers/user";
 
 import Button1 from "../general/Button1";
 
-export default function Dropdown({ closeMenu, logout }) {
+export default function Dropdown({ closeMenu, logout, user }) {
   const navigate = useNavigate();
 
   const escFunction = useCallback((e) => {
@@ -26,7 +26,7 @@ export default function Dropdown({ closeMenu, logout }) {
 
   return (
     <div css={dropdownStyle}>
-      {userHasRoles(["Design"]) && (
+      {userHasRoles(user, ["Speciality Lead"], true) && (
         <div className="dropdownElement">
           <Button1
             text="Add User"
