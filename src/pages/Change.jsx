@@ -32,7 +32,7 @@ const ChangeComp = ({ setMessage }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { ok, body } = await api("post", "/users/change_password", 0, {
+      const { ok, body } = await api("post", "/users/change_password", {
         old_password: form.old_password,
         new_password: form.new_password,
         confirm_new_password: form.confirm_new_password,
