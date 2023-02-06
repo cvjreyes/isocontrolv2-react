@@ -10,14 +10,32 @@ import ReactSelect from "react-select";
 import Button2 from "../components/general/Button2";
 import saveImg from "../assets/images/save.svg";
 import addImg from "../assets/images/add.svg";
+import { useEffect } from "react";
 
 function AddUserComp({ setMessage }) {
   const selectRef = useRef(null);
 
   const [data, setData] = useState(
-    [...Array(5).keys()].map((_) => ({ email: "", roles: ["Design"] }))
+    [...Array(5).keys()].map((_) => ({
+      email: "",
+      roles: [{ value: "Design", label: "Design" }],
+    }))
   );
   const [rowsToAdd, setRowsToAdd] = useState(1);
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const getRoles = async () => {
+      try {
+        const { body } = await api("get", "/roles/get_all");
+        setRoles(body);
+      } catch (err) {
+        console.error(err);
+        throw err;
+      }
+    };
+    getRoles();
+  }, []);
 
   const changeRowsToAdd = ({ value }) => {
     setRowsToAdd(value);
@@ -39,8 +57,9 @@ function AddUserComp({ setMessage }) {
 
   const handleSelectChange = (e, i) => {
     const tempData = [...data];
-    tempData[i].roles = e.map((x) => x.label);
-    console.log(tempData[i].roles);
+    if (e.some((x) => x.value === "All")) {
+      tempData[i].roles = roles.map((x) => ({ label: x.name, value: x.name }));
+    } else tempData[i].roles = e;
     setData(tempData);
   };
 
@@ -53,14 +72,16 @@ function AddUserComp({ setMessage }) {
         const newLine = line.replace(/(\r\n|\n|\r)/gm, "");
         tempData[i + y] = { email: newLine, roles: ["Design"] };
       });
-      console.log(tempData);
       setData(tempData);
     });
   };
 
   const clear = () => {
     setData(
-      [...Array(5).keys()].map((_) => ({ email: "", roles: ["Design"] }))
+      [...Array(5).keys()].map((_) => ({
+        email: "",
+        roles: [{ value: "Design", label: "Design" }],
+      }))
     );
     const dataToSend = data.filter((x) => x.email);
     if (dataToSend.length < 1)
@@ -70,33 +91,31 @@ function AddUserComp({ setMessage }) {
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
-    try {
-      const dataToSend = data.filter((x) => x.email);
-      if (dataToSend.length < 1)
-        return setMessage({ txt: "No users to save", type: "warn" });
-      const { ok, body } = await api("post", "/users/create", false, {
-        data: dataToSend,
+    const dataToSend = data
+      .filter((x) => x.email)
+      .map((x) => ({
+        ...x,
+        roles: x.roles.map((role) => roles.find((y) => role.value === y.name)),
+      }));
+    if (dataToSend.length < 1)
+      return setMessage({ txt: "No users to save", type: "warn" });
+    if (dataToSend.filter((x) => x.roles.length === 0).length > 0)
+      return setMessage({
+        txt: "All users must have a role",
+        type: "warn",
       });
-      if (ok) {
-        setData(
-          [...Array(5).keys()].map((_) => ({ email: "", roles: ["Design"] }))
-        );
-        return setMessage({
-          txt: "Users added successfully!",
-          type: "success",
-        });
-      }
-      setMessage({ txt: body, type: "error" });
-    } catch (err) {
-      console.error(err);
-      throw err;
+    const { ok, body } = await api("post", "/users/create", false, {
+      data: dataToSend,
+    });
+    if (ok) {
+      clear();
+      return setMessage({
+        txt: "Users added successfully!",
+        type: "success",
+      });
     }
+    setMessage({ txt: body, type: "error" });
   };
-
-  const options = [
-    { value: "design", label: "Design" },
-    { value: "lead", label: "Speciality Lead" },
-  ];
 
   return (
     <form css={addUserStyle} onSubmit={handleSubmit}>
@@ -174,11 +193,17 @@ function AddUserComp({ setMessage }) {
                 placeholder="your@email.com"
                 onChange={(e) => handleChange(e, i)}
                 value={item.email}
+                type="email"
               />
               <ReactSelect
-                options={options.filter((x) => !item.roles.includes(x.label))}
-                defaultValue={options[0]}
-                value={item.roles.map((x) => ({ value: x, label: x }))}
+                options={[
+                  { value: "All", label: "All" },
+                  ...roles.map((x) => ({ label: x.name, value: x.name })),
+                ]}
+                defaultValue={
+                  [...roles.map((x) => ({ label: x.name, value: x.name }))][0]
+                }
+                value={item.roles}
                 onChange={(e) => handleSelectChange(e, i)}
                 isMulti
               />
@@ -253,8 +278,6 @@ const addUserStyle = {
       display: "none",
     },
     ".row": {
-      // display: "grid",
-      // gridTemplateColumns: "4fr 3fr",
       width: "100%",
       backgroundColor: "lightgray",
       borderRadius: "6px",

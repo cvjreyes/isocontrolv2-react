@@ -11,11 +11,11 @@ DOING 🔁
     - forgot password
 
 TODO ❌
-  - remove oldUrl from api
   - chart for global progress
   - paste 1 cell missing last character
 
 DONE ✔
+- remove oldUrl from api
 - copy all in ifd making it weird
 - demo con 3 tipos de línea
 - Two toastify if it's insert and not ❌
