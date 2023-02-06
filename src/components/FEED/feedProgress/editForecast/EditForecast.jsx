@@ -78,7 +78,7 @@ function EditForecastComp({ setMessage, setModalContent }) {
     if (changed.length < 1)
       return setMessage({ txt: "No changes to save!", type: "warn" });
     const dataToSend = data.filter((x) => changed.includes(x.week));
-    const { ok } = await api("post", "/feed/submit_forecast", false, {
+    const { ok } = await api("post", "/feed/submit_forecast", {
       data: dataToSend,
     });
     if (ok) {

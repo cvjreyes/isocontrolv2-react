@@ -54,7 +54,7 @@ function MyTrayComp({ setMessage }) {
     if (changed.length > 0)
       return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_ifd_pipes", 0, {
+    const { ok } = await api("post", "/ifd/unclaim_ifd_pipes", {
       data: dataToSend,
     });
     if (ok) {
@@ -87,7 +87,7 @@ function MyTrayComp({ setMessage }) {
         type: "warn",
       });
     }
-    const { ok } = await api("post", "/ifd/next_step", 0, {
+    const { ok } = await api("post", "/ifd/next_step", {
       data: dataToSend,
     });
     if (ok) {
@@ -108,7 +108,7 @@ function MyTrayComp({ setMessage }) {
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     if (dataToSend.some((x) => x.status.toLowerCase().includes("modelled")))
       return setMessage({ txt: "Some pipe can't be returned", type: "warn" });
-    const { ok } = await api("post", "/ifd/return", 0, {
+    const { ok } = await api("post", "/ifd/return", {
       data: dataToSend,
     });
     if (ok) {
@@ -165,7 +165,7 @@ function MyTrayComp({ setMessage }) {
     if (changed.length < 1)
       return setMessage({ txt: "No changes to save", type: "warn" });
     const dataToSend = data.filter((x) => changed.includes(x.id));
-    const { ok } = await api("post", "/ifd/change_actions", 0, {
+    const { ok } = await api("post", "/ifd/change_actions", {
       data: dataToSend,
     });
     if (ok) {

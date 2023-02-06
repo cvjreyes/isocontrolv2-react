@@ -69,7 +69,7 @@ export default function AddPipe({
       return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
-    const { ok } = await api("post", `/${id}/add_pipes`, false, { data });
+    const { ok } = await api("post", `/${id}/add_pipes`, { data });
     if (ok) {
       setMessage({ txt: "Changes saved!", type: "success" });
       setTimeout(() => {
