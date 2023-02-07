@@ -17,59 +17,58 @@ import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers
 import { api } from "../helpers/api";
 
 export default function AllProgress() {
-  const [allChecked, setAllChecked] = useState(false);
-
   const [displayData, setDisplayData] = useState([]);
-  const [checkedFeed, setCheckedFeed] = useState([false, false, false, false]);
   const [feedWeeks, setFeedWeeks] = useState([]);
 
-  const getFeedData = async () => {
-    const { body } = await api("get", "/feed/get_gfeed");
-    const data = prepareRows(body);
-    console.log(data);
-    setFeedWeeks(data);
-    setDisplayData(data);
-  };
-
   useEffect(() => {
+    const getFeedData = async () => {
+      const { body } = await api("get", "/feed/get_gfeed");
+      const data = prepareRows(body);
+      setDisplayData([...data]);
+      setFeedWeeks(JSON.parse(JSON.stringify(data)));
+    };
     getFeedData();
   }, []);
 
-  const handleChangeFeed = () => {
-    setAllChecked(!allChecked);
-    if (allChecked) {
-      console.log("all: ", allChecked);
-      setDisplayData([...feedWeeks]);
-      setCheckedFeed([true, true, true, true]);
+  const handleChangeFeed = (key) => {
+    let tempData = [...displayData];
+    // check if key exists in displayData
+    if (key === "feed") {
+      console.log(1);
+      // check if all feedSubcategories are in displayData
+      // if they are remove all
+      // else add all
+    } else if (tempData[0] && key in tempData[0]) {
+      // if exists delete
+      tempData.map((x) => delete x[key]);
     } else {
-      // if (checkedFeed[0]) {
-      //   checkChecked(0, checkedFeed[0]);
-      // } else if (checkedFeed[1]) {
-      //   checkChecked(1, checkedFeed[1]);
-      // } else if (checkedFeed[2]) {
-      //   checkChecked(2, checkedFeed[2]);
-      // } else if (checkedFeed[3]) {
-      //   checkChecked(3, checkedFeed[3]);
-      // } else {
-        setDisplayData([]);
-      // }
+      tempData = tempData.map((x, i) => {
+        return { ...x, [key]: feedWeeks[i][key] };
+      });
     }
-    console.log("Feed: ", checkedFeed);
+    setDisplayData(tempData);
   };
 
-  const checkChecked = (i, checked) => {
-    const tempData = [...displayData];
-    if (checked) {
-      tempData.splice(i, 1);
-    } else {
-      tempData.splice(i, 0, feedWeeks[i]);
-    }
-    setDisplayData(...tempData)
-    console.log("temp data: ", tempData);
-  };
+  // const checkChecked = (i, checked) => {
+  //   const tempData = [...displayData];
+  //   if (checked) {
+  //     tempData.splice(i, 1);
+  //   } else {
+  //     tempData.splice(i, 0, feedWeeks[i]);
+  //   }
+  //   setDisplayData(...tempData);
+  //   console.log("temp data: ", tempData);
+  // };
 
-  const colorsFeed = ["brown", "red", "blue", "pink"];
-  const colorsIFD = ["yellow", "orange", "purple", "green"];
+  const colorsFeed = ["brown", "red", "blue", "green"];
+  // const colorsIFD = ["yellow", "orange", "purple", "green"];
+
+  const feedSubcategories = [
+    { label: "Current Weight Feed", key: "Current Weight" },
+    { label: "Max Weight Feed", key: "Max Weight" },
+    { label: "Estimated Feed", key: "Estimated" },
+    { label: "Forecast Feed", key: "Forecast" },
+  ];
 
   return (
     <div css={progresstyle}>
@@ -77,47 +76,29 @@ export default function AllProgress() {
         <label className="bold">
           <input
             type="checkbox"
-            checked={!allChecked}
-            onChange={() => handleChangeFeed()}
-          />{" "}
+            checked={
+              !!displayData[0] &&
+              feedSubcategories.every((x) =>
+                displayData[0].hasOwnProperty(x.key)
+              )
+            }
+            onChange={() => handleChangeFeed("feed")}
+          />
           Feed
         </label>
         <div className="subCategory">
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={!checkedFeed[0]}
-              onChange={() => handleChangeFeed()}
-            />{" "}
-            Current Weight Feed
-          </label>
-          <br />
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={!checkedFeed[1]}
-              onChange={() => handleChangeFeed()}
-            />{" "}
-            Max Weight Feed
-          </label>
-          <br />
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={!checkedFeed[2]}
-              onChange={() => handleChangeFeed()}
-            />{" "}
-            Estimated Feed
-          </label>
-          <br />
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={!checkedFeed[3]}
-              onChange={() => handleChangeFeed()}
-            />{" "}
-            Forecast Feed
-          </label>
+          {feedSubcategories.map((x, i) => {
+            return (
+              <label className="bold" key={i}>
+                <input
+                  type="checkbox"
+                  checked={!!displayData[0] && x.key in displayData[0]}
+                  onChange={() => handleChangeFeed(x.key)}
+                />
+                {x.label}
+              </label>
+            );
+          })}
         </div>
       </div>
       <div className="graphic">
@@ -137,14 +118,26 @@ export default function AllProgress() {
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Legend />
+            {!!displayData[0] && (
+              <Legend
+                iconType="line"
+                payload={Object.keys(displayData[0])
+                  .filter((x) => x !== "name")
+                  .map((x, i) => ({
+                    value: x,
+                    type: "diamond",
+                    id: x,
+                    color: colorsFeed[i],
+                  }))}
+              />
+            )}
             {displayData.map((x, i) => {
-              // console.log(x, i, Object.keys(x)[i]);
+              if (i === 0) return;
               return (
                 <Line
                   key={x.name}
                   type="monotone"
-                  dataKey={Object.keys(x)[i + 1]}
+                  dataKey={Object.keys(x)[i]}
                   stroke={colorsFeed[i]}
                 />
               );
@@ -168,5 +161,7 @@ const progresstyle = {
   },
   ".subCategory": {
     marginLeft: "5%",
+    display: "flex",
+    flexDirection: "column",
   },
 };
