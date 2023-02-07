@@ -15,6 +15,8 @@ import { URL } from "../helpers/config";
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
 
+// request access button => redirect to email input => send email with link => click link => go to create pw
+
 const LoginComp = ({ setMessage }) => {
   const { login } = useContext(AuthContext);
 
@@ -113,10 +115,7 @@ const LoginComp = ({ setMessage }) => {
           }
         />
         <p>Or you can access to NavisattSelect</p>
-        <NavLink
-          className="navisattBtn"
-          to={`/navis`}
-        >
+        <NavLink className="navisattBtn" to={`/navis`}>
           <Button1
             text="NAVISATTSELECT"
             bgColor="#94DCAA"
