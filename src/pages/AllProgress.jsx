@@ -117,7 +117,7 @@ export default function AllProgress() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip />
+            <Tooltip isAnimationActive={false} offset={10000000} />
             {!!displayData[0] && (
               <Legend
                 iconType="line"
@@ -132,12 +132,12 @@ export default function AllProgress() {
               />
             )}
             {displayData.map((x, i) => {
-              if (i === 0) return;
               return (
                 <Line
+                  isAnimationActive={false}
                   key={x.name}
                   type="monotone"
-                  dataKey={Object.keys(x)[i]}
+                  dataKey={Object.keys(x)[i + 1]}
                   stroke={colorsFeed[i]}
                 />
               );
