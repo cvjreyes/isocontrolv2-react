@@ -121,7 +121,7 @@ function EditForecastComp({ setMessage }) {
             margin="0 auto"
             padding="5px"
             border="1px solid white"
-            bgColor="#0070ED"
+            bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
             bgHover="#3988e2"
             color="white"
           />

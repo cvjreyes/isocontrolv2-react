@@ -19,7 +19,7 @@ import Change from "./pages/Change";
 import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
 import Progress from "./pages/Progress";
-// import Signup from "./pages/Signup";
+import Request from "./pages/Request";
 // import Forgot from "./pages/Forgot";
 
 export default function App() {
@@ -65,6 +65,11 @@ export default function App() {
             exact
             path="/add_user"
             element={<PrivateRoute restricted={false} component={AddUser} />}
+          />
+          <Route
+            exact
+            path="/request_access"
+            element={<PublicRoute component={Request} />}
           />
           {/*  <Route
             exact

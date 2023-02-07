@@ -23,7 +23,7 @@ export default function Button1({
   const buttonStyle = {
     width: width || "100%",
     padding: padding || "10px 20px",
-    backgroundColor: bgColor,
+    background: bgColor,
     color,
     border,
     borderRadius: borderRadius || "6px",

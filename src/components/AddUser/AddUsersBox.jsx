@@ -32,7 +32,7 @@ export default function AddUsersBox({
             onClick={addRows}
             width="100px"
             border="none"
-            bgColor="#0070ED"
+            bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
             color="white"
             fontWeight="600"
             fontSize="14px"
@@ -73,7 +73,7 @@ export default function AddUsersBox({
             text="Clear"
             onClick={clear}
             border="none"
-            bgColor="#0070ED"
+            bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
             color="white"
             fontWeight="600"
             fontSize="14px"
@@ -121,7 +121,7 @@ export default function AddUsersBox({
         text="Save"
         onClick={handleSubmit}
         border="none"
-        bgColor="#0070ED"
+        bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
         color="white"
         fontWeight="600"
         fontSize="14px"
@@ -169,13 +169,15 @@ const addUserBoxStyle = {
   },
   ".table": {
     width: "100%",
-    backgroundColor: "#99C6F8",
+    // backgroundColor: "#99C6F8",
+    background:
+      "linear-gradient(90deg, rgba(147,197,251,1) 0%, rgba(153,198,248,1) 49%, rgba(177,214,255,1) 100%)",
     borderRadius: "6px",
     padding: "20px",
     "> div": {
       width: "100%",
       overflowY: "auto",
-      height: "69vh",
+      height: "60vh",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,
@@ -188,7 +190,9 @@ const addUserBoxStyle = {
       marginBottom: "20px",
       borderRadius: "6px",
       padding: "15px",
-      backgroundColor: "#ffffffc5",
+      // backgroundColor: "#ffffffc5",
+      background:
+        "linear-gradient(90deg, rgba(241,254,255,.6) 0%, rgba(255,255,255,.6) 49%, rgba(245,249,250,.6) 100%)",
       width: "100%",
       textAlign: "left",
       input: {
