@@ -16,8 +16,6 @@ import {
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
 import { api } from "../helpers/api";
-import openDropdown from "../assets/images/add.svg";
- 
 
 export default function AllProgress() {
   const [displayData, setDisplayData] = useState([]);
@@ -79,25 +77,31 @@ export default function AllProgress() {
   return (
     <div css={progresstyle}>
       <div className="optionsBox">
-        <label className="bold">
-          <input
-            type="checkbox"
-            checked={
-              !!displayData[0] &&
-              feedSubcategories.every((x) =>
-                displayData[0].hasOwnProperty(x.key)
-              )
+        <div className="category">
+          <label className="bold">
+            <input
+              type="checkbox"
+              checked={
+                !!displayData[0] &&
+                feedSubcategories.every((x) =>
+                  displayData[0].hasOwnProperty(x.key)
+                )
+              }
+              onChange={() => handleChangeFeed("feed")}
+            />
+            Feed
+          </label>
+          <img
+            aria-controls="image_dropdown"
+            className="image_dropdown"
+            src={
+              heightDropdown === 0
+                ? "https://img.icons8.com/material-outlined/24/null/filled-plus-2-math.png"
+                : "https://img.icons8.com/material-outlined/24/null/indeterminate-checkbox.png"
             }
-            onChange={() => handleChangeFeed("feed")}
+            onClick={() => setHeightDropdown(heightDropdown === 0 ? "auto" : 0)}
           />
-          Feed
-        </label>
-        <img
-          aria-controls="image_dropdown"
-          className="image_dropdown"
-          src={heightDropdown === 0 ? openDropdown : "https://img.icons8.com/ios-glyphs/30/null/minus-math.png" }
-          onClick={() => setHeightDropdown(heightDropdown === 0 ? "auto" : 0)}
-        />
+        </div>
         <div className="subCategory">
           <AnimateHeight
             id="image_dropdown"
@@ -106,7 +110,7 @@ export default function AllProgress() {
           >
             {feedSubcategories.map((x, i) => {
               return (
-                <label className="bold" key={i}>
+                <label className="bold labelSub" key={i}>
                   <input
                     type="checkbox"
                     checked={!!displayData[0] && x.key in displayData[0]}
@@ -178,13 +182,21 @@ const progresstyle = {
     justifyContent: "center",
     height: "calc(100vh - 100px)",
   },
-  ".subCategory": {
-    marginLeft: "5%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  ".image_dropdown": {
-    width: "24px",
-    alignContent: "right"
+  ".optionsBox": {
+    ".category": {
+      display: "flex",
+      flexDirection: "row",
+      ".image_dropdown": {
+        width: "20px",
+      },
+    },
+    ".subCategory": {
+      marginLeft: "5%",
+      display: "flex",
+      flexDirection: "row",
+      ".labelSub": {
+        // flexDirection: "column",
+      }
+    },
   },
 };
