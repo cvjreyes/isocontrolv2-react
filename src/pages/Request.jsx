@@ -45,8 +45,8 @@ const RequestComp = ({ setMessage }) => {
 
         <h3 className="welcome">Request Access</h3>
         <p className="pleaseEnter">
-          Please, enter your e-mail account and a link to create your password
-          will be sent.
+          Please, enter your e-mail address and a link will be sent to choose
+          your password.
         </p>
         <label htmlFor="email">E-mail</label>
         <div className="inputWrapper">

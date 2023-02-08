@@ -1,11 +1,11 @@
 DOING 🔁
-  - users / admin section
-    - user request => check if email is in db users => if exists => send link => click link => navigate to new password
-    - forgot password
+  - forgot password
 
 TODO ❌
   - chart for global progress
   - paste 1 cell missing last character
+  - get name in navbar for user email
+  - filter users in addUser
 
 DONE ✔
 - remove oldUrl from api
