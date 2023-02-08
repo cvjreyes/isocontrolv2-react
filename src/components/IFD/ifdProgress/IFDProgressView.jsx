@@ -58,7 +58,7 @@ export default function IFDProgressView() {
           }
           // src={"https://img.icons8.com/color/search"} // naranjita por si ak
           imgFilter="invert(100%) brightness(200%)"
-          // onClick={() => navigate("/ifd/ifd_progress/edit_forecast")}
+          onClick={() => navigate("/ifd/ifd_progress/edit_forecast")}
         />
       </div>
       <div className="chartWrapper flexCenter">
