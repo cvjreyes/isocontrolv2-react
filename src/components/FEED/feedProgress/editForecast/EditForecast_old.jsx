@@ -35,7 +35,7 @@ function EditForecastComp({ setMessage }) {
     if (invalidNum1 || invalidNum2)
       return setMessage({ txt: "Use numbers between 1 and 100", type: "warn" });
 
-    const { ok } = await api("post", "/feed/submit_forecast", false, {
+    const { ok } = await api("post", "/feed/submit_forecast", {
       day: forecast.length + 1,
       estimated: valEstimated,
       forecast: valForecast,

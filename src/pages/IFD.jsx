@@ -15,6 +15,7 @@ import SDesign from "../components/IFD/Trays/SDesign";
 import { data } from "../components/IFD/SidebarContent";
 import Sidebar from "../components/sidebar/Sidebar";
 import Main from "../layouts/Main";
+import IFDProgress from "../components/IFD/ifdProgress/IFDProgress";
 // import IFDLayout from "../layouts/IFDLayout";
 
 export default function IFD() {
@@ -33,6 +34,7 @@ export default function IFD() {
           <Route path="/stress" element={<Stress />} />
           <Route path="/supports" element={<Supports />} />
           <Route path="/s-design" element={<SDesign />} />
+          <Route path="/ifd_progress/*" element={<IFDProgress />} />
           <Route path="/*" element={<Navigate to="/ifd/main" />} />
         </Routes>
         {/* </IFDLayout> */}
