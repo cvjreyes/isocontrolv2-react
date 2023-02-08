@@ -16,29 +16,29 @@ import {
 
 import { api } from "../../../helpers/api";
 import Button1 from "../../general/Button2";
-import { prepareRows } from "./feedProgressHelpers";
+import { prepareRows } from "../../FEED/feedProgress/feedProgressHelpers";
 
-export default function FeedProgressView() {
+export default function IFDProgressView() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const { body } = await api("get", "/feed/get_gfeed");
+      const { body } = await api("get", "/ifd/get_ifd_progress");
       const weeks = prepareRows(body);
       setData([...weeks]);
     };
     getData();
   }, []);
 
-  const colorsFeed = ["brown", "red", "blue", "green"];
+  const colorsIFD = ["brown", "red", "blue", "green"];
 
   return (
     <div css={forecastStyles} className="flexColumn">
       <div css={headStyle}>
         <div />
         <div className="flexCenter">
-          <h3>Feed Progress</h3>
+          <h3>IFD Progress</h3>
         </div>
         <Button1
           text="Edit Forecast"
@@ -58,7 +58,7 @@ export default function FeedProgressView() {
           }
           // src={"https://img.icons8.com/color/search"} // naranjita por si ak
           imgFilter="invert(100%) brightness(200%)"
-          onClick={() => navigate("/feed/progress/edit_forecast")}
+          // onClick={() => navigate("/ifd/ifd_progress/edit_forecast")}
         />
       </div>
       <div className="chartWrapper flexCenter">
@@ -82,7 +82,7 @@ export default function FeedProgressView() {
                 dy: 30,
               }}
             />
-            <Tooltip isAnimationActive={false} offset={10000000}/>
+            <Tooltip isAnimationActive={false} offset={10000000} />
             {!!data[0] && (
               <Legend
                 iconType="line"
@@ -92,7 +92,7 @@ export default function FeedProgressView() {
                     value: x,
                     type: "diamond",
                     id: x,
-                    color: colorsFeed[i],
+                    color: colorsIFD[i],
                   }))}
               />
             )}
@@ -103,7 +103,7 @@ export default function FeedProgressView() {
                   key={x.name}
                   type="monotone"
                   dataKey={Object.keys(x)[i + 1]}
-                  stroke={colorsFeed[i]}
+                  stroke={colorsIFD[i]}
                 />
               );
             })}
