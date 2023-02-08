@@ -6,6 +6,7 @@ TODO ❌
   - paste 1 cell missing last character
   - get name in navbar for user email
   - filter users in addUser
+  - cambiar nombre gfeed a feed_progress para mantener coherencia
 
 DONE ✔
 - remove oldUrl from api
