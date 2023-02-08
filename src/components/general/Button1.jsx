@@ -19,19 +19,21 @@ export default function Button1({
   padding,
   bgHover,
   display,
+  disabled,
 }) {
   const buttonStyle = {
     width: width || "100%",
     padding: padding || "10px 20px",
-    backgroundColor: bgColor,
+    background: disabled ? "lightgray" : bgColor,
     color,
     border,
+    borderColor: disabled && "lightgray",
     borderRadius: borderRadius || "6px",
     margin,
     fontWeight,
     fontSize,
     ":hover": {
-      background: bgHover,
+      background: disabled ? "auto" : bgHover,
     },
     display: display,
   };
@@ -39,10 +41,11 @@ export default function Button1({
   return (
     <button
       type={type}
-      className={`${className} pointer`}
+      className={`${className} ${disabled ? "not-allowed" : "pointer"}`}
       css={buttonStyle}
       onClick={onClick}
       name={name}
+      disabled={disabled}
     >
       {text}
     </button>

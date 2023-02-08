@@ -18,8 +18,9 @@ import IFC from "./pages/IFC";
 import Change from "./pages/Change";
 import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
+import Request from "./pages/Request";
+import CreatePassword from "./pages/CreatePassword";
 import AllProgress from "./pages/AllProgress";
-// import Signup from "./pages/Signup";
 // import Forgot from "./pages/Forgot";
 
 export default function App() {
@@ -65,6 +66,16 @@ export default function App() {
             exact
             path="/add_user"
             element={<PrivateRoute restricted={false} component={AddUser} />}
+          />
+          <Route
+            exact
+            path="/request_access"
+            element={<PublicRoute component={Request} />}
+          />
+          <Route
+            exact
+            path="/create_password/:user_id/:token"
+            element={<PublicRoute component={CreatePassword} />}
           />
           {/*  <Route
             exact
