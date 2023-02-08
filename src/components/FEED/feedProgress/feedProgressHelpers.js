@@ -4,11 +4,11 @@ export const prepareRows = (rows) => {
     //Por cada semana
     //Creamos el punto en la grafica
     weeks.push({
-      name: `D${rows[i].id}`,
-      current_weight: rows[i].progress,
-      max_weight: rows[i].max_progress,
-      estimated: (rows[i].max_progress / 100) * rows[i].estimated,
-      forecast: (rows[i].max_progress / 100) * rows[i].forecast,
+      name: `W${rows[i].id}`,
+      ["Current Weight"]: rows[i].progress,
+      ["Max Weight"]: rows[i].max_progress,
+      Estimated: (rows[i].max_progress / 100) * rows[i].estimated,
+      Forecast: (rows[i].max_progress / 100) * rows[i].forecast,
     });
   }
   return weeks;

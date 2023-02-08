@@ -18,9 +18,9 @@ import IFC from "./pages/IFC";
 import Change from "./pages/Change";
 import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
-import Progress from "./pages/Progress";
 import Request from "./pages/Request";
 import CreatePassword from "./pages/CreatePassword";
+import AllProgress from "./pages/AllProgress";
 // import Forgot from "./pages/Forgot";
 
 export default function App() {
@@ -48,8 +48,8 @@ export default function App() {
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           <Route
             exact
-            path="/progress"
-            element={<PrivateRoute component={Progress} />}
+            path="/all_progress"
+            element={<PrivateRoute component={AllProgress} />}
           />
           <Route
             exact
