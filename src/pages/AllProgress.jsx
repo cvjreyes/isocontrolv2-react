@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
+import AnimateHeight from "react-animate-height";
 import {
   LineChart,
   Line,
@@ -15,10 +16,13 @@ import {
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
 import { api } from "../helpers/api";
+import openDropdown from "../assets/images/add.svg";
+ 
 
 export default function AllProgress() {
   const [displayData, setDisplayData] = useState([]);
   const [feedWeeks, setFeedWeeks] = useState([]);
+  const [heightDropdown, setHeightDropdown] = useState(0);
 
   useEffect(() => {
     const getFeedData = async () => {
@@ -34,10 +38,23 @@ export default function AllProgress() {
     let tempData = [...displayData];
     // check if key exists in displayData
     if (key === "feed") {
-      console.log(1);
       // check if all feedSubcategories are in displayData
-      // if they are remove all
-      // else add all
+      if (
+        feedSubcategories.every((x) => displayData[0].hasOwnProperty(x.key))
+      ) {
+        // if they are remove all
+        feedSubcategories.every((x) => tempData.map((y) => delete y[x.key]));
+      } else {
+        // else they add all
+        feedSubcategories.map((y) => {
+          tempData = tempData.map((x, i) => {
+            return {
+              ...x,
+              [y.key]: feedWeeks[i][y.key],
+            };
+          });
+        });
+      }
     } else if (tempData[0] && key in tempData[0]) {
       // if exists delete
       tempData.map((x) => delete x[key]);
@@ -48,17 +65,6 @@ export default function AllProgress() {
     }
     setDisplayData(tempData);
   };
-
-  // const checkChecked = (i, checked) => {
-  //   const tempData = [...displayData];
-  //   if (checked) {
-  //     tempData.splice(i, 1);
-  //   } else {
-  //     tempData.splice(i, 0, feedWeeks[i]);
-  //   }
-  //   setDisplayData(...tempData);
-  //   console.log("temp data: ", tempData);
-  // };
 
   const colorsFeed = ["brown", "red", "blue", "green"];
   // const colorsIFD = ["yellow", "orange", "purple", "green"];
@@ -86,19 +92,32 @@ export default function AllProgress() {
           />
           Feed
         </label>
+        <img
+          aria-controls="image_dropdown"
+          className="image_dropdown"
+          src={heightDropdown === 0 ? openDropdown : "https://img.icons8.com/ios-glyphs/30/null/minus-math.png" }
+          onClick={() => setHeightDropdown(heightDropdown === 0 ? "auto" : 0)}
+        />
         <div className="subCategory">
-          {feedSubcategories.map((x, i) => {
-            return (
-              <label className="bold" key={i}>
-                <input
-                  type="checkbox"
-                  checked={!!displayData[0] && x.key in displayData[0]}
-                  onChange={() => handleChangeFeed(x.key)}
-                />
-                {x.label}
-              </label>
-            );
-          })}
+          <AnimateHeight
+            id="image_dropdown"
+            duration={500}
+            height={heightDropdown}
+          >
+            {feedSubcategories.map((x, i) => {
+              return (
+                <label className="bold" key={i}>
+                  <input
+                    type="checkbox"
+                    checked={!!displayData[0] && x.key in displayData[0]}
+                    onChange={() => handleChangeFeed(x.key)}
+                  />
+                  {x.label}
+                  <br/>
+                </label>
+              );
+            })}
+          </AnimateHeight>
         </div>
       </div>
       <div className="graphic">
@@ -163,5 +182,9 @@ const progresstyle = {
     marginLeft: "5%",
     display: "flex",
     flexDirection: "column",
+  },
+  ".image_dropdown": {
+    width: "24px",
+    alignContent: "right"
   },
 };
