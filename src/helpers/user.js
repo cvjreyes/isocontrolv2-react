@@ -7,6 +7,6 @@ export function userHasRoles(user, roles, isAdmin) {
   const hasAllRoles = roles.every((x) =>
     user.roles.find((role) => role.name === x)
   );
-  const adminMatch = isAdmin === !!user.admin;
+  const adminMatch = !!isAdmin === !!user.admin;
   return hasAllRoles && adminMatch;
 }

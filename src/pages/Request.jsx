@@ -2,13 +2,12 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import Main from "../layouts/Main";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
-import { URL } from "../helpers/config";
 
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import { api } from "../helpers/api";
@@ -16,19 +15,22 @@ import { api } from "../helpers/api";
 // request access button => redirect to email input => send email with link => click link => go to create pw
 
 const RequestComp = ({ setMessage }) => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email)
       return setMessage({ type: "warn", txt: "Please, fill all fields!" });
-    const res = await api("post", "/emails/request_access", email);
-
-    if (!res.data.ok) return setMessage({ type: "warn", txt: res.data.body });
-    setTimeout(() => login(res.data.body), 1000);
+    const { ok, body } = await api("post", "/users/request_access", { email });
+    if (!ok) return setMessage({ type: "warn", txt: body });
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
     setMessage({
       type: "success",
-      txt: `Welcome back, ${res.data.body.email}`,
+      txt: body,
     });
   };
 

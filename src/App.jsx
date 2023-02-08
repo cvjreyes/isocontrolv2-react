@@ -20,6 +20,7 @@ import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
 import Progress from "./pages/Progress";
 import Request from "./pages/Request";
+import CreatePassword from "./pages/CreatePassword";
 // import Forgot from "./pages/Forgot";
 
 export default function App() {
@@ -70,6 +71,11 @@ export default function App() {
             exact
             path="/request_access"
             element={<PublicRoute component={Request} />}
+          />
+          <Route
+            exact
+            path="/create_password/:user_id/:token"
+            element={<PublicRoute component={CreatePassword} />}
           />
           {/*  <Route
             exact
