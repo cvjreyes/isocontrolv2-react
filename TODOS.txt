@@ -4,10 +4,7 @@ DOING 🔁
 TODO ❌
   - chart for global progress
   - paste 1 cell missing last character
-  - get name in navbar for user email
-  - filter users in addUser
-  - cambiar nombre gfeed a feed_progress para mantener coherencia
-
+  
 DONE ✔
 - get name in navbar for user email
 - filter users in addUser
