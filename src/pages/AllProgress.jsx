@@ -169,6 +169,8 @@ const progresstyle = {
         width: "100%",
         paddingRight: "50%",
         label: {
+          display: "flex",
+          flexWrap: "nowrap",
           width: "100%",
         },
         img: {

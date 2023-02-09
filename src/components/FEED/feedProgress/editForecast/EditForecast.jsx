@@ -1,8 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "../../../../context/AuthContext";
 import { api } from "../../../../helpers/api";
 import WithToast from "../../../../modals/Toast";
 import WithModal from "../../../../modals/YesNo";
@@ -11,6 +13,9 @@ import EditForecastRow from "./EditForecastRow";
 import EditForecastHead from "./EditForecastHead";
 
 function EditForecastComp({ setMessage, setModalContent }) {
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const [data, setData] = useState([]);
   const [changed, setChanged] = useState([]);
   const [rowsToAdd, setRowsToAdd] = useState(1);
@@ -21,6 +26,11 @@ function EditForecastComp({ setMessage, setModalContent }) {
   };
 
   useEffect(() => {
+    const checkRoles = () => {
+      if (!user.roles.some((x) => x.name.includes("Speciality Lead")))
+        navigate("/");
+    };
+    checkRoles();
     getData();
   }, []);
 

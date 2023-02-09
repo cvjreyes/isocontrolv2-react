@@ -2,8 +2,9 @@ DOING 🔁
   - chart for global progress < S >
 
 TODO ❌
-  
+
 DONE ✔
+- only leaders can edit forecast and estimations < T >
 - paste 1 cell missing last character FROM NOT EXCEL
 - forgot password
 - get name in navbar for user email

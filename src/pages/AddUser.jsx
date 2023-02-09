@@ -1,17 +1,20 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { api, handleFetch } from "../helpers/api";
+import { AuthContext } from "../context/AuthContext";
 
 import WithToast from "../modals/Toast";
 import AddUsersBox from "../components/AddUser/AddUsersBox";
 import ListOfUsers from "../components/AddUser/ListOfUsers";
 
-// añadir degradfado azul bgC
-
 function AddUserComp({ setMessage }) {
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const [data, setData] = useState(
     [...Array(3).keys()].map((_) => ({
       email: "",
@@ -36,6 +39,11 @@ function AddUserComp({ setMessage }) {
       setUsers(tempUsers);
       setDisplayUsers(tempUsers);
     };
+    const checkRoles = () => {
+      if (!user.roles.some((x) => x.name.includes("Speciality Lead")))
+        navigate("/");
+    };
+    checkRoles();
     getData();
   }, []);
 
