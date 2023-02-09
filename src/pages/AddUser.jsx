@@ -118,7 +118,6 @@ function AddUserComp({ setMessage }) {
     tempUsers = tempUsers.filter((x) =>
       x.email.toLowerCase().includes(filterData.toLowerCase())
     );
-    console.log(tempUsers[0].email.includes(filterData));
     setDisplayUsers(tempUsers);
   };
 
@@ -176,7 +175,7 @@ function AddUserComp({ setMessage }) {
     e && e.preventDefault();
     if (changed.length < 1)
       return setMessage({ txt: "No changes to save", type: "warn" });
-    const dataToSend = users.filter((_, i) => changed.includes(i));
+    const dataToSend = users.filter((x) => changed.includes(x.id));
     if (dataToSend.filter((x) => x.roles.length === 0).length > 0)
       return setMessage({
         txt: "All users must have a role",
