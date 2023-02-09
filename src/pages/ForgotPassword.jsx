@@ -21,7 +21,7 @@ const ForgotComp = ({ setMessage }) => {
     e.preventDefault();
     if (!email)
       return setMessage({ type: "warn", txt: "Please, fill all fields!" });
-    const { ok, body } = await api("post", "/users/request_access", { email });
+    const { ok, body } = await api("post", "/users/forgot_password", { email });
     if (!ok) return setMessage({ type: "warn", txt: body });
     setTimeout(() => {
       navigate("/login");
