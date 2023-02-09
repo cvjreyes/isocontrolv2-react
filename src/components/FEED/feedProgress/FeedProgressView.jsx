@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   LineChart,
@@ -13,19 +13,24 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { AuthContext } from "../../../context/AuthContext";
 
 import { api } from "../../../helpers/api";
+import { userHasRoles } from "../../../helpers/user";
 import Button1 from "../../general/Button2";
 import { prepareRows } from "./feedProgressHelpers";
 
 export default function FeedProgressView() {
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       const { body } = await api("get", "/feed/get_feed_progress");
       const weeks = prepareRows(body, "Feed");
+      console.log(weeks);
       setData([...weeks]);
     };
     getData();
@@ -40,26 +45,28 @@ export default function FeedProgressView() {
         <div className="flexCenter">
           <h3>Feed Progress</h3>
         </div>
-        <Button1
-          text="Edit Forecast"
-          width="140px"
-          bgColor="transparent"
-          border="none"
-          color="white"
-          fontWeight="600"
-          fontSize="14px"
-          textMargin="0 0 0 6px"
-          margin="auto"
-          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-          // img
-          alt="Edit Forecast"
-          src={
-            "https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/null/external-magnifying-glass-interface-kiranshastry-lineal-kiranshastry.png"
-          }
-          // src={"https://img.icons8.com/color/search"} // naranjita por si ak
-          imgFilter="invert(100%) brightness(200%)"
-          onClick={() => navigate("/feed/progress/edit_forecast")}
-        />
+        {userHasRoles(user, ["Speciality Lead"]) && (
+          <Button1
+            text="Edit Forecast"
+            width="140px"
+            bgColor="transparent"
+            border="none"
+            color="white"
+            fontWeight="600"
+            fontSize="14px"
+            textMargin="0 0 0 6px"
+            margin="auto"
+            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+            // img
+            alt="Edit Forecast"
+            src={
+              "https://img.icons8.com/external-kiranshastry-lineal-kiranshastry/64/null/external-magnifying-glass-interface-kiranshastry-lineal-kiranshastry.png"
+            }
+            // src={"https://img.icons8.com/color/search"} // naranjita por si ak
+            imgFilter="invert(100%) brightness(200%)"
+            onClick={() => navigate("/feed/progress/edit_forecast")}
+          />
+        )}
       </div>
       <div className="chartWrapper flexCenter">
         <ResponsiveContainer width="80%" height="90%" className="chart">
@@ -82,7 +89,7 @@ export default function FeedProgressView() {
                 dy: 30,
               }}
             />
-            <Tooltip isAnimationActive={false} offset={10000000}/>
+            <Tooltip isAnimationActive={false} offset={10000000} />
             {!!data[0] && (
               <Legend
                 iconType="line"

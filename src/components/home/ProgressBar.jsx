@@ -12,10 +12,9 @@ export default function ProgressBar({
   const [totalProgress, setTotalProgress] = useState(0);
 
   useEffect(() => {
-    if (feedProgress && IFDProgress && IFCProgress)
-      setTotalProgress(
-        (feedProgress * 0.1 + IFDProgress * 0.4 + IFCProgress * 0.5).toFixed(2)
-      );
+    setTotalProgress(
+      (feedProgress * 0.1 + IFDProgress * 0.4 + IFCProgress * 0.5).toFixed(2)
+    );
   }, [feedProgress, IFDProgress, IFCProgress]);
 
   return (
