@@ -1,13 +1,13 @@
 DOING 🔁
-  - forgot password
+  - chart for global progress < S >
 
 TODO ❌
-  - chart for global progress
-  - paste 1 cell missing last character
-  - get name in navbar for user email
-  - filter users in addUser
-
+  
 DONE ✔
+- paste 1 cell missing last character FROM NOT EXCEL
+- forgot password
+- get name in navbar for user email
+- filter users in addUser
 - cambiar nombre feed_progress a feed_progress para mantener coherencia
 - remove oldUrl from api
 - copy all in ifd making it weird
@@ -87,8 +87,6 @@ FUTURO:
   - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
   - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
   - add error handler for when server is down ( something like 'please hold on' )
-    - mientras se actualiza lista de líneas
-    - encontrar solución para que la gente no pueda cambiar cosas
 
 TABLES que no llegué a probar:
   - react-virtualized

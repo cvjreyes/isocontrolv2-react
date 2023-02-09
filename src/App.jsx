@@ -18,10 +18,11 @@ import IFC from "./pages/IFC";
 import Change from "./pages/Change";
 import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
-import Request from "./pages/Request";
+import RequestPassword from "./pages/RequestPassword";
 import CreatePassword from "./pages/CreatePassword";
 import AllProgress from "./pages/AllProgress";
-// import Forgot from "./pages/Forgot";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   useEffect(() => {
@@ -70,18 +71,23 @@ export default function App() {
           <Route
             exact
             path="/request_access"
-            element={<PublicRoute component={Request} />}
+            element={<PublicRoute component={RequestPassword} />}
           />
           <Route
             exact
             path="/create_password/:user_id/:token"
             element={<PublicRoute component={CreatePassword} />}
           />
-          {/*  <Route
+          <Route
             exact
-            path="/forgot_pw"
-            element={<PublicRoute restricted={false} component={Forgot} />}
-          /> */}
+            path="/reset_password/:user_id/:token"
+            element={<PublicRoute component={ResetPassword} />}
+          />
+          <Route
+            exact
+            path="/forgot_password"
+            element={<PublicRoute component={ForgotPassword} />}
+          />
           <Route path="/*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

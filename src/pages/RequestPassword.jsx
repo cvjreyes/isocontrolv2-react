@@ -12,8 +12,6 @@ import WithToast from "../modals/Toast";
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import { api } from "../helpers/api";
 
-// request access button => redirect to email input => send email with link => click link => go to create pw
-
 const RequestComp = ({ setMessage }) => {
   const navigate = useNavigate();
 
@@ -42,8 +40,15 @@ const RequestComp = ({ setMessage }) => {
           alt="IsoControlLogo"
           className="IsoControlLogo"
         />
-
-        <h3 className="welcome">Request Access</h3>
+        <div className="titleWrapper">
+          <div
+            onClick={() => navigate(-1)}
+            className="flexCenter backWrapper pointer"
+          >
+            <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
+          </div>
+          <h3 className="welcome">Request Access</h3>
+        </div>
         <p className="pleaseEnter">
           Please, enter your e-mail address and a link will be sent to choose
           your password.
@@ -56,6 +61,7 @@ const RequestComp = ({ setMessage }) => {
             value={email}
             type="email"
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@technipenergies.com"
           />
         </div>
         <Button1
@@ -82,9 +88,24 @@ const mainStyle = {
   ".IsoControlLogo": {
     width: "343.57px",
   },
-  ".welcome": {
-    fontSize: "25px",
+  ".titleWrapper": {
+    display: "flex",
+    alignItems: "center",
     margin: "40px 0 0",
+    ".backWrapper": {
+      margin: "0 5% 0 0",
+      width: "40px",
+      height: "40px",
+      borderRadius: "100px",
+      background: "linear-gradient(45deg, #d1d1d1, #f8f8f8)",
+      ":hover": {
+        img: { width: "22px" },
+      },
+      img: { width: "20px" },
+    },
+    ".welcome": {
+      fontSize: "25px",
+    },
   },
   ".pleaseEnter": { margin: "40px 0 30px" },
   label: { fontWeight: "bold" },
