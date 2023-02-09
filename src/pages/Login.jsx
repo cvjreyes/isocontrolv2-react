@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { api } from "../helpers/api";
 import { AuthContext } from "../context/AuthContext";
@@ -10,6 +10,7 @@ import Main from "../layouts/Main";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
+import { getName } from "../helpers/user";
 
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
@@ -37,7 +38,7 @@ const LoginComp = ({ setMessage }) => {
     setTimeout(() => login(body), 1000);
     setMessage({
       type: "success",
-      txt: `Welcome back, ${body.email}`,
+      txt: `Welcome back, ${getName(body.email)}`,
     });
   };
 
@@ -52,7 +53,8 @@ const LoginComp = ({ setMessage }) => {
 
         <h3 className="welcome">Welcome</h3>
         <p className="pleaseEnter">
-          Please, enter your e-mail account and password.
+          Please, enter your e-mail account and password. If you forgot your
+          password click <Link to="/forgot_password">here</Link>
         </p>
         <label htmlFor="email">E-mail</label>
         <div className="inputWrapper">
@@ -88,7 +90,7 @@ const LoginComp = ({ setMessage }) => {
           border="1px solid #0070ED"
           margin="10px auto 0"
         />
-        <NavLink to="/request_access">
+        <Link to="/request_access">
           <Button1
             text="Request Access"
             bgColor="linear-gradient(322deg, rgba(22,128,247,1) 0%, rgba(0,112,237,1) 79%, rgba(0,105,223,1) 100%)"
@@ -97,7 +99,7 @@ const LoginComp = ({ setMessage }) => {
             color="white"
             margin="10px 0 0"
           />
-        </NavLink>
+        </Link>
         <Button1
           text="Download quick user guide"
           bgColor="white"
@@ -114,7 +116,7 @@ const LoginComp = ({ setMessage }) => {
           }
         />
         <p>Or you can access to NavisattSelect</p>
-        <NavLink className="navisattBtn" to="/navis">
+        <Link className="navisattBtn" to="/navis">
           <Button1
             text="NAVISATTSELECT"
             bgColor="#94DCAA"
@@ -123,7 +125,7 @@ const LoginComp = ({ setMessage }) => {
             fontWeight="bold"
             margin="10px 0 0"
           />
-        </NavLink>
+        </Link>
       </form>
     </Main>
   );

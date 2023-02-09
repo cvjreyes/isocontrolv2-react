@@ -21,7 +21,7 @@ import AddUser from "./pages/AddUser";
 import Request from "./pages/Request";
 import CreatePassword from "./pages/CreatePassword";
 import AllProgress from "./pages/AllProgress";
-// import Forgot from "./pages/Forgot";
+import Forgot from "./pages/Forgot";
 
 export default function App() {
   useEffect(() => {
@@ -77,11 +77,11 @@ export default function App() {
             path="/create_password/:user_id/:token"
             element={<PublicRoute component={CreatePassword} />}
           />
-          {/*  <Route
+          <Route
             exact
-            path="/forgot_pw"
-            element={<PublicRoute restricted={false} component={Forgot} />}
-          /> */}
+            path="/forgot_password"
+            element={<PublicRoute component={Forgot} />}
+          />
           <Route path="/*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

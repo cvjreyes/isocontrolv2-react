@@ -12,7 +12,7 @@ import WithToast from "../modals/Toast";
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import { api } from "../helpers/api";
 
-const RequestComp = ({ setMessage }) => {
+const ForgotComp = ({ setMessage }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -47,10 +47,10 @@ const RequestComp = ({ setMessage }) => {
           >
             <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
           </div>
-          <h3 className="welcome">Request Access</h3>
+          <h3 className="welcome">Forgot password</h3>
         </div>
         <p className="pleaseEnter">
-          Please, enter your e-mail address and a link will be sent to choose
+          Please, enter your e-mail address and a link will be sent to reset
           your password.
         </p>
         <label htmlFor="email">E-mail</label>
@@ -125,10 +125,10 @@ const mainStyle = {
 };
 
 // using this components to use modals
-export default function Request() {
+export default function Forgot() {
   return (
     <WithToast>
-      <RequestComp />
+      <ForgotComp />
     </WithToast>
   );
 }
