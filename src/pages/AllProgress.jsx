@@ -2,23 +2,11 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
-import AnimateHeight from "react-animate-height";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
-import {
-  prepareRowsFeed,
-  prepareRowsIFD,
-} from "../components/FEED/feedProgress/feedProgressHelpers";
-import { api } from "../helpers/api";
+import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
+import GraphicProgress from "../components/PROGRESS/GraphicProgress";
+import Category from "../components/PROGRESS/Category";
+import { api, handleFetch } from "../helpers/api";
 
 export default function AllProgress() {
   const [displayData, setDisplayData] = useState([]);
@@ -27,26 +15,62 @@ export default function AllProgress() {
   const [heightDropdownFeed, setHeightDropdownFeed] = useState(0);
   const [heightDropdownIFD, setHeightDropdownIFD] = useState(0);
 
+  const colorsFeed = ["brown", "red", "blue", "salmon"];
+  const colorsIFD = ["black", "orange", "purple", "green"];
+
+  const allColors = [...colorsFeed, ...colorsIFD];
+
+  const feedSubcategories = [
+    { label: "Current Weight Feed", key: "Current Weight Feed" },
+    { label: "Max Weight Feed", key: "Max Weight Feed" },
+    { label: "Estimated Feed", key: "Estimated Feed" },
+    { label: "Forecast Feed", key: "Forecast Feed" },
+  ];
+
+  const ifdSubcategories = [
+    { label: "Current Weight IFD", key: "Current Weight IFD" },
+    { label: "Max Weight IFD", key: "Max Weight IFD" },
+    { label: "Estimated IFD", key: "Estimated IFD" },
+    { label: "Forecast IFD", key: "Forecast IFD" },
+  ];
+
   useEffect(() => {
-    const getFeedData = async () => {
-      const { body } = await api("get", "/feed/get_feed_progress");
-      const data = prepareRowsFeed(body);
-      setDisplayData([...data]);
-      setFeedWeeks(JSON.parse(JSON.stringify(data)));
+    const getData = async () => {
+      const results = await Promise.allSettled([
+        api("get", "/feed/get_feed_progress"),
+        api("get", "/ifd/get_ifd_progress"),
+      ]);
+      const [tempFeed, tempIFD] = handleFetch(results);
+      const prepareFeed = prepareRows(tempFeed, "Feed")
+      const prepareIFD = prepareRows(tempIFD, "IFD")
+      setFeedWeeks(JSON.parse(JSON.stringify(prepareFeed)));
+      setIFDWeeks(JSON.parse(JSON.stringify(prepareIFD)));
+      setDisplayData([...prepareFeed],[...prepareIFD]);
     };
-    const getIFDData = async () => {
-      const { body } = await api("get", "/ifd/get_ifd_progress");
-      const data = prepareRowsIFD(body);
-      setDisplayData([...data]);
-      setIFDWeeks(JSON.parse(JSON.stringify(data)));
-    };
-    getIFDData();
-    getFeedData();
+    getData();
   }, []);
+
+  // useEffect(() => {
+  //   const getFeedData = async () => {
+  //     const { body } = await api("get", "/feed/get_feed_progress");
+  //     const data = prepareRows(body, "Feed");
+  //     setDisplayData([...data]);
+  //     setFeedWeeks(JSON.parse(JSON.stringify(data)));
+  //   };
+  //   const getIFDData = async () => {
+  //     const { body } = await api("get", "/ifd/get_ifd_progress");
+  //     const data = prepareRows(body, "IFD");
+  //     setDisplayData([...data]);
+  //     setIFDWeeks(JSON.parse(JSON.stringify(data)));
+  //   };
+  //   getIFDData();
+  //   getFeedData();
+  // }, []);
 
   const handleChangeFeed = (key) => {
     let tempData = [...displayData];
     // check if key exists in displayData
+    console.log(tempData);
     if (key === "feed") {
       // check if all feedSubcategories are in displayData
       if (
@@ -60,7 +84,7 @@ export default function AllProgress() {
           tempData = tempData.map((x, i) => {
             return {
               ...x,
-              [y.key]: feedWeeks[i][y.key],
+              [y.key]: feedWeeks[i] ? feedWeeks[i][y.key] : null,
             };
           });
         });
@@ -70,7 +94,7 @@ export default function AllProgress() {
       tempData.map((x) => delete x[key]);
     } else {
       tempData = tempData.map((x, i) => {
-        return { ...x, [key]: feedWeeks[i][key] };
+        return { ...x, [key]: feedWeeks[i] ? feedWeeks[i][key] : null };
       });
     }
     setDisplayData(tempData);
@@ -90,7 +114,7 @@ export default function AllProgress() {
           tempData = tempData.map((x, i) => {
             return {
               ...x,
-              [y.key]: ifdWeeks[i][y.key],
+              [y.key]: ifdWeeks[i] ? ifdWeeks[i][y.key] : null,
             };
           });
         });
@@ -100,179 +124,36 @@ export default function AllProgress() {
       tempData.map((x) => delete x[key]);
     } else {
       tempData = tempData.map((x, i) => {
-        return { ...x, [key]: ifdWeeks[i][key] };
+        return { ...x, [key]: ifdWeeks[i] ? ifdWeeks[i][key] : null };
       });
     }
     setDisplayData(tempData);
   };
 
-  const colorsFeed = ["brown", "red", "blue", "salmon"];
-  const colorsIFD = ["black", "orange", "purple", "green"];
-
-  const allColors = [...colorsFeed, ...colorsIFD]
-
-
-  const feedSubcategories = [
-    { label: "Current Weight Feed", key: "Current Weight Feed" },
-    { label: "Max Weight Feed", key: "Max Weight Feed" },
-    { label: "Estimated Feed", key: "Estimated Feed" },
-    { label: "Forecast Feed", key: "Forecast Feed" },
-  ];
-
-  const ifdSubcategories = [
-    { label: "Current Weight IFD", key: "Current Weight IFD" },
-    { label: "Max Weight IFD", key: "Max Weight IFD" },
-    { label: "Estimated IFD", key: "Estimated IFD" },
-    { label: "Forecast IFD", key: "Forecast IFD" },
-  ];
-
   return (
     <div css={progresstyle}>
       <div className="optionsBox">
         {/* Feed */}
-        <div className="category">
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={
-                !!displayData[0] &&
-                feedSubcategories.every((x) =>
-                  displayData[0].hasOwnProperty(x.key)
-                )
-              }
-              onChange={() => handleChangeFeed("feed")}
-            />
-            Feed
-          </label>
-          <img
-            aria-controls="image_dropdown"
-            className="image_dropdown"
-            src={
-              heightDropdownFeed === 0
-                ? "https://img.icons8.com/material-outlined/24/null/filled-plus-2-math.png"
-                : "https://img.icons8.com/material-outlined/24/null/indeterminate-checkbox.png"
-            }
-            onClick={() =>
-              setHeightDropdownFeed(heightDropdownFeed === 0 ? "auto" : 0)
-            }
-          />
-        </div>
-        <div className="subCategory">
-          <AnimateHeight
-            id="image_dropdown"
-            duration={500}
-            height={heightDropdownFeed}
-          >
-            {feedSubcategories.map((x, i) => {
-              return (
-                <label className="bold labelSub" key={i}>
-                  <input
-                    type="checkbox"
-                    checked={!!displayData[0] && x.key in displayData[0]}
-                    onChange={() => handleChangeFeed(x.key)}
-                  />
-                  {x.label}
-                  <br />
-                </label>
-              );
-            })}
-          </AnimateHeight>
-        </div>
+        <Category
+          displayData={displayData}
+          subcategories={feedSubcategories}
+          handleChange={handleChangeFeed}
+          heightDropdown={heightDropdownFeed}
+          setHeightDropdown={setHeightDropdownFeed}
+          categoryName="feed"
+        />
         {/* IFD */}
-        <div className="category">
-          <label className="bold">
-            <input
-              type="checkbox"
-              checked={
-                !!displayData[0] &&
-                ifdSubcategories.every((x) =>
-                  displayData[0].hasOwnProperty(x.key)
-                )
-              }
-              onChange={() => handleChangeIFD("ifd")}
-            />
-            IFD
-          </label>
-          <img
-            aria-controls="image_dropdown"
-            className="image_dropdown"
-            src={
-              heightDropdownIFD === 0
-                ? "https://img.icons8.com/material-outlined/24/null/filled-plus-2-math.png"
-                : "https://img.icons8.com/material-outlined/24/null/indeterminate-checkbox.png"
-            }
-            onClick={() =>
-              setHeightDropdownIFD(heightDropdownIFD === 0 ? "auto" : 0)
-            }
-          />
-        </div>
-        <div className="subCategory">
-          <AnimateHeight
-            id="image_dropdown"
-            duration={500}
-            height={heightDropdownIFD}
-          >
-            {ifdSubcategories.map((x, i) => {
-              return (
-                <label className="bold labelSub" key={i}>
-                  <input
-                    type="checkbox"
-                    checked={!!displayData[0] && x.key in displayData[0]}
-                    onChange={() => handleChangeIFD(x.key)}
-                  />
-                  {x.label}
-                  <br />
-                </label>
-              );
-            })}
-          </AnimateHeight>
-        </div>
+        <Category
+          displayData={displayData}
+          subcategories={ifdSubcategories}
+          handleChange={handleChangeIFD}
+          heightDropdown={heightDropdownIFD}
+          setHeightDropdown={setHeightDropdownIFD}
+          categoryName="ifd"
+        />
       </div>
       {/* Graphic */}
-      <div className="graphic">
-        <ResponsiveContainer width="90%" height="90%">
-          <LineChart
-            width={500}
-            height={300}
-            data={displayData}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip isAnimationActive={false} offset={10000000} />
-            {!!displayData[0] && (
-              <Legend
-                iconType="line"
-                payload={Object.keys(displayData[0])
-                  .filter((x) => x !== "name")
-                  .map((x, i) => ({
-                    value: x,
-                    type: "diamond",
-                    id: x,
-                    color: allColors[i],
-                  }))}
-              />
-            )}
-            {!!displayData[0] && Object.keys(displayData[0]).map((x, i) => {
-              return (
-                <Line
-                  isAnimationActive={false}
-                  key={i}
-                  type="monotone"
-                  dataKey={x}
-                  stroke={allColors[i]}
-                />
-              );
-            })}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <GraphicProgress displayData={displayData} allColors={allColors} />
     </div>
   );
 }
