@@ -6,9 +6,9 @@ TODO ❌
   - paste 1 cell missing last character
   - get name in navbar for user email
   - filter users in addUser
-  - cambiar nombre gfeed a feed_progress para mantener coherencia
 
 DONE ✔
+- cambiar nombre feed_progress a feed_progress para mantener coherencia
 - remove oldUrl from api
 - copy all in ifd making it weird
 - demo con 3 tipos de línea
