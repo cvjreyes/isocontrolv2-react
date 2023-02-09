@@ -29,7 +29,7 @@ export default function AllProgress() {
 
   useEffect(() => {
     const getFeedData = async () => {
-      const { body } = await api("get", "/feed/get_gfeed");
+      const { body } = await api("get", "/feed/get_feed_progress");
       const data = prepareRowsFeed(body);
       setDisplayData([...data]);
       setFeedWeeks(JSON.parse(JSON.stringify(data)));

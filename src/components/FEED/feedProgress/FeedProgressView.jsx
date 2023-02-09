@@ -24,7 +24,7 @@ export default function FeedProgressView() {
 
   useEffect(() => {
     const getData = async () => {
-      const { body } = await api("get", "/feed/get_gfeed");
+      const { body } = await api("get", "/feed/get_feed_progress");
       const weeks = prepareRowsFeed(body);
       setData([...weeks]);
     };
