@@ -9,16 +9,14 @@ export default function OptionsBox({
   categoryName,
 }) {
   return (
-    <div>
+    <div className="categoryWrapper">
       <div className="category">
-        <label className="bold">
+        <label className="bold pointer">
           <input
             type="checkbox"
             checked={
               !!displayData[0] &&
-              subcategories.every((x) =>
-                displayData[0].hasOwnProperty(x.key)
-              )
+              subcategories.every((x) => displayData[0].hasOwnProperty(x.key))
             }
             onChange={() => handleChange(categoryName)}
           />
@@ -26,15 +24,13 @@ export default function OptionsBox({
         </label>
         <img
           aria-controls="image_dropdown"
-          className="image_dropdown"
+          className="pointer"
           src={
             !heightDropdown
               ? "https://img.icons8.com/material-outlined/24/null/filled-plus-2-math.png"
               : "https://img.icons8.com/material-outlined/24/null/indeterminate-checkbox.png"
           }
-          onClick={() =>
-            setHeightDropdown(heightDropdown === 0 ? "auto" : 0)
-          }
+          onClick={() => setHeightDropdown(heightDropdown === 0 ? "auto" : 0)}
         />
       </div>
       <div className="subCategory">
@@ -45,7 +41,7 @@ export default function OptionsBox({
         >
           {subcategories.map((x, i) => {
             return (
-              <label className="bold labelSub" key={i}>
+              <label className="labelSub pointer" key={i}>
                 <input
                   type="checkbox"
                   checked={!!displayData[0] && x.key in displayData[0]}
