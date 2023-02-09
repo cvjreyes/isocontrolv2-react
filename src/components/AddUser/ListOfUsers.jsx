@@ -6,6 +6,7 @@ import ReactSelect from "react-select";
 
 import NoResults from "../../components/general/NoResults";
 import Button2 from "../general/Button2";
+import Input from "../general/Input1";
 
 import saveImg from "../../assets/images/save.svg";
 
@@ -16,12 +17,19 @@ export default function ListOfUsers({
   changed,
   clear,
   handleSubmit,
+  filterData,
+  setFilterData,
 }) {
   return (
     <form css={usersStyle} onSubmit={handleSubmit}>
       <div className="head">
         <h2>Add User</h2>
         <div className="right">
+          <Input
+            placeholder="Email"
+            value={filterData}
+            onChange={(e) => setFilterData(e.target.value)}
+          />
           <Button2
             type="button"
             width="100px"
@@ -54,7 +62,7 @@ export default function ListOfUsers({
                     key={user.id}
                     className="user"
                     style={{
-                      backgroundColor: changed.includes(i) && "#2fc1383b",
+                      backgroundColor: changed.includes(user.id) && "#2fc1383b",
                     }}
                   >
                     <div>
@@ -67,7 +75,7 @@ export default function ListOfUsers({
                         ...roles.map((x) => ({ label: x.name, value: x.name })),
                       ]}
                       value={user.roles}
-                      onChange={(e) => handleUserRoleChange(e, i)}
+                      onChange={(e) => handleUserRoleChange(e, user.id)}
                       isMulti
                       styles={{
                         control: (baseStyles, state) => ({
@@ -134,6 +142,9 @@ const usersStyle = {
       backgroundColor: "lightgray",
       padding: "0 20px",
       height: "100%",
+      input: {
+        marginRight: "2rem",
+      },
     },
   },
   ".table": {
