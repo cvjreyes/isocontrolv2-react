@@ -1,11 +1,11 @@
 DOING 🔁
-  - forgot password
+  - chart for global progress < S >
 
 TODO ❌
-  - chart for global progress
-  - paste 1 cell missing last character
   
 DONE ✔
+- paste 1 cell missing last character FROM NOT EXCEL
+- forgot password
 - get name in navbar for user email
 - filter users in addUser
 - cambiar nombre feed_progress a feed_progress para mantener coherencia

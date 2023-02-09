@@ -89,7 +89,7 @@ export default function AddPipe({
     const pastedData = e.clipboardData.getData("Text").split("\t");
     if (pastedData.length === 1) {
       let ind = pastedData.indexOf("\r");
-      pastedData[0] = pastedData[0].slice(0, ind);
+      pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
     } else if (pastedData.length === 12) {
       return pasteRow(e, i);
@@ -111,7 +111,7 @@ export default function AddPipe({
       // update rest
       changedRow = { ...changedRow, ...dividedTag };
     } else if (name === "train") {
-      if (!pastedData.includes("0")) pastedData = "0" + pastedData;
+      if (!pastedData.includes("0")) pastedData.padStart(2, "0");
       changedRow[name] = pastedData;
     } else {
       changedRow.line_reference = buildLineRef(changedRow);

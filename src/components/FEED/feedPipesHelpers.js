@@ -30,7 +30,7 @@ export const buildTag = (row) => {
       tag += "-" + row[tag_order[i]];
     }
   }
-  return tag;
+  return tag.trim();
 };
 
 export const buildDate = (row) => {
