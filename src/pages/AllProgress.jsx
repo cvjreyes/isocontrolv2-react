@@ -41,11 +41,14 @@ export default function AllProgress() {
         api("get", "/ifd/get_ifd_progress"),
       ]);
       const [tempFeed, tempIFD] = handleFetch(results);
-      const prepareFeed = prepareRows(tempFeed, "Feed")
-      const prepareIFD = prepareRows(tempIFD, "IFD")
-      setFeedWeeks(JSON.parse(JSON.stringify(prepareFeed)));
-      setIFDWeeks(JSON.parse(JSON.stringify(prepareIFD)));
-      setDisplayData([...prepareFeed],[...prepareIFD]);
+      const prepareFeed = prepareRows(tempFeed, "Feed");
+      const prepareIFD = prepareRows(tempIFD, "IFD");
+      setFeedWeeks(prepareFeed);
+      setIFDWeeks(prepareIFD);
+      // 1 buscar el array mas largo
+      // 2 mapear ese array
+      // 3 sumar feed con ifd sin repetir name
+      setDisplayData([...prepareFeed]);
     };
     getData();
   }, []);
@@ -70,7 +73,6 @@ export default function AllProgress() {
   const handleChangeFeed = (key) => {
     let tempData = [...displayData];
     // check if key exists in displayData
-    console.log(tempData);
     if (key === "feed") {
       // check if all feedSubcategories are in displayData
       if (
@@ -97,6 +99,7 @@ export default function AllProgress() {
         return { ...x, [key]: feedWeeks[i] ? feedWeeks[i][key] : null };
       });
     }
+    console.log(tempData);
     setDisplayData(tempData);
   };
 
@@ -160,29 +163,48 @@ export default function AllProgress() {
 
 const progresstyle = {
   display: "grid",
-  gridTemplateColumns: "auto auto",
+  gridTemplateColumns: "1fr 3fr",
+  alignItems: "center",
   marginLeft: "5%",
   marginTop: "50px",
-  ".graphic": {
-    alignItems: "center",
-    justifyContent: "center",
-    height: "calc(100vh - 100px)",
-  },
   ".optionsBox": {
-    ".category": {
-      display: "flex",
-      flexDirection: "row",
-      ".image_dropdown": {
-        width: "20px",
+    height: "fit-content",
+    padding: "2rem",
+    borderRadius: "16px",
+    background: "linear-gradient(225deg, #e6e6e6, #ffffff)",
+    boxShadow: "-8px 8px 16px #dedede, 8px -8px 16px #ffffff",
+    marginTop: "-10rem",
+    input: {
+      marginRight: ".5rem",
+    },
+    ".categoryWrapper": {
+      margin: "0 0 2rem",
+      ".category": {
+        margin: "0 0 0.5rem",
+        display: "flex",
+        flexWrap: "nowrap",
+        justifyContent: "space-between",
+        width: "100%",
+        paddingRight: "50%",
+        label: {
+          width: "100%",
+        },
+        img: {
+          width: "20px",
+          height: "20px",
+          marginLeft: "1rem",
+        },
       },
     },
     ".subCategory": {
       marginLeft: "5%",
       display: "flex",
-      flexDirection: "row",
-      ".labelSub": {
-        // flexDirection: "column",
-      },
+      lineHeight: "2rem",
     },
+  },
+  ".graphic": {
+    // alignItems: "center",
+    // justifyContent: "center",
+    height: "calc(100vh - 100px)",
   },
 };
