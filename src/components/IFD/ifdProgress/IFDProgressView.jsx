@@ -16,7 +16,7 @@ import {
 
 import { api } from "../../../helpers/api";
 import Button1 from "../../general/Button2";
-import { prepareRows } from "../../FEED/feedProgress/feedProgressHelpers";
+import { prepareRowsIFD } from "../../FEED/feedProgress/feedProgressHelpers";
 
 export default function IFDProgressView() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function IFDProgressView() {
   useEffect(() => {
     const getData = async () => {
       const { body } = await api("get", "/ifd/get_ifd_progress");
-      const weeks = prepareRows(body);
+      const weeks = prepareRowsIFD(body);
       setData([...weeks]);
     };
     getData();

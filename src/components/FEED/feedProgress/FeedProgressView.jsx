@@ -16,7 +16,7 @@ import {
 
 import { api } from "../../../helpers/api";
 import Button1 from "../../general/Button2";
-import { prepareRows } from "./feedProgressHelpers";
+import { prepareRowsFeed } from "./feedProgressHelpers";
 
 export default function FeedProgressView() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function FeedProgressView() {
   useEffect(() => {
     const getData = async () => {
       const { body } = await api("get", "/feed/get_gfeed");
-      const weeks = prepareRows(body);
+      const weeks = prepareRowsFeed(body);
       setData([...weeks]);
     };
     getData();
