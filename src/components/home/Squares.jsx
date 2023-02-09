@@ -12,7 +12,7 @@ import { api } from "../../helpers/api";
 export default function Squares() {
   const [feedProgress, setFeedProgress] = useState(0);
   const [IFDProgress, setIFDProgress] = useState(0);
-  const [IFCProgress, setIFCProgress] = useState(43.28);
+  const [IFCProgress, setIFCProgress] = useState(0);
 
   useEffect(() => {
     const getProgresses = async () => {
