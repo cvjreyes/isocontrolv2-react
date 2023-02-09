@@ -118,7 +118,7 @@ const ChangeComp = ({ setMessage }) => {
         </div>
         <Button1
           text="Save"
-          bgColor="#0070ED"
+          bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
           bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
           color="white"
           border="1px solid #0070ED"

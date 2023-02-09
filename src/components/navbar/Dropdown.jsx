@@ -26,7 +26,7 @@ export default function Dropdown({ closeMenu, logout, user }) {
 
   return (
     <div css={dropdownStyle}>
-      {userHasRoles(user, ["Speciality Lead"], true) && (
+      {userHasRoles(user, ["Speciality Lead"]) && (
         <div className="dropdownElement">
           <Button1
             text="Add User"

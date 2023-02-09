@@ -30,7 +30,7 @@ export default function Button2({
     width: width || "100%",
     height,
     padding: padding || "10px 20px",
-    backgroundColor: bgColor,
+    background: bgColor,
     border,
     borderRadius: borderRadius || "6px",
     margin,

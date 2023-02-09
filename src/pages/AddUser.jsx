@@ -115,8 +115,11 @@ function AddUserComp({ setMessage }) {
   };
 
   const clearUsers = () => {
-    getUsers();
-    setChanged([]);
+    if (changed.length > 0) {
+      getUsers();
+      setChanged([]);
+      setMessage({ txt: "Changes undone successfully", type: "success" });
+    } else setMessage({ txt: "No changes to undo", type: "warn" });
   };
 
   const handleSubmit = async (e) => {
