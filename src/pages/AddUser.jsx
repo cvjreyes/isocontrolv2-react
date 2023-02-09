@@ -21,7 +21,9 @@ function AddUserComp({ setMessage }) {
   const [rowsToAdd, setRowsToAdd] = useState(1);
   const [roles, setRoles] = useState([]);
   const [users, setUsers] = useState(null);
+  const [displayUsers, setDisplayUsers] = useState(null);
   const [changed, setChanged] = useState([]);
+  const [filterData, setFilterData] = useState("");
 
   useEffect(() => {
     const getData = async () => {
@@ -32,13 +34,19 @@ function AddUserComp({ setMessage }) {
       const [tempRoles, tempUsers] = handleFetch(results);
       setRoles(tempRoles);
       setUsers(tempUsers);
+      setDisplayUsers(tempUsers);
     };
     getData();
   }, []);
 
+  useEffect(() => {
+    users && filter();
+  }, [filterData]);
+
   const getUsers = async () => {
     const { body } = await api("get", "/users/get_all");
     setUsers(body);
+    setDisplayUsers(body);
   };
 
   const changeRowsToAdd = ({ value }) => {
@@ -70,18 +78,21 @@ function AddUserComp({ setMessage }) {
     setData(tempData);
   };
 
-  const handleUserRoleChange = (e, i) => {
+  const handleUserRoleChange = (e, id) => {
     const tempUsers = [...users];
+    const i = tempUsers.findIndex((x) => x.id === id);
     if (e.some((x) => x.value === "All")) {
       tempUsers[i].roles = roles.map((x) => ({ label: x.name, value: x.name }));
     } else tempUsers[i].roles = e;
     setUsers(tempUsers);
-    addToChanged(i);
+    filter(tempUsers);
+    addToChanged(id);
   };
 
-  const addToChanged = (i) => {
+  const addToChanged = (id) => {
     const tempChanged = [...changed];
-    if (!tempChanged.includes(i)) tempChanged.push(i);
+    const i = displayUsers.findIndex((x) => x.id === id);
+    if (!tempChanged.includes(id)) tempChanged.push(id);
     setChanged(tempChanged);
   };
 
@@ -99,6 +110,16 @@ function AddUserComp({ setMessage }) {
       });
       setData(tempData);
     });
+  };
+
+  const filter = (passedData) => {
+    if (!passedData) setDisplayUsers(users);
+    let tempUsers = passedData || [...users];
+    tempUsers = tempUsers.filter((x) =>
+      x.email.toLowerCase().includes(filterData.toLowerCase())
+    );
+    console.log(tempUsers[0].email.includes(filterData));
+    setDisplayUsers(tempUsers);
   };
 
   const clear = () => {
@@ -189,12 +210,14 @@ function AddUserComp({ setMessage }) {
           handleSubmit={handleSubmit}
         />
         <ListOfUsers
-          users={users}
+          users={displayUsers}
           handleUserRoleChange={handleUserRoleChange}
           roles={roles}
           changed={changed}
           clear={clearUsers}
           handleSubmit={handleUsersSubmit}
+          filterData={filterData}
+          setFilterData={setFilterData}
         />
       </div>
     </div>

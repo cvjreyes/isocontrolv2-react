@@ -2,7 +2,15 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-export default function Input1({ id, name, value, type, onChange, className }) {
+export default function Input1({
+  id,
+  name,
+  value,
+  type,
+  onChange,
+  className,
+  placeholder,
+}) {
   return (
     <input
       css={InputStyle}
@@ -12,6 +20,7 @@ export default function Input1({ id, name, value, type, onChange, className }) {
       type={type}
       onChange={onChange}
       className={className}
+      placeholder={placeholder}
     />
   );
 }
