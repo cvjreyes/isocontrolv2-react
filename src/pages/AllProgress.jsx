@@ -43,8 +43,8 @@ export default function AllProgress() {
       const [tempFeed, tempIFD] = handleFetch(results);
       const prepareFeed = prepareRows(tempFeed, "Feed");
       const prepareIFD = prepareRows(tempIFD, "IFD");
-      setFeedWeeks(prepareFeed);
-      setIFDWeeks(prepareIFD);
+      setFeedWeeks(JSON.parse(JSON.stringify(prepareFeed)));
+      setIFDWeeks(JSON.parse(JSON.stringify(prepareIFD)));
       // 1 buscar el array mas largo
       // 2 mapear ese array
       // 3 sumar feed con ifd sin repetir name
@@ -53,23 +53,6 @@ export default function AllProgress() {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   const getFeedData = async () => {
-  //     const { body } = await api("get", "/feed/get_feed_progress");
-  //     const data = prepareRows(body, "Feed");
-  //     setDisplayData([...data]);
-  //     setFeedWeeks(JSON.parse(JSON.stringify(data)));
-  //   };
-  //   const getIFDData = async () => {
-  //     const { body } = await api("get", "/ifd/get_ifd_progress");
-  //     const data = prepareRows(body, "IFD");
-  //     setDisplayData([...data]);
-  //     setIFDWeeks(JSON.parse(JSON.stringify(data)));
-  //   };
-  //   getIFDData();
-  //   getFeedData();
-  // }, []);
-
   const handleChangeFeed = (key) => {
     let tempData = [...displayData];
     // check if key exists in displayData
@@ -77,18 +60,18 @@ export default function AllProgress() {
       // check if all feedSubcategories are in displayData
       if (
         feedSubcategories.every((x) => displayData[0].hasOwnProperty(x.key))
-      ) {
-        // if they are remove all
-        feedSubcategories.every((x) => tempData.map((y) => delete y[x.key]));
-      } else {
-        // else they add all
-        feedSubcategories.map((y) => {
-          tempData = tempData.map((x, i) => {
-            return {
-              ...x,
-              [y.key]: feedWeeks[i] ? feedWeeks[i][y.key] : null,
-            };
-          });
+        ) {
+          // if they are remove all
+          feedSubcategories.every((x) => tempData.map((y) => delete y[x.key]));
+        } else {
+          // else they add all
+          feedSubcategories.map((y) => {
+            tempData = tempData.map((x, i) => {
+              return {
+                ...x,
+                [y.key]: feedWeeks[i] ? feedWeeks[i][y.key] : null,
+              };
+            });
         });
       }
     } else if (tempData[0] && key in tempData[0]) {
@@ -99,7 +82,6 @@ export default function AllProgress() {
         return { ...x, [key]: feedWeeks[i] ? feedWeeks[i][key] : null };
       });
     }
-    console.log(tempData);
     setDisplayData(tempData);
   };
 
