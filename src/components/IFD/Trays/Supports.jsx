@@ -29,7 +29,7 @@ function SupportsComp({ setMessage }) {
   const getSupportsIFDPipes = async () => {
     const { body: pipes } = await api(
       "get",
-      "/ifd/get_ifd_pipes_from_tray/supports"
+      "/ifd/get_pipes_from_tray/supports"
     );
     const rows = pipes.map((row) => ({
       ...row,

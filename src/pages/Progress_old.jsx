@@ -37,8 +37,8 @@ export default function AllProgress() {
   useEffect(() => {
     const getData = async () => {
       const results = await Promise.allSettled([
-        api("get", "/feed/get_feed_progress"),
-        api("get", "/ifd/get_ifd_progress"),
+        api("get", "/feed/get_progress_data"),
+        api("get", "/ifd/get_progress_data"),
       ]);
       const [tempFeed, tempIFD] = handleFetch(results);
       const prepareFeed = prepareRows(tempFeed, "Feed");
