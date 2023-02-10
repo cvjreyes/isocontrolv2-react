@@ -54,7 +54,7 @@ function ModelledComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_ifd_pipes", {
+    const { ok } = await api("post", "/ifd/claim_pipes", {
       data: dataToSend,
     });
     if (ok) {
