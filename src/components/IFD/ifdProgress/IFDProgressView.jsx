@@ -24,7 +24,7 @@ export default function IFDProgressView() {
 
   useEffect(() => {
     const getData = async () => {
-      const { body } = await api("get", "/ifd/get_ifd_progress");
+      const { body } = await api("get", "/ifd/get_progress_data");
       const weeks = prepareRows(body, "IFD");
       setData([...weeks]);
     };

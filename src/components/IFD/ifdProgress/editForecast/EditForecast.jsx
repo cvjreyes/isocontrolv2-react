@@ -16,7 +16,7 @@ function EditForecastComp({ setMessage, setModalContent }) {
   const [rowsToAdd, setRowsToAdd] = useState(1);
 
   const getData = async () => {
-    const { body } = await api("get", "/ifd/get_ifd_forecast");
+    const { body } = await api("get", "/ifd/get_forecast");
     setData(body);
   };
 

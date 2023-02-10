@@ -36,7 +36,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [deleting, setDeleting] = useState(false);
 
   const getFeedPipes = async () => {
-    const { body: rows } = await api("get", "/feed/get_feed_pipes");
+    const { body: rows } = await api("get", "/feed/get_all_pipes");
     const rows2 = rows.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -110,7 +110,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
     if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    const { ok } = await api("post", "/feed/submit_feed_pipes", {
+    const { ok } = await api("post", "/feed/submit_pipes", {
       data: dataToSend,
     });
     if (ok) {

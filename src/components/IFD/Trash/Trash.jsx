@@ -16,7 +16,7 @@ function TrashComp({ setMessage }) {
 
   useEffect(() => {
     const getTrashedIFDPipes = async () => {
-      const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/1");
+      const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
       const rows = pipes.map((row) => ({
         ...row,
         tag: buildTag(row),

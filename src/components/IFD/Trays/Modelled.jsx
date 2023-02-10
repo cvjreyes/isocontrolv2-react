@@ -21,7 +21,7 @@ function ModelledComp({ setMessage }) {
     const getModelledIFDPipes = async () => {
       const { body: pipes } = await api(
         "get",
-        "/ifd/get_ifd_pipes_from_tray/modelled"
+        "/ifd/get_pipes_from_tray/modelled"
       );
       const rows = pipes.map((row) => ({
         ...row,
