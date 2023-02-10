@@ -43,7 +43,7 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/all_progress">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/progress">
           Progress
         </NavLink>
       </div>
@@ -83,6 +83,8 @@ const mainStyle = {
   alignItems: "center",
   justifyContent: "space-between",
   padding: "0 2%",
+  zIndex: 2,
+  position: "relative",
   ".active": {
     color: "#0070ED",
   },
