@@ -67,7 +67,7 @@ import Eye from "../assets/images/eye.png";
   /** @jsx jsx */
   import { jsx } from "@emotion/react";
   ```
-  - It removes the need to import reac
+  - It removes the need to import react
 
 ### ENV
 
@@ -109,10 +109,6 @@ import Eye from "../assets/images/eye.png";
 - Paste 1 cell
 - Paste 1 row
 - Paste multiple rows
-
-2. Things you can NOT do:
-
-- Copy row and paste it IN APP
 
 # CAMBIAR FEED PIPES VIEW:
 
