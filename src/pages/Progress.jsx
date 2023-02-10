@@ -43,11 +43,14 @@ export default function AllProgress() {
       const [tempFeed, tempIFD] = handleFetch(results);
       const prepareFeed = prepareRows(tempFeed, "Feed");
       const prepareIFD = prepareRows(tempIFD, "IFD");
-      setFeedWeeks(JSON.parse(JSON.stringify(prepareFeed)));
-      setIFDWeeks(JSON.parse(JSON.stringify(prepareIFD)));
+      setFeedWeeks(prepareFeed);
+      setIFDWeeks(prepareIFD);
       // 1 buscar el array mas largo
       // 2 mapear ese array
       // 3 sumar feed con ifd sin repetir name
+
+      // general
+      // -
       setDisplayData([...prepareFeed]);
     };
     getData();
@@ -56,22 +59,22 @@ export default function AllProgress() {
   const handleChangeFeed = (key) => {
     let tempData = [...displayData];
     // check if key exists in displayData
-    if (key === "feed") {
+    if (key === "FEED") {
       // check if all feedSubcategories are in displayData
       if (
         feedSubcategories.every((x) => displayData[0].hasOwnProperty(x.key))
-        ) {
-          // if they are remove all
-          feedSubcategories.every((x) => tempData.map((y) => delete y[x.key]));
-        } else {
-          // else they add all
-          feedSubcategories.map((y) => {
-            tempData = tempData.map((x, i) => {
-              return {
-                ...x,
-                [y.key]: feedWeeks[i] ? feedWeeks[i][y.key] : null,
-              };
-            });
+      ) {
+        // if they are remove all
+        feedSubcategories.every((x) => tempData.map((y) => delete y[x.key]));
+      } else {
+        // else they add all
+        feedSubcategories.map((y) => {
+          tempData = tempData.map((x, i) => {
+            return {
+              ...x,
+              [y.key]: feedWeeks[i] ? feedWeeks[i][y.key] : null,
+            };
+          });
         });
       }
     } else if (tempData[0] && key in tempData[0]) {
@@ -88,7 +91,7 @@ export default function AllProgress() {
   const handleChangeIFD = (key) => {
     let tempData = [...displayData];
     // check if key exists in displayData
-    if (key === "ifd") {
+    if (key === "IFD") {
       // check if all ifdSubcategories are in displayData
       if (ifdSubcategories.every((x) => displayData[0].hasOwnProperty(x.key))) {
         // if they are remove all
@@ -125,7 +128,7 @@ export default function AllProgress() {
           handleChange={handleChangeFeed}
           heightDropdown={heightDropdownFeed}
           setHeightDropdown={setHeightDropdownFeed}
-          categoryName="feed"
+          categoryName="FEED"
         />
         {/* IFD */}
         <Category
@@ -134,7 +137,16 @@ export default function AllProgress() {
           handleChange={handleChangeIFD}
           heightDropdown={heightDropdownIFD}
           setHeightDropdown={setHeightDropdownIFD}
-          categoryName="ifd"
+          categoryName="IFD"
+        />
+        {/* General */}
+        <Category
+          displayData={displayData}
+          subcategories={ifdSubcategories}
+          handleChange={handleChangeIFD}
+          heightDropdown={heightDropdownIFD}
+          setHeightDropdown={setHeightDropdownIFD}
+          categoryName="General"
         />
       </div>
       {/* Graphic */}
@@ -145,7 +157,7 @@ export default function AllProgress() {
 
 const progresstyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 3fr",
+  gridTemplateColumns: "1fr 4fr",
   alignItems: "center",
   marginLeft: "5%",
   marginTop: "50px",
@@ -156,39 +168,8 @@ const progresstyle = {
     background: "linear-gradient(225deg, #e6e6e6, #ffffff)",
     boxShadow: "-8px 8px 16px #dedede, 8px -8px 16px #ffffff",
     marginTop: "-10rem",
-    input: {
-      marginRight: ".5rem",
-    },
-    ".categoryWrapper": {
-      margin: "0 0 2rem",
-      ".category": {
-        margin: "0 0 0.5rem",
-        display: "flex",
-        flexWrap: "nowrap",
-        justifyContent: "space-between",
-        width: "100%",
-        paddingRight: "50%",
-        label: {
-          display: "flex",
-          flexWrap: "nowrap",
-          width: "100%",
-        },
-        img: {
-          width: "20px",
-          height: "20px",
-          marginLeft: "1rem",
-        },
-      },
-    },
-    ".subCategory": {
-      marginLeft: "5%",
-      display: "flex",
-      lineHeight: "2rem",
-    },
   },
   ".graphic": {
-    // alignItems: "center",
-    // justifyContent: "center",
     height: "calc(100vh - 100px)",
   },
 };

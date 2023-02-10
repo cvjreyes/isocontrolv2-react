@@ -20,7 +20,7 @@ import Navis from "./pages/Navis";
 import AddUser from "./pages/AddUser";
 import RequestPassword from "./pages/RequestPassword";
 import CreatePassword from "./pages/CreatePassword";
-import AllProgress from "./pages/AllProgress";
+import Progress from "./pages/Progress";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -49,8 +49,8 @@ export default function App() {
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           <Route
             exact
-            path="/all_progress"
-            element={<PrivateRoute component={AllProgress} />}
+            path="/progress"
+            element={<PrivateRoute component={Progress} />}
           />
           <Route
             exact
