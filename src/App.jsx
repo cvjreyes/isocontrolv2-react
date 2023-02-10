@@ -49,7 +49,7 @@ export default function App() {
           <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
           <Route
             exact
-            path="/progress"
+            path="/progress/:section"
             element={<PrivateRoute component={Progress} />}
           />
           <Route

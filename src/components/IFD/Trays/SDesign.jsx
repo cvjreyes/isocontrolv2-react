@@ -29,7 +29,7 @@ function SDesignComp({ setMessage }) {
   const getSDesignIFDPipes = async () => {
     const { body: pipes } = await api(
       "get",
-      "/ifd/get_ifd_pipes_from_tray/sdesign"
+      "/ifd/get_pipes_from_tray/sdesign"
     );
     const rows = pipes.map((row) => ({
       ...row,

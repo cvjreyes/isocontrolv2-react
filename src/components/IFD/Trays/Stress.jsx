@@ -27,10 +27,7 @@ function StressComp({ setMessage }) {
   }, [filterInfo]);
 
   const getStressIFDPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifd/get_ifd_pipes_from_tray/stress"
-    );
+    const { body: pipes } = await api("get", "/ifd/get_pipes_from_tray/stress");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
