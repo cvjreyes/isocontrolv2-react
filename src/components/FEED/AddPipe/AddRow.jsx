@@ -10,16 +10,19 @@ export default function AddRow({
   gridSize,
   handleChange,
   handleSubmit,
+  handlePaste,
 }) {
   const rowStyle = {
     display: "grid",
     gridTemplateColumns: gridSize,
+    borderRight: "1px solid black",
     "input, select": {
       width: "100%",
       lineHeight: "50px",
       border: "solid black",
       borderWidth: "1px 0 0 1px",
       textAlign: "center",
+      backgroundColor: row.tag === "Already exists" && "orange",
     },
     ".selectWrapper": {
       border: "solid black",
@@ -28,9 +31,10 @@ export default function AddRow({
       position: "relative",
       ".css-13cymwt-control, .css-t3ipsp-control": {
         cursor: "pointer",
+        backgroundColor: row.tag === "Already exists" && "orange",
       },
       "*": {
-        color: "black",
+        color: "#383838",
         border: "none",
       },
       ".css-1nmdiq5-menu": {
@@ -51,18 +55,12 @@ export default function AddRow({
     <form
       css={rowStyle}
       onSubmit={handleSubmit}
-      // onPaste={(e) => handlePaste(e, i, item.id)}
-      // id={rowId}
-      // onClick={(e) => handleDelete(e, item.id)}
+      onPaste={(e) => handlePaste(e, i)}
     >
       {columns.map((col, y) => {
         if (col.key === "empty")
           return (
-            <div
-              // onClick={() => copyToClipBoard(rowId)}
-              key={`${i}${y}`}
-              css={idWrapper}
-            >
+            <div key={`${i}${y}`} css={idWrapper}>
               <span>{i + 1}</span>
             </div>
           );
@@ -72,9 +70,11 @@ export default function AddRow({
               key={`${i}${y}`}
               className="default"
               value={row[col.key]}
-              // readOnly
               name={col.key}
-              onChange={() => console.log("shut")}
+              readOnly
+              onChange={() => {
+                return;
+              }}
             />
           );
         }
@@ -85,6 +85,7 @@ export default function AddRow({
               onChange={(e) =>
                 handleChange({ target: { name: col.key, value: e.label } }, i)
               }
+              inputId={col.key}
               options={col.source?.map((opt) => ({ label: opt, value: opt }))}
               components={{
                 DropdownIndicator: () => null,

@@ -1,5 +1,5 @@
 const getType = (d) => {
-  if (import.meta.env.VITE_MMDN === "0") {
+  if (import.meta.env.VITE_NPSDN === "0") {
     if (d < 2.0) {
       //Si el diametro es inferior a 2 pulgadas
       return "TL1";
@@ -30,7 +30,23 @@ export const buildTag = (row) => {
       tag += "-" + row[tag_order[i]];
     }
   }
-  return tag;
+  return tag.trim();
+};
+
+export const buildDate = (row) => {
+  let date = "";
+  let getDate = new Date(row.updated_at);
+  let day = getDate.getDate();
+  let month = getDate.getMonth() + 1;
+  let year = getDate.getFullYear();
+  let hour = getDate.getHours() - 1;
+  let minute = getDate.getMinutes();
+  let second = getDate.getSeconds();
+
+  date =
+    day + "-" + month + "-" + year + " " + hour + ":" + minute + ":" + second;
+
+  return date;
 };
 
 export const divideTag = (tag) => {
@@ -56,34 +72,44 @@ export const divideLineReference = (ref, lineRefs) => {
   // coger line ref obj de la lista de line refs
   const idx = lineRefs.findIndex((x) => x.line_ref === ref.trim());
   // del line ref encontrado, coger spec e insulation
-  const { spec, insulation } = { ...lineRefs[idx] };
-  // encontrar primer guión
-  const idx1 = ref.indexOf("-");
-  // coger unit
-  const unit = ref.substring(0, idx1);
-  // quitar primer guión
-  const newStr = ref.replace("-", "");
-  // encontrar segundo guión
-  const idx2 = newStr.indexOf("-");
-  // coger fluid
-  const fluid = newStr.substring(idx1, idx2);
-  // coger seq
-  const seq = newStr.substring(idx2 + 1);
+  const {
+    spec,
+    insulation,
+    unit,
+    fluid,
+    seq,
+    diameter,
+    calc_notes,
+    line_refno,
+  } = {
+    ...lineRefs[idx],
+  };
+  const type = getTypeFromDiameter(diameter, calc_notes);
   // devolver todo 🤮
-  return { unit, fluid, seq, spec, insulation };
+  return {
+    unit,
+    fluid,
+    seq,
+    spec,
+    insulation,
+    diameter,
+    calc_notes,
+    type,
+    line_refno,
+  };
 };
 
-export const buildRow = (row, id) => {
+export const buildFeedRow = (row, id) => {
   return {
     line_reference: row[0],
     tag: row[1],
-    unit: row[2],
-    area: row[3],
+    area: row[2],
+    unit: row[3],
     fluid: row[4],
     seq: row[5],
-    spec: row[6],
-    type: row[7],
-    diameter: row[8],
+    diameter: row[6],
+    spec: row[7],
+    type: row[8],
     insulation: row[9],
     train: row[10],
     status: row[11],
@@ -95,9 +121,9 @@ export const buildLineRef = (row) => {
   return `${row.unit}-${row.fluid}-${row.seq}`;
 };
 
-export const getTypeFromDiameter = (dia, calc_notes) => {
+const getTypeFromDiameter = (dia, calc_notes) => {
   if (calc_notes === "NA" || calc_notes === "unset") {
-    if (import.meta.env.VITE_MMDN == "0") {
+    if (import.meta.env.VITE_NPSDN == "0") {
       if (dia < 2.0) return "TL1";
       else return "TL2";
     } else {
@@ -148,4 +174,13 @@ export const checkForEmptyCells = (data) => {
     }
   }
   return empty;
+};
+
+export const buildTagIfFilled = (row) => {
+  const someEmtpy = checkForEmptyCellsAdding(row);
+  if (!someEmtpy) {
+    row.tag = buildTag(row);
+    !row.status && (row.status = "ESTIMATED");
+  }
+  return row;
 };

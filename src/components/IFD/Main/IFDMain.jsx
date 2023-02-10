@@ -1,62 +1,84 @@
-import React, { useState, useEffect, Suspense } from "react";
-import Loading from "react-loading";
+import React, { Suspense, useEffect, useLayoutEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router";
 
+import WithModal from "../../../modals/YesNo";
+import WithToast from "../../../modals/Toast";
+import { api } from "../../../helpers/api";
 import {
-  buildTag,
-  divideLineReference,
-  buildRow,
   buildLineRef,
-  divideTag,
+  buildTag,
   checkForAlreadyExists,
   checkForEmptyCells,
-  getTypeFromDiameter,
-} from "./feedPipesHelpers";
-import FeedPipesExcelTableWrapper from "./FeedPipesExcelTableWrapper";
-import CopyContext from "../../context/CopyContext";
-import WithModal from "../../modals/YesNo";
-import WithToast from "../../modals/Toast";
-import { api } from "../../helpers/api";
-import { Route, Routes } from "react-router-dom";
-import AddPipe from "./AddPipe/AddPipe";
+  divideLineReference,
+  divideTag,
+} from "../../FEED/feedPipesHelpers";
+import IFDTableWrapper from "./IFDTableWrapper";
+import CopyContext from "../../../context/CopyContext";
+import Loading from "../../general/Loading";
+import AddFeedPipe from "../../FEED/AddPipe/AddPipe";
+import { columnsData } from "../ColumnsData";
+import { buildIFDRow } from "../IFDPipeHelpers";
 
-function FeedPipesExcelComp({ setMessage, setModalContent }) {
-  const [data, setData] = useState([]);
-  const [displayData, setDisplayData] = useState([]);
-  const [diameters, setDiameters] = useState(null);
+function IFDMainComp({ setMessage, setModalContent }) {
+  const location = useLocation();
+
+  const gridSize =
+    "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
+  const gridSizeAdd = "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr";
+  const id = "ifd";
+  const page = "main";
+
+  const [progress, setProgress] = useState(0);
+  const [data, setData] = useState(null);
+  const [displayData, setDisplayData] = useState(null);
+  const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
+  const [owners, setOwners] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
 
+  const getIFDPipes = async () => {
+    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/0");
+    const rows = pipes.map((row) => ({
+      ...row,
+      tag: buildTag(row),
+    }));
+    setData(rows);
+    filter(rows);
+  };
+
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_feed_pipes");
     rows.map((row) => (row.tag = buildTag(row)));
-    setData(rows);
-    setDisplayData(rows);
+    setFeedPipes(rows);
   };
 
-  // ! promise all?
-  useEffect(() => {
-    const getAllAreas = async () => {
-      const res = await api("get", "/api/areas", true);
-      const areas_options = res.map((item) => item.name);
-      setAreas(areas_options);
+  useLayoutEffect(() => {
+    const getThings = async () => {
+      await Promise.all([
+        api("get", "/areas/get_all"),
+        api("get", "/lines/get_lines"),
+        api("get", "/users/get_owners"),
+        api("get", "/ifd/get_progress"),
+        api("get", "/ifd/get_ifd_pipes/0"),
+      ]).then((values) => {
+        setAreas(values[0].body.map((item) => item.name));
+        setLineRefs(values[1].body);
+        setOwners(values[2].body);
+        setProgress(values[3].body);
+        const rows = values[4].body.map((row) => ({
+          ...row,
+          tag: buildTag(row),
+        }));
+        setData(rows);
+        setDisplayData(rows);
+      });
     };
-    const getDiameters = async () => {
-      const { diameters: resDia } = await api("get", "/api/diameters", true);
-      const tempDiameters = resDia.map((item) => item.diameter);
-      setDiameters(tempDiameters);
-    };
-    const getLineRefs = async () => {
-      const { body: tempLineRefs } = await api("get", "/lines/get_lines");
-      setLineRefs(tempLineRefs);
-    };
-    getAllAreas();
-    getDiameters();
-    getLineRefs();
     getFeedPipes();
-  }, []);
+    getThings();
+  }, [location]);
 
   useEffect(() => {
     // cuando escrbimos en el filtro => actualizar displayData
@@ -97,61 +119,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setDisplayData(resultData);
   };
 
-  const submitChanges = async () => {
-    // abstract this into verifyRows or sth
-    if (changed.length < 1)
-      return setMessage({ txt: "No changes to save", type: "success" });
-    const dataToSend = data.filter((x) => changed.includes(x.id));
-    const stop = checkForAlreadyExists(dataToSend);
-    if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
-    const stop2 = checkForEmptyCells(dataToSend);
-    if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    const { ok } = await api(
-      "post",
-      "/feed/submit_feed_pipes",
-      0,
-      { data: dataToSend },
-      setMessage
-    );
-    if (ok) {
-      setChanged([]);
-      // ! update rows or not, thant's the question
-      // pros: if error in DB always be detected in UI
-      // cons: errors should not be located like that + time & server consuming
-      // rows.map((row) => (row.tag = buildTag(row)));
-      // setData(rows);
-      // filter();
-      // getFeedPipes();
-      return setMessage({ txt: "Changes saved!", type: "success" });
-    }
-    return setMessage({ txt: "Something went wrong", type: "error" });
-  };
-
-  const deleteLine = async (id) => {
-    const idx = data.findIndex((x) => x.id === id);
-    await api("delete", `/feed/delete_pipe/${id}`);
-    const tempData = [...data];
-    tempData.splice(idx, 1);
-    setData(tempData);
-    filter(tempData);
-  };
-
-  const addToChanged = (id) => {
-    if (typeof id === "string" || typeof id === "number") {
-      const tempChanged = [...changed];
-      if (tempChanged.includes(id)) return;
-      tempChanged.push(id);
-      setChanged(tempChanged);
-    } else if (typeof id === "object") {
-      let toAdd = [];
-      id.forEach((x) => !changed.includes(x) && toAdd.push(x));
-      var tempChanged = changed.concat(
-        toAdd.filter((item) => changed.indexOf(item) < 0)
-      );
-      setChanged(tempChanged);
-    }
-  };
-
   const handleChange = ({ target }, id) => {
     // get name of changed key and its value
     const { name, value } = target;
@@ -163,13 +130,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     let changedRow = tempData[idx];
     // change the value of the key in the row
     changedRow[name] = value;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(value, changedRow.calc_notes);
-    } else if (name === "line_reference") {
+    if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // cualquier cosa que haya cambiado => hacer el rebuild del tag
-      changedRow.tag = buildTag(changedRow);
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
@@ -189,6 +152,58 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     filter(tempData);
   };
 
+  const addToChanged = (id) => {
+    if (typeof id === "string" || typeof id === "number") {
+      const tempChanged = [...changed];
+      if (tempChanged.includes(id)) return;
+      tempChanged.push(id);
+      setChanged(tempChanged);
+    } else if (typeof id === "object") {
+      let toAdd = [];
+      id.forEach((x) => !changed.includes(x) && toAdd.push(x));
+      var tempChanged = changed.concat(
+        toAdd.filter((item) => changed.indexOf(item) < 0)
+      );
+      setChanged(tempChanged);
+    }
+  };
+
+  const handleDelete = (e, id, _, tag) => {
+    if (!deleting) return;
+    e.stopPropagation();
+    e.preventDefault();
+    setModalContent({
+      openModal: true,
+      text: `Are you sure you want to delete the following row: ${tag}`,
+      onClick1: () => deleteLine(id),
+    });
+  };
+
+  const deleteLine = async (id) => {
+    const idx = data.findIndex((x) => x.id === id);
+    const { ok } = await api("delete", `/ifd/delete_pipe/${id}`);
+    if (!ok)
+      return setMessage({
+        txt: "Something went wrong please try again",
+        type: "error",
+      });
+    setMessage({ txt: "Row deleted successfully", type: "success" });
+    const tempData = [...data];
+    tempData.splice(idx, 1);
+    setData(tempData);
+    filter(tempData);
+  };
+
+  const undoChanges = () => {
+    setChanged([]);
+    getIFDPipes();
+    setFilterInfo({});
+    setMessage({
+      txt: changed.length < 1 ? "No changes to undo!" : "Changes undone!",
+      type: changed.length < 1 ? "warn" : "success",
+    });
+  };
+
   const handlePaste = (e, i, id) => {
     e.preventDefault();
     e.stopPropagation();
@@ -196,11 +211,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const pastedData = e.clipboardData.getData("Text").split("\t");
     if (pastedData.length === 1) {
       let ind = pastedData.indexOf("\r");
-      pastedData[0] = pastedData[0].slice(0, ind);
+      pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 13) {
       return pasteRow(e, id);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 13) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -210,15 +225,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     const idx = tempData.findIndex((item) => item.id === displayData[i].id);
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
-    if (name === "diameter") {
-      changedRow.type = getTypeFromDiameter(pastedData, changedRow.calc_notes);
-    } else if (name === "line_reference") {
-      // divide line ref ( get u, fl, seq )
-      const values = divideLineReference(changedRow[name], lineRefs);
-      // update fields
+    if (name === "line_reference") {
+      const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
-      // update tag
-      changedRow.tag = buildTag(changedRow);
     } else if (name === "tag") {
       // divide tag
       const dividedTag = divideTag(pastedData);
@@ -244,7 +253,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildRow(row, id);
+        const builtRow = buildIFDRow(row, id);
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -271,7 +280,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, tempData[y].id);
+        const builtRow = buildIFDRow(row, tempData[y].id);
         // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
           builtRow.tag = "Already exists";
@@ -285,21 +294,30 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     });
   };
 
-  const handleDelete = (e, id) => {
-    if (!deleting) return;
-    e.stopPropagation();
-    e.preventDefault();
-    setModalContent({
-      openModal: true,
-      text: `Are you sure you want to delete row with ID: ${id}?`,
-      onClick1: () => deleteLine(id),
+  const submitChanges = async () => {
+    // abstract this into verifyRows or sth
+    if (changed.length < 1)
+      return setMessage({ txt: "No changes to save", type: "success" });
+    const dataToSend = data.filter((x) => changed.includes(x.id));
+    const stop = checkForAlreadyExists(dataToSend);
+    if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
+    const stop2 = checkForEmptyCells(dataToSend);
+    if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
+    const { ok } = await api("post", "/ifd/submit_ifd_pipes", {
+      data: dataToSend,
     });
-  };
-
-  const undoChanges = () => {
-    setChanged([]);
-    getFeedPipes();
-    setFilterInfo({});
+    if (ok) {
+      setChanged([]);
+      // ! update rows or not, thant's the question
+      // pros: if error in DB always be detected in UI
+      // cons: errors should not be located like that + time & server consuming
+      // rows.map((row) => (row.tag = buildTag(row)));
+      // setData(rows);
+      // filter();
+      // getFeedPipes();
+      return setMessage({ txt: "Changes saved!", type: "success" });
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   return (
@@ -308,24 +326,29 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         <Route
           path="/"
           element={
-            <CopyContext data={displayData} id={"feed"}>
-              <FeedPipesExcelTableWrapper
-                title="Line Control"
-                displayData={displayData}
+            <CopyContext data={displayData} id={id}>
+              <IFDTableWrapper
+                title="IFD"
+                id={id}
+                page={page}
                 lineRefs={lineRefs}
                 areas={areas}
-                diameters={diameters}
-                handleChange={handleChange}
-                filter={handleFilter}
-                handlePaste={handlePaste}
-                filterInfo={filterInfo}
-                id={"feed"}
+                owners={owners}
+                displayData={displayData}
                 changed={changed}
-                submitChanges={submitChanges}
+                filter={handleFilter}
+                filterInfo={filterInfo}
+                readOnly={true}
+                handleChange={handleChange}
                 deleting={deleting}
                 setDeleting={setDeleting}
                 handleDelete={handleDelete}
                 undoChanges={undoChanges}
+                submitChanges={submitChanges}
+                gridSize={gridSize}
+                handlePaste={handlePaste}
+                setMessage={setMessage}
+                progress={progress}
               />
             </CopyContext>
           }
@@ -333,11 +356,19 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         <Route
           path="/add"
           element={
-            <AddPipe
+            <AddFeedPipe
               lineRefs={lineRefs}
-              areas={areas}
-              diameters={diameters}
               setMessage={setMessage}
+              data={data ? [...data, ...feedPipes] : null}
+              columns={columnsData(
+                lineRefs.map((x) => x.line_ref),
+                areas,
+                owners.map((x) => x.name)
+              ).slice(0, -1)}
+              id={id}
+              page={page}
+              gridSize={gridSizeAdd}
+              buildRow={buildIFDRow}
             />
           }
         />
@@ -347,11 +378,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 }
 
 // using this components to use modals
-export default function FeedPipesExcel() {
+export default function IFDMain() {
   return (
     <WithToast>
       <WithModal>
-        <FeedPipesExcelComp />
+        <IFDMainComp />
       </WithModal>
     </WithToast>
   );

@@ -1,4 +1,4 @@
-export const columnsData = (lineRefs, areas, diameters) => [
+export const columnsData = (lineRefs, areas) => [
   { key: "empty" },
   {
     title: "Line reference",
@@ -8,41 +8,41 @@ export const columnsData = (lineRefs, areas, diameters) => [
   },
   { title: "Tag", key: "tag", type: "text", readOnly: true },
   {
-    title: "A",
+    title: "Area",
     key: "area",
     type: "dropdown",
     source: areas,
   },
-  { title: "U", key: "unit", type: "text", readOnly: true },
-  { title: "Fl", key: "fluid", type: "text", readOnly: true },
-  { title: "Se", key: "seq", type: "text", readOnly: true },
+  { title: "Unit", key: "unit", type: "text", readOnly: true },
+  { title: "Fluid", key: "fluid", type: "text", readOnly: true },
+  { title: "Seq", key: "seq", type: "text", readOnly: true },
   {
-    title: "D",
+    title: "Diam",
     key: "diameter",
     type: "dropdown",
-    source: diameters,
+    readOnly: true,
   },
-  { title: "Sp", key: "spec", type: "text", readOnly: true },
+  { title: "Spec", key: "spec", type: "text", readOnly: true },
   {
-    title: "Ty",
+    title: "Type",
     key: "type",
     type: "text",
     readOnly: true,
   },
   {
-    title: "I",
+    title: "Ins",
     key: "insulation",
     type: "text",
     readOnly: true,
   },
   {
-    title: "Tr",
+    title: "Train",
     key: "train",
     type: "dropdown",
     source: ["01", "02", "03", "04", "05"],
   },
   {
-    title: "Stat",
+    title: "Status",
     key: "status",
     type: "dropdown",
     source: ["ESTIMATED", "MODELLING(50%)", "TOCHECK(80%)", "MODELLED(100%)"],

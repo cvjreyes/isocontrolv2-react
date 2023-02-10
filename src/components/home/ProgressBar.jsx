@@ -12,10 +12,9 @@ export default function ProgressBar({
   const [totalProgress, setTotalProgress] = useState(0);
 
   useEffect(() => {
-    if (feedProgress && IFDProgress && IFCProgress)
-      setTotalProgress(
-        (feedProgress * 0.1 + IFDProgress * 0.4 + IFCProgress * 0.5).toFixed(2)
-      );
+    setTotalProgress(
+      (feedProgress * 0.1 + IFDProgress * 0.4 + IFCProgress * 0.5).toFixed(2)
+    );
   }, [feedProgress, IFDProgress, IFCProgress]);
 
   return (
@@ -30,8 +29,8 @@ export default function ProgressBar({
         >
           <div className="progressbar-liquid"></div>
         </div>
-        <div>
-          <Countup end={totalProgress} decimals={2} className="progress" />
+        <div className="number">
+          <Countup end={totalProgress} decimals={2} />
           <span>%</span>
         </div>
       </div>
@@ -77,7 +76,5 @@ const progressStyle = {
     backgroundColor: "#65ACFA",
     borderRadius: "40%",
   },
-  ".progress": {
-    zIndex: 2,
-  },
+  ".number": { zIndex: 2 },
 };

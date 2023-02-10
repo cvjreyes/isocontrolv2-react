@@ -15,9 +15,14 @@ import Login from "./pages/Login";
 import FEED from "./pages/FEED";
 import IFD from "./pages/IFD";
 import IFC from "./pages/IFC";
-// import Signup from "./views/Signup";
-// import Change from "./views/Change";
-// import Forgot from "./views/Forgot";
+import Change from "./pages/Change";
+import Navis from "./pages/Navis";
+import AddUser from "./pages/AddUser";
+import RequestPassword from "./pages/RequestPassword";
+import CreatePassword from "./pages/CreatePassword";
+import Progress from "./pages/Progress";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   useEffect(() => {
@@ -36,13 +41,16 @@ export default function App() {
             element={<PublicRoute component={Login} />}
           />
           <Route path="/feed/*" element={<PrivateRoute component={FEED} />} />
-          <Route exact path="/ifd" element={<PrivateRoute component={IFD} />} />
-          <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
-          {/* 
           <Route
             exact
-            path="/signup"
-            element={<PublicRoute restricted={false} component={Signup} />}
+            path="/ifd/*"
+            element={<PrivateRoute component={IFD} />}
+          />
+          <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
+          <Route
+            exact
+            path="/progress"
+            element={<PrivateRoute component={Progress} />}
           />
           <Route
             exact
@@ -51,9 +59,35 @@ export default function App() {
           />
           <Route
             exact
-            path="/forgot_pw"
-            element={<PublicRoute restricted={false} component={Forgot} />}
-          /> */}
+            path="/navis"
+            element={<PublicRoute component={Navis} />}
+          />
+
+          <Route
+            exact
+            path="/add_user"
+            element={<PrivateRoute restricted={false} component={AddUser} />}
+          />
+          <Route
+            exact
+            path="/request_access"
+            element={<PublicRoute component={RequestPassword} />}
+          />
+          <Route
+            exact
+            path="/create_password/:user_id/:token"
+            element={<PublicRoute component={CreatePassword} />}
+          />
+          <Route
+            exact
+            path="/reset_password/:user_id/:token"
+            element={<PublicRoute component={ResetPassword} />}
+          />
+          <Route
+            exact
+            path="/forgot_password"
+            element={<PublicRoute component={ForgotPassword} />}
+          />
           <Route path="/*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

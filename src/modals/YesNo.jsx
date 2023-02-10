@@ -11,12 +11,10 @@ function withModal({ setMessage, children }) {
     onClick1: "",
   });
 
-  return (
-    <div>
-      {React.cloneElement(children, { setMessage, setModalContent })}
-      <Modal setModalContent={setModalContent} {...modalContent} />
-    </div>
-  );
+  return [
+    React.cloneElement(children, { setMessage, setModalContent, key: 1 }),
+    <Modal setModalContent={setModalContent} {...modalContent} key="2" />,
+  ];
 }
 
 export default withModal;
@@ -40,7 +38,7 @@ const Modal = ({ setModalContent, openModal, text, onClick1 }) => {
     top: 0,
     left: 0,
     width: "100vw",
-    height: "100vh",
+    height: "100vh !important",
     backgroundColor: "rgba(0, 0, 0, 0.2)",
     backdropFilter: "blur(2px)",
   };
@@ -101,6 +99,7 @@ const mainStyle = {
   backgroundColor: "#030303",
   color: "white",
   textAlign: "center",
+  p: { color: "white" },
   ".buttonWrapper": {
     display: "flex",
     justifyContent: "center",

@@ -69,6 +69,10 @@ import Eye from "../assets/images/eye.png";
   ```
   - It removes the need to import react
 
+### ENV
+
+- NODE_NPSDN means inches or mms
+
 ### Get User Info
 
 1. Import useContext
@@ -92,6 +96,7 @@ import Eye from "../assets/images/eye.png";
 - [Blur Input on press Esc](https://stackoverflow.com/questions/48961342/how-to-blur-the-input-provided-in-semantic-ui-react)
 - [Paste Table To Clipboard](https://stackoverflow.com/questions/66585315/how-to-copy-table-with-link-to-clipboard-to-paste-it-into-excel)
 - [Export table to Excel](https://stackoverflow.com/questions/11084564/export-html-table-to-excel-javascript-function-special-characters-changed)
+- [Trigger re-render when location change](https://stackoverflow.com/questions/57986395/react-useeffect-is-not-triggering-on-route-change)
 
 ### FEED
 
@@ -105,6 +110,29 @@ import Eye from "../assets/images/eye.png";
 - Paste 1 row
 - Paste multiple rows
 
-2. Things you can NOT do:
+# CAMBIAR FEED PIPES VIEW:
 
-- Copy row and paste it IN APP
+CREATE
+ALGORITHM = UNDEFINED
+DEFINER = `root`@`localhost`
+SQL SECURITY DEFINER
+VIEW `feed_pipes_view` AS
+SELECT
+`feed_pipes`.`id` AS `id`,
+`feed_pipes`.`line_refno` AS `line_refno`,
+`feed_pipes`.`area_id` AS `area_id`,
+`feed_pipes`.`diameter` AS `diameter`,
+`feed_pipes`.`train` AS `train`,
+`feed_pipes`.`status` AS `status`,
+`lines`.`calc_notes` AS `calc_notes`,
+`lines`.`tag` AS `line_reference`,
+`lines`.`unit` AS `unit`,
+`lines`.`fluid` AS `fluid`,
+`lines`.`seq` AS `seq`,
+`lines`.`spec_code` AS `spec`,
+`lines`.`insulation` AS `insulation`,
+`areas`.`name` AS `area`
+FROM
+((`feed_pipes`
+JOIN `lines` ON ((`feed_pipes`.`line_refno` = `lines`.`refno`)))
+JOIN `areas` ON ((`feed_pipes`.`area_id` = `areas`.`id`)))

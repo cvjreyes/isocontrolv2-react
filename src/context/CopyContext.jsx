@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { copyToClipboard } from "../helpers/table";
+
+import { copyToClipboard } from "../helpers/copyContext";
 
 export default function CopyContext({ children, data, id }) {
   const [copyMulti, setCopyMulti] = useState(false);

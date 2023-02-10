@@ -3,7 +3,7 @@
 import { jsx } from "@emotion/react";
 
 import TechnipLogo from "../assets/images/technip.png";
-import IsoTracker from "../assets/images/IsoTracker.svg";
+import IsoControl from "../assets/images/IsoControl.svg";
 import GreenCircle from "../assets/images/green_circle.png";
 import BlueCircle from "../assets/images/blue_circle.png";
 
@@ -13,7 +13,7 @@ export default function Main({ children, logo, circles }) {
       {logo === "Technip" ? (
         <img src={TechnipLogo} alt="technip" className="technipLogo" />
       ) : (
-        <img src={IsoTracker} alt="isotracker" className="isotrackerLogo" />
+        <img src={IsoControl} alt="isocontrol" className="isocontrolLogo" />
       )}
       {circles && [
         <img
@@ -43,7 +43,7 @@ const mainStyle = {
     zIndex: "-100",
     width: "180px",
   },
-  ".isotrackerLogo": {
+  ".isocontrolLogo": {
     position: "absolute",
     top: "80px",
     left: "50px",
@@ -58,7 +58,6 @@ const mainStyle = {
     top: "200px",
     mixBlendMode: "darken",
   },
-
   ".blueCircle": {
     zIndex: "-100",
     position: "absolute",

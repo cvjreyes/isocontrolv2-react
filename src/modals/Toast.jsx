@@ -16,6 +16,7 @@ function Toast({ children }) {
     }
   }, [message]);
 
+  // ! creo que es este setTimeout el que genera el warning
   useEffect(() => {
     if (message.txt) {
       setTimeout(() => {
@@ -27,12 +28,10 @@ function Toast({ children }) {
     }
   }, [message]);
 
-  return (
-    <div>
-      {React.cloneElement(children, { setMessage })}
-      <ToastContainer autoClose={2000} newestOnTop={true} />
-    </div>
-  );
+  return [
+    React.cloneElement(children, { setMessage, key: 3 }),
+    <ToastContainer autoClose={2000} newestOnTop={true} key="4" />,
+  ];
 }
 
 export default Toast;

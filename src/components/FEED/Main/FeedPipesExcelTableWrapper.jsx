@@ -2,8 +2,8 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-import Table from "../table/Table";
-import { columnsData } from "./ColumnsData";
+import Table from "../../table/Table";
+import { columnsData } from "../ColumnsData";
 import FeedPipesExcelTableHeader from "./FeedPipesExcelTableHeader";
 import FEEDPipesHead from "./FeedPipesHead";
 
@@ -12,15 +12,15 @@ export default function FeedPipesExcelTableWrapper({
   displayData,
   lineRefs,
   areas,
-  diameters,
   handleChange,
   filter,
   handlePaste,
   filterInfo,
-  copyToClipBoard,
   id,
+  page,
   copyMulti,
   setCopyMulti,
+  copyToClipBoard,
   copied,
   changed,
   submitChanges,
@@ -29,11 +29,12 @@ export default function FeedPipesExcelTableWrapper({
   handleDelete,
   copyAll,
   undoChanges,
+  gridSize,
+  setMessage,
+  progress,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
-  const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
-  // const gridSize =
-  // ".8fr 3.5fr 7fr .8fr 1.3fr 2fr .9fr .9fr .8fr .7fr .8fr .7fr 3fr";
+
   return (
     <div css={tableWrapperStyle}>
       <FEEDPipesHead
@@ -45,12 +46,16 @@ export default function FeedPipesExcelTableWrapper({
         copyAll={copyAll}
         undoChanges={undoChanges}
         data={displayData}
+        id={id}
+        page={page}
+        setMessage={setMessage}
+        progress={progress}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
           filter={filter}
           gridSize={gridSize}
-          columns={columnsData(lineRefs, areas, diameters)}
+          columns={columnsData(lineRefs, areas)}
           filterInfo={filterInfo}
           copyMulti={copyMulti}
           setCopyMulti={setCopyMulti}
@@ -58,8 +63,7 @@ export default function FeedPipesExcelTableWrapper({
         <Table
           columns={columnsData(
             lineRefs.map((x) => x.line_ref),
-            areas,
-            diameters
+            areas
           )}
           data={displayData}
           handleChange={handleChange}
@@ -80,9 +84,4 @@ export default function FeedPipesExcelTableWrapper({
 
 const tableWrapperStyle = {
   textAlign: "center",
-  marginLeft: "2rem",
-  ".wrapper": {
-    height: "70vh",
-    overflowY: "scroll",
-  },
 };

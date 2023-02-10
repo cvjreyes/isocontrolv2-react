@@ -3,17 +3,16 @@
 import { jsx } from "@emotion/react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
+import { api } from "../helpers/api";
 import { AuthContext } from "../context/AuthContext";
 import Main from "../layouts/Main";
 import Input1 from "../components/general/Input1";
 import Button1 from "../components/general/Button1";
 import WithToast from "../modals/Toast";
-import { URL } from "../helpers/config";
+import { getName } from "../helpers/user";
 
-import IsoTrackerLogo from "../assets/images/IsoTracker.svg";
-import FullTrackerLogo from "../assets/images/3DTracker.svg";
+import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
 
 const LoginComp = ({ setMessage }) => {
@@ -31,38 +30,31 @@ const LoginComp = ({ setMessage }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`${URL}/users/login`, {
-        email: form.email,
-        password: form.password,
-      });
-      if (!res.data.ok) return setMessage({ type: "warn", txt: res.data.body });
-      setTimeout(() => login(res.data.body), 1000);
-      setMessage({
-        type: "success",
-        txt: `Welcome back, ${res.data.body.email}`,
-      });
-    } catch (err) {
-      setMessage({
-        type: "error",
-        txt: "Something went wrong",
-      });
-      console.error(err);
-    }
+    const { ok, body } = await api("post", "/users/login", {
+      email: form.email,
+      password: form.password,
+    });
+    if (!ok) return setMessage({ type: "warn", txt: body });
+    setTimeout(() => login(body), 1000);
+    setMessage({
+      type: "success",
+      txt: `Welcome back, ${getName(body.email)}`,
+    });
   };
 
   return (
     <Main logo="Technip" circles={true}>
       <form css={mainStyle} onSubmit={handleSubmit}>
         <img
-          src={import.meta.env.VITE_PROGRESS ? FullTrackerLogo : IsoTrackerLogo}
-          alt="isoTrackerLogo"
-          className="isoTrackerLogo"
+          src={IsoControlLogo}
+          alt="IsoControlLogo"
+          className="IsoControlLogo"
         />
 
         <h3 className="welcome">Welcome</h3>
         <p className="pleaseEnter">
-          Please, enter your e-mail account and password.
+          Please, enter your e-mail account and password. If you forgot your
+          password click <Link to="/forgot_password">here</Link>
         </p>
         <label htmlFor="email">E-mail</label>
         <div className="inputWrapper">
@@ -88,16 +80,26 @@ const LoginComp = ({ setMessage }) => {
             src={Eye}
             alt="eye"
             className="eyeStyle pointer"
-          ></img>
+          />
         </div>
         <Button1
           text="Log In"
-          bgColor="#0070ED"
+          bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
           bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
           color="white"
           border="1px solid #0070ED"
           margin="10px auto 0"
         />
+        <Link to="/request_access">
+          <Button1
+            text="Request Access"
+            bgColor="linear-gradient(322deg, rgba(22,128,247,1) 0%, rgba(0,112,237,1) 79%, rgba(0,105,223,1) 100%)"
+            bgHover="linear-gradient(180deg, #338DF1 -2.23%, #338DF1 -2.22%, #85BFFF 148.66%)"
+            border="1px solid #0070ED"
+            color="white"
+            margin="10px 0 0"
+          />
+        </Link>
         <Button1
           text="Download quick user guide"
           bgColor="white"
@@ -114,16 +116,14 @@ const LoginComp = ({ setMessage }) => {
           }
         />
         <p>Or you can access to NavisattSelect</p>
-        <Link
-          className="navisattBtn"
-          to={`/${import.meta.env.VITE_PROJECT}/navis`}
-        >
+        <Link className="navisattBtn" to="/navis">
           <Button1
             text="NAVISATTSELECT"
             bgColor="#94DCAA"
             bgHover="linear-gradient(180deg, #94DCAA -2.23%, #A4ECBA -2.22%, #FFF 148.66%)"
             border="1px solid #94DCAA"
             fontWeight="bold"
+            margin="10px 0 0"
           />
         </Link>
       </form>
@@ -135,10 +135,11 @@ const mainStyle = {
   display: "flex",
   flexDirection: "column",
   alignItems: "left",
+  justifyContent: "center",
   padding: "50px",
   width: "500px",
   marginLeft: "10%",
-  ".isoTrackerLogo": {
+  ".IsoControlLogo": {
     width: "343.57px",
   },
   ".welcome": {
@@ -159,9 +160,6 @@ const mainStyle = {
       right: "20px",
       width: "20px",
     },
-  },
-  ".navisattBtn": {
-    margin: "10px 0 0",
   },
 };
 

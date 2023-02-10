@@ -10,6 +10,7 @@ export default function AddTable({
   gridSize,
   handleChange,
   handleSubmit,
+  handlePaste,
 }) {
   return (
     <div css={tableStyle}>
@@ -23,6 +24,7 @@ export default function AddTable({
             gridSize={gridSize}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            handlePaste={handlePaste}
           />
         );
       })}
@@ -31,8 +33,23 @@ export default function AddTable({
 }
 
 const tableStyle = {
-  border: "solid black",
-  borderWidth: "0 1px 1px 0",
+  paddingBottom: "200px",
+  // scroll behaviour
+  height: "calc(60vh - 113px)",
+  overflowY: "scroll",
+  msOverflowStyle: "none" /* Internet Explorer 10+ */,
+  scrollbarWidth: "none" /* Firefox */,
+  "::-webkit-scrollbar": {
+    display: "none" /* Safari and Chrome */,
+  },
+  // remove top border from first row
+  "> form:first-of-type": {
+    "input, div": { borderTop: 0 },
+  },
+  // for bottom border
+  "> form:last-child": {
+    borderBottom: "1px solid black",
+  },
   "*": {
     fontSize: "13px !important",
   },

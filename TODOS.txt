@@ -1,4 +1,36 @@
+DOING 🔁
+  - presentation < S >
+  - add general view to allProgress < T >
+
+TODO ❌
+  - progress optionsBox scroll before going behind navbar
+
 DONE ✔
+- only leaders can edit forecast and estimations < T >
+- paste 1 cell missing last character FROM NOT EXCEL
+- forgot password
+- get name in navbar for user email
+- filter users in addUser
+- cambiar nombre feed_progress a feed_progress para mantener coherencia
+- remove oldUrl from api
+- copy all in ifd making it weird
+- demo con 3 tipos de línea
+- Two toastify if it's insert and not ❌
+- feed forecast => ORDER BY < T >
+- navis link < S > 
+- order by progress || date T
+- login centrado verticalmente
+- revisar lógica del fillType
+- cambiar nombres: area, unit, fluid, seq, spec, diam, type, ins, status, train
+- filtro en progress
+- if all rows with owner select all appears selected
+- If form is really down you can't see the select
+- submit in forecast adding
+- copy context error diameter
+- feed progress node-cron
+- cambiar logo 3d a isoControl
+- If pipe updated in feed or ifd it only updates 1.
+- click dropdown icon also opens dropdown
 - FEEDPipes.jsx requests with axios or custom api ( recommended ) with included error handling and request state like isLoading
 - TABLE make wrapper
 - TABLE make routing
@@ -26,36 +58,43 @@ DONE ✔
 - TABLE add dropdowns to: line_ref, area, diameter, train, status
 - TABLE submit changes 
 - TABLE delete row 
-
-TODO ❌
-- pass progress to feed through url state OR params NOT localStorage
-- ADDING ROW:
-  - paste from excel 1 cell
-  - paste from excel 1 line
-  - paste from excel various lines
-  - save => back to display view with updated results
-  - no filtrar en el header
-
 - si already exists cambiar color alerta
-- mover sidebar arriba
-- añadir piecharts
 - añadir logo isocontrol
+- ADDING ROW
+- que se vea el owner
+- IFD Main
+- Edit Forecast 
+- change password O- paste on IFD Add Pipe
+- Trash SEAN 
+- close dropdown on click delete table
+- copy all not working on feed because of name of className in table.js getElementsByClassName
+- if trashed in IFD => blocked in FEED
+  - when trashed => incapable to delete
+- background colors not working on table FEED
+- background colors not working on table IFD
+- click away from navbar dropdown => close dropdown
+- toast on undo: undone
+- toast OR 'copied' on copy all
+- back from forecast
+- deleted pipe modal
+- feed progress
+- ifd progress
+- borrar modal id + tag
+- NO delete in FEED if pipe is gray OR trashed
+- select all
+- FILTRO en trays
+- actualizar progres on update
+- eliminar old url
 
-OTHER
-- add error handler for when server is down ( something like 'server is down please contact IT )
-
-
-
-
-
-
-
-
+FUTURO:
+  - change status "MODELLED (100%)" to "modelled" then format on client and progress values on separate file in node
+  - tabla escondida en FEED y en IFD => bring it back pipingProgress.js en old
+  - add error handler for when server is down ( something like 'please hold on' )
 
 TABLES que no llegué a probar:
-- react-virtualized
-- react-data-grid
-- react-super-responsive-table
-- react-bootstrap-table
-- react-datasheet
-- react-grid
+  - react-virtualized
+  - react-data-grid
+  - react-super-responsive-table
+  - react-bootstrap-table
+  - react-datasheet
+  - react-grid
