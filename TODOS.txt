@@ -1,7 +1,9 @@
 DOING 🔁
-  - chart for global progress < S >
+  - presentation < S >
+  - add general view to allProgress < T >
 
 TODO ❌
+  - progress optionsBox scroll before going behind navbar
 
 DONE ✔
 - only leaders can edit forecast and estimations < T >
