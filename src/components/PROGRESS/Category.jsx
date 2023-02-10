@@ -1,3 +1,6 @@
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import AnimateHeight from "react-animate-height";
 
 export default function OptionsBox({
@@ -9,7 +12,7 @@ export default function OptionsBox({
   categoryName,
 }) {
   return (
-    <div className="categoryWrapper">
+    <div css={categoryWrapper}>
       <div className="category">
         <label className="bold pointer">
           <input
@@ -20,7 +23,7 @@ export default function OptionsBox({
             }
             onChange={() => handleChange(categoryName)}
           />
-          {categoryName.toUpperCase()}
+          {categoryName}
         </label>
         <img
           aria-controls="image_dropdown"
@@ -57,3 +60,33 @@ export default function OptionsBox({
     </div>
   );
 }
+
+const categoryWrapper = {
+  margin: "0 0 2rem",
+  input: {
+    marginRight: ".5rem",
+  },
+  ".category": {
+    margin: "0 0 0.5rem",
+    display: "flex",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingRight: "50%",
+    label: {
+      display: "flex",
+      flexWrap: "nowrap",
+      width: "100%",
+    },
+    img: {
+      width: "20px",
+      height: "20px",
+      marginLeft: "1rem",
+    },
+  },
+  ".subCategory": {
+    marginLeft: "5%",
+    display: "flex",
+    lineHeight: "2rem",
+  },
+};
