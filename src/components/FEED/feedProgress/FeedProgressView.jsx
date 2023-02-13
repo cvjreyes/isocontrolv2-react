@@ -104,7 +104,6 @@ export default function FeedProgressView() {
             )}
             {!!data[0] &&
               Object.keys(data[0]).map((x, i) => {
-                console.log(i, x);
                 return (
                   <Line
                     isAnimationActive={false}
