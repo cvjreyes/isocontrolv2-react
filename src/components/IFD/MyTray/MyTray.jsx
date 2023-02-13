@@ -54,7 +54,7 @@ function MyTrayComp({ setMessage }) {
     if (changed.length > 0)
       return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_ifd_pipes", {
+    const { ok } = await api("post", "/ifd/unclaim_pipes", {
       data: dataToSend,
     });
     if (ok) {
