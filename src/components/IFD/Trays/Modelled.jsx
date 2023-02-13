@@ -21,7 +21,7 @@ function ModelledComp({ setMessage }) {
     const getModelledIFDPipes = async () => {
       const { body: pipes } = await api(
         "get",
-        "/ifd/get_ifd_pipes_from_tray/modelled"
+        "/ifd/get_pipes_from_tray/modelled"
       );
       const rows = pipes.map((row) => ({
         ...row,
@@ -54,7 +54,7 @@ function ModelledComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_ifd_pipes", {
+    const { ok } = await api("post", "/ifd/claim_pipes", {
       data: dataToSend,
     });
     if (ok) {

@@ -28,9 +28,8 @@ export default function FeedProgressView() {
 
   useEffect(() => {
     const getData = async () => {
-      const { body } = await api("get", "/feed/get_feed_progress");
+      const { body } = await api("get", "/feed/get_progress_data");
       const weeks = prepareRows(body, "Feed");
-      console.log(weeks);
       setData([...weeks]);
     };
     getData();
@@ -74,9 +73,9 @@ export default function FeedProgressView() {
             data={data}
             margin={{
               top: 35,
-              right: 30,
-              left: 20,
-              bottom: -15,
+              right: 0,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -103,17 +102,18 @@ export default function FeedProgressView() {
                   }))}
               />
             )}
-            {data.map((x, i) => {
-              return (
-                <Line
-                  isAnimationActive={false}
-                  key={x.name}
-                  type="monotone"
-                  dataKey={Object.keys(x)[i + 1]}
-                  stroke={colorsFeed[i]}
-                />
-              );
-            })}
+            {!!data[0] &&
+              Object.keys(data[0]).map((x, i) => {
+                return (
+                  <Line
+                    isAnimationActive={false}
+                    key={i}
+                    type="monotone"
+                    dataKey={x}
+                    stroke={colorsFeed[i]}
+                  />
+                );
+              })}
           </LineChart>
         </ResponsiveContainer>
       </div>

@@ -40,7 +40,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const [deleting, setDeleting] = useState(false);
 
   const getIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/0");
+    const { body: pipes } = await api("get", "/ifd/get_some_pipes/0");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -50,7 +50,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   };
 
   const getFeedPipes = async () => {
-    const { body: rows } = await api("get", "/feed/get_feed_pipes");
+    const { body: rows } = await api("get", "/feed/get_all_pipes");
     rows.map((row) => (row.tag = buildTag(row)));
     setFeedPipes(rows);
   };
@@ -62,7 +62,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
         api("get", "/ifd/get_progress"),
-        api("get", "/ifd/get_ifd_pipes/0"),
+        api("get", "/ifd/get_some_pipes/0"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
@@ -303,7 +303,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
     const stop2 = checkForEmptyCells(dataToSend);
     if (stop2) return setMessage({ txt: "Some cells are empty", type: "warn" });
-    const { ok } = await api("post", "/ifd/submit_ifd_pipes", {
+    const { ok } = await api("post", "/ifd/submit_pipes", {
       data: dataToSend,
     });
     if (ok) {

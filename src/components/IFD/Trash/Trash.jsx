@@ -16,7 +16,7 @@ function TrashComp({ setMessage }) {
 
   useEffect(() => {
     const getTrashedIFDPipes = async () => {
-      const { body: pipes } = await api("get", "/ifd/get_ifd_pipes/1");
+      const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
       const rows = pipes.map((row) => ({
         ...row,
         tag: buildTag(row),
@@ -43,7 +43,7 @@ function TrashComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to restore", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/restore_ifd_pipes", {
+    const { ok } = await api("post", "/ifd/restore_pipes", {
       data: dataToSend,
     });
     if (ok) {

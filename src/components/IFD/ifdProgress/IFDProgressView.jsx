@@ -24,7 +24,7 @@ export default function IFDProgressView() {
 
   useEffect(() => {
     const getData = async () => {
-      const { body } = await api("get", "/ifd/get_ifd_progress");
+      const { body } = await api("get", "/ifd/get_progress_data");
       const weeks = prepareRows(body, "IFD");
       setData([...weeks]);
     };
@@ -96,17 +96,19 @@ export default function IFDProgressView() {
                   }))}
               />
             )}
-            {data.map((x, i) => {
-              return (
-                <Line
-                  isAnimationActive={false}
-                  key={x.name}
-                  type="monotone"
-                  dataKey={Object.keys(x)[i + 1]}
-                  stroke={colorsIFD[i]}
-                />
-              );
-            })}
+            {!!data[0] &&
+              Object.keys(data[0]).map((x, i) => {
+                console.log(i, x);
+                return (
+                  <Line
+                    isAnimationActive={false}
+                    key={i}
+                    type="monotone"
+                    dataKey={x}
+                    stroke={colorsIFD[i]}
+                  />
+                );
+              })}
           </LineChart>
         </ResponsiveContainer>
       </div>

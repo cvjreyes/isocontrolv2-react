@@ -16,7 +16,7 @@ function EditForecastComp({ setMessage, setModalContent }) {
   const [rowsToAdd, setRowsToAdd] = useState(1);
 
   const getData = async () => {
-    const { body } = await api("get", "/ifd/get_ifd_forecast");
+    const { body } = await api("get", "/ifd/get_forecast");
     setData(body);
   };
 
@@ -78,7 +78,7 @@ function EditForecastComp({ setMessage, setModalContent }) {
     if (changed.length < 1)
       return setMessage({ txt: "No changes to save!", type: "warn" });
     const dataToSend = data.filter((x) => changed.includes(x.week));
-    const { ok } = await api("post", "/ifd/submit_ifd_forecast", {
+    const { ok } = await api("post", "/ifd/submit_forecast", {
       data: dataToSend,
     });
     if (ok) {
