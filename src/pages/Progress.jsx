@@ -11,6 +11,7 @@ import { api } from "../helpers/api";
 
 export default function Progress() {
   const { section } = useParams();
+  console.log(section);
 
   const [data, setData] = useState([]);
 
@@ -21,7 +22,7 @@ export default function Progress() {
       setData(prepared);
     };
     getData();
-  }, []);
+  }, [section]);
 
   return (
     <div css={progressStyle}>
