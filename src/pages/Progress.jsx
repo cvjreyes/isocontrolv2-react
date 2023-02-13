@@ -11,7 +11,6 @@ import { api } from "../helpers/api";
 
 export default function Progress() {
   const { section } = useParams();
-  console.log(section);
 
   const [data, setData] = useState([]);
 
@@ -27,21 +26,18 @@ export default function Progress() {
   return (
     <div css={progressStyle}>
       <Titles />
-      <div>
-        {data.map((x, i) => {
-          return (
-            <div key={i}>
-              <div>
-                {Object.entries(x).map((y, j) => {
-                  return <div key={j}>{y}</div>;
-                })}
-              </div>
+      {data.map((x, i) => {
+        return (
+          <div key={i}>
+            <div>
+              {Object.entries(x).map((y, j) => {
+                return <div key={j}>{y}</div>;
+              })}
             </div>
-          );
-        })}
-        {/* componente de gráfica */}
-        <Main data={data} />
-      </div>
+          </div>
+        );
+      })}
+      <Main data={data} />
     </div>
   );
 }
