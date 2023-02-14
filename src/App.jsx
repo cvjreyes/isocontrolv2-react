@@ -23,6 +23,7 @@ import CreatePassword from "./pages/CreatePassword";
 import Progress from "./pages/Progress";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Notifications from "./pages/Notifications";
 
 export default function App() {
   useEffect(() => {
@@ -54,6 +55,13 @@ export default function App() {
           />
           <Route
             exact
+            path="/notifications"
+            element={
+              <PrivateRoute restricted={true} component={Notifications} />
+            }
+          />
+          <Route
+            exact
             path="/change_password"
             element={<PrivateRoute restricted={true} component={Change} />}
           />
@@ -62,7 +70,6 @@ export default function App() {
             path="/navis"
             element={<PublicRoute component={Navis} />}
           />
-
           <Route
             exact
             path="/add_user"
