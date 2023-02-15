@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
-import Main from "../components/progress/Main";
-import Titles from "../components/progress/Titles";
+import Main from "../components/PROGRESS/Main";
+import Titles from "../components/PROGRESS/Titles";
 import { api } from "../helpers/api";
 
 export default function Progress() {
