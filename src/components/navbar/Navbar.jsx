@@ -11,7 +11,7 @@ import UserDropdown from "./UserDropdown";
 import NotificationsDropDown from "./NotificationsDropDown";
 
 export default function Navbar() {
-  const { user, logout, isLoggedIn } = useContext(AuthContext);
+  const { user, logout, isLoggedIn, updateUserInfo } = useContext(AuthContext);
   let location = useLocation();
 
   const [notifications, setNotifications] = useState([]);
@@ -72,7 +72,10 @@ export default function Navbar() {
           className="notificationsWrapper"
           onSubmit={toggleNotificationsMenu}
         >
-          <button className="removeStyle flexCenter pointer">
+          <button className="bellWrapper removeStyle flexCenter pointer">
+            {user.last_opened_notifications < notifications[0]?.created_at && (
+              <div className="new_notification" />
+            )}
             <img
               className="invert"
               alt="bell"
@@ -83,6 +86,7 @@ export default function Navbar() {
             <NotificationsDropDown
               closeMenu={() => setOpenNotificationsMenu(false)}
               notifications={notifications}
+              updateUserInfo={updateUserInfo}
               key="1"
             />,
             <div
@@ -144,7 +148,21 @@ const mainStyle = {
     ".notificationsWrapper": {
       zIndex: 3,
       margin: "0 50px 0 -50px",
+      ".bellWrapper": {
+        position: "relative",
+        ".new_notification": {
+          width: "12px",
+          height: "12px",
+          borderRadius: "50%",
+          backgroundColor: "#0070ED",
+          position: "absolute",
+          top: "0px",
+          left: "11px",
+          zIndex: 6,
+        },
+      },
       img: {
+        zIndex: 5,
         width: "25px",
         heght: "25px",
         ":hover": {

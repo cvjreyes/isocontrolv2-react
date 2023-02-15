@@ -1,5 +1,4 @@
 DOING 🔁
-  - presentation < S >
   - re-build progress < T >
 
 TODO ❌

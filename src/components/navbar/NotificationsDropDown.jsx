@@ -6,7 +6,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../helpers/api";
 
-export default function NotificationsDropDown({ closeMenu, notifications }) {
+export default function NotificationsDropDown({
+  closeMenu,
+  notifications,
+  updateUserInfo,
+}) {
   const navigate = useNavigate();
 
   const escFunction = useCallback((e) => {
@@ -18,6 +22,7 @@ export default function NotificationsDropDown({ closeMenu, notifications }) {
   useEffect(() => {
     const updateLastSeen = async () => {
       await api("post", "/users/update_last_seen");
+      updateUserInfo();
     };
     updateLastSeen();
     document.addEventListener("keydown", escFunction, false);
