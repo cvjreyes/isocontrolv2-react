@@ -1,17 +1,35 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import Loading from "react-loading";
+import { AuthContext } from "../context/AuthContext";
 
 import { api } from "../helpers/api";
+import Input1 from "../components/general/Input1";
+
+import crossImg from "../assets/images/cross.svg";
 
 export default function Notifications() {
+  const { user, updateUserInfo } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [notifications, setNotifications] = useState([]);
   const [displayNotifications, setDisplayNotifications] = useState([]);
   const [count, setCount] = useState(0);
   const [total, setTotal] = useState(0);
   const [filterVal, setFilterVal] = useState("");
+
+  useEffect(() => {
+    const updateLastSeen = async () => {
+      await api("post", "/users/update_last_seen");
+    };
+    updateLastSeen();
+    return () => {
+      updateUserInfo();
+    };
+  }, []);
 
   useEffect(() => {
     const getNotifications = async () => {
@@ -37,17 +55,17 @@ export default function Notifications() {
 
   const filter = (passedData) => {
     const tempNotifications = passedData || [...notifications];
-    // actualFilter
     const split = filterVal.split(" ");
-    const filterd = tempNotifications.filter(
-      (x) => x.title.toLowerCase().includes(filterVal)
-      // split.every(
-      //   (y) =>
-      //     x.title.toLowerCase().includes(y) ||
-      //     x.description?.toLowerCase().includes(y)
-      // )
+    const keys = ["title", "description", "created_at"];
+    const filterd = tempNotifications.filter((x) =>
+      split.every((y) =>
+        keys.some(
+          (z) => x[z]?.toLowerCase().includes(y.toLowerCase())
+          // x.title.toLowerCase().includes(y.toLowerCase()) ||
+          // x.description?.toLowerCase().includes(y.toLowerCase())
+        )
+      )
     );
-    console.log(filterd.length);
     setDisplayNotifications(filterd);
   };
 
@@ -63,26 +81,40 @@ export default function Notifications() {
   return (
     <div css={notificationsStyle}>
       <div className="head">
-        <div className="flexCenter">
-          <input type="text" onChange={handleChange} value={filterVal} />
-          <button className="pointer" onClick={resetView}>
-            X
+        <div className="flexCenter left">
+          <div onClick={() => navigate(-1)}>BACK</div>
+          <Input1 onChange={handleChange} value={filterVal} />
+          {/* <input type="text" onChange={handleChange} value={filterVal} /> */}
+          <button
+            className="pointer removeStyle flexCenter"
+            onClick={resetView}
+          >
+            <img alt="cross" src={crossImg} />
           </button>
         </div>
         <h3>Notifications</h3>
-        <div>
+        <div className="right">
           {notifications.length} / {total} notifications
         </div>
       </div>
       <div className="notificationsWrapper">
         {displayNotifications ? (
-          displayNotifications.map((x, i) => (
-            <div key={i} className="notification">
-              <p className="time">{new Date(x.created_at).toLocaleString()}</p>
-              <p className="bold">{x.title}</p>
-              <p>{x.description}</p>
-            </div>
-          ))
+          displayNotifications.map((x, i) => {
+            const unseen = user.last_opened_notifications < x.created_at;
+            return (
+              <div
+                key={i}
+                className="notification"
+                style={{ backgroundColor: unseen ? "#99c6f88a" : "lightgray" }}
+              >
+                <p className="time">
+                  {new Date(x.created_at).toLocaleString()}
+                </p>
+                <p className="bold">{x.title}</p>
+                <p>{x.description}</p>
+              </div>
+            );
+          })
         ) : (
           <Loading />
         )}
@@ -102,21 +134,42 @@ export default function Notifications() {
 const notificationsStyle = {
   textAlign: "center",
   padding: "75px 0 0",
+  width: "80vw",
+  margin: "0 auto",
   ".head": {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
+    ".left": {
+      justifySelf: "flex-start",
+      input: { marginRight: "1rem" },
+      button: {
+        background:
+          "linear-gradient(322deg, rgba(196,196,196,1) 0%, rgba(211,211,211,1) 47%, rgba(221,221,221,1) 100%)",
+        padding: "5px",
+        borderRadius: "6px",
+        ":hover": {
+          background:
+            "linear-gradient(322deg, rgba(221,221,221,1) 0%, rgba(211,211,211,1) 47%, rgba(196,196,196,1) 100%)",
+        },
+        img: {
+          width: "20px",
+          height: "20px",
+        },
+      },
+    },
     h3: {
       fontSize: "24px",
       textTransform: "uppercase",
     },
+    ".right": {
+      justifySelf: "flex-end",
+    },
   },
   ".notificationsWrapper": {
-    margin: "50px auto 0",
-    width: "80vw",
+    margin: "50px 0 0",
     maxHeight: "calc(90vh - 204px)",
     overflowY: "auto",
     ".notification": {
-      backgroundColor: "lightgray",
       padding: "15px 20px",
       borderRadius: "10px",
       margin: "0 0 10px",

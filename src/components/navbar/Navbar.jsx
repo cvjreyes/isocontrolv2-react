@@ -11,7 +11,7 @@ import UserDropdown from "./UserDropdown";
 import NotificationsDropDown from "./NotificationsDropDown";
 
 export default function Navbar() {
-  const { user, logout, isLoggedIn, updateUserInfo } = useContext(AuthContext);
+  const { user, logout, isLoggedIn } = useContext(AuthContext);
   let location = useLocation();
 
   const [notifications, setNotifications] = useState([]);
@@ -86,7 +86,7 @@ export default function Navbar() {
             <NotificationsDropDown
               closeMenu={() => setOpenNotificationsMenu(false)}
               notifications={notifications}
-              updateUserInfo={updateUserInfo}
+              user={user}
               key="1"
             />,
             <div

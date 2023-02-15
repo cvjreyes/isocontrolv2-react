@@ -2,9 +2,12 @@ DOING 🔁
   - re-build progress < T >
 
 TODO ❌
-- input notifications to filter things
+- total lines implementation
 
 DONE ✔
+- home progress bar not working
+- input notifications to filter things
+- read/unread notifications + mark last_seen when access /notifications instead of open menu
 - only leaders can edit forecast and estimations < T >
 - paste 1 cell missing last character FROM NOT EXCEL
 - forgot password
