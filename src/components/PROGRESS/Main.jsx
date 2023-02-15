@@ -1,5 +1,10 @@
 import React from "react";
 
 export default function Main({ data }) {
-  return <div>Main</div>;
+  return (
+    <div>
+      <div>sidebar</div>
+      <div>content</div>
+    </div>
+  );
 }
