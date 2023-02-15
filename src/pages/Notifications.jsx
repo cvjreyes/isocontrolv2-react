@@ -7,38 +7,76 @@ import Loading from "react-loading";
 import { api } from "../helpers/api";
 
 export default function Notifications() {
-  const [count, setCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const [displayNotifications, setDisplayNotifications] = useState([]);
+  const [count, setCount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [filterVal, setFilterVal] = useState("");
 
   useEffect(() => {
     const getNotifications = async () => {
       const { body } = await api("get", `/notifications/get_some/${count}`);
-      setNotifications([
+      const uniqueValues = [
         ...new Map(
           [...notifications, ...body.notifications].map((item) => [
             item["id"],
             item,
           ])
         ).values(),
-      ]);
+      ];
+      setNotifications(uniqueValues);
+      filter(uniqueValues);
       !total && setTotal(body.total);
     };
     getNotifications();
   }, [count]);
 
+  useEffect(() => {
+    filterVal && filter();
+  }, [filterVal]);
+
+  const filter = (passedData) => {
+    const tempNotifications = passedData || [...notifications];
+    // actualFilter
+    const split = filterVal.split(" ");
+    const filterd = tempNotifications.filter(
+      (x) => x.title.toLowerCase().includes(filterVal)
+      // split.every(
+      //   (y) =>
+      //     x.title.toLowerCase().includes(y) ||
+      //     x.description?.toLowerCase().includes(y)
+      // )
+    );
+    console.log(filterd.length);
+    setDisplayNotifications(filterd);
+  };
+
+  const handleChange = ({ target }) => {
+    setFilterVal(target.value);
+  };
+
+  const resetView = () => {
+    setFilterVal("");
+    setDisplayNotifications(notifications);
+  };
+
   return (
     <div css={notificationsStyle}>
       <div className="head">
-        <div />
+        <div className="flexCenter">
+          <input type="text" onChange={handleChange} value={filterVal} />
+          <button className="pointer" onClick={resetView}>
+            X
+          </button>
+        </div>
         <h3>Notifications</h3>
         <div>
           {notifications.length} / {total} notifications
         </div>
       </div>
       <div className="notificationsWrapper">
-        {notifications ? (
-          notifications.map((x, i) => (
+        {displayNotifications ? (
+          displayNotifications.map((x, i) => (
             <div key={i} className="notification">
               <p className="time">{new Date(x.created_at).toLocaleString()}</p>
               <p className="bold">{x.title}</p>

@@ -2,6 +2,7 @@ DOING 🔁
   - re-build progress < T >
 
 TODO ❌
+- input notifications to filter things
 
 DONE ✔
 - only leaders can edit forecast and estimations < T >
