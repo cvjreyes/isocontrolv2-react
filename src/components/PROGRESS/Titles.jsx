@@ -9,13 +9,13 @@ export default function Titles() {
       </div>
       <div className="links">
         <div>
-          <NavLink to="/progress/feed">FEED</NavLink>
+          <NavLink to="/progress/FEED">FEED</NavLink>
         </div>
         <div>
-          <NavLink to="/progress/ifd">IFD</NavLink>
+          <NavLink to="/progress/IFD">IFD</NavLink>
         </div>
         <div>
-          <NavLink to="/progress/ifc" aria-disabled >
+          <NavLink to="/progress/IFC" aria-disabled >
             IFC
           </NavLink>
         </div>

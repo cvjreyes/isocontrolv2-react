@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
 import Main from "../components/progress/Main";
