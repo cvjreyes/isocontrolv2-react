@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, createContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import Loading from "../components/general/Loading";
-import { URL } from "../helpers/config";
+import { api } from "../helpers/api";
 
 export const AuthContext = createContext(null);
 
@@ -10,15 +10,25 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
 
+  const getUserInfo = async () => {
+    const res = await api("get", "/users/get_user_info");
+    return res;
+  };
+
+  const updateUserInfo = async () => {
+    const { body } = await getUserInfo();
+    delete body.token;
+    setUser(body);
+  };
+
   useEffect(() => {
     const checkAuthCookie = async () => {
       try {
         const access_token = Cookies.get("access_token"); // get token
         if (!access_token) return logout();
         axios.defaults.headers.common["Authorization"] = access_token; // set token for all api calls
-        const res = await axios.get(`${URL}/users/get_user_info`);
-        if (res.data.ok)
-          return login({ ...res.data.body, token: access_token });
+        const { ok, body } = await getUserInfo();
+        if (ok) return login({ ...body, token: access_token });
         setIsLoggedIn(false);
       } catch (err) {
         console.error(err);
@@ -44,7 +54,9 @@ export const AuthProvider = ({ children }) => {
 
   if (isLoggedIn === null) return <Loading />;
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isLoggedIn, login, logout, updateUserInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );

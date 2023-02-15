@@ -18,7 +18,6 @@ export default function Dropdown({ closeMenu, logout, user }) {
 
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
-
     return () => {
       document.removeEventListener("keydown", escFunction, false);
     };

@@ -5,13 +5,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
-import Main from "../components/progress/Main";
-import Titles from "../components/progress/Titles";
+import Main from "../components/PROGRESS/Main";
+import Titles from "../components/PROGRESS/Titles";
 import { api } from "../helpers/api";
 
 export default function Progress() {
   const { section } = useParams();
-  console.log(section);
 
   const [data, setData] = useState([]);
 
@@ -27,23 +26,38 @@ export default function Progress() {
   return (
     <div css={progressStyle}>
       <Titles />
-      <div>
-        {data.map((x, i) => {
-          return (
-            <div key={i}>
-              <div>
-                {Object.entries(x).map((y, j) => {
-                  return <div key={j}>{y}</div>;
-                })}
-              </div>
+      {data.map((x, i) => {
+        return (
+          <div key={i}>
+            <div>
+              {Object.entries(x).map((y, j) => {
+                return <div key={j}>{y}</div>;
+              })}
             </div>
-          );
-        })}
-        {/* componente de gráfica */}
-        <Main data={data} />
-      </div>
+          </div>
+        );
+      })}
+      <Main data={data} />
     </div>
   );
 }
 
-const progressStyle = {};
+const progressStyle = {
+  ".titles": {
+    display: "grid",
+    justifyContent: "center",
+    marginTop: "3%",
+    gridRowGap: "50%",
+    ".title": {
+      display: "grid",
+      gridTemplateColumns: "3fr",
+      justifySelf: "center",
+    },
+    ".links": {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gridColumnGap: "50%",
+      marginLeft:"-90%"
+    },
+  },
+};

@@ -4,27 +4,47 @@ import { jsx } from "@emotion/react";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
+import { api } from "../../helpers/api";
 import { AuthContext } from "../../context/AuthContext";
 import { getName } from "../../helpers/user";
-import Dropdown from "./Dropdown";
+import UserDropdown from "./UserDropdown";
+import NotificationsDropDown from "./NotificationsDropDown";
 
 export default function Navbar() {
-  const { user, logout, isLoggedIn } = useContext(AuthContext);
+  const { user, logout, isLoggedIn, updateUserInfo } = useContext(AuthContext);
   let location = useLocation();
 
-  const [isMenuOpen, setOpenMenu] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [isNotificationsMenuOpen, setOpenNotificationsMenu] = useState(false);
+  const [isUserMenuOpen, setOpenUserMenu] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn) setOpenMenu(false);
+    const getNotifications = async () => {
+      const { body } = await api("get", "/notifications/get_last_10");
+      setNotifications(body);
+    };
+    getNotifications();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) setOpenUserMenu(false);
   }, [isLoggedIn]);
 
   useEffect(() => {
-    setOpenMenu(false);
+    setOpenUserMenu(false);
+    setOpenNotificationsMenu(false);
   }, [location]);
 
-  const toggleMenu = (e) => {
+  const toggleUserMenu = (e) => {
     e.preventDefault();
-    setOpenMenu((prev) => !prev);
+    setOpenUserMenu((prev) => !prev);
+    if (isNotificationsMenuOpen) setOpenNotificationsMenu(false);
+  };
+
+  const toggleNotificationsMenu = (e) => {
+    e.preventDefault();
+    setOpenNotificationsMenu((prev) => !prev);
+    if (isUserMenuOpen) setOpenUserMenu(false);
   };
 
   if (!isLoggedIn) return;
@@ -47,29 +67,55 @@ export default function Navbar() {
           Progress
         </NavLink>
       </div>
-      {isLoggedIn && (
-        <div className="right">
-          <form onSubmit={toggleMenu}>
-            <button className="userWrapper pointer removeStyle" tabIndex="0">
-              {user.email && <span>{getName(user.email)}</span>}
-              <img
-                className="userIcon"
-                alt="user"
-                src="https://img.icons8.com/ios-glyphs/30/null/user--v1.png"
-              />
-            </button>
-          </form>
-          {isMenuOpen && [
-            <Dropdown
-              user={user}
-              logout={logout}
-              closeMenu={() => setOpenMenu(false)}
+      <div className="right">
+        <form
+          className="notificationsWrapper"
+          onSubmit={toggleNotificationsMenu}
+        >
+          <button className="bellWrapper removeStyle flexCenter pointer">
+            {user.last_opened_notifications < notifications[0]?.created_at && (
+              <div className="new_notification" />
+            )}
+            <img
+              className="invert"
+              alt="bell"
+              src="https://img.icons8.com/material-sharp/24/null/bell.png"
+            />
+          </button>
+          {isNotificationsMenuOpen && [
+            <NotificationsDropDown
+              closeMenu={() => setOpenNotificationsMenu(false)}
+              notifications={notifications}
+              updateUserInfo={updateUserInfo}
               key="1"
             />,
-            <div className="clickAway" onClick={toggleMenu} key="2" />,
+            <div
+              className="clickAway"
+              onClick={toggleNotificationsMenu}
+              key="2"
+            />,
           ]}
-        </div>
-      )}
+        </form>
+        <form onSubmit={toggleUserMenu}>
+          <button className="userWrapper pointer removeStyle" tabIndex="0">
+            {user.email && <span>{getName(user.email)}</span>}
+            <img
+              className="userIcon"
+              alt="user"
+              src="https://img.icons8.com/ios-glyphs/30/null/user--v1.png"
+            />
+          </button>
+          {isUserMenuOpen && [
+            <UserDropdown
+              user={user}
+              logout={logout}
+              closeMenu={() => setOpenUserMenu(false)}
+              key="1"
+            />,
+            <div className="clickAway" onClick={toggleUserMenu} key="2" />,
+          ]}
+        </form>
+      </div>
     </div>
   );
 }
@@ -99,31 +145,58 @@ const mainStyle = {
   ".right": {
     display: "flex",
     alignItems: "center",
-    postion: "relative",
-  },
-  ".userWrapper": {
-    display: "flex",
-    alignItems: "center",
-    span: { color: "white" },
-    ":hover": {
-      span: { color: "#0070ED" },
+    ".notificationsWrapper": {
+      zIndex: 3,
+      margin: "0 50px 0 -50px",
+      ".bellWrapper": {
+        position: "relative",
+        ".new_notification": {
+          width: "12px",
+          height: "12px",
+          borderRadius: "50%",
+          backgroundColor: "#0070ED",
+          position: "absolute",
+          top: "0px",
+          left: "11px",
+          zIndex: 6,
+        },
+      },
       img: {
-        filter:
-          "invert(36%) sepia(40%) saturate(7187%) hue-rotate(200deg) brightness(94%) contrast(103%)",
+        zIndex: 5,
+        width: "25px",
+        heght: "25px",
+        ":hover": {
+          filter:
+            "invert(36%) sepia(40%) saturate(7187%) hue-rotate(200deg) brightness(94%) contrast(103%)",
+        },
       },
     },
-  },
-  ".userIcon": {
-    filter: "invert(100%)",
-    width: "25px",
-    marginLeft: "10px",
-  },
-  ".clickAway": {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    zIndex: 2,
+    ".userWrapper": {
+      zIndex: 3,
+      display: "flex",
+      alignItems: "center",
+      position: "relative",
+      span: { color: "white" },
+      ":hover": {
+        span: { color: "#0070ED" },
+        img: {
+          filter:
+            "invert(36%) sepia(40%) saturate(7187%) hue-rotate(200deg) brightness(94%) contrast(103%)",
+        },
+      },
+      ".userIcon": {
+        filter: "invert(100%)",
+        width: "25px",
+        marginLeft: "10px",
+      },
+    },
+    ".clickAway": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100vw",
+      height: "100vh",
+      zIndex: 2,
+    },
   },
 };
