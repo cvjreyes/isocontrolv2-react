@@ -23,7 +23,6 @@ import CreatePassword from "./pages/CreatePassword";
 import Progress from "./pages/Progress";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import Test from "./pages/Test";
 
 export default function App() {
   useEffect(() => {
@@ -51,13 +50,8 @@ export default function App() {
           <Route
             exact
             path="/progress/:section"
-            element={<PrivateRoute component={Test} />}
-          />
-          {/* <Route
-            exact
-            path="/progress/:section"
             element={<PrivateRoute component={Progress} />}
-          /> */}
+          />
           <Route
             exact
             path="/change_password"
