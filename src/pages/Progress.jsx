@@ -11,9 +11,28 @@ import { api } from "../helpers/api";
 
 export default function Progress() {
   const { section } = useParams();
-  console.log(section);
+  // console.log(section);
 
   const [data, setData] = useState([]);
+
+  const subcategories = [
+    {
+      label: `Current Weight ${section}`,
+      key: `Current Weight ${section}`,
+    },
+    {
+      label: `Max Weight ${section}`,
+      key: `Max Weight ${section}`,
+    },
+    {
+      label: `Estimated ${section}`,
+      key: `Estimated ${section}`,
+    },
+    {
+      label: `Forecast ${section}`,
+      key: `Forecast ${section}`,
+    },
+  ];
 
   useEffect(() => {
     const getData = async () => {
@@ -24,24 +43,41 @@ export default function Progress() {
     getData();
   }, [section]);
 
+  const handleChange = (key) => {
+    let tempData = [...data];
+    // check if key exists in data
+    if (key === section) {
+      // check if all Subcategories are in data
+      if (subcategories.every((x) => data[0].hasOwnProperty(x.key))) {
+        // if they are remove all
+        subcategories.every((x) => tempData.map((y) => delete y[x.key]));
+      } else {
+        // else they add all
+        subcategories.map((y) => {
+          tempData = tempData.map((x, i) => {
+            return {
+              ...x,
+              [y.key]: data[i] ? data[i][y.key] : null,
+            };
+          });
+        });
+      }
+    } else if (tempData[0] && key in tempData[0]) {
+      // if exists delete
+      tempData.map((x) => delete x[key]);
+    } else {
+      tempData = tempData.map((x, i) => {
+        return { ...x, [key]: data[i] ? data[i][key] : null };
+      });
+    }
+    setData(tempData);
+  };
+
   return (
     <div css={progressStyle}>
       <Titles />
-      <div>
-        {data.map((x, i) => {
-          return (
-            <div key={i}>
-              <div>
-                {Object.entries(x).map((y, j) => {
-                  return <div key={j}>{y}</div>;
-                })}
-              </div>
-            </div>
-          );
-        })}
-        {/* componente de gráfica */}
-        <Main data={data} />
-      </div>
+      {/* componente de Gráfica y SidePanel */}
+      <Main data={data} subcategories={subcategories} section={section} handleChange={handleChange} />
     </div>
   );
 }
@@ -61,7 +97,30 @@ const progressStyle = {
       display: "grid",
       gridTemplateColumns: "1fr 1fr 1fr",
       gridColumnGap: "50%",
-      marginLeft:"-90%"
+      marginLeft: "-90%",
+    },
+  },
+  ".mainProgress": {
+    display: "grid",
+    gridTemplateColumns: "1fr 4fr",
+    marginTop: "3%",
+    height: "90%",
+    ".sidepanel": {
+      justifySelf: "center",
+      height: "90%",
+      width: "60%",
+      ".category": {
+        marginBottom: "5%"
+      },
+      ".subcategories": {
+        marginLeft: "5%",
+        ".subcategory": {
+          marginBottom: "3%"
+        }
+      },
+    },
+    ".graphic": {
+      height: "90%",
     },
   },
 };
