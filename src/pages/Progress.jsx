@@ -1,7 +1,4 @@
-/** @jsxRuntime classic */
-/** @jsx jsx */
-import { jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { prepareRows } from "../components/FEED/feedProgress/feedProgressHelpers";
@@ -75,9 +72,8 @@ export default function Progress() {
   };
 
   return (
-    <div css={progressStyle}>
+    <div>
       <Titles />
-      {/* componente de Gráfica y SidePanel */}
       <Main
         data={displayData}
         subcategories={subcategories}
@@ -88,11 +84,3 @@ export default function Progress() {
   );
 }
 
-const progressStyle = {
-  ".mainProgress": {
-    display: "grid",
-    gridTemplateColumns: "1fr 4fr",
-    marginTop: "3%",
-    minHeight: "70vh",
-  },
-};

@@ -63,8 +63,11 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
           IFC
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/progress/FEED">
+        <NavLink style={({ isIt }) => isIt && "active"} to="/progress">
           Progress
+        </NavLink>
+        <NavLink style={({ isIt }) => isIt && "active"} to="/total_lines">
+          Totals
         </NavLink>
       </div>
       <div className="right">

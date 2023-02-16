@@ -24,6 +24,7 @@ import Progress from "./pages/Progress";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Notifications from "./pages/Notifications";
+import TotalLines from "./pages/TotalLines";
 
 export default function App() {
   useEffect(() => {
@@ -54,6 +55,11 @@ export default function App() {
             element={<PrivateRoute component={Progress} />}
           />
           <Route
+            path="/progress/*"
+            element={<Navigate to="/progress/FEED" replace />}
+          />
+
+          <Route
             exact
             path="/notifications"
             element={
@@ -64,6 +70,11 @@ export default function App() {
             exact
             path="/change_password"
             element={<PrivateRoute restricted={true} component={Change} />}
+          />
+          <Route
+            exact
+            path="/total_lines"
+            element={<PrivateRoute restricted={true} component={TotalLines} />}
           />
           <Route
             exact
