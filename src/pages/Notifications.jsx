@@ -100,8 +100,6 @@ export default function Notifications() {
       <div className="notificationsWrapper">
         {displayNotifications ? (
           displayNotifications.map((x, i) => {
-            console.log(i, user.last_opened_notifications);
-            console.log(i, x.created_at);
             const unseen = user.last_opened_notifications < x.created_at;
             return (
               <div
