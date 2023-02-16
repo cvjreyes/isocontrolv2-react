@@ -25,8 +25,8 @@ export default function Notifications() {
     const updateLastSeen = async () => {
       await api("post", "/users/update_last_seen");
     };
-    updateLastSeen();
     return () => {
+      updateLastSeen();
       updateUserInfo();
     };
   }, []);
@@ -59,11 +59,7 @@ export default function Notifications() {
     const keys = ["title", "description", "created_at"];
     const filterd = tempNotifications.filter((x) =>
       split.every((y) =>
-        keys.some(
-          (z) => x[z]?.toLowerCase().includes(y.toLowerCase())
-          // x.title.toLowerCase().includes(y.toLowerCase()) ||
-          // x.description?.toLowerCase().includes(y.toLowerCase())
-        )
+        keys.some((z) => x[z]?.toLowerCase().includes(y.toLowerCase()))
       )
     );
     setDisplayNotifications(filterd);
@@ -82,9 +78,13 @@ export default function Notifications() {
     <div css={notificationsStyle}>
       <div className="head">
         <div className="flexCenter left">
-          <div onClick={() => navigate(-1)}>BACK</div>
+          <div
+            onClick={() => navigate(-1)}
+            className="flexCenter backWrapper pointer"
+          >
+            <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
+          </div>
           <Input1 onChange={handleChange} value={filterVal} />
-          {/* <input type="text" onChange={handleChange} value={filterVal} /> */}
           <button
             className="pointer removeStyle flexCenter"
             onClick={resetView}
@@ -100,6 +100,8 @@ export default function Notifications() {
       <div className="notificationsWrapper">
         {displayNotifications ? (
           displayNotifications.map((x, i) => {
+            console.log(i, user.last_opened_notifications);
+            console.log(i, x.created_at);
             const unseen = user.last_opened_notifications < x.created_at;
             return (
               <div
@@ -141,7 +143,18 @@ const notificationsStyle = {
     gridTemplateColumns: "repeat(3, 1fr)",
     ".left": {
       justifySelf: "flex-start",
-      input: { marginRight: "1rem" },
+      ".backWrapper": {
+        width: "40px",
+        height: "40px",
+        borderRadius: "100px",
+        transition: "all linear 200ms",
+        boxShadow: "inset 4px 4px 9px #f0f0f0, inset -4px -4px 9px #ffffff",
+        ":hover": {
+          boxShadow: "inset 4px -4px 9px #d9d9d9, inset -4px 4px 9px #ffffff",
+        },
+        img: { width: "20px", height: "20px" },
+      },
+      input: { margin: "0 1rem" },
       button: {
         background:
           "linear-gradient(322deg, rgba(196,196,196,1) 0%, rgba(211,211,211,1) 47%, rgba(221,221,221,1) 100%)",
@@ -186,7 +199,6 @@ const notificationsStyle = {
   ".see_more": {
     marginTop: "30px",
     fontWeight: 700,
-    // border: "1px solid #080808",
     padding: "10px 20px",
     borderRadius: "6px",
     color: "white",
