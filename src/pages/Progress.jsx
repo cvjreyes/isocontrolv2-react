@@ -83,3 +83,12 @@ export default function Progress() {
     </div>
   );
 }
+
+const progressStyle = {
+  ".mainProgress": {
+    display: "grid",
+    gridTemplateColumns: "1fr 4fr",
+    marginTop: "3%",
+    minHeight: "70vh",
+  },
+};

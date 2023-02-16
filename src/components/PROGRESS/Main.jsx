@@ -6,6 +6,9 @@ import Graphic from "./Graphic";
 import SidePanel from "./SidePanel";
 
 export default function Main({ data, subcategories, section, handleChange }) {
+
+  const colors = ["brown", "red", "blue", "salmon"];
+
   return (
     <div css={mainStyle}>
       <SidePanel
@@ -13,8 +16,9 @@ export default function Main({ data, subcategories, section, handleChange }) {
         subcategories={subcategories}
         section={section}
         handleChange={handleChange}
+        colors={colors}
       />
-      <Graphic data={data} />
+      <Graphic data={data} colors={colors} subcategories={subcategories} />
     </div>
   );
 }
