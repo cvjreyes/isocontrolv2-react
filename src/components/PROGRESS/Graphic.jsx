@@ -9,14 +9,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function GraphicProgress({ displayData, allColors }) {
+export default function Graphic({ data }) {
+  const colors = ["brown", "red", "blue", "salmon"];
+
   return (
-    <div className="graphic">
-      <ResponsiveContainer width="90%" height="90%">
+      <ResponsiveContainer className="graphic" width="95%" height="100%">
         <LineChart
           width={500}
-          height={500}
-          data={displayData}
+          height={300}
+          data={data}
           margin={{
             top: 5,
             right: 30,
@@ -28,33 +29,32 @@ export default function GraphicProgress({ displayData, allColors }) {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip isAnimationActive={false} offset={10000000} />
-          {!!displayData[0] && (
+          {!!data[0] && (
             <Legend
               iconType="line"
-              payload={Object.keys(displayData[0])
+              payload={Object.keys(data[0])
                 .filter((x) => x !== "name")
                 .map((x, i) => ({
                   value: x,
                   type: "diamond",
                   id: x,
-                  color: allColors[i],
+                  color: colors[i],
                 }))}
             />
           )}
-          {!!displayData[0] &&
-            Object.keys(displayData[0]).map((x, i) => {
+          {!!data[0] &&
+            Object.keys(data[0]).map((x, i) => {
               return (
                 <Line
                   isAnimationActive={false}
                   key={i}
                   type="monotone"
                   dataKey={x}
-                  stroke={allColors[i]}
+                  stroke={colors[i]}
                 />
               );
             })}
         </LineChart>
       </ResponsiveContainer>
-    </div>
   );
 }
