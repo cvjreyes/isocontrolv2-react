@@ -1,11 +1,13 @@
-import React from "react";
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 
 import Graphic from "./Graphic";
 import SidePanel from "./SidePanel";
 
 export default function Main({ data, subcategories, section, handleChange }) {
   return (
-    <div className="mainProgress">
+    <div css={mainStyle}>
       <SidePanel
         data={data}
         subcategories={subcategories}
@@ -16,3 +18,10 @@ export default function Main({ data, subcategories, section, handleChange }) {
     </div>
   );
 }
+
+const mainStyle = {
+  display: "grid",
+  gridTemplateColumns: "1fr 4fr",
+  marginTop: "3%",
+  minHeight: "70vh",
+};
