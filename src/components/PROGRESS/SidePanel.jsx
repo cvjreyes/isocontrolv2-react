@@ -2,10 +2,14 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-export default function SidePanel({ data, subcategories, section, handleChange }) {
-
+export default function SidePanel({
+  data,
+  subcategories,
+  section,
+  handleChange,
+}) {
   return (
-    <div className="sidepanel">
+    <div css={sidePanelStyle}>
       <div className="category">
         <label className="bold pointer">
           <input
@@ -21,7 +25,7 @@ export default function SidePanel({ data, subcategories, section, handleChange }
       </div>
       <div className="subcategories">
         {subcategories.map((x, i) => {
-        //   console.log(x);
+          //   console.log(x);
           return (
             <div className="subcategory" key={i}>
               <label className="pointer">
@@ -40,3 +44,37 @@ export default function SidePanel({ data, subcategories, section, handleChange }
     </div>
   );
 }
+
+const sidePanelStyle = {
+  justifySelf: "center",
+  margin: "0 0 2rem",
+  input: {
+    marginRight: ".5rem",
+  },
+  height: "fit-content",
+  padding: "2rem",
+  borderRadius: "16px",
+  background: "linear-gradient(225deg, #e6e6e6, #ffffff)",
+  boxShadow: "-8px 8px 16px #dedede, 8px -8px 16px #ffffff",
+  ".category": {
+    margin: "0 0 0.5rem",
+    display: "flex",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingRight: "50%",
+    label: {
+      display: "flex",
+      flexWrap: "nowrap",
+      width: "100%",
+    },
+  },
+  ".subcategories": {
+    marginLeft: "5%",
+    ".subcategory": {
+      marginLeft: "5%",
+      display: "flex",
+      lineHeight: "2rem",
+    },
+  },
+};

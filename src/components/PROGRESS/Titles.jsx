@@ -1,9 +1,11 @@
-import React from "react";
+/** @jsxRuntime classic */
+/** @jsx jsx */
+import { jsx } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 
 export default function Titles() {
   return (
-    <div className="titles">
+    <div css={titlesStyle}>
       <div className="title">
         <h1>Progress</h1>
       </div>
@@ -16,7 +18,7 @@ export default function Titles() {
         </div>
         <div>
           {/* <NavLink to="/progress/IFC" aria-disabled="true" > */}
-            IFC
+          IFC
           {/* </NavLink> */}
         </div>
       </div>
