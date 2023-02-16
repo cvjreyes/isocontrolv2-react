@@ -2,10 +2,11 @@ DOING 🔁
   - re-build progress < T >
 
 TODO ❌
-- total lines implementation
 - delete pipe in IFD from trays
+- change 'add user' for 'users'
 
 DONE ✔
+- total lines implementation
 - home progress bar not working
 - input notifications to filter things
 - read/unread notifications + mark last_seen when access /notifications instead of open menu
