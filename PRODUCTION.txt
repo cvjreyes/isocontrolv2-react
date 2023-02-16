@@ -1,0 +1,7 @@
+Steps to put to production:
+- ifd / ifc buttons not clickable
+- pages redirect you to home:
+  - ifd
+  - ifc
+  - progress
+- home progress bar only takes in feed?

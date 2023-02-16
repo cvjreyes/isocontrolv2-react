@@ -4,12 +4,11 @@ import { jsx } from "@emotion/react";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../helpers/api";
 
 export default function NotificationsDropDown({
   closeMenu,
   notifications,
-  updateUserInfo,
+  user,
 }) {
   const navigate = useNavigate();
 
@@ -20,11 +19,6 @@ export default function NotificationsDropDown({
   }, []);
 
   useEffect(() => {
-    const updateLastSeen = async () => {
-      await api("post", "/users/update_last_seen");
-      updateUserInfo();
-    };
-    updateLastSeen();
     document.addEventListener("keydown", escFunction, false);
     return () => {
       document.removeEventListener("keydown", escFunction, false);
@@ -32,20 +26,20 @@ export default function NotificationsDropDown({
   }, []);
 
   return (
-    <div css={dropdownStyle}>
+    <div css={dropdownStyle} onClick={() => navigate("/notifications")}>
       {notifications.map((x) => {
+        const unseen = user.last_opened_notifications < x.created_at;
         return (
-          <div key={x.id} className="row default">
+          <div
+            key={x.id}
+            className="row pointer"
+            style={{ backgroundColor: unseen ? "#080808" : "auto" }}
+          >
             <p>{x.title}</p>
           </div>
         );
       })}
-      <div
-        className="see_all row removeStyle"
-        onClick={() => navigate("/notifications")}
-      >
-        See All
-      </div>
+      <div className="see_all row removeStyle">See All</div>
     </div>
   );
 }
