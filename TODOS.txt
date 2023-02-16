@@ -3,6 +3,7 @@ DOING 🔁
 
 TODO ❌
 - total lines implementation
+- delete pipe in IFD from trays
 
 DONE ✔
 - home progress bar not working
