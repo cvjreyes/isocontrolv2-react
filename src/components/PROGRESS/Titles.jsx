@@ -15,9 +15,9 @@ export default function Titles() {
           <NavLink to="/progress/IFD">IFD</NavLink>
         </div>
         <div>
-          <NavLink to="/progress/IFC" aria-disabled >
+          {/* <NavLink to="/progress/IFC" aria-disabled="true" > */}
             IFC
-          </NavLink>
+          {/* </NavLink> */}
         </div>
       </div>
     </div>
