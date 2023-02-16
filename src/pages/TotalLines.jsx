@@ -16,6 +16,7 @@ function TotalLinesComp({ setMessage }) {
   useEffect(() => {
     const getTotals = async () => {
       const { body } = await api("get", "/totals/FEED");
+      console.log(body);
       setTotals(body);
     };
     getTotals();
@@ -26,12 +27,13 @@ function TotalLinesComp({ setMessage }) {
     const tempTotals = [...totals];
     const idx = tempTotals.findIndex((x) => x.page === name);
     tempTotals[idx] = { ...tempTotals[idx], total: value };
+    console.log(tempTotals);
     setTotals(tempTotals);
   };
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
-    const res = await api("post", "/totals/update", { totals });
+    await api("post", "/totals/update", { totals });
     setMessage({ txt: "Changes saved!", type: "success" });
   };
 
@@ -46,7 +48,7 @@ function TotalLinesComp({ setMessage }) {
                 <div>{total.page}:</div>
                 <Input1
                   name={total.page}
-                  value={total.total || 0}
+                  value={total.total || ""}
                   onChange={handleChange}
                   type="number"
                 />
