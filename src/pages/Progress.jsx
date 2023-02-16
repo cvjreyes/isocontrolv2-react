@@ -11,7 +11,6 @@ import { api } from "../helpers/api";
 
 export default function Progress() {
   const { section } = useParams();
-  // console.log(section);
 
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
@@ -47,8 +46,6 @@ export default function Progress() {
 
   const handleChange = (key) => {
     let tempData = [...displayData];
-    console.log("Data: ", data);
-    console.log("displayData: ", displayData);
     // check if key exists in displayData
     if (key === section) {
       // check if all Subcategories are in displayData
@@ -71,9 +68,6 @@ export default function Progress() {
       tempData.map((x) => delete x[key]);
     } else {
       tempData = tempData.map((x, i) => {
-        console.log(x);
-        console.log("I: ", i, "| key: ", key);
-        console.log(key, data[i], data[i][key]);
         return { ...x, [key]: data[i] ? data[i][key] : null };
       });
     }
@@ -95,7 +89,6 @@ export default function Progress() {
 }
 
 const progressStyle = {
-  height:"90%",
   ".titles": {
     display: "grid",
     justifyContent: "center",
@@ -117,6 +110,7 @@ const progressStyle = {
     display: "grid",
     gridTemplateColumns: "1fr 4fr",
     marginTop: "3%",
+    minHeight: "70vh",
     ".sidepanel": {
       justifySelf: "center",
       width: "70%",
@@ -131,7 +125,6 @@ const progressStyle = {
       },
     },
     ".graphic": {
-      // height: "90%",
     },
   },
 };
