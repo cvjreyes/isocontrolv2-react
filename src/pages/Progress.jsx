@@ -14,6 +14,7 @@ export default function Progress() {
   // console.log(section);
 
   const [data, setData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
 
   const subcategories = [
     {
@@ -39,16 +40,19 @@ export default function Progress() {
       const { body } = await api("get", `/${section}/get_progress_data`);
       const prepared = prepareRows(body, section);
       setData(prepared);
+      setDisplayData(JSON.parse(JSON.stringify(prepared)));
     };
     getData();
   }, [section]);
 
   const handleChange = (key) => {
-    let tempData = [...data];
-    // check if key exists in data
+    let tempData = [...displayData];
+    console.log("Data: ", data);
+    console.log("displayData: ", displayData);
+    // check if key exists in displayData
     if (key === section) {
-      // check if all Subcategories are in data
-      if (subcategories.every((x) => data[0].hasOwnProperty(x.key))) {
+      // check if all Subcategories are in displayData
+      if (subcategories.every((x) => displayData[0].hasOwnProperty(x.key))) {
         // if they are remove all
         subcategories.every((x) => tempData.map((y) => delete y[x.key]));
       } else {
@@ -67,12 +71,13 @@ export default function Progress() {
       tempData.map((x) => delete x[key]);
     } else {
       tempData = tempData.map((x, i) => {
+        console.log(x);
         console.log("I: ", i, "| key: ", key);
         console.log(key, data[i], data[i][key]);
         return { ...x, [key]: data[i] ? data[i][key] : null };
       });
     }
-    setData(tempData);
+    setDisplayData(tempData);
   };
 
   return (
@@ -80,7 +85,7 @@ export default function Progress() {
       <Titles />
       {/* componente de Gráfica y SidePanel */}
       <Main
-        data={data}
+        data={displayData}
         subcategories={subcategories}
         section={section}
         handleChange={handleChange}
@@ -90,6 +95,7 @@ export default function Progress() {
 }
 
 const progressStyle = {
+  height:"90%",
   ".titles": {
     display: "grid",
     justifyContent: "center",
