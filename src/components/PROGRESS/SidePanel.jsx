@@ -2,23 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 
-export default function SidePanel({ data, subcategories, section }) {
-  //   return (
-  //     <div className="sidepanel">
-  //       SidePanel
-  //       {data.map((x, i) => {
-  //         return (
-  //           <div key={i}>
-  //             <div>
-  //               {Object.entries(x).map((y, j) => {
-  //                 return <div key={j}>{y[1]}</div>;
-  //               })}
-  //             </div>
-  //           </div>
-  //         );
-  //       })}
-  //     </div>
-  //   );
+export default function SidePanel({ data, subcategories, section, handleChange }) {
 
   return (
     <div className="sidepanel">
@@ -39,8 +23,8 @@ export default function SidePanel({ data, subcategories, section }) {
         {subcategories.map((x, i) => {
         //   console.log(x);
           return (
-            <div className="subcategory">
-              <label className="pointer" key={i}>
+            <div className="subcategory" key={i}>
+              <label className="pointer">
                 <input
                   type="checkbox"
                   checked={!!data[0] && x.key in data[0]}

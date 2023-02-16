@@ -67,6 +67,8 @@ export default function Progress() {
       tempData.map((x) => delete x[key]);
     } else {
       tempData = tempData.map((x, i) => {
+        console.log("I: ", i, "| key: ", key);
+        console.log(key, data[i], data[i][key]);
         return { ...x, [key]: data[i] ? data[i][key] : null };
       });
     }
@@ -77,7 +79,12 @@ export default function Progress() {
     <div css={progressStyle}>
       <Titles />
       {/* componente de Gráfica y SidePanel */}
-      <Main data={data} subcategories={subcategories} section={section} handleChange={handleChange} />
+      <Main
+        data={data}
+        subcategories={subcategories}
+        section={section}
+        handleChange={handleChange}
+      />
     </div>
   );
 }
@@ -104,23 +111,21 @@ const progressStyle = {
     display: "grid",
     gridTemplateColumns: "1fr 4fr",
     marginTop: "3%",
-    height: "90%",
     ".sidepanel": {
       justifySelf: "center",
-      height: "90%",
-      width: "60%",
+      width: "70%",
       ".category": {
-        marginBottom: "5%"
+        marginBottom: "5%",
       },
       ".subcategories": {
         marginLeft: "5%",
         ".subcategory": {
-          marginBottom: "3%"
-        }
+          marginBottom: "3%",
+        },
       },
     },
     ".graphic": {
-      height: "90%",
+      // height: "90%",
     },
   },
 };
