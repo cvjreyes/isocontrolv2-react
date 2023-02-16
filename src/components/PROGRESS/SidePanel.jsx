@@ -49,6 +49,7 @@ const sidePanelStyle = {
   height: "fit-content",
   padding: "2rem",
   borderRadius: "16px",
+  marginLeft: "20%",
   background: "linear-gradient(225deg, #e6e6e6, #ffffff)",
   boxShadow: "-8px 8px 16px #dedede, 8px -8px 16px #ffffff",
   ".category": {
