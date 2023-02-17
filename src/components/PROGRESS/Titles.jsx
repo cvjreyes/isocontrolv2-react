@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import Button1 from "../general/Button1";
 
 export default function Titles() {
-  const links = [{ label: "FEED" }, { label: "IFD" }, /*{ label: "IFC" }*/];
+  const links = [{ label: "FEED" }, { label: "IFD" } /*{ label: "IFC" }*/];
 
   const titlesStyle = {
     display: "grid",
