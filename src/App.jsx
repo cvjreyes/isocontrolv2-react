@@ -28,7 +28,7 @@ import TotalLines from "./pages/TotalLines";
 
 export default function App() {
   useEffect(() => {
-    document.title = `${import.meta.env.VITE_APP_NAMEPROJ} v2`;
+    document.title = `${import.meta.env.VITE_APP_NAMEPROJ}`;
   }, []);
 
   return (
