@@ -9,7 +9,6 @@ import { api } from "../../../../helpers/api";
 import WithToast from "../../../../modals/Toast";
 import WithModal from "../../../../modals/YesNo";
 import EditForecastRow from "./EditForecastRow";
-
 import EditForecastHead from "./EditForecastHead";
 
 function EditForecastComp({ setMessage, setModalContent }) {

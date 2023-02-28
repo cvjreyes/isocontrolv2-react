@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { api } from "../helpers/api";
@@ -12,7 +12,6 @@ import Button1 from "../components/general/Button1";
 
 import IsoControlLogo from "../assets/images/IsoControl.svg";
 import Eye from "../assets/images/eye.png";
-import { useState } from "react";
 
 function ResetPasswordComp({ setMessage }) {
   const { user_id, token } = useParams();

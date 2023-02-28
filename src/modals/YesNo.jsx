@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import React, { useEffect, useState } from "react";
+
 import Button from "../components/general/Button1";
 
 function withModal({ setMessage, children }) {

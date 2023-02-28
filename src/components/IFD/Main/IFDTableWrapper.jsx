@@ -1,13 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { Suspense } from "react";
 
 import Table from "../../table/Table";
 import Loading from "../../general/Loading";
 import FeedPipesHead from "../../FEED/main/FeedPipesHead";
 import FeedPipesExcelTableHeader from "../../FEED/main/FeedPipesExcelTableHeader";
 import { columnsData } from "../ColumnsData";
-import { Suspense } from "react";
 
 export default function IFDTableWrapper({
   title,

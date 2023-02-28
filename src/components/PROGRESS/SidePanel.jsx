@@ -1,6 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+
 import Checkbox from "../general/Checkbox";
 
 export default function SidePanel({
@@ -24,21 +25,20 @@ export default function SidePanel({
         {section}
       </div>
       <div className="subcategories">
-        {subcategories
-          .map((x, i) => {
-            // console.log("data: ", x);
-            // console.log("i: ", i);
-            return (
-              <div className="subcategory" key={i}>
-                <Checkbox
-                  handleChange={() => handleChange(x.key)}
-                  checked={!!data[0] && x.key in data[0]}
-                  color={colors[i]}
-                />
-                {x.label}
-              </div>
-            );
-          })}
+        {subcategories.map((x, i) => {
+          // console.log("data: ", x);
+          // console.log("i: ", i);
+          return (
+            <div className="subcategory" key={i}>
+              <Checkbox
+                handleChange={() => handleChange(x.key)}
+                checked={!!data[0] && x.key in data[0]}
+                color={colors[i]}
+              />
+              {x.label}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
