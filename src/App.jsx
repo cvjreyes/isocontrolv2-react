@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={import.meta.env.VITE_BASENAME}>
         <Navbar />
         <Routes>
           <Route exact path="/" element={<PrivateRoute component={Home} />} />
