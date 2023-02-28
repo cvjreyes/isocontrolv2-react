@@ -26,8 +26,6 @@ export default function SidePanel({
       </div>
       <div className="subcategories">
         {subcategories.map((x, i) => {
-          // console.log("data: ", x);
-          // console.log("i: ", i);
           return (
             <div className="subcategory" key={i}>
               <Checkbox

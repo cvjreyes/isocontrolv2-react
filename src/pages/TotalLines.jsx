@@ -15,7 +15,6 @@ function TotalLinesComp({ setMessage }) {
   useEffect(() => {
     const getTotals = async () => {
       const { body } = await api("get", "/totals/FEED");
-      console.log(body);
       setTotals(body);
     };
     getTotals();
@@ -26,7 +25,6 @@ function TotalLinesComp({ setMessage }) {
     const tempTotals = [...totals];
     const idx = tempTotals.findIndex((x) => x.page === name);
     tempTotals[idx] = { ...tempTotals[idx], total: value };
-    console.log(tempTotals);
     setTotals(tempTotals);
   };
 
