@@ -13,6 +13,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+
 import { AuthContext } from "../../../context/AuthContext";
 
 import { api } from "../../../helpers/api";

@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
