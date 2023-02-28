@@ -1,10 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { URL } from "../../helpers/config";
 import Square from "./Square";
 import ProgressBar from "./ProgressBar";
 import { api } from "../../helpers/api";

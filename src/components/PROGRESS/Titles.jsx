@@ -3,43 +3,38 @@
 import { jsx } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 
+import Button1 from "../general/Button1";
+
 export default function Titles() {
+  const links = [{ label: "FEED" }, { label: "IFD" } /*{ label: "IFC" }*/];
+
+  const titlesStyle = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${links.length}, 1fr)`,
+    width: "fit-content",
+    margin: "3% auto 0",
+    ".boxlink": {
+      margin: "0 3rem",
+    },
+  };
+
   return (
     <div css={titlesStyle}>
-      <div className="title">
-        <h1>Progress</h1>
-      </div>
-      <div className="links">
-        <div>
-          <NavLink to="/progress/FEED">FEED</NavLink>
-        </div>
-        <div>
-          <NavLink to="/progress/IFD">IFD</NavLink>
-        </div>
-        <div>
-          {/* <NavLink to="/progress/IFC" aria-disabled="true" > */}
-          IFC
-          {/* </NavLink> */}
-        </div>
-      </div>
+      {links.map((x, i) => {
+        return (
+          <div key={i} className="boxlink">
+            <NavLink to={`/progress/${x.label}`}>
+              <Button1
+                text={x.label}
+                color="white"
+                fontWeight="bold"
+                bgColor="#338DF1"
+                bgHover="#66A9F4"
+              />
+            </NavLink>
+          </div>
+        );
+      })}
     </div>
   );
 }
-
-const titlesStyle = {
-  display: "grid",
-  justifyContent: "center",
-  marginTop: "3%",
-  gridRowGap: "50%",
-  ".title": {
-    display: "grid",
-    gridTemplateColumns: "3fr",
-    justifySelf: "center",
-  },
-  ".links": {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    gridColumnGap: "50%",
-    marginLeft: "-90%",
-  },
-};

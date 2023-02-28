@@ -4,6 +4,7 @@ DOING 🔁
 TODO ❌
 - delete pipe in IFD from trays
 - change 'add user' for 'users'
+- notifications update every minute?
 
 DONE ✔
 - total lines implementation
