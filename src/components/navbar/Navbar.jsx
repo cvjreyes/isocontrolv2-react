@@ -19,11 +19,12 @@ export default function Navbar() {
   const [isUserMenuOpen, setOpenUserMenu] = useState(false);
 
   useEffect(() => {
-    const getNotifications = async () => {
-      const { body } = await api("get", "/notifications/get_last_10");
-      setNotifications(body);
-    };
     getNotifications();
+    const interval = setInterval(() => {
+      getNotifications();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -35,15 +36,21 @@ export default function Navbar() {
     setOpenNotificationsMenu(false);
   }, [location]);
 
+  const getNotifications = async () => {
+    console.log("updating notifications");
+    const { body } = await api("get", "/notifications/get_last_10");
+    setNotifications(body);
+  };
+
   const toggleUserMenu = (e) => {
     e.preventDefault();
-    setOpenUserMenu((prev) => !prev);
+    setOpenUserMenu(!isUserMenuOpen);
     if (isNotificationsMenuOpen) setOpenNotificationsMenu(false);
   };
 
   const toggleNotificationsMenu = (e) => {
     e.preventDefault();
-    setOpenNotificationsMenu((prev) => !prev);
+    setOpenNotificationsMenu(!isNotificationsMenuOpen);
     if (isUserMenuOpen) setOpenUserMenu(false);
   };
 

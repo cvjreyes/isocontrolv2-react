@@ -210,7 +210,7 @@ const editForecastStyle = {
   ".tableWrapper": {
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
-    height: "calc(60vh - 50px)",
+    height: "calc(70vh - 50px)",
     padding: "10px 0 0 10px",
     ".cell": { padding: "10px", textAlign: "center" },
     ".header": {
@@ -236,7 +236,7 @@ const editForecastStyle = {
       },
     },
     ".table": {
-      maxHeight: "calc(60vh - 101px)",
+      maxHeight: "calc(70vh - 101px)",
       border: "solid black",
       borderWidth: "0 0 0 1px",
       ".tableGrid": {

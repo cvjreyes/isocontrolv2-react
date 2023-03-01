@@ -51,7 +51,7 @@ const IFDStyle = {
   padding: "0 2%",
   "> *": {
     alignSelf: "center",
-    height: "60vh",
+    height: "70vh",
   },
   "> div:first-of-type": {
     borderRight: "0", // equivale a hacer border-collapse: collapse pero sin table
@@ -66,6 +66,6 @@ const IFDStyle = {
     padding: "10px 1% 0",
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
-    height: "calc(60vh - 50px)",
+    height: "calc(70vh - 50px)",
   },
 };

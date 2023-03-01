@@ -29,7 +29,7 @@ export default function Dropdown({ closeMenu, logout, user }) {
       {userHasRoles(user, ["Speciality Lead"]) && (
         <div className="dropdownElement">
           <Button1
-            text="Add User"
+            text="Users"
             className="logout"
             bgColor="transparent"
             color="white"
