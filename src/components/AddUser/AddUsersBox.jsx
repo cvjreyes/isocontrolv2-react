@@ -177,7 +177,7 @@ const addUserBoxStyle = {
     "> div": {
       width: "100%",
       overflowY: "auto",
-      height: "60vh",
+      height: "70vh",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,

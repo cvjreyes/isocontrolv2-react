@@ -35,7 +35,7 @@ export default function AddTable({
 const tableStyle = {
   paddingBottom: "200px",
   // scroll behaviour
-  height: "calc(60vh - 113px)",
+  height: "calc(70vh - 113px)",
   overflowY: "scroll",
   msOverflowStyle: "none" /* Internet Explorer 10+ */,
   scrollbarWidth: "none" /* Firefox */,
