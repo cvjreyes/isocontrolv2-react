@@ -103,7 +103,7 @@ export default function AddPipe({
     let changedRow = { ...tempData[i] };
     changedRow[name] = pastedData.trim();
     if (name === "line_reference") {
-      const values = divideLineReference(value, lineRefs);
+      const values = divideLineReference(pastedData, lineRefs);
       changedRow = { ...changedRow, ...values };
     } else if (name === "tag") {
       // divide tag
@@ -215,7 +215,7 @@ export default function AddPipe({
 const AddPipeStyle = {
   textAlign: "center",
   width: "100%",
-  height: "60vh",
+  height: "70vh",
   h3: {
     fontSize: "20px",
   },

@@ -210,7 +210,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     let changedRow = { ...tempData[idx] };
     changedRow[name] = pastedData;
     if (name === "line_reference") {
-      const values = divideLineReference(value, lineRefs);
+      const values = divideLineReference(pastedData, lineRefs);
       changedRow = { ...changedRow, ...values };
     } else if (name === "tag") {
       // divide tag

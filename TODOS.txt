@@ -1,12 +1,18 @@
 DOING 🔁
   - re-build progress < T >
+    - click on label acts as checkbox
+    - label nowrap
+    - decrease border width
 
 TODO ❌
+- no access to IFC
 - delete pipe in IFD from trays
-- change 'add user' for 'users'
-- notifications update every minute?
 
 DONE ✔
+- sidebar IFD header => increase height
+- notifications update every minute
+- change 'add user' for 'users'
+- owners = design + design lead
 - total lines implementation
 - home progress bar not working
 - input notifications to filter things
