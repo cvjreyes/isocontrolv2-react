@@ -32,6 +32,8 @@ export default function FeedPipesExcelTableWrapper({
   gridSize,
   setMessage,
   progress,
+  isViewMode,
+  setIsViewMode,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
 
@@ -50,6 +52,7 @@ export default function FeedPipesExcelTableWrapper({
         page={page}
         setMessage={setMessage}
         progress={progress}
+        setIsViewMode={setIsViewMode}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
@@ -76,6 +79,7 @@ export default function FeedPipesExcelTableWrapper({
           changed={changed}
           deleting={deleting}
           handleDelete={handleDelete}
+          isViewMode={isViewMode}
         />
       </div>
     </div>

@@ -34,6 +34,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
+  const [isViewMode, setIsViewMode] = useState(true);
 
   const getFeedPipes = async () => {
     const { body: rows } = await api("get", "/feed/get_all_pipes");
@@ -326,6 +327,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 gridSize={gridSize}
                 setMessage={setMessage}
                 progress={progress}
+                setIsViewMode={setIsViewMode}
+                isViewMode={isViewMode}
               />
             </CopyContext>
           }
