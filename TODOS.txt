@@ -1,4 +1,5 @@
 DOING 🔁
+- cron node FEED not IFD
 
 TODO ❌
 - delete pipe in IFD from trays
