@@ -1,10 +1,10 @@
 DOING 🔁
-- cron node FEED not IFD
 
 TODO ❌
 - delete pipe in IFD from trays
 
 DONE ✔
+- cron node FEED not IFD
 - re-build progress
 - no access to IFC
 - sidebar IFD header => increase height
