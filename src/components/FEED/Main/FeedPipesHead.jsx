@@ -21,17 +21,21 @@ export default function Header({
   page,
   setMessage,
   progress,
+  setIsViewMode,
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();
 
   const options = [
-    { value: "default", label: "Default" },
+    { value: "view", label: "View" },
+    { value: "edit", label: "Edit" },
     { value: "copy", label: "Copy" },
     { value: "delete", label: "Delete" },
   ];
 
   const handleSelectChange = (e) => {
+    if (e.value === "view") setIsViewMode(true);
+    else setIsViewMode(false);
     if (e.value === "copy") setCopyMulti(true);
     else setCopyMulti(false);
     if (e.value === "delete") setDeleting(true);

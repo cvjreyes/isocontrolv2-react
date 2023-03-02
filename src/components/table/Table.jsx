@@ -21,6 +21,7 @@ const Table = React.memo(
     changed,
     deleting,
     handleDelete,
+    isViewMode,
   }) => {
     return (
       <div css={tableStyle}>
@@ -43,6 +44,7 @@ const Table = React.memo(
                   changed={changed}
                   deleting={deleting}
                   handleDelete={handleDelete}
+                  isViewMode={isViewMode}
                 />
               );
             })
