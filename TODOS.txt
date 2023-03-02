@@ -1,14 +1,11 @@
 DOING 🔁
-  - re-build progress < T >
-    - click on label acts as checkbox
-    - label nowrap
-    - decrease border width
 
 TODO ❌
-- no access to IFC
 - delete pipe in IFD from trays
 
 DONE ✔
+- re-build progress
+- no access to IFC
 - sidebar IFD header => increase height
 - notifications update every minute
 - change 'add user' for 'users'

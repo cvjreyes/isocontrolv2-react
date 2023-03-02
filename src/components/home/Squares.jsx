@@ -39,12 +39,14 @@ export default function Squares() {
           subtext="(Issue For Design)"
           num={IFDProgress}
           to="/ifd"
+          className={!import.meta.env.VITE_IFD && "not-allowed"}
         />
         <Square
           text="IFC"
           subtext="(Issue For Construction)"
           num={IFCProgress}
           to="/ifc"
+          className={!import.meta.env.VITE_IFC && "not-allowed"}
         />
       </div>
       <ProgressBar

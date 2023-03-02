@@ -37,7 +37,6 @@ export default function Navbar() {
   }, [location]);
 
   const getNotifications = async () => {
-    console.log("updating notifications");
     const { body } = await api("get", "/notifications/get_last_10");
     setNotifications(body);
   };
@@ -64,10 +63,18 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/feed">
           FEED
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/ifd">
+        <NavLink
+          className={!import.meta.env.VITE_IFD && "not-allowed"}
+          style={({ isIt }) => isIt && "active"}
+          to="/ifd"
+        >
           IFD
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
+        <NavLink
+          className={!import.meta.env.VITE_IFC && "not-allowed"}
+          style={({ isIt }) => isIt && "active"}
+          to="/ifc"
+        >
           IFC
         </NavLink>
         <NavLink style={({ isIt }) => isIt && "active"} to="/progress">
