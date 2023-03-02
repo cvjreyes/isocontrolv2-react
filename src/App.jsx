@@ -46,9 +46,25 @@ export default function App() {
           <Route
             exact
             path="/ifd/*"
-            element={<PrivateRoute component={IFD} />}
+            element={
+              import.meta.env.VITE_IFD ? (
+                <PrivateRoute component={IFD} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
-          <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
+          <Route
+            exact
+            path="/ifc"
+            element={
+              import.meta.env.VITE_IFC ? (
+                <PrivateRoute component={IFC} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
           <Route
             exact
             path="/progress/:section"

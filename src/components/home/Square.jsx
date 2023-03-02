@@ -6,9 +6,9 @@ import Countup from "react-countup";
 
 import "./home.css";
 
-export default function Square({ to, text, subtext, num }) {
+export default function Square({ to, text, subtext, num, className }) {
   return (
-    <Link to={to} css={itemStyle} className="test">
+    <Link to={to} css={itemStyle} className={`test ${className}`}>
       <p className="big">{text}</p>
       <p className="small">{subtext}</p>
       {/* <p className="big">{num}%</p> */}

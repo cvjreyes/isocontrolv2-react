@@ -6,7 +6,6 @@ import Graphic from "./Graphic";
 import SidePanel from "./SidePanel";
 
 export default function Main({ data, subcategories, section, handleChange }) {
-
   const colors = ["brown", "red", "blue", "salmon"];
 
   return (
@@ -25,7 +24,7 @@ export default function Main({ data, subcategories, section, handleChange }) {
 
 const mainStyle = {
   display: "grid",
-  gridTemplateColumns: "1fr 4fr",
-  marginTop: "3%",
+  gridTemplateColumns: "minmax(350px, 1fr) 4fr",
+  marginTop: "40px",
   minHeight: "70vh",
 };
