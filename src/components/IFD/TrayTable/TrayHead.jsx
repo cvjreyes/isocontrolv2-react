@@ -1,18 +1,22 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import ReactSelect from "react-select";
+import { AuthContext } from "../../../context/AuthContext";
+import { userHasRoles } from "../../../helpers/user";
 
 import Button2 from "../../general/Button2";
 
 export default function TrayHead({
   handleClaim,
+  handleUnclaim,
   buttonText,
   title,
   data,
   orderBy,
 }) {
+  const { user } = useContext(AuthContext);
   const selectRef = useRef(null);
 
   const options = [
@@ -52,6 +56,25 @@ export default function TrayHead({
         <h3 className="bold">{title}</h3>
       </div>
       <div className="flexCenter">
+        {userHasRoles(user, ["Speciality Lead"]) && (
+          <Button2
+            onClick={handleUnclaim}
+            text={buttonText || "Unclaim"}
+            width="100px"
+            bgColor="transparent"
+            border="none"
+            color="white"
+            fontWeight="600"
+            fontSize="14px"
+            textMargin="0 0 0 6px"
+            margin="0 0 0 3%"
+            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+            // img
+            alt="Unclaim"
+            src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
+            imgFilter="invert(100%) brightness(200%)"
+          />
+        )}
         <Button2
           onClick={handleClaim}
           text={buttonText || "Claim"}
