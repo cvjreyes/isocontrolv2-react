@@ -42,5 +42,5 @@ export function getName(email) {
 }
 
 export function userHasRoles(user, roles) {
-  return roles.every((x) => user.roles.find((role) => role.name === x));
+  return roles.every((x) => user?.roles.find((role) => role.name === x));
 }

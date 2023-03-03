@@ -1,7 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useContext } from "react";
 import Loading from "react-loading";
+import { AuthContext } from "../../../context/AuthContext";
+import { userHasRoles } from "../../../helpers/user";
 
 import NoResults from "../../general/NoResults";
 import TrayHead from "./TrayHead";
@@ -10,6 +13,7 @@ import RowTray from "./TrayTableRow";
 export default function TrayTable({
   data,
   handleClaim,
+  handleUnclaim,
   addToDataClaim,
   title,
   dataToClaim,
@@ -19,6 +23,8 @@ export default function TrayTable({
   filterInfo,
   orderBy,
 }) {
+  const { user } = useContext(AuthContext);
+
   const titles = [
     { text: "Claim", key: "claim" },
     { text: "Tag", key: "tag" },
@@ -92,6 +98,7 @@ export default function TrayTable({
         title={title}
         data={data}
         orderBy={orderBy}
+        handleUnclaim={handleUnclaim}
       />
       <div className="wrapper">
         <div className="grid">
@@ -104,12 +111,13 @@ export default function TrayTable({
                   onClick={selectAll}
                 >
                   <input
+                    className="pointer"
                     type="checkbox"
                     checked={
-                      data.filter((x) => !x.owner).length ===
-                        dataToClaim.length &&
-                      data.length > 0 &&
-                      data.filter((x) => !x.owner).length > 0
+                      userHasRoles(user, ["Speciality Lead"])
+                        ? data.length === dataToClaim.length && data.length > 0
+                        : data.filter((x) => !x.owner).length ===
+                            dataToClaim.length && dataToClaim.length > 0
                     }
                     readOnly
                   />
@@ -155,6 +163,7 @@ export default function TrayTable({
                   titles={titles}
                   addToDataClaim={addToDataClaim}
                   dataToClaim={dataToClaim}
+                  user={user}
                 />
               ))
             ) : (
