@@ -2,8 +2,20 @@ DOING 🔁
 
 TODO ❌
 - delete pipe in IFD from trays
+- force unclaim available from speciality lead
+  - select if role speciality lead
+  - unclaim button visible if role speciality lead
+  - btn funcionality
+  - in trays
+    - modelled ✔
+    - s-stress
+    - r-stress
+    - stress
+    - supports
+    - s-design
 
 DONE ✔
+- mode not changing when changing views
 - cron node FEED not IFD
 - re-build progress
 - no access to IFC

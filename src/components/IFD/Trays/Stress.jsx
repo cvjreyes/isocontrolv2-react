@@ -8,6 +8,7 @@ import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { AuthContext } from "../../../context/AuthContext";
 import TrayTable from "../TrayTable/TrayTable";
+import { userHasRoles } from "../../../helpers/user";
 
 function StressComp({ setMessage }) {
   const { user } = useContext(AuthContext);
@@ -37,15 +38,17 @@ function StressComp({ setMessage }) {
     setDisplayData(rows);
   };
 
-  const updatePipesDisplay = () => {
+  const updatePipesDisplay = (claim) => {
     const tempData = [...data];
     tempData.map((x) => {
       if (dataToClaim.includes(x.id)) {
-        x.owner = user.name;
+        x.owner = claim ? user.name : null;
       }
     });
     setData(tempData);
     filter(tempData);
+    setDataToClaim([]);
+    return setMessage({ txt: "Changes saved!", type: "success" });
   };
 
   const handleClaim = async () => {
@@ -56,9 +59,20 @@ function StressComp({ setMessage }) {
       data: dataToSend,
     });
     if (ok) {
-      updatePipesDisplay();
-      setDataToClaim([]);
-      return setMessage({ txt: "Changes saved!", type: "success" });
+      return updatePipesDisplay(true);
+    }
+    return setMessage({ txt: "Something went wrong", type: "error" });
+  };
+
+  const handleUnclaim = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to claim", type: "warn" });
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+    const { ok } = await api("post", "/ifd/unclaim_pipes", {
+      data: dataToSend,
+    });
+    if (ok) {
+      return updatePipesDisplay(false);
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
@@ -103,7 +117,9 @@ function StressComp({ setMessage }) {
   };
 
   const selectAll = () => {
-    const rows = data.filter((x) => !x.owner);
+    const rows = userHasRoles(user, ["Speciality Lead"])
+      ? [...data]
+      : data.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
@@ -138,6 +154,7 @@ function StressComp({ setMessage }) {
       title="Stress"
       data={displayData}
       handleClaim={handleClaim}
+      handleUnclaim={handleUnclaim}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
       selectAll={selectAll}

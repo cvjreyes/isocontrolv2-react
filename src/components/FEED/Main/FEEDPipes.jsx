@@ -47,6 +47,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     setDisplayData(rows2);
   };
 
+  const resetMode = () => {
+    setDeleting(false);
+    setIsViewMode(true);
+  };
+
   useLayoutEffect(() => {
     const getThings = async () => {
       await Promise.all([
@@ -61,6 +66,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     };
     getThings();
     getFeedPipes();
+    resetMode();
   }, [location]);
 
   useEffect(() => {

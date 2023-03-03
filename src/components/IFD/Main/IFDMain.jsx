@@ -56,6 +56,11 @@ function IFDMainComp({ setMessage, setModalContent }) {
     setFeedPipes(rows);
   };
 
+  const resetMode = () => {
+    setDeleting(false);
+    setIsViewMode(true);
+  };
+
   useLayoutEffect(() => {
     const getThings = async () => {
       await Promise.all([
@@ -79,6 +84,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
     };
     getFeedPipes();
     getThings();
+    resetMode();
   }, [location]);
 
   useEffect(() => {

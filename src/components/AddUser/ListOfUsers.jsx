@@ -56,7 +56,7 @@ export default function ListOfUsers({
         <div>
           {users ? (
             users.length > 0 ? (
-              users.map((user, i) => {
+              users.map((user) => {
                 return (
                   <div
                     key={user.id}
