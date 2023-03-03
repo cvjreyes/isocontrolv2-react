@@ -38,6 +38,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
+  const [isViewMode, setIsViewMode] = useState(true);
 
   const getIFDPipes = async () => {
     const { body: pipes } = await api("get", "/ifd/get_some_pipes/0");
@@ -349,6 +350,8 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 handlePaste={handlePaste}
                 setMessage={setMessage}
                 progress={progress}
+                setIsViewMode={setIsViewMode}
+                isViewMode={isViewMode}
               />
             </CopyContext>
           }

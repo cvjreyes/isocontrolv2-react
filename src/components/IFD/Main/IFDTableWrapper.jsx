@@ -35,6 +35,8 @@ export default function IFDTableWrapper({
   gridSize,
   setMessage,
   progress,
+  setIsViewMode,
+  isViewMode,
 }) {
   return (
     <div css={tableWrapperStyle}>
@@ -51,6 +53,7 @@ export default function IFDTableWrapper({
         page={page}
         setMessage={setMessage}
         progress={progress}
+        setIsViewMode={setIsViewMode}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
@@ -79,6 +82,7 @@ export default function IFDTableWrapper({
             copyMulti={copyMulti}
             deleting={deleting}
             handleDelete={handleDelete}
+            isViewMode={isViewMode}
           />
         </Suspense>
       </div>
