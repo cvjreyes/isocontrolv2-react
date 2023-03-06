@@ -22,7 +22,9 @@ export const buildTag = (row) => {
   let tag = "";
   let tag_order = import.meta.env.VITE_TAG_ORDER.split(/[ -]+/);
   for (let i = 0; i < tag_order.length; i++) {
-    if (i === tag_order.length - 1) {
+    if (tag_order[i] === "gasket") {
+      tag += row[tag_order[i]];
+    } else if (i === tag_order.length - 1) {
       tag += "_" + row[tag_order[i]];
     } else if (i === 0) {
       tag = row[tag_order[i]];
@@ -81,6 +83,7 @@ export const divideLineReference = (ref, lineRefs) => {
     diameter,
     calc_notes,
     line_refno,
+    gasket,
   } = {
     ...lineRefs[idx],
   };
@@ -96,6 +99,7 @@ export const divideLineReference = (ref, lineRefs) => {
     calc_notes,
     type,
     line_refno,
+    gasket,
   };
 };
 

@@ -38,9 +38,8 @@ export function copyToClipboard(id, table) {
   // write blob to clipboard ( copied! )
   try {
     navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-    // console.log(document);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 

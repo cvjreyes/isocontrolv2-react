@@ -176,6 +176,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     if (name === "line_reference") {
       const values = divideLineReference(value, lineRefs);
       changedRow = { ...changedRow, ...values };
+      changedRow.tag = buildTag(changedRow);
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
