@@ -106,17 +106,8 @@ export const divideLineReference = (ref, lineRefs) => {
 export const buildFeedRow = (row, id) => {
   return {
     line_reference: row[0],
-    tag: row[1],
-    area: row[2],
-    unit: row[3],
-    fluid: row[4],
-    seq: row[5],
-    diameter: row[6],
-    spec: row[7],
-    type: row[8],
-    insulation: row[9],
-    train: row[10],
-    status: row[11],
+    area: row[1],
+    train: row[2],
     id,
   };
 };

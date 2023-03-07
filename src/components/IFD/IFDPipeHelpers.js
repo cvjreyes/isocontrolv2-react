@@ -30,18 +30,8 @@ export const calculateNextStep = (status, type) => {
 export const buildIFDRow = (row, id) => {
   return {
     line_reference: row[0],
-    tag: row[1],
-    owner: row[2],
-    area: row[3],
-    unit: row[4],
-    fluid: row[5],
-    seq: row[6],
-    diameter: row[7],
-    spec: row[8],
-    type: row[9],
-    insulation: row[10],
-    train: row[11],
-    status: row[12],
+    area: row[1],
+    train: row[2],
     id,
   };
 };
