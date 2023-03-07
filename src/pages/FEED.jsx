@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Main from "../layouts/Main";
 import Sidebar from "../components/sidebar/Sidebar";
-import FEEDPipes from "../components/FEED/main/FEEDPipes";
+import FEEDPipes from "../components/FEED/Main/FEEDPipes";
 import FeedProgress from "../components/FEED/feedProgress/FeedProgress";
 
 export default function FEED() {

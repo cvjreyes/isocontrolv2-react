@@ -13,6 +13,7 @@ import {
   divideTag,
   buildLineRef,
   buildTagIfFilled,
+  buildTag,
 } from "../feedPipesHelpers";
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
@@ -91,9 +92,9 @@ export default function AddPipe({
       let ind = pastedData.indexOf("\r");
       pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 3) {
       return pasteRow(e, i);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 3) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -133,10 +134,15 @@ export default function AddPipe({
       lines.forEach((line) => {
         if (line.length < 1) return;
         let row = line.split("\t");
-        const builtRow = buildRow(row, i + 1);
+        let builtRow = buildRow(row, i + 1);
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values, status: "ESTIMATED" };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         if (
           builtRow.tag &&
           [...rows, ...data].some((x, y) => x.tag === builtRow.tag && i !== y)
@@ -161,11 +167,15 @@ export default function AddPipe({
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, idx);
+        let builtRow = buildRow(row, idx);
         // Ponemos el 0 en el train si no esta
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values, status: "ESTIMATED" };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         // check for repeated tag
         if (
           builtRow.tag &&

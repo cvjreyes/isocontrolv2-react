@@ -179,8 +179,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
-      changedRow.tag = buildTag(changedRow);
     }
+    changedRow.tag = buildTag(changedRow);
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
     if (data.some((x) => x.tag === changedRow.tag && x.id !== id))
       // si existe un tag igual ponerlo como 'already exists'
@@ -204,9 +204,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       let ind = pastedData.indexOf("\r");
       pastedData[0] = pastedData[0].slice(0, ind);
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 3) {
       return pasteRow(e, id);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 3) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -244,7 +244,16 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildFeedRow(row, id);
+        let builtRow = buildFeedRow(row, id);
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+        }
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
+        // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -271,7 +280,15 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildFeedRow(row, tempData[y].id);
+        let builtRow = buildFeedRow(row, tempData[y].id);
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+        }
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
           builtRow.tag = "Already exists";
