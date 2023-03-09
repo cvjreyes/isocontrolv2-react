@@ -287,30 +287,40 @@ function IFDMainComp({ setMessage, setModalContent }) {
       lines.pop();
       let toAdd = [];
       // loop each row
-      lines.forEach((line, x) => {
-        // get idx of iterated element in data
-        const y = tempData.findIndex(
-          (item) => item.id === displayData[i + x].id
-        );
-        // get row in form of array
-        let row = line.split("\t");
-        // build row as object
-        let builtRow = buildIFDRow(row, tempData[y].id);
-        if (!builtRow.train.includes("0")) {
-          builtRow.train = "0" + builtRow.train;
-        }
-        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
-        const values = divideLineReference(builtRow.line_reference, lineRefs);
-        builtRow = { ...builtRow, ...values };
-        const tag = buildTag(builtRow);
-        builtRow.tag = tag;
-        // check for repeated tag
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
-          builtRow.tag = "Already exists";
-        // update tempData
-        tempData[y] = { ...tempData[y], ...builtRow };
-        toAdd.push(displayData[i + x].id);
-      });
+      try {
+        lines.forEach((line, x) => {
+          // get idx of iterated element in data
+          const y = tempData.findIndex(
+            (item) => item.id === displayData[i + x].id
+          );
+          // get row in form of array
+          let row = line.split("\t");
+          // build row as object
+          let builtRow = buildIFDRow(row, tempData[y].id);
+          if (!builtRow.train.includes("0")) {
+            builtRow.train = "0" + builtRow.train;
+          }
+          builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+          const values = divideLineReference(builtRow.line_reference, lineRefs);
+          builtRow = { ...builtRow, ...values };
+          const tag = buildTag(builtRow);
+          builtRow.tag = tag;
+          // check for repeated tag
+          if (
+            data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id)
+          )
+            builtRow.tag = "Already exists";
+          // update tempData
+          tempData[y] = { ...tempData[y], ...builtRow };
+          toAdd.push(displayData[i + x].id);
+        });
+      } catch (err) {
+        console.error(err);
+        return setMessage({
+          txt: "Cannot paste more pipes than then ones there are",
+          type: "error",
+        });
+      }
       addToChanged(toAdd);
       filter(tempData);
       setData(tempData);

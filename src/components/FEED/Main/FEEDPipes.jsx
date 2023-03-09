@@ -302,7 +302,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         });
       } catch (err) {
         console.error(err);
-        setMessage({
+        return setMessage({
           txt: "Cannot paste more pipes than then ones there are",
           type: "error",
         });
