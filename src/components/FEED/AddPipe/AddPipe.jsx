@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
@@ -18,6 +18,7 @@ import {
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
 import { row, emptyRows } from "./EmptyRows";
+import Loading from "../../general/Loading";
 
 export default function AddPipe({
   lineRefs,
@@ -33,6 +34,11 @@ export default function AddPipe({
 
   const [rows, setRows] = useState(emptyRows);
   const [rowsToAdd, setRowsToAdd] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (loading) setLoading(false);
+  }, [rows]);
 
   const handleChange = ({ target }, i) => {
     const { name, value } = { ...target };
@@ -156,6 +162,7 @@ export default function AddPipe({
   };
 
   const pasteMultipleRows = (e, i) => {
+    setLoading(true);
     e.clipboardData.items[0].getAsString((text) => {
       const tempData = [...rows];
       // get rows as strings
@@ -209,14 +216,18 @@ export default function AddPipe({
           }}
           filterInfo={{}}
         />
-        <AddTable
-          rows={rows}
-          columns={columns}
-          gridSize={gridSize}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          handlePaste={handlePaste}
-        />
+        {loading ? (
+          <Loading size="small" />
+        ) : (
+          <AddTable
+            rows={rows}
+            columns={columns}
+            gridSize={gridSize}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handlePaste={handlePaste}
+          />
+        )}
       </div>
     </div>
   );
