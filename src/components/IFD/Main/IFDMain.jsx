@@ -14,10 +14,11 @@ import {
 } from "../../FEED/feedPipesHelpers";
 import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
-import Loading from "../../general/Loading";
 import AddFeedPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
 import { buildIFDRow } from "../IFDPipeHelpers";
+
+import loadingGif from "../../../assets/gifs/loading.gif";
 
 function IFDMainComp({ setMessage, setModalContent }) {
   const location = useLocation();
@@ -354,7 +355,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<img alt="loading" src={loadingGif} />}>
       <Routes>
         <Route
           path="/"
