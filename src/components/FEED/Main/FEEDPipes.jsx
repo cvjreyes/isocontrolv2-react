@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
-import Loading from "react-loading";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import {
@@ -18,6 +17,8 @@ import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import AddPipe from "../AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
+
+import loadingGif from "../../../assets/gifs/loading.gif";
 
 function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const location = useLocation();
@@ -335,7 +336,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<img alt="loading" src={loadingGif} />}>
       <Routes>
         <Route
           path="/"
