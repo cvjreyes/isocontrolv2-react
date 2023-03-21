@@ -1,8 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { api } from "../helpers/api";
 import Button2 from "../components/general/Button2";
@@ -16,7 +15,6 @@ function TotalLinesComp({ setMessage }) {
   useEffect(() => {
     const getTotals = async () => {
       const { body } = await api("get", "/totals/FEED");
-      console.log(body);
       setTotals(body);
     };
     getTotals();
@@ -27,7 +25,6 @@ function TotalLinesComp({ setMessage }) {
     const tempTotals = [...totals];
     const idx = tempTotals.findIndex((x) => x.page === name);
     tempTotals[idx] = { ...tempTotals[idx], total: value };
-    console.log(tempTotals);
     setTotals(tempTotals);
   };
 

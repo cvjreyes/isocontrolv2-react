@@ -1,11 +1,28 @@
 DOING 🔁
-  - re-build progress < T >
 
 TODO ❌
 - delete pipe in IFD from trays
-- change 'add user' for 'users'
+- force unclaim available from speciality lead
+  - select if role speciality lead
+  - unclaim button visible if role speciality lead
+  - btn funcionality
+  - in trays
+    - modelled ✔
+    - s-stress
+    - r-stress
+    - stress
+    - supports
+    - s-design
 
 DONE ✔
+- mode not changing when changing views
+- cron node FEED not IFD
+- re-build progress
+- no access to IFC
+- sidebar IFD header => increase height
+- notifications update every minute
+- change 'add user' for 'users'
+- owners = design + design lead
 - total lines implementation
 - home progress bar not working
 - input notifications to filter things

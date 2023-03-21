@@ -14,10 +14,11 @@ import {
 } from "../../FEED/feedPipesHelpers";
 import IFDTableWrapper from "./IFDTableWrapper";
 import CopyContext from "../../../context/CopyContext";
-import Loading from "../../general/Loading";
 import AddFeedPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
 import { buildIFDRow } from "../IFDPipeHelpers";
+
+import loadingGif from "../../../assets/gifs/loading.gif";
 
 function IFDMainComp({ setMessage, setModalContent }) {
   const location = useLocation();
@@ -38,6 +39,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const [filterInfo, setFilterInfo] = useState({});
   const [changed, setChanged] = useState([]);
   const [deleting, setDeleting] = useState(false);
+  const [isViewMode, setIsViewMode] = useState(true);
 
   const getIFDPipes = async () => {
     const { body: pipes } = await api("get", "/ifd/get_some_pipes/0");
@@ -53,6 +55,11 @@ function IFDMainComp({ setMessage, setModalContent }) {
     const { body: rows } = await api("get", "/feed/get_all_pipes");
     rows.map((row) => (row.tag = buildTag(row)));
     setFeedPipes(rows);
+  };
+
+  const resetMode = () => {
+    setDeleting(false);
+    setIsViewMode(true);
   };
 
   useLayoutEffect(() => {
@@ -78,6 +85,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
     };
     getFeedPipes();
     getThings();
+    resetMode();
   }, [location]);
 
   useEffect(() => {
@@ -136,8 +144,8 @@ function IFDMainComp({ setMessage, setModalContent }) {
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
-      changedRow.tag = buildTag(changedRow);
     }
+    changedRow.tag = buildTag(changedRow);
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
     if (data.some((x) => x.tag === changedRow.tag && x.id !== id))
       // si existe un tag igual ponerlo como 'already exists'
@@ -213,9 +221,9 @@ function IFDMainComp({ setMessage, setModalContent }) {
       let ind = pastedData.indexOf("\r");
       pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 13) {
+    } else if (pastedData.length === 3) {
       return pasteRow(e, id);
-    } else if (pastedData.length > 13) {
+    } else if (pastedData.length > 3) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -253,7 +261,15 @@ function IFDMainComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildIFDRow(row, id);
+        let builtRow = buildIFDRow(row, id);
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+        }
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -272,22 +288,40 @@ function IFDMainComp({ setMessage, setModalContent }) {
       lines.pop();
       let toAdd = [];
       // loop each row
-      lines.forEach((line, x) => {
-        // get idx of iterated element in data
-        const y = tempData.findIndex(
-          (item) => item.id === displayData[i + x].id
-        );
-        // get row in form of array
-        let row = line.split("\t");
-        // build row as object
-        const builtRow = buildIFDRow(row, tempData[y].id);
-        // check for repeated tag
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
-          builtRow.tag = "Already exists";
-        // update tempData
-        tempData[y] = { ...tempData[y], ...builtRow };
-        toAdd.push(displayData[i + x].id);
-      });
+      try {
+        lines.forEach((line, x) => {
+          // get idx of iterated element in data
+          const y = tempData.findIndex(
+            (item) => item.id === displayData[i + x].id
+          );
+          // get row in form of array
+          let row = line.split("\t");
+          // build row as object
+          let builtRow = buildIFDRow(row, tempData[y].id);
+          if (!builtRow.train.includes("0")) {
+            builtRow.train = "0" + builtRow.train;
+          }
+          builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+          const values = divideLineReference(builtRow.line_reference, lineRefs);
+          builtRow = { ...builtRow, ...values };
+          const tag = buildTag(builtRow);
+          builtRow.tag = tag;
+          // check for repeated tag
+          if (
+            data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id)
+          )
+            builtRow.tag = "Already exists";
+          // update tempData
+          tempData[y] = { ...tempData[y], ...builtRow };
+          toAdd.push(displayData[i + x].id);
+        });
+      } catch (err) {
+        console.error(err);
+        return setMessage({
+          txt: "Cannot paste more pipes than then ones there are",
+          type: "error",
+        });
+      }
       addToChanged(toAdd);
       filter(tempData);
       setData(tempData);
@@ -321,7 +355,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<img alt="loading" src={loadingGif} />}>
       <Routes>
         <Route
           path="/"
@@ -349,6 +383,8 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 handlePaste={handlePaste}
                 setMessage={setMessage}
                 progress={progress}
+                setIsViewMode={setIsViewMode}
+                isViewMode={isViewMode}
               />
             </CopyContext>
           }

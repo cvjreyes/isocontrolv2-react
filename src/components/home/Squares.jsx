@@ -1,10 +1,8 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
-import { URL } from "../../helpers/config";
 import Square from "./Square";
 import ProgressBar from "./ProgressBar";
 import { api } from "../../helpers/api";
@@ -41,12 +39,14 @@ export default function Squares() {
           subtext="(Issue For Design)"
           num={IFDProgress}
           to="/ifd"
+          className={!import.meta.env.VITE_IFD && "not-allowed"}
         />
         <Square
           text="IFC"
           subtext="(Issue For Construction)"
           num={IFCProgress}
           to="/ifc"
+          className={!import.meta.env.VITE_IFC && "not-allowed"}
         />
       </div>
       <ProgressBar

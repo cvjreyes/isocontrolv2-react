@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../helpers/api";
@@ -13,10 +13,12 @@ import {
   divideTag,
   buildLineRef,
   buildTagIfFilled,
+  buildTag,
 } from "../feedPipesHelpers";
 import AddPipeHead from "./AddPipeHead";
 import { removeEmpties } from "./AddPipeHelpers";
 import { row, emptyRows } from "./EmptyRows";
+import Loading from "../../general/Loading";
 
 export default function AddPipe({
   lineRefs,
@@ -32,6 +34,11 @@ export default function AddPipe({
 
   const [rows, setRows] = useState(emptyRows);
   const [rowsToAdd, setRowsToAdd] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (loading) setLoading(false);
+  }, [rows]);
 
   const handleChange = ({ target }, i) => {
     const { name, value } = { ...target };
@@ -69,13 +76,14 @@ export default function AddPipe({
       return setMessage({ txt: "No pipes to save", type: "warn" });
     const stop = checkForAlreadyExists(data);
     if (stop) return setMessage({ txt: "Repeated pipe!", type: "warn" });
-    const { ok } = await api("post", `/${id}/add_pipes`, { data });
+    const { ok, body } = await api("post", `/${id}/add_pipes`, { data });
     if (ok) {
       setMessage({ txt: "Changes saved!", type: "success" });
       setTimeout(() => {
         navigate(`/${id}/${page}`);
       }, 3000);
-    }
+    } else
+      return setMessage({ txt: body || "Something went wrong", type: "error" });
   };
 
   const clear = () => {
@@ -91,9 +99,9 @@ export default function AddPipe({
       let ind = pastedData.indexOf("\r");
       pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 3) {
       return pasteRow(e, i);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 3) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -103,7 +111,7 @@ export default function AddPipe({
     let changedRow = { ...tempData[i] };
     changedRow[name] = pastedData.trim();
     if (name === "line_reference") {
-      const values = divideLineReference(value, lineRefs);
+      const values = divideLineReference(pastedData, lineRefs);
       changedRow = { ...changedRow, ...values };
     } else if (name === "tag") {
       // divide tag
@@ -133,10 +141,15 @@ export default function AddPipe({
       lines.forEach((line) => {
         if (line.length < 1) return;
         let row = line.split("\t");
-        const builtRow = buildRow(row, i + 1);
+        let builtRow = buildRow(row, i + 1);
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values, status: "ESTIMATED" };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         if (
           builtRow.tag &&
           [...rows, ...data].some((x, y) => x.tag === builtRow.tag && i !== y)
@@ -150,6 +163,7 @@ export default function AddPipe({
   };
 
   const pasteMultipleRows = (e, i) => {
+    setLoading(true);
     e.clipboardData.items[0].getAsString((text) => {
       const tempData = [...rows];
       // get rows as strings
@@ -161,11 +175,15 @@ export default function AddPipe({
         // get row in form of array
         let row = line.split("\t");
         // build row as object
-        const builtRow = buildRow(row, idx);
+        let builtRow = buildRow(row, idx);
         // Ponemos el 0 en el train si no esta
         if (!builtRow.train.includes("0")) {
           builtRow.train = "0" + builtRow.train;
         }
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values, status: "ESTIMATED" };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
         // check for repeated tag
         if (
           builtRow.tag &&
@@ -199,14 +217,18 @@ export default function AddPipe({
           }}
           filterInfo={{}}
         />
-        <AddTable
-          rows={rows}
-          columns={columns}
-          gridSize={gridSize}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          handlePaste={handlePaste}
-        />
+        {loading ? (
+          <Loading size="small" />
+        ) : (
+          <AddTable
+            rows={rows}
+            columns={columns}
+            gridSize={gridSize}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handlePaste={handlePaste}
+          />
+        )}
       </div>
     </div>
   );
@@ -215,7 +237,7 @@ export default function AddPipe({
 const AddPipeStyle = {
   textAlign: "center",
   width: "100%",
-  height: "60vh",
+  height: "70vh",
   h3: {
     fontSize: "20px",
   },

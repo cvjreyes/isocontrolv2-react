@@ -20,6 +20,7 @@ const Row = React.memo(
     changed,
     deleting,
     handleDelete,
+    isViewMode,
   }) => {
     const rowId = `${id}${i}`;
 
@@ -144,7 +145,10 @@ const Row = React.memo(
                 {showCopied && <Copied />}
               </div>
             );
-          if (x.readOnly) {
+          if (
+            x.readOnly ||
+            (isViewMode && x.key !== "status" && x.key !== "owner")
+          ) {
             return (
               <input
                 key={`${i}${y}`}

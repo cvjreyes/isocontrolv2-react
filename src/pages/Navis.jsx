@@ -2,8 +2,7 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import FileSaver from "file-saver";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Loading from "react-loading";
 
 import Button1 from "../components/general/Button1";

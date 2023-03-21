@@ -1,6 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import { userHasRoles } from "../../../helpers/user";
 import Button1 from "../../general/Button1";
 
 export default function TrayTableRow({
@@ -9,6 +12,8 @@ export default function TrayTableRow({
   addToDataClaim,
   dataToClaim,
 }) {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="grid">
       {titles.map((title) => {
@@ -17,13 +22,17 @@ export default function TrayTableRow({
             <div
               key={title.key}
               className="cell flexCenter pointer"
-              onClick={() => !row.owner && addToDataClaim(row.id)}
+              onClick={() =>
+                (!row.owner || userHasRoles(user, ["Speciality Lead"])) &&
+                addToDataClaim(row.id)
+              }
             >
               <input
-                disabled={row.owner}
+                disabled={!userHasRoles(user, ["Speciality Lead"]) && row.owner}
                 type="checkbox"
                 checked={dataToClaim.includes(row.id)}
                 onChange={() => addToDataClaim(row.id)}
+                className="pointer"
               />
             </div>
           );

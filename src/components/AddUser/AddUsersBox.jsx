@@ -32,11 +32,11 @@ export default function AddUsersBox({
             onClick={addRows}
             width="100px"
             border="none"
-            bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
             color="white"
             fontWeight="600"
             fontSize="14px"
             textMargin="0 0 0 5px"
+            bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
             hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
             // img
             alt="add"
@@ -177,7 +177,7 @@ const addUserBoxStyle = {
     "> div": {
       width: "100%",
       overflowY: "auto",
-      height: "60vh",
+      height: "70vh",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,

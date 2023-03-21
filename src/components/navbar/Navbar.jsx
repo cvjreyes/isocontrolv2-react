@@ -19,11 +19,12 @@ export default function Navbar() {
   const [isUserMenuOpen, setOpenUserMenu] = useState(false);
 
   useEffect(() => {
-    const getNotifications = async () => {
-      const { body } = await api("get", "/notifications/get_last_10");
-      setNotifications(body);
-    };
     getNotifications();
+    const interval = setInterval(() => {
+      getNotifications();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -35,15 +36,20 @@ export default function Navbar() {
     setOpenNotificationsMenu(false);
   }, [location]);
 
+  const getNotifications = async () => {
+    const { body } = await api("get", "/notifications/get_last_10");
+    setNotifications(body);
+  };
+
   const toggleUserMenu = (e) => {
     e.preventDefault();
-    setOpenUserMenu((prev) => !prev);
+    setOpenUserMenu(!isUserMenuOpen);
     if (isNotificationsMenuOpen) setOpenNotificationsMenu(false);
   };
 
   const toggleNotificationsMenu = (e) => {
     e.preventDefault();
-    setOpenNotificationsMenu((prev) => !prev);
+    setOpenNotificationsMenu(!isNotificationsMenuOpen);
     if (isUserMenuOpen) setOpenUserMenu(false);
   };
 
@@ -57,10 +63,18 @@ export default function Navbar() {
         <NavLink style={({ isIt }) => isIt && "active"} to="/feed">
           FEED
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/ifd">
+        <NavLink
+          className={!import.meta.env.VITE_IFD && "not-allowed"}
+          style={({ isIt }) => isIt && "active"}
+          to="/ifd"
+        >
           IFD
         </NavLink>
-        <NavLink style={({ isIt }) => isIt && "active"} to="/ifc">
+        <NavLink
+          className={!import.meta.env.VITE_IFC && "not-allowed"}
+          style={({ isIt }) => isIt && "active"}
+          to="/ifc"
+        >
           IFC
         </NavLink>
         <NavLink style={({ isIt }) => isIt && "active"} to="/progress">

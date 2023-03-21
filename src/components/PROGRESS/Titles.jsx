@@ -26,9 +26,9 @@ export default function Titles() {
             <NavLink to={`/progress/${x.label}`}>
               <Button1
                 text={x.label}
-                bgColor="#338DF1"
                 color="white"
                 fontWeight="bold"
+                bgColor="#338DF1"
                 bgHover="#66A9F4"
               />
             </NavLink>

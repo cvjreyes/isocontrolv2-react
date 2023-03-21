@@ -13,6 +13,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+
 import { AuthContext } from "../../../context/AuthContext";
 
 import { api } from "../../../helpers/api";
@@ -135,7 +136,7 @@ const headStyle = {
 
 const forecastStyles = {
   width: "100%",
-  height: "60vh",
+  height: "70vh",
   button: {
     alignSelf: "flex-end",
     marginRight: "10%",
@@ -145,7 +146,7 @@ const forecastStyles = {
   },
   ".chartWrapper": {
     width: "100%",
-    height: "calc(60vh - 50px)",
+    height: "calc(70vh - 50px)",
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
   },

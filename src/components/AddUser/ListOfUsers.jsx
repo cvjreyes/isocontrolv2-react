@@ -23,7 +23,7 @@ export default function ListOfUsers({
   return (
     <form css={usersStyle} onSubmit={handleSubmit}>
       <div className="head">
-        <h2>Add User</h2>
+        <h2>Users</h2>
         <div className="right">
           <Input
             placeholder="Email"
@@ -56,7 +56,7 @@ export default function ListOfUsers({
         <div>
           {users ? (
             users.length > 0 ? (
-              users.map((user, i) => {
+              users.map((user) => {
                 return (
                   <div
                     key={user.id}
@@ -160,7 +160,7 @@ const usersStyle = {
     "> div": {
       width: "100%",
       overflowY: "auto",
-      height: "60vh",
+      height: "70vh",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,

@@ -36,8 +36,27 @@ export function copyToClipboard(id, table) {
   // create Blob
   const blob = new Blob([html], { type: "text/html" });
   // write blob to clipboard ( copied! )
-  navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+  try {
+    navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+    // console.log(document);
+  } catch (e) {
+    console.log(e);
+  }
 }
+
+const unsecuredCopyToClipboard = (text) => {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand("copy");
+  } catch (err) {
+    console.error("Unable to copy to clipboard", err);
+  }
+  document.body.removeChild(textArea);
+};
 
 const buildFeedList = (inputList, valuesList) => {
   return [

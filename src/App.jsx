@@ -28,12 +28,12 @@ import TotalLines from "./pages/TotalLines";
 
 export default function App() {
   useEffect(() => {
-    document.title = `${import.meta.env.VITE_APP_NAMEPROJ} v2`;
+    document.title = `${import.meta.env.VITE_APP_NAMEPROJ}`;
   }, []);
 
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={import.meta.env.VITE_BASENAME}>
         <Navbar />
         <Routes>
           <Route exact path="/" element={<PrivateRoute component={Home} />} />
@@ -46,9 +46,25 @@ export default function App() {
           <Route
             exact
             path="/ifd/*"
-            element={<PrivateRoute component={IFD} />}
+            element={
+              import.meta.env.VITE_IFD ? (
+                <PrivateRoute component={IFD} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
-          <Route exact path="/ifc" element={<PrivateRoute component={IFC} />} />
+          <Route
+            exact
+            path="/ifc"
+            element={
+              import.meta.env.VITE_IFC ? (
+                <PrivateRoute component={IFC} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
           <Route
             exact
             path="/progress/:section"

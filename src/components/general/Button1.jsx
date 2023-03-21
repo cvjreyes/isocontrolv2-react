@@ -26,7 +26,7 @@ export default function Button1({
     padding: padding || "10px 20px",
     background: disabled ? "lightgray" : bgColor,
     color,
-    border,
+    border: border || "1px solid black",
     borderColor: disabled && "lightgray",
     borderRadius: borderRadius || "6px",
     margin,
