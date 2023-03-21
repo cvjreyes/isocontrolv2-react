@@ -1,7 +1,5 @@
 import React, { Suspense, useEffect, useLayoutEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 
 import WithModal from "../../../modals/YesNo";
 import WithToast from "../../../modals/Toast";
@@ -34,7 +32,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
-  const [excelData, setExcelData] = useState(null);
   const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
@@ -73,7 +70,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/users/get_owners"),
         api("get", "/ifd/get_progress"),
         api("get", "/ifd/get_some_pipes/0"),
-        api("get", "/ifd/get_report_pipes"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
@@ -83,7 +79,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
           ...row,
           tag: buildTag(row),
         }));
-        setExcelData(values[5].body);
         setData(rows);
         setDisplayData(rows);
       });
@@ -99,14 +94,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   }, [filterInfo]);
 
   const exportToExcel = async () => {
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-    const ws = XLSX.utils.json_to_sheet(excelData);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, "ReportIFD" + fileExtension);
+    
   };
 
   const handleFilter = (keyName, val) => {
@@ -401,7 +389,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 progress={progress}
                 setIsViewMode={setIsViewMode}
                 isViewMode={isViewMode}
-                exportToExcel={exportToExcel}
+                // exportToExcel={exportToExcel}
               />
             </CopyContext>
           }
