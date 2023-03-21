@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
 import Loading from "react-loading";
 import { Route, Routes, useLocation } from "react-router-dom";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 import {
   buildTag,
@@ -29,6 +31,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
+  const [excelData, setExcelData] = useState(null);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
@@ -58,10 +61,12 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/areas/get_all"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
+        api("get", "/feed/get_report_pipes"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
         setProgress(values[2].body);
+        setExcelData(values[3].body);
       });
     };
     getThings();
@@ -73,6 +78,17 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
+
+  const exportToExcel = async () => {
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "ReportFEED" + fileExtension);
+  };
 
   const handleFilter = (keyName, val) => {
     if (keyName in filterInfo && !val) {
@@ -362,6 +378,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 progress={progress}
                 setIsViewMode={setIsViewMode}
                 isViewMode={isViewMode}
+                exportToExcel={exportToExcel}
               />
             </CopyContext>
           }

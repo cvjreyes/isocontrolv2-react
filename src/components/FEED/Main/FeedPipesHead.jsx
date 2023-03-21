@@ -8,6 +8,7 @@ import Select from "react-select";
 import Button from "../../general/Button2";
 import addImg from "../../../assets/images/add.svg";
 import saveImg from "../../../assets/images/save.svg";
+import excelImg from "../../../assets/images/excel_export.png";
 
 export default function Header({
   title,
@@ -22,6 +23,7 @@ export default function Header({
   setMessage,
   progress,
   setIsViewMode,
+  exportToExcel
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();
@@ -118,6 +120,22 @@ export default function Header({
           // img
           alt="add"
           src={saveImg}
+          imgWidth="30px"
+        />
+        <Button
+          width="100px"
+          text="Report"
+          onClick={exportToExcel}
+          border="none"
+          bgColor="transparent"
+          color="white"
+          fontWeight="600"
+          fontSize="14px"
+          textMargin="0 0 0 5px"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          // img
+          alt="add"
+          src={excelImg}
           imgWidth="30px"
         />
       </div>
