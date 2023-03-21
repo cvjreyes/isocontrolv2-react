@@ -56,7 +56,7 @@ export default function App() {
           />
           <Route
             exact
-            path="/ifc"
+            path="/ifc/*"
             element={
               import.meta.env.VITE_IFC ? (
                 <PrivateRoute component={IFC} />

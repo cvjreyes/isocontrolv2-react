@@ -26,5 +26,5 @@ const mainStyle = {
   display: "grid",
   gridTemplateColumns: "minmax(350px, 1fr) 4fr",
   marginTop: "40px",
-  minHeight: "70vh",
+  minHeight: "74vh",
 };

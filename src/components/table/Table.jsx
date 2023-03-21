@@ -61,7 +61,7 @@ const Table = React.memo(
 );
 
 const tableStyle = {
-  height: "calc(70vh - 113px)",
+  height: "calc(74vh - 113px)",
   paddingBottom: "200px",
   overflowY: "scroll",
   msOverflowStyle: "none" /* Internet Explorer 10+ */,

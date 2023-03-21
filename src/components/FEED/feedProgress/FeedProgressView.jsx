@@ -136,7 +136,7 @@ const headStyle = {
 
 const forecastStyles = {
   width: "100%",
-  height: "70vh",
+  height: "74vh",
   button: {
     alignSelf: "flex-end",
     marginRight: "10%",
@@ -146,7 +146,7 @@ const forecastStyles = {
   },
   ".chartWrapper": {
     width: "100%",
-    height: "calc(70vh - 50px)",
+    height: "calc(74vh - 50px)",
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
   },
