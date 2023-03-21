@@ -84,7 +84,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
           tag: buildTag(row),
         }));
         setExcelData(values[5].body);
-        console.log(values[5].body);
         setData(rows);
         setDisplayData(rows);
       });
