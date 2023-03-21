@@ -37,6 +37,7 @@ export default function IFDTableWrapper({
   progress,
   setIsViewMode,
   isViewMode,
+  exportToExcel,
 }) {
   return (
     <div css={tableWrapperStyle}>
@@ -54,6 +55,7 @@ export default function IFDTableWrapper({
         setMessage={setMessage}
         progress={progress}
         setIsViewMode={setIsViewMode}
+        exportToExcel={exportToExcel}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader

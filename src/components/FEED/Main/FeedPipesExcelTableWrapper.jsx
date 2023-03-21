@@ -34,6 +34,7 @@ export default function FeedPipesExcelTableWrapper({
   progress,
   isViewMode,
   setIsViewMode,
+  exportToExcel,
 }) {
   // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
 
@@ -53,6 +54,7 @@ export default function FeedPipesExcelTableWrapper({
         setMessage={setMessage}
         progress={progress}
         setIsViewMode={setIsViewMode}
+        exportToExcel={exportToExcel}
       />
       <div className="wrapper">
         <FeedPipesExcelTableHeader
