@@ -89,7 +89,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   }, [filterInfo]);
 
   const exportToExcel = async () => {
-    let html = "<table><thead><tr>";
+    let html = "<html><body><table><thead><tr>";
 
     titles.forEach((title) => {
       html += `<th>${title}</th>`;
@@ -107,8 +107,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       html += tr;
     });
 
-    html += "</tbody></table>";
+    html += "</tbody></table></body></html>";
 
+    console.log(html);
     // Codifica el contenido HTML y abre una nueva pestaña del navegador para descargarlo como un archivo xlsx
     window.open(
       "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," +
