@@ -59,7 +59,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     }));
     setData(rows2);
     setDisplayData(rows2);
-    console.log(rows2);
   };
 
   const resetMode = () => {
@@ -110,7 +109,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 
     html += "</tbody></table>";
 
-    window.open("data:application/vnd.ms-excel," + encodeURIComponent(html));
+    // Codifica el contenido HTML y abre una nueva pestaña del navegador para descargarlo como un archivo xlsx
+    window.open(
+      "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," +
+        encodeURIComponent(html)
+    );
   };
 
   const handleFilter = (keyName, val) => {
