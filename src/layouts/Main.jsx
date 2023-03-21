@@ -45,8 +45,8 @@ const mainStyle = {
   },
   ".isocontrolLogo": {
     position: "absolute",
-    top: "80px",
-    left: "50px",
+    top: "70px",
+    left: "40px",
     width: "180px",
     zIndex: "-100",
   },

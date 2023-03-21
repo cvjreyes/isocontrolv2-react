@@ -47,7 +47,7 @@ export default function TrayTable({
       padding: "10px 1% 0",
       border: "solid #D2D2D2",
       borderWidth: "0 1px 1px 1px",
-      height: "calc(70vh - 50px)",
+      height: "calc(74vh - 50px)",
       "> .grid": { borderTop: "1px solid black" },
     },
     ".grid": {
@@ -78,7 +78,7 @@ export default function TrayTable({
     },
     ".table": {
       paddingBottom: "200px",
-      maxHeight: "calc(70vh - 111px)",
+      maxHeight: "calc(74vh - 111px)",
       overflowY: "auto",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,

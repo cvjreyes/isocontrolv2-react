@@ -237,7 +237,7 @@ export default function AddPipe({
 const AddPipeStyle = {
   textAlign: "center",
   width: "100%",
-  height: "70vh",
+  height: "74vh",
   h3: {
     fontSize: "20px",
   },
