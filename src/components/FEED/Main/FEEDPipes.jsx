@@ -1,8 +1,6 @@
 import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
 import Loading from "react-loading";
 import { Route, Routes, useLocation } from "react-router-dom";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
 
 import {
   buildTag,
@@ -27,11 +25,24 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
   const id = "feed";
   const page = "line_control";
+  // Agrega los títulos a la tabla
+  const titles = [
+    "line_reference",
+    "tag",
+    "area",
+    "unit",
+    "fluid",
+    "seq",
+    "diameter",
+    "spec",
+    "insulation",
+    "train",
+    "status",
+  ];
 
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
-  const [excelData, setExcelData] = useState(null);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
@@ -48,6 +59,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     }));
     setData(rows2);
     setDisplayData(rows2);
+    console.log(rows2);
   };
 
   const resetMode = () => {
@@ -61,12 +73,10 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/areas/get_all"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
-        api("get", "/feed/get_report_pipes"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
         setProgress(values[2].body);
-        setExcelData(values[3].body);
       });
     };
     getThings();
@@ -80,14 +90,27 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   }, [filterInfo]);
 
   const exportToExcel = async () => {
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-    const ws = XLSX.utils.json_to_sheet(excelData);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, "ReportFEED" + fileExtension);
+    let html = "<table><thead><tr>";
+
+    titles.forEach((title) => {
+      html += `<th>${title}</th>`;
+    });
+
+    html += "</tr></thead><tbody>";
+
+    // Agrega los datos a la tabla
+    displayData.forEach((item) => {
+      let tr = "<tr>";
+      titles.forEach((title) => {
+        tr += `<td>${item[title]}</td>`;
+      });
+      tr += "</tr>";
+      html += tr;
+    });
+
+    html += "</tbody></table>";
+
+    window.open("data:application/vnd.ms-excel," + encodeURIComponent(html));
   };
 
   const handleFilter = (keyName, val) => {
