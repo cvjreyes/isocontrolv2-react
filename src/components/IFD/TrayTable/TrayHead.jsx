@@ -104,6 +104,7 @@ const headStyle = {
   height: "50px",
   width: "100%",
   backgroundColor: "#338DF1",
+  borderRadius: "0 20px 0 0",
   ".selectWrapper": {
     display: "flex",
     justifyContent: "center",

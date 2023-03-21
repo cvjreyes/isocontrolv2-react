@@ -1,20 +1,12 @@
 DOING 🔁
+- IFC
+  - when SDesign => add line to IFC
+  - if removed from SDesign =>  if no attachment and line not moved yet => YES else inmutable
 
 TODO ❌
-- delete pipe in IFD from trays
-- force unclaim available from speciality lead
-  - select if role speciality lead
-  - unclaim button visible if role speciality lead
-  - btn funcionality
-  - in trays
-    - modelled ✔
-    - s-stress
-    - r-stress
-    - stress
-    - supports
-    - s-design
 
 DONE ✔
+- force unclaim available from speciality lead
 - mode not changing when changing views
 - cron node FEED not IFD
 - re-build progress

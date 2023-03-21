@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
 import Loading from "react-loading";
 import { Route, Routes, useLocation } from "react-router-dom";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 import {
   buildTag,
@@ -29,6 +31,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
+  const [excelData, setExcelData] = useState(null);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
@@ -58,10 +61,12 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         api("get", "/areas/get_all"),
         api("get", "/lines/get_lines"),
         api("get", "/feed/get_progress"),
+        api("get", "/feed/get_report_pipes"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
         setProgress(values[2].body);
+        setExcelData(values[3].body);
       });
     };
     getThings();
@@ -73,6 +78,17 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
+
+  const exportToExcel = async () => {
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "ReportFEED" + fileExtension);
+  };
 
   const handleFilter = (keyName, val) => {
     if (keyName in filterInfo && !val) {
@@ -179,8 +195,8 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     } else {
       // cualquier cosa que haya cambiado => hacer el rebuild del lineRef
       changedRow.line_reference = buildLineRef(changedRow);
-      changedRow.tag = buildTag(changedRow);
     }
+    changedRow.tag = buildTag(changedRow);
     // una vez con el tag cambiado => chequear que no existan 2 tags iguales
     if (data.some((x) => x.tag === changedRow.tag && x.id !== id))
       // si existe un tag igual ponerlo como 'already exists'
@@ -204,9 +220,9 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       let ind = pastedData.indexOf("\r");
       pastedData[0] = pastedData[0].slice(0, ind);
       return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 12) {
+    } else if (pastedData.length === 3) {
       return pasteRow(e, id);
-    } else if (pastedData.length > 12) {
+    } else if (pastedData.length > 3) {
       return pasteMultipleRows(e, i);
     }
   };
@@ -244,7 +260,16 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
         if (line.length < 1) return;
         const y = tempData.findIndex((item) => item.id === id);
         let row = line.split("\t");
-        const builtRow = buildFeedRow(row, id);
+        let builtRow = buildFeedRow(row, id);
+        if (!builtRow.train.includes("0")) {
+          builtRow.train = "0" + builtRow.train;
+        }
+        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+        const values = divideLineReference(builtRow.line_reference, lineRefs);
+        builtRow = { ...builtRow, ...values };
+        const tag = buildTag(builtRow);
+        builtRow.tag = tag;
+        // check for repeated tag
         if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
           builtRow.tag = "Already exists";
         tempData[y] = { ...tempData[y], ...builtRow };
@@ -263,22 +288,40 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
       lines.pop();
       let toAdd = [];
       // loop each row
-      lines.forEach((line, x) => {
-        // get idx of iterated element in data
-        const y = tempData.findIndex(
-          (item) => item.id === displayData[i + x].id
-        );
-        // get row in form of array
-        let row = line.split("\t");
-        // build row as object
-        const builtRow = buildFeedRow(row, tempData[y].id);
-        // check for repeated tag
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id))
-          builtRow.tag = "Already exists";
-        // update tempData
-        tempData[y] = { ...tempData[y], ...builtRow };
-        toAdd.push(displayData[i + x].id);
-      });
+      try {
+        lines.forEach((line, x) => {
+          // get idx of iterated element in data
+          const y = tempData.findIndex(
+            (item) => item.id === displayData[i + x].id
+          );
+          // get row in form of array
+          let row = line.split("\t");
+          // build row as object
+          let builtRow = buildFeedRow(row, tempData[y].id);
+          if (!builtRow.train.includes("0")) {
+            builtRow.train = "0" + builtRow.train;
+          }
+          builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
+          const values = divideLineReference(builtRow.line_reference, lineRefs);
+          builtRow = { ...builtRow, ...values };
+          const tag = buildTag(builtRow);
+          builtRow.tag = tag;
+          // check for repeated tag
+          if (
+            data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id)
+          )
+            builtRow.tag = "Already exists";
+          // update tempData
+          tempData[y] = { ...tempData[y], ...builtRow };
+          toAdd.push(displayData[i + x].id);
+        });
+      } catch (err) {
+        console.error(err);
+        return setMessage({
+          txt: "Cannot paste more pipes than then ones there are",
+          type: "error",
+        });
+      }
       addToChanged(toAdd);
       filter(tempData);
       setData(tempData);
@@ -335,6 +378,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
                 progress={progress}
                 setIsViewMode={setIsViewMode}
                 isViewMode={isViewMode}
+                exportToExcel={exportToExcel}
               />
             </CopyContext>
           }

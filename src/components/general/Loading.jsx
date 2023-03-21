@@ -3,7 +3,15 @@
 import { jsx } from "@emotion/react";
 import ReactLoading from "react-loading";
 
-export default function Loading() {
+import loadingGif from "../../assets/gifs/loading.gif";
+
+export default function Loading({ size }) {
+  if ((size = "small"))
+    return (
+      <div css={smallStyle}>
+        <img alt="loading" src={loadingGif} />
+      </div>
+    );
   return (
     <div css={mainStyle}>
       <ReactLoading
@@ -15,6 +23,18 @@ export default function Loading() {
     </div>
   );
 }
+
+const smallStyle = {
+  marginTop: "50px",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  img: {
+    width: "50px",
+    height: "50px",
+    mixBlendMode: "darken",
+  },
+};
 
 const mainStyle = {
   width: "100%",

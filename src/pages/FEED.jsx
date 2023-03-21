@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import Main from "../layouts/Main";
 import Sidebar from "../components/sidebar/Sidebar";
-import FEEDPipes from "../components/FEED/main/FEEDPipes";
+import FEEDPipes from "../components/FEED/Main/FEEDPipes";
 import FeedProgress from "../components/FEED/feedProgress/FeedProgress";
 
 export default function FEED() {
@@ -41,7 +41,7 @@ const feedStyle = {
   gridTemplateColumns: "1.2fr 8fr",
   "> *": {
     alignSelf: "center",
-    height: "70vh",
+    height: "74vh",
   },
   // selects sidebar
   "> div:first-of-type": {
@@ -57,7 +57,7 @@ const feedStyle = {
     padding: "10px 1% 0",
     border: "solid #D2D2D2",
     borderWidth: "0 1px 1px 1px",
-    height: "calc(70vh - 50px)",
+    height: "calc(74vh - 50px)",
   },
   // selects table head
   "> div:nth-of-type(2) > div:first-of-type": {

@@ -1,7 +1,5 @@
 import React, { Suspense, useEffect, useLayoutEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
+import { useLocation } from "react-router";
 
 import WithModal from "../../../modals/YesNo";
 import WithToast from "../../../modals/Toast";
@@ -14,27 +12,23 @@ import {
   divideLineReference,
   divideTag,
 } from "../../FEED/feedPipesHelpers";
-import IFDTableWrapper from "./IFDTableWrapper";
+import IFCTableWrapper from "./IFCTableWrapper";
 import CopyContext from "../../../context/CopyContext";
-import AddFeedPipe from "../../FEED/AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
-import { buildIFDRow } from "../IFDPipeHelpers";
+import { buildIFDRow } from "../../IFD/IFDPipeHelpers";
 
 import loadingGif from "../../../assets/gifs/loading.gif";
 
 function IFDMainComp({ setMessage, setModalContent }) {
   const location = useLocation();
-
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
   const gridSizeAdd = "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr";
-  const id = "ifd";
+  const id = "ifc";
   const page = "main";
-
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
-  const [excelData, setExcelData] = useState(null);
   const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
@@ -45,7 +39,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const [isViewMode, setIsViewMode] = useState(true);
 
   const getIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_some_pipes/0");
+    const { body: pipes } = await api("get", "/ifc/get_some_pipes/0");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
@@ -71,9 +65,8 @@ function IFDMainComp({ setMessage, setModalContent }) {
         api("get", "/areas/get_all"),
         api("get", "/lines/get_lines"),
         api("get", "/users/get_owners"),
-        api("get", "/ifd/get_progress"),
-        api("get", "/ifd/get_some_pipes/0"),
-        api("get", "/ifd/get_report_pipes"),
+        api("get", "/ifc/get_progress"),
+        api("get", "/ifc/get_some_pipes/0"),
       ]).then((values) => {
         setAreas(values[0].body.map((item) => item.name));
         setLineRefs(values[1].body);
@@ -83,7 +76,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
           ...row,
           tag: buildTag(row),
         }));
-        setExcelData(values[5].body);
         setData(rows);
         setDisplayData(rows);
       });
@@ -97,17 +89,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const exportToExcel = async () => {
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-    const ws = XLSX.utils.json_to_sheet(excelData);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, "ReportIFD" + fileExtension);
-  };
 
   const handleFilter = (keyName, val) => {
     if (keyName in filterInfo && !val) {
@@ -358,13 +339,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     });
     if (ok) {
       setChanged([]);
-      // ! update rows or not, thant's the question
-      // pros: if error in DB always be detected in UI
-      // cons: errors should not be located like that + time & server consuming
-      // rows.map((row) => (row.tag = buildTag(row)));
-      // setData(rows);
-      // filter();
-      // getFeedPipes();
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
@@ -372,60 +346,33 @@ function IFDMainComp({ setMessage, setModalContent }) {
 
   return (
     <Suspense fallback={<img alt="loading" src={loadingGif} />}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <CopyContext data={displayData} id={id}>
-              <IFDTableWrapper
-                title="IFD"
-                id={id}
-                page={page}
-                lineRefs={lineRefs}
-                areas={areas}
-                owners={owners}
-                displayData={displayData}
-                changed={changed}
-                filter={handleFilter}
-                filterInfo={filterInfo}
-                readOnly={true}
-                handleChange={handleChange}
-                deleting={deleting}
-                setDeleting={setDeleting}
-                handleDelete={handleDelete}
-                undoChanges={undoChanges}
-                submitChanges={submitChanges}
-                gridSize={gridSize}
-                handlePaste={handlePaste}
-                setMessage={setMessage}
-                progress={progress}
-                setIsViewMode={setIsViewMode}
-                isViewMode={isViewMode}
-                exportToExcel={exportToExcel}
-              />
-            </CopyContext>
-          }
+      <CopyContext data={displayData} id={id}>
+        <IFCTableWrapper
+          title="IFD"
+          id={id}
+          page={page}
+          lineRefs={lineRefs}
+          areas={areas}
+          owners={owners}
+          displayData={displayData}
+          changed={changed}
+          filter={handleFilter}
+          filterInfo={filterInfo}
+          readOnly={true}
+          handleChange={handleChange}
+          deleting={deleting}
+          setDeleting={setDeleting}
+          handleDelete={handleDelete}
+          undoChanges={undoChanges}
+          submitChanges={submitChanges}
+          gridSize={gridSize}
+          handlePaste={handlePaste}
+          setMessage={setMessage}
+          progress={progress}
+          setIsViewMode={setIsViewMode}
+          isViewMode={isViewMode}
         />
-        <Route
-          path="/add"
-          element={
-            <AddFeedPipe
-              lineRefs={lineRefs}
-              setMessage={setMessage}
-              data={data ? [...data, ...feedPipes] : null}
-              columns={columnsData(
-                lineRefs.map((x) => x.line_ref),
-                areas,
-                owners.map((x) => x.name)
-              ).slice(0, -1)}
-              id={id}
-              page={page}
-              gridSize={gridSizeAdd}
-              buildRow={buildIFDRow}
-            />
-          }
-        />
-      </Routes>
+      </CopyContext>
     </Suspense>
   );
 }
