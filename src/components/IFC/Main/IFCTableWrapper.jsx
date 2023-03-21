@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 import Table from "../../table/Table";
 import Loading from "../../general/Loading";
-import FeedPipesHead from "../../FEED/main/FeedPipesHead";
+import IFCPipesHead from "./IFCPipesHead";
 import FeedPipesExcelTableHeader from "../../FEED/main/FeedPipesExcelTableHeader";
 import { columnsData } from "../ColumnsData";
 
@@ -40,7 +40,7 @@ export default function IFDTableWrapper({
 }) {
   return (
     <div css={tableWrapperStyle}>
-      <FeedPipesHead
+      <IFCPipesHead
         title={title}
         submitChanges={submitChanges}
         setCopyMulti={setCopyMulti}
