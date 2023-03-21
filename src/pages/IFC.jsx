@@ -9,13 +9,14 @@ import { data } from "../components/IFC/SidebarContent";
 import IFCMain from "../components/IFC/Main/IFCMain";
 import MyTray from "../components/IFC/MyTray/MyTray";
 import Trash from "../components/IFC/Trash/Trash";
-// import Modelled from "../components/IFC/Trays/Modelled";
-// import SStress from "../components/IFC/Trays/SStress";
-// import RStress from "../components/IFC/Trays/RStress";
-// import Stress from "../components/IFC/Trays/Stress";
-// import Supports from "../components/IFC/Trays/Supports";
-// import SDesign from "../components/IFC/Trays/SDesign";
-import IFCProgress from "../components/IFC/ifCProgress/IFCProgress";
+import Design from "../components/IFC/Trays/Design";
+import Stress from "../components/IFC/Trays/Stress";
+import Supports from "../components/IFC/Trays/Supports";
+import Materials from "../components/IFC/Trays/Materials";
+import Issuer from "../components/IFC/Trays/Issuer";
+import ToIssue from "../components/IFC/Trays/ToIssue";
+import Issued from "../components/IFC/Trays/Issued";
+import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
 
 export default function IFC() {
   return (
@@ -26,12 +27,13 @@ export default function IFC() {
           <Route exact path="/main/*" element={<IFCMain />} />
           <Route path="/my-tray" element={<MyTray />} />
           <Route path="/trash" element={<Trash />} />
-          {/* <Route path="/modelled" element={<Modelled />} />
-          <Route path="/s-stress" element={<SStress />} />
-          <Route path="/r-stress" element={<RStress />} />
+          <Route path="/design" element={<Design />} />
           <Route path="/stress" element={<Stress />} />
           <Route path="/supports" element={<Supports />} />
-          <Route path="/s-design" element={<SDesign />} /> */}
+          <Route path="/materials" element={<Materials />} />
+          <Route path="/issuer" element={<Issuer />} />
+          <Route path="/to-issue" element={<ToIssue />} />
+          <Route path="/issued" element={<Issued />} />
           <Route path="/ifC_progress/*" element={<IFCProgress />} />
           <Route path="/*" element={<Navigate to="/ifc/main" />} />
         </Routes>
