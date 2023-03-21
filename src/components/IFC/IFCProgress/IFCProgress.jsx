@@ -3,13 +3,13 @@ import Loading from "react-loading";
 import { Route, Routes } from "react-router-dom";
 
 import EditForecast from "./editForecast/EditForecast";
-import IFDProgressView from "./IFDProgressView";
+import IFCProgressView from "./IFCProgressView";
 
 export default function IFDProgress() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
-        <Route exact path="/" element={<IFDProgressView />} />
+        <Route exact path="/" element={<IFCProgressView />} />
         <Route path="/edit_forecast" element={<EditForecast />} />
       </Routes>
     </Suspense>

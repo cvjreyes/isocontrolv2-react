@@ -15,12 +15,11 @@ function MyTrayComp({ setMessage }) {
   const [changed, setChanged] = useState([]);
 
   const getMyPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_my_pipes");
+    const { body: pipes } = await api("get", "/ifc/get_my_pipes");
     const rows = pipes.map((row) => ({
       ...row,
       tag: buildTag(row),
       updated_at: buildDate(row),
-      in_isotracker: row.status.includes("S-Design") ? "Yes" : "No",
     }));
     setData(rows);
     setDisplayData(rows);
@@ -55,7 +54,7 @@ function MyTrayComp({ setMessage }) {
     if (changed.length > 0)
       return setMessage({ txt: "Save changes first!", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_pipes", {
+    const { ok } = await api("post", "/ifc/unclaim_pipes", {
       data: dataToSend,
     });
     if (ok) {
