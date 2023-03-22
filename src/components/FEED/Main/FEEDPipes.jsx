@@ -21,7 +21,7 @@ import { api } from "../../../helpers/api";
 import AddPipe from "../AddPipe/AddPipe";
 import { columnsData } from "../ColumnsData";
 
-function FeedPipesExcelComp({ setMessage, setModalContent }) {
+function FEEDPipesComp({ setMessage, setModalContent }) {
   const location = useLocation();
 
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
@@ -417,11 +417,11 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
 }
 
 // using this components to use modals
-export default function FeedPipesExcel() {
+export default function FEEDPipes() {
   return (
     <WithToast>
       <WithModal>
-        <FeedPipesExcelComp />
+        <FEEDPipesComp />
       </WithModal>
     </WithToast>
   );

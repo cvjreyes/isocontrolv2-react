@@ -10,7 +10,7 @@ import addImg from "../../../assets/images/add.svg";
 import saveImg from "../../../assets/images/save.svg";
 import excelImg from "../../../assets/images/excel_export.png";
 
-export default function Header({
+export default function FeedPipesHead({
   title,
   submitChanges,
   setCopyMulti,
