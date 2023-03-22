@@ -112,7 +112,7 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
     console.log(html);
     // Codifica el contenido HTML y abre una nueva pestaña del navegador para descargarlo como un archivo xlsx
     window.open(
-      "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet," +
+      "data:application/vnd.ms-excel," +
         encodeURIComponent(html)
     );
   };
