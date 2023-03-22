@@ -10,23 +10,19 @@ export default function MyTrayTable({
   data,
   addToDataClaim,
   dataToClaim,
-  handleClick,
-  changed,
   selectAll,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
     { text: "Tag", key: "tag" },
     { text: "Type", key: "type" },
-    { text: "Date", key: "updated_at" },
+    { text: "Updated at", key: "updated_at" },
     { text: "Current Tray", key: "status" },
     { text: "Next Step", key: "next_step" },
     { text: "%", key: "progress" },
-    { text: "IsoTracker", key: "in_isotracker" },
-    { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr .5fr 0.8fr";
+  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr";
 
   const modelledStyle = {
     padding: "10px 1% 0",
@@ -95,8 +91,6 @@ export default function MyTrayTable({
                 titles={titles}
                 addToDataClaim={addToDataClaim}
                 dataToClaim={dataToClaim}
-                handleClick={handleClick}
-                changed={changed}
                 gridSize={gridSize}
               />
             ))

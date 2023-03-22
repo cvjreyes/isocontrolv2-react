@@ -31,7 +31,6 @@ export default function IFDTableWrapper({
   undoChanges,
   copyAll,
   submitChanges,
-  handlePaste,
   gridSize,
   setMessage,
   progress,
@@ -77,7 +76,7 @@ export default function IFDTableWrapper({
             copied={copied}
             changed={changed}
             handleChange={handleChange}
-            handlePaste={handlePaste}
+            handlePaste={() => {}}
             copyToClipBoard={copyToClipBoard}
             copyMulti={copyMulti}
             deleting={deleting}
