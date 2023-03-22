@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Suspense, useLayoutEffect } from "react";
 import Loading from "react-loading";
 import { Route, Routes, useLocation } from "react-router-dom";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 import {
   buildTag,
@@ -25,20 +27,6 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   const gridSize = "1fr 4fr 7fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
   const id = "feed";
   const page = "line_control";
-  // Agrega los títulos a la tabla
-  const titles = [
-    "line_reference",
-    "tag",
-    "area",
-    "unit",
-    "fluid",
-    "seq",
-    "diameter",
-    "spec",
-    "insulation",
-    "train",
-    "status",
-  ];
 
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
@@ -89,32 +77,27 @@ function FeedPipesExcelComp({ setMessage, setModalContent }) {
   }, [filterInfo]);
 
   const exportToExcel = async () => {
-    let html = "<html><body><table><thead><tr>";
-
-    titles.forEach((title) => {
-      html += `<th>${title}</th>`;
-    });
-
-    html += "</tr></thead><tbody>";
-
-    // Agrega los datos a la tabla
-    displayData.forEach((item) => {
-      let tr = "<tr>";
-      titles.forEach((title) => {
-        tr += `<td>${item[title]}</td>`;
-      });
-      tr += "</tr>";
-      html += tr;
-    });
-
-    html += "</tbody></table></body></html>";
-
-    console.log(html);
-    // Codifica el contenido HTML y abre una nueva pestaña del navegador para descargarlo como un archivo xlsx
-    window.open(
-      "data:application/vnd.ms-excel," +
-        encodeURIComponent(html)
-    );
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const excelData = displayData.map((data) => ({
+      line_reference: data.line_reference,
+      tag: data.tag,
+      area: data.area,
+      unit: data.unit,
+      fluid: data.fluid,
+      seq: data.seq,
+      diameter: data.diameter,
+      spec: data.spec,
+      insulation: data.insulation,
+      train: data.train,
+      status: data.status,
+    }));
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "ReportFEED" + fileExtension);
   };
 
   const handleFilter = (keyName, val) => {
