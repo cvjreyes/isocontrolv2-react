@@ -7,16 +7,11 @@ export function copyToClipboard(id, table) {
   // select all inputs in copied element
   const inputList = copiedEle.querySelectorAll("input");
   // select all dropdowns in copied element
-  const valuesList = copiedEle.getElementsByClassName(
-    "css-1dimb5e-singleValue"
-  );
-
-  const testList = copiedEle.getElementsByClassName("select-element");
-
+  const valuesList = copiedEle.getElementsByClassName("select-element");
   const totalList =
     copiedEle.children.length === 13
-      ? buildFeedList(inputList, testList)
-      : buildIFDList(inputList, testList);
+      ? buildFeedList(inputList, valuesList)
+      : buildIFDList(inputList, valuesList);
 
   // loop through selected inputs
   totalList.forEach((item) => {
@@ -40,23 +35,9 @@ export function copyToClipboard(id, table) {
     navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
     // console.log(document);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
-
-const unsecuredCopyToClipboard = (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
-  try {
-    document.execCommand("copy");
-  } catch (err) {
-    console.error("Unable to copy to clipboard", err);
-  }
-  document.body.removeChild(textArea);
-};
 
 const buildFeedList = (inputList, valuesList) => {
   return [
