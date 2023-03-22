@@ -32,10 +32,9 @@ export default function TrayTable({
     { text: "Date", key: "updated_at" },
     { text: "User", key: "owner" },
     { text: "%", key: "progress" },
-    { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".25fr 1.5fr 0.3fr 0.5fr 1.2fr 0.25fr 0.8fr";
+  const gridSize = ".25fr 1.5fr 0.3fr 0.5fr 1.2fr 0.25fr";
 
   const trayStyle = {
     h3: {
