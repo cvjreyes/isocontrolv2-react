@@ -5,7 +5,7 @@ import { jsx } from "@emotion/react";
 import Table from "../../table/Table";
 import { columnsData } from "../ColumnsData";
 import FeedPipesExcelTableHeader from "./FeedPipesExcelTableHeader";
-import FEEDPipesHead from "./FeedPipesHead";
+import FeedPipesHead from "./FeedPipesHead";
 
 export default function FeedPipesExcelTableWrapper({
   title,
@@ -40,7 +40,7 @@ export default function FeedPipesExcelTableWrapper({
 
   return (
     <div css={tableWrapperStyle}>
-      <FEEDPipesHead
+      <FeedPipesHead
         title={title}
         submitChanges={submitChanges}
         setCopyMulti={setCopyMulti}
