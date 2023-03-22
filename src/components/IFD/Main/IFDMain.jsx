@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect, useLayoutEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 import WithModal from "../../../modals/YesNo";
 import WithToast from "../../../modals/Toast";
@@ -94,7 +96,28 @@ function IFDMainComp({ setMessage, setModalContent }) {
   }, [filterInfo]);
 
   const exportToExcel = async () => {
-    
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const excelData = displayData.map((data) => ({
+      line_reference: data.line_reference,
+      tag: data.tag,
+      owner: data.owner,
+      area: data.area,
+      unit: data.unit,
+      fluid: data.fluid,
+      seq: data.seq,
+      diameter: data.diameter,
+      spec: data.spec,
+      insulation: data.insulation,
+      train: data.train,
+      status: data.status,
+    }));
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "ReportIFD" + fileExtension);
   };
 
   const handleFilter = (keyName, val) => {
@@ -389,7 +412,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
                 progress={progress}
                 setIsViewMode={setIsViewMode}
                 isViewMode={isViewMode}
-                // exportToExcel={exportToExcel}
+                exportToExcel={exportToExcel}
               />
             </CopyContext>
           }
