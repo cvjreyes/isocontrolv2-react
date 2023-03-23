@@ -19,7 +19,7 @@ export default function ModelledRow({
     ".cell": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",
-      padding: "5%",
+      padding: "0 2%",
       "*": { fontSize: "13px", textAlign: "center" },
     },
   };

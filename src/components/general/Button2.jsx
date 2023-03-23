@@ -49,12 +49,12 @@ export default function Button2({
   return (
     <button
       type={type}
-      className={`${className} pointer flexCenter`}
+      className={`${className || ""} pointer flexCenter`}
       css={buttonStyle}
       onClick={onClick}
       name={name}
     >
-      <img src={src} alt={alt} />
+      {src && <img src={src} alt={alt} />}
       <span>{text}</span>
     </button>
   );

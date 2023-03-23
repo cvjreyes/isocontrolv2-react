@@ -4,6 +4,7 @@ import { jsx } from "@emotion/react";
 import { useContext } from "react";
 import Loading from "react-loading";
 import { AuthContext } from "../../../context/AuthContext";
+import { api } from "../../../helpers/api";
 import { userHasRoles } from "../../../helpers/user";
 
 import NoResults from "../../general/NoResults";
@@ -22,19 +23,23 @@ export default function TrayTable({
   filter,
   filterInfo,
   orderBy,
+  getData,
+  setMessage,
 }) {
   const { user } = useContext(AuthContext);
 
   const titles = [
     { text: "Claim", key: "claim" },
     { text: "Tag", key: "tag" },
+    { text: "Revision", key: "revision" },
     { text: "Type", key: "type" },
     { text: "Date", key: "updated_at" },
     { text: "User", key: "owner" },
     { text: "%", key: "progress" },
+    { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".25fr 1.5fr 0.3fr 0.5fr 1.2fr 0.25fr";
+  const gridSize = ".25fr 1.2fr .3fr 0.3fr 0.5fr 1.2fr 0.25fr 0.75fr";
 
   const trayStyle = {
     h3: {
@@ -57,9 +62,6 @@ export default function TrayTable({
       ".cell": {
         border: "solid black",
         borderWidth: "0 1px 1px 0",
-        button: {
-          cursor: "default",
-        },
         input: {
           width: "100%",
           lineHeight: "50px",
@@ -87,6 +89,17 @@ export default function TrayTable({
       ".cell": { padding: "0 5%" },
       "*": { fontSize: "13px", textAlign: "center" },
     },
+  };
+
+  const updatePipe = async (key, val, id) => {
+    const { ok } = await api("post", "/ifc/update_pipe", {
+      key,
+      val: val ? 0 : 1,
+      id,
+    });
+    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
+    setMessage({ txt: "Changes saved!", type: "success" });
+    getData();
   };
 
   return (
@@ -126,11 +139,9 @@ export default function TrayTable({
             return (
               <div key={title.text} className="flexCenter cell">
                 <input
-                  readOnly={title.key === "actions"}
                   className="bold"
                   defaultValue={title.text}
                   onFocus={(e) => {
-                    if (title.key === "actions") return;
                     filter(title.key, "");
                     e.target.value = "";
                   }}
@@ -162,7 +173,7 @@ export default function TrayTable({
                   titles={titles}
                   addToDataClaim={addToDataClaim}
                   dataToClaim={dataToClaim}
-                  user={user}
+                  updatePipe={updatePipe}
                 />
               ))
             ) : (
