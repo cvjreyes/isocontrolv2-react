@@ -1,8 +1,8 @@
 DOING 🔁
 - pdf:
   - test pdf view
-  - create new db for filenames + pipe id
   - save file path into ifc_pipes
+  - add max 45char in file title
 - IFC
   - when SDesign => add line to IFC
   - if removed from SDesign =>  if no attachment and line not moved yet => YES else inmutable

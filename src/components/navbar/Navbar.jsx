@@ -139,7 +139,8 @@ export default function Navbar() {
 
 const mainStyle = {
   height: "50px",
-  width: "100vw",
+  width: "100%",
+  maxWidth: "100vw",
   backgroundColor: "#383838",
   color: "white",
   display: "flex",

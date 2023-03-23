@@ -4,8 +4,7 @@ import { jsx } from "@emotion/react";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { Document, Page } from "@react-pdf/renderer";
-
+import { Document } from "react-pdf";
 import WithToast from "../../modals/Toast";
 import { api } from "../../helpers/api";
 import { buildTag } from "../FEED/feedPipesHelpers";
@@ -22,6 +21,7 @@ function SinglePipeComp({ setMessage }) {
   const navigate = useNavigate();
 
   const [pipe, setPipe] = useState(null);
+  const [files, setFiles] = useState(null);
   const [fileTitle, setFileTitle] = useState("");
   const [file, setFile] = useState(null);
 
@@ -31,8 +31,14 @@ function SinglePipeComp({ setMessage }) {
     setPipe(row);
   };
 
+  const getFiles = async () => {
+    const { body } = await api("get", `/ifc/get_files/${pipe_id}`);
+    setFiles(body);
+  };
+
   useEffect(() => {
     getPipeInfo();
+    getFiles();
   }, []);
 
   const updatePipe = async (key, val, id) => {
@@ -47,14 +53,20 @@ function SinglePipeComp({ setMessage }) {
   };
 
   const saveFile = async () => {
-    if (!fileTitle)
+    if (files.length > 1 && !fileTitle)
       return setMessage({ txt: "File needs a title", type: "warn" });
     if (!file)
       return setMessage({ txt: "There's no file uploaded :(", type: "warn" });
     const formData = new FormData();
     formData.append("file", file);
-    const res = await api("post", `/ifc/upload_file/${pipe_id}`, formData);
-    console.log(res);
+    const { ok } = await api(
+      "post",
+      `/ifc/upload_file/${pipe_id}/${fileTitle || "Master"}`,
+      formData
+    );
+    getFiles();
+    setFile(null);
+    setFileTitle("");
   };
 
   const onDrop = useCallback(
@@ -63,7 +75,6 @@ function SinglePipeComp({ setMessage }) {
   );
 
   const { getRootProps } = useDropzone({ onDrop });
-
   if (!pipe) return <Loading />;
   return (
     <div css={singlePipeStyle}>
@@ -102,14 +113,51 @@ function SinglePipeComp({ setMessage }) {
           </div>
         </div>
         <div className="content">
+          {files ? (
+            files.map((f) => {
+              return (
+                <div key={f.id} className="fileWrapper">
+                  <p className="title">{f.title}</p>
+                  <div className="dnd">pdf</div>
+                  {/* <Document
+                    onLoadError={console.error}
+                    file={{
+                      url: `http://${import.meta.env.VITE_SERVER}:${
+                        import.meta.env.VITE_NODE_PORT
+                      }/files/${f.filename}`,
+                    }}
+                  /> */}
+                  {/* <iframe
+                    width="100%"
+                    height="400"
+                    src={`http://${import.meta.env.VITE_SERVER}:${
+                      import.meta.env.VITE_NODE_PORT
+                    }/files/${f.filename}`}
+                    type="application/pdf"
+                  /> */}
+
+                  <div>
+                    <p>download</p>
+                    <p>replace</p>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <Loading />
+          )}
           <div className="newFile">
-            <Input
-              placeholder="Name of file..."
-              width="100%"
-              margin="0 0 10px"
-              value={fileTitle}
-              onChange={(e) => setFileTitle(e.target.value)}
-            />
+            {files?.length < 1 ? (
+              <p className="master">Master</p>
+            ) : (
+              <Input
+                placeholder="Name of file..."
+                width="100%"
+                margin="0 0 10px"
+                value={fileTitle}
+                onChange={(e) => setFileTitle(e.target.value)}
+              />
+            )}
             <div className="dnd flexCenter pointer" {...getRootProps()}>
               {file ? (
                 <div className="fileIconWrapper">
@@ -156,7 +204,6 @@ export default function SinglePipe() {
 const singlePipeStyle = {
   ".head": {
     display: "grid",
-    // gridTemplateColumns: "repeat(3, 1fr) ",
     alignItems: "center",
     height: "50px",
     backgroundColor: "#338DF1",
@@ -188,10 +235,45 @@ const singlePipeStyle = {
     },
     ".content": {
       padding: "30px",
-      ".newFile": {
-        width: "200px",
+      display: "grid",
+      // gap: "20px",
+      gridTemplateColumns: "repeat(auto-fit, minmax(100px, 220px))",
+      ".fileWrapper": {
+        ".title": {
+          lineHeight: "40px",
+          marginBottom: "10px",
+        },
         ".dnd": {
           width: "200px",
+          height: "200px",
+          border: "1px dotted lightgray",
+          borderRadius: "4px",
+          transition: "all 200ms ease-in-out",
+          // ".fileIconWrapper": {
+          //   textAlign: "center",
+          //   img: {
+          //     width: "40px",
+          //     height: "40px",
+          //   },
+          //   p: { fontSize: "14px" },
+          // },
+          // ".plusWrapper": {
+          //   width: "40px",
+          //   height: "40px",
+          //   borderRadius: "100px",
+          //   padding: "10px",
+          //   background: "linear-gradient(145deg, #ffffff, #e6e1da)",
+          //   boxShadow: "20px 20px 60px #d9d5ce, -20px -20px 60px #ffffff",
+          // },
+        },
+      },
+      ".newFile": {
+        width: "200px",
+        ".master": {
+          fontSize: "18px",
+          marginBottom: "10px",
+        },
+        ".dnd": {
           height: "200px",
           border: "1px dotted lightgray",
           borderRadius: "4px",
