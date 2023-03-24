@@ -98,7 +98,7 @@ function SinglePipeComp({ setMessage, setModalContent }) {
         // Setting various property values
         let alink = document.createElement("a");
         alink.href = fileURL;
-        alink.download = filename.slice(14);
+        alink.download = filename;
         alink.click();
       });
     });
@@ -176,7 +176,7 @@ function SinglePipeComp({ setMessage, setModalContent }) {
                         alt="pdf"
                         src="https://img.icons8.com/color/48/null/pdf.png"
                       />
-                      <p>{f.filename.slice(14)}</p>
+                      <p>{f.filename}</p>
                     </div>
                   </a>
                   <div className="btnsWrapper">
@@ -333,6 +333,7 @@ const singlePipeStyle = {
               width: "40px",
               height: "40px",
             },
+            p: { fontSize: "12px" },
           },
         },
         ".btnsWrapper": {
@@ -376,7 +377,7 @@ const singlePipeStyle = {
               width: "40px",
               height: "40px",
             },
-            p: { fontSize: "14px" },
+            p: { fontSize: "12px" },
           },
           ".plusWrapper": {
             width: "40px",
