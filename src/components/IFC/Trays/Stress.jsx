@@ -161,7 +161,7 @@ function StressComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getDesignIFCPipes}
+      getData={getStressIFDPipes}
       setMessage={setMessage}
     />
   );

@@ -16,6 +16,7 @@ export default function ModelledRow({
     display: "grid",
     gridTemplateColumns: gridSize,
     borderLeft: "1px solid black",
+    height: "50px",
     ".cell": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",

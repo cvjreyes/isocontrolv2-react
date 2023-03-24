@@ -4,8 +4,9 @@ import { jsx } from "@emotion/react";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
-import { Document } from "react-pdf";
+
 import WithToast from "../../modals/Toast";
+import WithModal from "../../modals/YesNo";
 import { api } from "../../helpers/api";
 import { buildTag } from "../FEED/feedPipesHelpers";
 
@@ -15,8 +16,9 @@ import Loading from "../general/Loading";
 
 import addImg from "../../assets/images/add.svg";
 import saveImg from "../../assets/images/save.svg";
+import crossImg from "../../assets/images/remove.webp";
 
-function SinglePipeComp({ setMessage }) {
+function SinglePipeComp({ setMessage, setModalContent }) {
   const { pipe_id } = useParams();
   const navigate = useNavigate();
 
@@ -53,17 +55,19 @@ function SinglePipeComp({ setMessage }) {
   };
 
   const saveFile = async () => {
-    if (files.length > 1 && !fileTitle)
-      return setMessage({ txt: "File needs a title", type: "warn" });
+    // if (files.length > 1 && !fileTitle)
+    //   return setMessage({ txt: "File needs a title", type: "warn" });
     if (!file)
       return setMessage({ txt: "There's no file uploaded :(", type: "warn" });
     const formData = new FormData();
     formData.append("file", file);
     const { ok } = await api(
       "post",
-      `/ifc/upload_file/${pipe_id}/${fileTitle || "Master"}`,
+      `/ifc/upload_file/${pipe_id}/${pipe.tag}`,
       formData
     );
+    if (!ok) return setMessage({ txt: "Something went south", type: "error" });
+    setMessage({ txt: "File saved successfully!", type: "success" });
     getFiles();
     setFile(null);
     setFileTitle("");
@@ -73,6 +77,32 @@ function SinglePipeComp({ setMessage }) {
     (acceptedFiles) => acceptedFiles.forEach((f) => setFile(f)),
     []
   );
+
+  const deleteFile = async (file_id) => {
+    const { ok } = await api("delete", `/files/delete/${file_id}`);
+    if (ok) {
+      setMessage({ txt: "File removed successfully", type: "success" });
+      getFiles();
+    }
+  };
+
+  const downloadFile = async (filename) => {
+    fetch(
+      `http://${import.meta.env.VITE_SERVER}:${
+        import.meta.env.VITE_NODE_PORT
+      }/files/${filename}`
+    ).then((response) => {
+      response.blob().then((blob) => {
+        // Creating new object of PDF file
+        const fileURL = window.URL.createObjectURL(blob);
+        // Setting various property values
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = filename.slice(14);
+        alink.click();
+      });
+    });
+  };
 
   const { getRootProps } = useDropzone({ onDrop });
   if (!pipe) return <Loading />;
@@ -118,27 +148,57 @@ function SinglePipeComp({ setMessage }) {
               return (
                 <div key={f.id} className="fileWrapper">
                   <p className="title">{f.title}</p>
-                  <div className="dnd">pdf</div>
-                  {/* <Document
-                    onLoadError={console.error}
-                    file={{
-                      url: `http://${import.meta.env.VITE_SERVER}:${
-                        import.meta.env.VITE_NODE_PORT
-                      }/files/${f.filename}`,
-                    }}
-                  /> */}
-                  {/* <iframe
-                    width="100%"
-                    height="400"
-                    src={`http://${import.meta.env.VITE_SERVER}:${
+                  <a
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="dnd flexCenter pointer"
+                    href={`http://${import.meta.env.VITE_SERVER}:${
                       import.meta.env.VITE_NODE_PORT
                     }/files/${f.filename}`}
-                    type="application/pdf"
-                  /> */}
-
-                  <div>
-                    <p>download</p>
-                    <p>replace</p>
+                  >
+                    {f.title !== "Master" && (
+                      <img
+                        alt="delete"
+                        src={crossImg}
+                        className="removeIcon pointer"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setModalContent({
+                            openModal: true,
+                            text: `Are you sure you want to delete the file?`,
+                            onClick1: () => deleteFile(f.id),
+                          });
+                        }}
+                      />
+                    )}
+                    <div className="fileIconWrapper">
+                      <img
+                        alt="pdf"
+                        src="https://img.icons8.com/color/48/null/pdf.png"
+                      />
+                      <p>{f.filename.slice(14)}</p>
+                    </div>
+                  </a>
+                  <div className="btnsWrapper">
+                    <div
+                      className="iconWrapper pointer"
+                      onClick={() => downloadFile(f.filename)}
+                    >
+                      <img
+                        alt="download"
+                        src="https://img.icons8.com/fluency-systems-regular/48/null/downloading-updates.png"
+                      />
+                    </div>
+                    <div
+                      className="iconWrapper not-allowed"
+                      // onClick={() => replaceFile(f.filename)}
+                      // {...getRootProps()}
+                    >
+                      <img
+                        alt="replace"
+                        src="https://img.icons8.com/material-outlined/24/null/replace.png"
+                      />
+                    </div>
                   </div>
                 </div>
               );
@@ -165,7 +225,7 @@ function SinglePipeComp({ setMessage }) {
                     alt="pdf"
                     src="https://img.icons8.com/color/48/null/pdf.png"
                   />
-                  <p>{file.path}</p>
+                  <p>{pipe.tag}</p>
                 </div>
               ) : (
                 <div className="plusWrapper">
@@ -177,7 +237,6 @@ function SinglePipeComp({ setMessage }) {
               text="Save"
               src={saveImg}
               color="white"
-              // imgFilter="invert(100%)"
               border="none"
               textMargin="0 5px"
               margin="10px 0 0"
@@ -196,7 +255,9 @@ function SinglePipeComp({ setMessage }) {
 export default function SinglePipe() {
   return (
     <WithToast>
-      <SinglePipeComp />
+      <WithModal>
+        <SinglePipeComp />
+      </WithModal>
     </WithToast>
   );
 }
@@ -236,7 +297,6 @@ const singlePipeStyle = {
     ".content": {
       padding: "30px",
       display: "grid",
-      // gap: "20px",
       gridTemplateColumns: "repeat(auto-fit, minmax(100px, 220px))",
       ".fileWrapper": {
         ".title": {
@@ -244,27 +304,55 @@ const singlePipeStyle = {
           marginBottom: "10px",
         },
         ".dnd": {
+          textDecoration: "none",
+          position: "relative",
+          padding: "0 10px",
           width: "200px",
           height: "200px",
           border: "1px dotted lightgray",
           borderRadius: "4px",
           transition: "all 200ms ease-in-out",
-          // ".fileIconWrapper": {
-          //   textAlign: "center",
-          //   img: {
-          //     width: "40px",
-          //     height: "40px",
-          //   },
-          //   p: { fontSize: "14px" },
-          // },
-          // ".plusWrapper": {
-          //   width: "40px",
-          //   height: "40px",
-          //   borderRadius: "100px",
-          //   padding: "10px",
-          //   background: "linear-gradient(145deg, #ffffff, #e6e1da)",
-          //   boxShadow: "20px 20px 60px #d9d5ce, -20px -20px 60px #ffffff",
-          // },
+          ".removeIcon": {
+            display: "none",
+            position: "absolute",
+            top: "5px",
+            right: "5px",
+            width: "20px",
+            height: "20px",
+            background: "#F44241",
+            borderRadius: "100px",
+            padding: "4px",
+          },
+          ":hover": { textDecoration: "underline" },
+          ":hover .removeIcon": {
+            display: "block",
+          },
+          ".fileIconWrapper": {
+            textAlign: "center",
+            img: {
+              width: "40px",
+              height: "40px",
+            },
+          },
+        },
+        ".btnsWrapper": {
+          marginTop: "10px",
+          display: "flex",
+          alignItems: "center",
+          ".iconWrapper": {
+            margin: "0 5px",
+            width: "40px",
+            height: "40px",
+            borderRadius: "100px",
+            padding: "10px",
+            transition: "all 200ms linear",
+            background: "linear-gradient(145deg, #ffffff, #e6e1da)",
+            boxShadow: "5px 5px 8px #d9d5ce, -5px -5px 8px #ffffff",
+            ":hover": {
+              background: "linear-gradient(145deg, #d8dce6, #ffffff)",
+              boxShadow: "5px 5px 8px #d1d4de, -5px -5px 8px #ffffff",
+            },
+          },
         },
       },
       ".newFile": {
@@ -274,6 +362,7 @@ const singlePipeStyle = {
           marginBottom: "10px",
         },
         ".dnd": {
+          padding: "0 10px",
           height: "200px",
           border: "1px dotted lightgray",
           borderRadius: "4px",

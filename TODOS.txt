@@ -1,15 +1,17 @@
 DOING 🔁
-- pdf:
-  - test pdf view
-  - save file path into ifc_pipes
-  - add max 45char in file title
-- IFC
-  - when SDesign => add line to IFC
-  - if removed from SDesign =>  if no attachment and line not moved yet => YES else inmutable
+- una vez se suba un archivo a una línea ésta queda bloqueada en IFD
+- pdf add max 45char in file title
+- subir archivo con nombre = tag
+- si archivo es clean => nombre = tag-CL
+- adjuntos => nombre = tag + .extension
+- sección llamada Instrumentación solo visible para rol: instrumentacion => ahi podrás subir archivo nombre = tag + -INST
+  - también tienes la opción de marcar como 'aceptado' o 'rechazado' lo cual afectará al color del botón en las tablas
+- sección llamada Process solo visible para rol: process => ahi podrás subir archivo nombre = tag + -PROC
 
 TODO ❌
 
 DONE ✔
+- my tray height de row ampliar
 - force unclaim available from speciality lead
 - mode not changing when changing views
 - cron node FEED not IFD

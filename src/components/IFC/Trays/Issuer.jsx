@@ -161,7 +161,7 @@ function IssuerComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getDesignIFCPipes}
+      getData={getIssuerIFCPipes}
       setMessage={setMessage}
     />
   );

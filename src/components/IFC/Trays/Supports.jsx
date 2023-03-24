@@ -164,7 +164,7 @@ function SupportsComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getDesignIFCPipes}
+      getData={getSupportsIFDPipes}
       setMessage={setMessage}
     />
   );
