@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import MyTrayHead from "./MyTrayHead";
 import MyTrayTable from "./MyTrayTable";
-import { calculateNextStep } from "../../IFD/IFDPipeHelpers";
 
 import WithToast from "../../../modals/Toast";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
@@ -81,9 +80,9 @@ function MyTrayComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to return", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    if (dataToSend.some((x) => x.status.toLowerCase().includes("modelled")))
+    if (dataToSend.some((x) => x.status.toLowerCase().includes("design")))
       return setMessage({ txt: "Some pipe can't be returned", type: "warn" });
-    const { ok } = await api("post", "/ifd/return", {
+    const { ok } = await api("post", "/ifc/return", {
       data: dataToSend,
     });
     if (ok) {

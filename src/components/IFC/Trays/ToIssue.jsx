@@ -164,6 +164,8 @@ function ToIssueComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
+      getData={getToIssueIFCPipes}
+      setMessage={setMessage}
     />
   );
 }

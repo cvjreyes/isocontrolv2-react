@@ -3,7 +3,13 @@
 import { jsx } from "@emotion/react";
 import { NavLink } from "react-router-dom";
 
+// import { useContext } from "react";
+// import { AuthContext } from "../../context/AuthContext";
+// import { userHasRoles } from "../../helpers/user";
+
 export default function Sidebar({ data }) {
+  // const { user } = useContext(AuthContext);
+
   return (
     <div css={sidebarStyle}>
       <div className="fakeHeader" />

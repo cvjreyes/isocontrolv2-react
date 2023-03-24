@@ -2,17 +2,20 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
 import { userHasRoles } from "../../../helpers/user";
-import Button1 from "../../general/Button1";
+import Button2 from "../../general/Button2";
 
 export default function TrayTableRow({
   row,
   titles,
   addToDataClaim,
   dataToClaim,
+  updatePipe,
 }) {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   return (
     <div className="grid">
@@ -38,45 +41,49 @@ export default function TrayTableRow({
           );
         } else if (title.key === "progress") {
           return (
-            <div key={title.key} className="flexCenter cell">
+            <div
+              key={title.key}
+              className="flexCenter cell pointer"
+              onClick={() => navigate(`/pipe/${row.id}`)}
+            >
               <div>{row[title.key] || 0}%</div>
             </div>
           );
         } else if (title.key === "actions") {
           return (
             <div key={title.key} className="flexCenter cell">
-              <Button1
-                color={row.valve && "white"}
-                bgColor={row.valve && "#28a745"}
-                text="V"
+              <Button2
+                text="P"
+                width="50px"
                 border="1px solid black"
-                width="30%"
+                margin="2px 10px 0"
+                bgColor={row.process && "#28A745"}
+                onClick={() => updatePipe("process", row.process, row.id)}
               />
-              <Button1
-                color={row.instrument && "white"}
-                bgColor={row.instrument && "#28a745"}
+              <Button2
                 text="I"
+                width="50px"
                 border="1px solid black"
-                width="30%"
-                margin="0 0 0 10px"
-              />
-              <Button1
-                color={row.NA && "white"}
-                bgColor={row.NA && "#28a745"}
-                text="N/A"
-                border="1px solid black"
-                width="30%"
-                padding="10px 0"
-                margin="0 0 0 10px"
-                onClick={(e) => handleClick(e, row.id)}
-                name="NA"
+                margin="2px 10px 0"
+                bgColor={row.instrumentation && "#28A745"}
+                onClick={() =>
+                  updatePipe("instrumentation", row.instrumentation, row.id)
+                }
               />
             </div>
           );
         }
         return (
-          <div key={title.key} className="flexCenter cell">
-            <div>{row[title.key] || "-"}</div>
+          <div
+            key={title.key}
+            className="flexCenter cell pointer"
+            onClick={() => navigate(`/ifc/pipe/${row.id}`)}
+          >
+            <div>
+              {title.key === "revision"
+                ? `*R${row[title.key]}`
+                : row[title.key] || "-"}
+            </div>
           </div>
         );
       })}

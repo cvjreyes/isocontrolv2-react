@@ -29,7 +29,10 @@ export default function EditForecastHead({
           onClick={() => navigate(-1)}
           className="flexCenter backWrapper pointer"
         >
-          <img src="https://img.icons8.com/ios-filled/50/null/chevron-left.png" />
+          <img
+            alt="back"
+            src="https://img.icons8.com/ios-filled/50/null/chevron-left.png"
+          />
         </div>
         <div className="selectWrapper">
           <label

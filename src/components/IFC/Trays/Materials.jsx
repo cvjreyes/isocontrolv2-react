@@ -164,6 +164,8 @@ function MaterialsComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
+      getData={getMaterialsIFCPipes}
+      setMessage={setMessage}
     />
   );
 }
