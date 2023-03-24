@@ -28,7 +28,10 @@ export default function TrayTableRow({
               }
             >
               <input
-                disabled={!userHasRoles(user, ["Speciality Lead"]) && row.owner}
+                disabled={
+                  (!userHasRoles(user, ["Speciality Lead"]) && row.owner) ||
+                  row.inIFC
+                }
                 type="checkbox"
                 checked={dataToClaim.includes(row.id)}
                 onChange={() => addToDataClaim(row.id)}
