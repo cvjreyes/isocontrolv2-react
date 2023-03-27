@@ -16,7 +16,6 @@ function Toast({ children }) {
     }
   }, [message]);
 
-  // ! creo que es este setTimeout el que genera el warning
   useEffect(() => {
     if (message.txt) {
       setTimeout(() => {

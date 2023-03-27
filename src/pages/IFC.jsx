@@ -17,7 +17,7 @@ import Issuer from "../components/IFC/Trays/Issuer";
 import ToIssue from "../components/IFC/Trays/ToIssue";
 import Issued from "../components/IFC/Trays/Issued";
 import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
-import SinglePipe from "../components/IFC/SinglePipe";
+import SinglePipe from "../components/IFC/SinglePipe/SinglePipe";
 
 export default function IFC() {
   return (
