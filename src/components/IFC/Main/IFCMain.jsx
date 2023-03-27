@@ -14,8 +14,6 @@ import {
 } from "../../FEED/feedPipesHelpers";
 import IFCTableWrapper from "./IFCTableWrapper";
 import CopyContext from "../../../context/CopyContext";
-import { columnsData } from "../ColumnsData";
-import { buildIFDRow } from "../../IFD/IFDPipeHelpers";
 
 import loadingGif from "../../../assets/gifs/loading.gif";
 
@@ -23,13 +21,11 @@ function IFDMainComp({ setMessage, setModalContent }) {
   const location = useLocation();
   const gridSize =
     "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr";
-  const gridSizeAdd = "1fr 4fr 7fr 1.5fr 1.5fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr";
   const id = "ifc";
   const page = "main";
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState(null);
   const [displayData, setDisplayData] = useState(null);
-  const [feedPipes, setFeedPipes] = useState([]);
   const [areas, setAreas] = useState(null);
   const [lineRefs, setLineRefs] = useState([]);
   const [owners, setOwners] = useState([]);
@@ -46,12 +42,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     }));
     setData(rows);
     filter(rows);
-  };
-
-  const getFeedPipes = async () => {
-    const { body: rows } = await api("get", "/feed/get_all_pipes");
-    rows.map((row) => (row.tag = buildTag(row)));
-    setFeedPipes(rows);
   };
 
   const resetMode = () => {
@@ -80,7 +70,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
         setDisplayData(rows);
       });
     };
-    getFeedPipes();
     getThings();
     resetMode();
   }, [location]);
@@ -209,122 +198,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
     });
   };
 
-  const handlePaste = (e, i, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const name = e.target.name ? e.target.name : e.target.id;
-    const pastedData = e.clipboardData.getData("Text").split("\t");
-    if (pastedData.length === 1) {
-      let ind = pastedData.indexOf("\r");
-      pastedData[0] = ind > -1 ? pastedData[0].slice(0, ind) : pastedData[0];
-      return pasteCell(name, i, pastedData[0]);
-    } else if (pastedData.length === 3) {
-      return pasteRow(e, id);
-    } else if (pastedData.length > 3) {
-      return pasteMultipleRows(e, i);
-    }
-  };
-
-  const pasteCell = (name, i, pastedData) => {
-    const tempData = [...data];
-    const idx = tempData.findIndex((item) => item.id === displayData[i].id);
-    let changedRow = { ...tempData[idx] };
-    changedRow[name] = pastedData;
-    if (name === "line_reference") {
-      const values = divideLineReference(value, lineRefs);
-      changedRow = { ...changedRow, ...values };
-    } else if (name === "tag") {
-      // divide tag
-      const dividedTag = divideTag(pastedData);
-      // update rest
-      changedRow = { ...changedRow, ...dividedTag };
-    } else {
-      changedRow.tag = buildTag(changedRow);
-      changedRow.line_reference = buildLineRef(changedRow);
-    }
-    if (data.some((x) => x.tag === changedRow.tag && x.id !== tempData[idx].id))
-      changedRow.tag = "Already exists";
-    tempData[idx] = changedRow;
-    addToChanged(changedRow.id);
-    filter(tempData);
-    setData(tempData);
-  };
-
-  const pasteRow = (e, id) => {
-    e.clipboardData.items[0].getAsString((text) => {
-      const tempData = [...data];
-      let lines = text.split("\n");
-      lines.forEach((line) => {
-        if (line.length < 1) return;
-        const y = tempData.findIndex((item) => item.id === id);
-        let row = line.split("\t");
-        let builtRow = buildIFDRow(row, id);
-        if (!builtRow.train.includes("0")) {
-          builtRow.train = "0" + builtRow.train;
-        }
-        builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
-        const values = divideLineReference(builtRow.line_reference, lineRefs);
-        builtRow = { ...builtRow, ...values };
-        const tag = buildTag(builtRow);
-        builtRow.tag = tag;
-        if (data.some((x) => x.tag === builtRow.tag && x.id !== id))
-          builtRow.tag = "Already exists";
-        tempData[y] = { ...tempData[y], ...builtRow };
-      });
-      addToChanged(id);
-      filter(tempData);
-      setData(tempData);
-    });
-  };
-
-  const pasteMultipleRows = (e, i) => {
-    e.clipboardData.items[0].getAsString((text) => {
-      const tempData = [...data];
-      // get rows as strings
-      let lines = text.split("\n");
-      lines.pop();
-      let toAdd = [];
-      // loop each row
-      try {
-        lines.forEach((line, x) => {
-          // get idx of iterated element in data
-          const y = tempData.findIndex(
-            (item) => item.id === displayData[i + x].id
-          );
-          // get row in form of array
-          let row = line.split("\t");
-          // build row as object
-          let builtRow = buildIFDRow(row, tempData[y].id);
-          if (!builtRow.train.includes("0")) {
-            builtRow.train = "0" + builtRow.train;
-          }
-          builtRow.train = builtRow.train.replace(/(\r\n|\n|\r)/gm, "");
-          const values = divideLineReference(builtRow.line_reference, lineRefs);
-          builtRow = { ...builtRow, ...values };
-          const tag = buildTag(builtRow);
-          builtRow.tag = tag;
-          // check for repeated tag
-          if (
-            data.some((x) => x.tag === builtRow.tag && x.id !== tempData[y].id)
-          )
-            builtRow.tag = "Already exists";
-          // update tempData
-          tempData[y] = { ...tempData[y], ...builtRow };
-          toAdd.push(displayData[i + x].id);
-        });
-      } catch (err) {
-        console.error(err);
-        return setMessage({
-          txt: "Cannot paste more pipes than then ones there are",
-          type: "error",
-        });
-      }
-      addToChanged(toAdd);
-      filter(tempData);
-      setData(tempData);
-    });
-  };
-
   const submitChanges = async () => {
     // abstract this into verifyRows or sth
     if (changed.length < 1)
@@ -366,7 +239,6 @@ function IFDMainComp({ setMessage, setModalContent }) {
           undoChanges={undoChanges}
           submitChanges={submitChanges}
           gridSize={gridSize}
-          handlePaste={handlePaste}
           setMessage={setMessage}
           progress={progress}
           setIsViewMode={setIsViewMode}

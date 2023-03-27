@@ -11,17 +11,16 @@ export default function ModelledRow({
   dataToClaim,
   handleClick,
   gridSize,
-  changed,
 }) {
   const rowStyle = {
     display: "grid",
     gridTemplateColumns: gridSize,
-    backgroundColor: changed.includes(row.id) ? "#2fc1383b" : null,
     borderLeft: "1px solid black",
+    height: "50px",
     ".cell": {
       border: "solid black",
       borderWidth: "0 1px 1px 0",
-      padding: "5%",
+      padding: "0 2%",
       "*": { fontSize: "13px", textAlign: "center" },
     },
   };

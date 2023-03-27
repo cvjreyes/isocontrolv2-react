@@ -161,6 +161,8 @@ function IssuerComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
+      getData={getIssuerIFCPipes}
+      setMessage={setMessage}
     />
   );
 }

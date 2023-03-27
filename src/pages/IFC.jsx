@@ -17,6 +17,7 @@ import Issuer from "../components/IFC/Trays/Issuer";
 import ToIssue from "../components/IFC/Trays/ToIssue";
 import Issued from "../components/IFC/Trays/Issued";
 import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
+import SinglePipe from "../components/IFC/SinglePipe";
 
 export default function IFC() {
   return (
@@ -34,7 +35,8 @@ export default function IFC() {
           <Route path="/issuer" element={<Issuer />} />
           <Route path="/to-issue" element={<ToIssue />} />
           <Route path="/issued" element={<Issued />} />
-          <Route path="/ifC_progress/*" element={<IFCProgress />} />
+          <Route path="/ifc_progress/*" element={<IFCProgress />} />
+          <Route path="/pipe/:pipe_id" element={<SinglePipe />} />
           <Route path="/*" element={<Navigate to="/ifc/main" />} />
         </Routes>
       </div>
