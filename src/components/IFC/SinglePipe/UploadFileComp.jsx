@@ -57,6 +57,7 @@ export default function UploadFileComp({
 }
 
 const newFileStyle = {
+  marginTop: "30px",
   width: "200px",
   ".master": {
     fontSize: "18px",

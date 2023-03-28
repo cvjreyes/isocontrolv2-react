@@ -38,7 +38,10 @@ export default function FileComponent({
             }}
           />
         )}
-        <div className="fileIconWrapper">
+        <div
+          className="fileIconWrapper"
+          style={{ marginTop: file.title === "Master" ? "60px" : "-30px" }}
+        >
           <img alt="pdf" src="https://img.icons8.com/color/48/null/pdf.png" />
           <p>{name}</p>
         </div>
@@ -69,22 +72,26 @@ export default function FileComponent({
 }
 
 const fileWrapperStyle = {
+  marginTop: "30px",
   ".title": {
     lineHeight: "40px",
     marginBottom: "10px",
   },
   ".dnd": {
     textDecoration: "none",
-    position: "relative",
+    // position: "relative",
     padding: "0 10px",
     width: "200px",
     height: "200px",
     border: "1px dotted lightgray",
     borderRadius: "4px",
     transition: "all 200ms ease-in-out",
+    display: "grid",
+    gridTemplateRows: "min-content",
     ".removeIcon": {
-      display: "none",
-      position: "absolute",
+      // display: "none",
+      // position: "absolute",
+      opacity: 0,
       top: "5px",
       right: "5px",
       width: "20px",
@@ -92,10 +99,14 @@ const fileWrapperStyle = {
       background: "#F44241",
       borderRadius: "100px",
       padding: "4px",
+      justifySelf: "flex-end",
+      alignSelf: "flex-start",
+      marginTop: "10px",
     },
     ":hover": { textDecoration: "underline" },
     ":hover .removeIcon": {
-      display: "block",
+      // display: "block",
+      opacity: 1,
     },
     ".fileIconWrapper": {
       textAlign: "center",

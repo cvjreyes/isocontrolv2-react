@@ -79,13 +79,13 @@ export default function SinglePipe({ setMessage }) {
   //   setFileTitle("");
   // };
 
-  const deleteFile = async (file_id) => {
-    const { ok } = await api("delete", `/files/delete/${file_id}`);
-    if (ok) {
-      setMessage({ txt: "File removed successfully", type: "success" });
-      getFiles();
-    }
-  };
+  // const deleteFile = async (file_id) => {
+  //   const { ok } = await api("delete", `/files/delete/${file_id}`);
+  //   if (ok) {
+  //     setMessage({ txt: "File removed successfully", type: "success" });
+  //     getFiles();
+  //   }
+  // };
 
   const downloadFile = async (filename) => {
     fetch(
@@ -112,10 +112,18 @@ export default function SinglePipe({ setMessage }) {
       <div className="body">
         <Top pipe={pipe} updatePipe={updatePipe} />
         <div className="content">
-          <File title="Master" file={master} tag={pipe.tag} />
-          <File title="Clean" file={clean} tag={pipe.tag + "-CL"} />
-          {/* </div>
-        <div className="content"> */}
+          <File
+            title="Master"
+            file={master}
+            tag={pipe.tag}
+            getFiles={getFiles}
+          />
+          <File
+            title="Clean"
+            file={clean}
+            tag={pipe.tag + "-CL"}
+            getFiles={getFiles}
+          />
           {files?.map((f, i) => {
             return (
               <File
@@ -123,10 +131,15 @@ export default function SinglePipe({ setMessage }) {
                 file={f}
                 title={`Attachment #${i + 1}`}
                 tag={pipe.tag}
+                getFiles={getFiles}
               />
             );
           })}
-          <File title={`Attachment #${files?.length + 1}`} tag={pipe.tag} />
+          <File
+            title={`Attachment #${files?.length + 1}`}
+            tag={pipe.tag}
+            getFiles={getFiles}
+          />
         </div>
       </div>
     </div>
@@ -147,12 +160,11 @@ const singlePipeStyle = {
     borderWidth: "0 1px 1px 1px",
     height: "calc(74vh - 50px)",
     ".content": {
-      padding: "30px",
+      padding: "0 30px 30px",
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(100px, 220px))",
-      // backgroundColor: "red",
-      // maxHeight: "100%",
-      // overflowY: "auto",
+      height: "589px",
+      overflowY: "auto",
     },
   },
 };
