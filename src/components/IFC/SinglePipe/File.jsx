@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import FileComponent from "./FileComponent";
@@ -14,8 +14,6 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
   const [fileToSend, setFile] = useState(null);
 
   const saveFile = async () => {
-    // if (files.length > 1 && !fileTitle)
-    //   return setMessage({ txt: "File needs a title", type: "warn" });
     if (!fileToSend)
       return setMessage({ txt: "There's no file uploaded :(", type: "warn" });
     const formData = new FormData();
@@ -23,7 +21,7 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
     const name = title.includes("Attachment") ? "Attachment" : title;
     const { ok } = await api(
       "post",
-      `/ifc/upload_file/${pipe_id}/${name}`,
+      `/ifc/${file ? "update_file" : "upload_file"}/${pipe_id}/${name}`,
       formData
     );
     if (!ok) return setMessage({ txt: "Something went south", type: "error" });
@@ -40,18 +38,35 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
     }
   };
 
-  useEffect(() => {
-    console.log({ fileToSend });
-  }, [fileToSend]);
+  const downloadFile = async (filename) => {
+    fetch(
+      `http://${import.meta.env.VITE_SERVER}:${
+        import.meta.env.VITE_NODE_PORT
+      }/files/${filename}`
+    ).then((response) => {
+      response.blob().then((blob) => {
+        // Creating new object of PDF file
+        const fileURL = window.URL.createObjectURL(blob);
+        // Setting various property values
+        let alink = document.createElement("a");
+        alink.href = fileURL;
+        alink.download = tag;
+        alink.click();
+      });
+    });
+  };
 
-  if (file) {
+  if (file && !fileToSend) {
     return (
       <FileComponent
         title={title}
         file={file}
         setModalContent={setModalContent}
-        name={tag}
+        tag={tag}
         deleteFile={deleteFile}
+        downloadFile={downloadFile}
+        setFile={setFile}
+        setMessage={setMessage}
       />
     );
   } else {
@@ -60,8 +75,9 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
         title={title}
         setFile={(f) => setFile(f)}
         fileToSend={fileToSend}
-        name={tag}
+        tag={tag}
         saveFile={saveFile}
+        setMessage={setMessage}
       />
     );
   }

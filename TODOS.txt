@@ -1,5 +1,6 @@
 DOING 🔁
-- una vez se suba un archivo a una línea ésta queda bloqueada en IFD
+- download all dentro de una línea
+- select + download several pipe's files
 
 TODO ❌
 - sección llamada Instrumentación solo visible para rol: instrumentacion => ahi podrás subir archivo nombre = tag + -INST

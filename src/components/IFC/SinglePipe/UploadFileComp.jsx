@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import Button2 from "../../general/Button2";
@@ -10,17 +10,26 @@ import addImg from "../../../assets/images/add.svg";
 import saveImg from "../../../assets/images/save.svg";
 
 export default function UploadFileComp({
+  setMessage,
   fileToSend,
   saveFile,
-  title,
   setFile,
-  name,
+  title,
+  tag,
 }) {
-  const onDrop = useCallback(
-    (acceptedFiles) => acceptedFiles.forEach((f) => setFile(f)),
-    []
-  );
-  const { getRootProps } = useDropzone({ onDrop });
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach((f) => {
+      if (!tag.toLowerCase().includes(f.name.slice(0, -4).toLowerCase())) {
+        return setMessage({
+          txt: "File name should contain line's tag",
+          type: "warn",
+        });
+      }
+      setFile(f);
+    });
+  }, []);
+
+  const { getRootProps } = useDropzone({ onDrop, multiple: false });
 
   return (
     <div css={newFileStyle}>
@@ -33,7 +42,7 @@ export default function UploadFileComp({
         {fileToSend ? (
           <div className="fileIconWrapper">
             <img alt="pdf" src="https://img.icons8.com/color/48/null/pdf.png" />
-            <p>{name}</p>
+            <p>{tag}</p>
           </div>
         ) : (
           <div className="plusWrapper">

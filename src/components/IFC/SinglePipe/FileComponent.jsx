@@ -1,17 +1,43 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 import crossImg from "../../../assets/images/remove.webp";
 
 export default function FileComponent({
-  file,
-  title,
   setModalContent,
   downloadFile,
+  setMessage,
   deleteFile,
-  name,
+  setFile,
+  title,
+  file,
+  tag,
 }) {
+  const onDrop = useCallback(
+    (acceptedFiles) =>
+      acceptedFiles.forEach((f) => {
+        if (!tag.toLowerCase().includes(f.name.slice(0, -4).toLowerCase())) {
+          return setMessage({
+            txt: "File name should contain line's tag",
+            type: "warn",
+          });
+        }
+        setFile(f);
+      }),
+    []
+  );
+  const { getRootProps } = useDropzone({ onDrop, multiple: false });
+
+  const icons = {
+    pdf: "https://img.icons8.com/color/48/null/pdf.png",
+    txt: "https://img.icons8.com/ios/50/null/edit-text-file.png",
+  };
+
+  const ext = file.filename.slice(-3);
+
   return (
     <div css={fileWrapperStyle}>
       <p className="title">{title}</p>
@@ -42,8 +68,8 @@ export default function FileComponent({
           className="fileIconWrapper"
           style={{ marginTop: file.title === "Master" ? "60px" : "-30px" }}
         >
-          <img alt="pdf" src="https://img.icons8.com/color/48/null/pdf.png" />
-          <p>{name}</p>
+          <img alt="pdf" src={icons[ext]} />
+          <p>{tag}</p>
         </div>
       </a>
       <div className="btnsWrapper">
@@ -57,9 +83,9 @@ export default function FileComponent({
           />
         </div>
         <div
-          className="iconWrapper not-allowed"
-          // onClick={() => replaceFile(file.filename)}
-          // {...getRootProps()}
+          className="iconWrapper pointer"
+          {...getRootProps()}
+          multiple={false}
         >
           <img
             alt="replace"
@@ -79,7 +105,6 @@ const fileWrapperStyle = {
   },
   ".dnd": {
     textDecoration: "none",
-    // position: "relative",
     padding: "0 10px",
     width: "200px",
     height: "200px",
@@ -89,8 +114,6 @@ const fileWrapperStyle = {
     display: "grid",
     gridTemplateRows: "min-content",
     ".removeIcon": {
-      // display: "none",
-      // position: "absolute",
       opacity: 0,
       top: "5px",
       right: "5px",
@@ -105,7 +128,6 @@ const fileWrapperStyle = {
     },
     ":hover": { textDecoration: "underline" },
     ":hover .removeIcon": {
-      // display: "block",
       opacity: 1,
     },
     ".fileIconWrapper": {
