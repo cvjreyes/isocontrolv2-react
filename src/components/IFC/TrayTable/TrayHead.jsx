@@ -9,12 +9,13 @@ import { userHasRoles } from "../../../helpers/user";
 import Button2 from "../../general/Button2";
 
 export default function TrayHead({
-  handleClaim,
   handleUnclaim,
+  handleClaim,
+  downloadAll,
   buttonText,
+  orderBy,
   title,
   data,
-  orderBy,
 }) {
   const { user } = useContext(AuthContext);
   const selectRef = useRef(null);
@@ -40,7 +41,7 @@ export default function TrayHead({
           imgFilter="invert(100%)"
           textMargin="0 0 0 6px"
           margin="0 10px 0 0"
-          // onClick={saveZip}
+          onClick={downloadAll}
         />
 
         <div className="selectWrapper">

@@ -3,11 +3,12 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
+import TrayTable from "../TrayTable/TrayTable";
+
+import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
-import TrayTable from "../TrayTable/TrayTable";
 import { userHasRoles } from "../../../helpers/user";
 
 function DesignComp({ setMessage }) {

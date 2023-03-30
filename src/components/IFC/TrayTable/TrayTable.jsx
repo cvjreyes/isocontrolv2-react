@@ -3,6 +3,8 @@
 import { jsx } from "@emotion/react";
 import { useContext } from "react";
 import Loading from "react-loading";
+import JSZip from "jszip";
+
 import { AuthContext } from "../../../context/AuthContext";
 import { api } from "../../../helpers/api";
 import { userHasRoles } from "../../../helpers/user";
@@ -12,19 +14,19 @@ import TrayHead from "./TrayHead";
 import RowTray from "./TrayTableRow";
 
 export default function TrayTable({
-  data,
-  handleClaim,
-  handleUnclaim,
   addToDataClaim,
-  title,
+  handleUnclaim,
   dataToClaim,
-  buttonText,
-  selectAll,
-  filter,
+  handleClaim,
   filterInfo,
+  buttonText,
+  setMessage,
+  selectAll,
   orderBy,
   getData,
-  setMessage,
+  filter,
+  title,
+  data,
 }) {
   const { user } = useContext(AuthContext);
 
@@ -102,6 +104,39 @@ export default function TrayTable({
     getData();
   };
 
+  const downloadAll = async () => {
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to download", type: "warn" });
+    const files = [];
+    for (let i = 0; i < dataToClaim.length; i++) {
+      const { body } = await api("get", `/ifc/get_files/${dataToClaim[i]}`);
+      const urls = body.map(
+        (f) =>
+          `http://${import.meta.env.VITE_SERVER}:${
+            import.meta.env.VITE_NODE_PORT
+          }/files/${f.filename}`
+      );
+      files.push(urls);
+    }
+
+    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
+
+    const zip = new JSZip();
+    for (let i = 0; i < files.length; i++) {
+      // console.log(i, files[i], dataToSend[i].tag);
+      const folder = zip.folder(dataToSend[i].tag); // folder name where all files will be placed in
+      files[i].forEach((url) => {
+        const blobPromise = fetch(url).then((r) => {
+          if (r.status === 200) return r.blob();
+          return Promise.reject(new Error(r.statusText));
+        });
+        const name = url.substring(url.lastIndexOf("/") + 1);
+        folder.file(name, blobPromise);
+      });
+    }
+    zip.generateAsync({ type: "blob" }).then((blob) => saveAs(blob, "files"));
+  };
+
   return (
     <div css={trayStyle}>
       <TrayHead
@@ -111,6 +146,7 @@ export default function TrayTable({
         data={data}
         orderBy={orderBy}
         handleUnclaim={handleUnclaim}
+        downloadAll={downloadAll}
       />
       <div className="wrapper">
         <div className="grid">
