@@ -1,6 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 import Button1 from "../../general/Button1";
 
@@ -12,6 +13,8 @@ export default function ModelledRow({
   handleClick,
   gridSize,
 }) {
+  const navigate = useNavigate();
+
   const rowStyle = {
     display: "grid",
     gridTemplateColumns: gridSize,
@@ -44,7 +47,11 @@ export default function ModelledRow({
           );
         } else if (title.key === "progress") {
           return (
-            <div key={title.key} className="flexCenter cell">
+            <div
+              key={title.key}
+              className="flexCenter cell pointer"
+              onClick={() => navigate(`/ifc/pipe/${row.id}`)}
+            >
               <div>{row[title.key] || 0}%</div>
             </div>
           );
@@ -87,7 +94,11 @@ export default function ModelledRow({
           );
         }
         return (
-          <div key={title.key} className="flexCenter cell">
+          <div
+            key={title.key}
+            className="flexCenter cell pointer"
+            onClick={() => navigate(`/ifc/pipe/${row.id}`)}
+          >
             <div>{row[title.key] || "-"}</div>
           </div>
         );
