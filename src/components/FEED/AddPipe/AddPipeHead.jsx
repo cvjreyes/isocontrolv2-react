@@ -40,11 +40,11 @@ export default function AddPipeHead({
           text="Clear"
           onClick={clear}
           border="none"
-          bgColor="transparent"
           color="white"
           fontWeight="600"
           fontSize="14px"
           textMargin="0 0 0 6px"
+          bgColor="transparent"
           hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
           // img
           alt="clear"

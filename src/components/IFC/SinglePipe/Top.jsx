@@ -3,10 +3,24 @@
 import { jsx } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
+import WithToast from "../../../modals/Toast";
+import { api } from "../../../helpers/api";
+
 import Button2 from "../../general/Button2";
 
-export default function Top({ pipe, updatePipe }) {
+function TopComp({ pipe, setMessage, getPipeInfo }) {
   const navigate = useNavigate();
+
+  const updatePipe = async (key, val, id) => {
+    const { ok } = await api("post", "/ifc/update_pipe", {
+      key,
+      val: val ? 0 : 1,
+      id,
+    });
+    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
+    setMessage({ txt: "Changes saved!", type: "success" });
+    getPipeInfo();
+  };
 
   return (
     <div css={topStyle}>
@@ -41,6 +55,15 @@ export default function Top({ pipe, updatePipe }) {
         />
       </div>
     </div>
+  );
+}
+
+// using this components to use modals
+export default function Top(props) {
+  return (
+    <WithToast>
+      <TopComp {...props} />
+    </WithToast>
   );
 }
 

@@ -36,6 +36,7 @@ export default function FileComponent({
     txt: "https://img.icons8.com/ios/50/null/edit-text-file.png",
   };
 
+  // last index of '.'
   const ext = file.filename.slice(-3);
 
   return (

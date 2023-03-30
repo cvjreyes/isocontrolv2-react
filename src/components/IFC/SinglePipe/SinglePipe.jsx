@@ -3,6 +3,7 @@
 import { jsx } from "@emotion/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import JSZip from "jszip";
 
 import Loading from "../../general/Loading";
 import { api } from "../../../helpers/api";
@@ -10,8 +11,9 @@ import { buildTag } from "../../FEED/feedPipesHelpers";
 
 import Top from "./Top";
 import File from "./File";
+import Button2 from "../../general/Button2";
 
-export default function SinglePipe({ setMessage }) {
+export default function SinglePipe() {
   const { pipe_id } = useParams();
 
   const [pipe, setPipe] = useState(null);
@@ -47,23 +49,49 @@ export default function SinglePipe({ setMessage }) {
     getFiles();
   }, []);
 
-  const updatePipe = async (key, val, id) => {
-    const { ok } = await api("post", "/ifc/update_pipe", {
-      key,
-      val: val ? 0 : 1,
-      id,
+  const saveZip = () => {
+    const allFiles = [master, clean, ...files];
+    const urls = allFiles.map(
+      (f) =>
+        `http://${import.meta.env.VITE_SERVER}:${
+          import.meta.env.VITE_NODE_PORT
+        }/files/${f.filename}`
+    );
+
+    const zip = new JSZip();
+    const folder = zip.folder("files"); // folder name where all files will be placed in
+
+    urls.forEach((url) => {
+      const blobPromise = fetch(url).then((r) => {
+        if (r.status === 200) return r.blob();
+        return Promise.reject(new Error(r.statusText));
+      });
+      const name = url.substring(url.lastIndexOf("/") + 1);
+      folder.file(name, blobPromise);
     });
-    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
-    setMessage({ txt: "Changes saved!", type: "success" });
-    getPipeInfo();
+
+    zip.generateAsync({ type: "blob" }).then((blob) => saveAs(blob, pipe.tag));
   };
 
   if (!pipe) return <Loading />;
   return (
     <div css={singlePipeStyle}>
-      <div className="head"></div>
+      <div className="head">
+        <Button2
+          text="Download all"
+          src="https://img.icons8.com/material-outlined/24/null/downloads.png"
+          width="fit-content"
+          color="white"
+          border="none"
+          bgColor="transparent"
+          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+          imgFilter="invert(100%)"
+          textMargin="0 0 0 6px"
+          onClick={saveZip}
+        />
+      </div>
       <div className="body">
-        <Top pipe={pipe} updatePipe={updatePipe} />
+        <Top pipe={pipe} getPipeInfo={getPipeInfo} />
         <div className="content">
           <File
             title="Master"
