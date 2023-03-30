@@ -4,7 +4,7 @@ export const data = [
     links: [
       { text: "Main", to: "/ifc/main" },
       { text: "My Tray", to: "/ifc/my-tray" },
-      { text: "Trash", to: "/ifc/trash" },
+      { text: "Cancelled", to: "/ifc/cancelled" },
       // { text: "On Hold", to: "/ifc/hold" },
     ],
   },

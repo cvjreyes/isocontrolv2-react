@@ -8,14 +8,14 @@ import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import TrayTable from "../TrayTable/TrayTable";
 
-function TrashComp({ setMessage }) {
+function CancelledComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
-    const getTrashedIFDPipes = async () => {
+    const getCancelledIFDPipes = async () => {
       const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
       const rows = pipes.map((row) => ({
         ...row,
@@ -25,7 +25,7 @@ function TrashComp({ setMessage }) {
       setData(rows);
       setDisplayData(rows);
     };
-    getTrashedIFDPipes();
+    getCancelledIFDPipes();
   }, []);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function TrashComp({ setMessage }) {
     filter(tempData);
   };
 
-  const handleTrash = async () => {
+  const handleCancel = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to restore", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
@@ -126,9 +126,9 @@ function TrashComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="Trash"
+      title="Cancelled"
       data={displayData}
-      handleClaim={handleTrash}
+      handleClaim={handleCancel}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
       buttonText="Restore"
@@ -141,10 +141,10 @@ function TrashComp({ setMessage }) {
 }
 
 // using this components to use modals
-export default function Trash() {
+export default function Cancelled() {
   return (
     <WithToast>
-      <TrashComp />
+      <CancelledComp />
     </WithToast>
   );
 }

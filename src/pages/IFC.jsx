@@ -8,7 +8,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import { data } from "../components/IFC/SidebarContent";
 import IFCMain from "../components/IFC/Main/IFCMain";
 import MyTray from "../components/IFC/MyTray/MyTray";
-import Trash from "../components/IFC/Trash/Trash";
+import Cancelled from "../components/IFC/Cancelled/Cancelled";
 import Design from "../components/IFC/Trays/Design";
 import Stress from "../components/IFC/Trays/Stress";
 import Supports from "../components/IFC/Trays/Supports";
@@ -27,7 +27,7 @@ export default function IFC() {
         <Routes>
           <Route exact path="/main/*" element={<IFCMain />} />
           <Route path="/my-tray" element={<MyTray />} />
-          <Route path="/trash" element={<Trash />} />
+          <Route path="/cancelled" element={<Cancelled />} />
           <Route path="/design" element={<Design />} />
           <Route path="/stress" element={<Stress />} />
           <Route path="/supports" element={<Supports />} />

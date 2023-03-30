@@ -12,9 +12,9 @@ TODO ❌
 - pipe editable solo si eres el owner ( else readonly )
   - crear variable isOwner => pasarla a children => funcionalidad on/off dependiendo de isOwner
 - añadir single pipe view en my tray => siempre editable
-- cambiar trash por cancelled
 
 DONE ✔
+- cambiar trash por cancelled
 - actions en trays read only
 - download several pipe's files
 - download all dentro de una línea
