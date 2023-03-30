@@ -1,13 +1,14 @@
 DOING 🔁
-- download all dentro de una línea
-- select + download several pipe's files
+- download several pipe's files
 
 TODO ❌
 - sección llamada Instrumentación solo visible para rol: instrumentacion => ahi podrás subir archivo nombre = tag + -INST
   - también tienes la opción de marcar como 'aceptado' o 'rechazado' lo cual afectará al color del botón en las tablas
 - sección llamada Process solo visible para rol: process => ahi podrás subir archivo nombre = tag + -PROC
+- pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 
 DONE ✔
+- download all dentro de una línea
 - adjuntos => nombre = tag + .extension
 - si archivo es clean => nombre = tag-CL
 - subir archivo con nombre = tag

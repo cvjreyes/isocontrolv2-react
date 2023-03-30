@@ -75,23 +75,25 @@ export default function TrayHead({
             imgFilter="invert(100%) brightness(200%)"
           />
         )}
-        <Button2
-          onClick={handleClaim}
-          text={buttonText || "Claim"}
-          width="100px"
-          bgColor="transparent"
-          border="none"
-          color="white"
-          fontWeight="600"
-          fontSize="14px"
-          textMargin="0 0 0 6px"
-          margin="0 0 0 3%"
-          hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-          // img
-          alt="claim"
-          src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
-          imgFilter="invert(100%) brightness(200%)"
-        />
+        {!buttonText && (
+          <Button2
+            onClick={handleClaim}
+            text={"Claim"}
+            width="100px"
+            bgColor="transparent"
+            border="none"
+            color="white"
+            fontWeight="600"
+            fontSize="14px"
+            textMargin="0 0 0 6px"
+            margin="0 0 0 3%"
+            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
+            // img
+            alt="claim"
+            src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
+            imgFilter="invert(100%) brightness(200%)"
+          />
+        )}
         <div className="itemsLength">{data.length} items</div>
       </div>
     </div>
