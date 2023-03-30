@@ -1,13 +1,14 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import JSZip from "jszip";
 
 import Loading from "../../general/Loading";
 import { api } from "../../../helpers/api";
 import { buildTag } from "../../FEED/feedPipesHelpers";
+import { AuthContext } from "../../../context/AuthContext";
 
 import Top from "./Top";
 import File from "./File";
@@ -15,16 +16,19 @@ import Button2 from "../../general/Button2";
 
 export default function SinglePipe() {
   const { pipe_id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const [pipe, setPipe] = useState(null);
   const [files, setFiles] = useState(null);
   const [master, setMaster] = useState(null);
   const [clean, setClean] = useState(null);
+  const [isOwner, setIsOwner] = useState(null);
 
   const getPipeInfo = async () => {
     const { body } = await api("get", `/ifc/get_pipe_info/${pipe_id}`);
     const row = { ...body, tag: buildTag(body) };
     setPipe(row);
+    setIsOwner(user.id == row.owner_id);
   };
 
   const getFiles = async () => {
@@ -91,19 +95,21 @@ export default function SinglePipe() {
         />
       </div>
       <div className="body">
-        <Top pipe={pipe} getPipeInfo={getPipeInfo} />
+        <Top pipe={pipe} getPipeInfo={getPipeInfo} isOwner={isOwner} />
         <div className="content">
           <File
             title="Master"
             file={master}
             tag={pipe.tag}
             getFiles={getFiles}
+            isOwner={isOwner}
           />
           <File
             title="Clean"
             file={clean}
             tag={pipe.tag + "-CL"}
             getFiles={getFiles}
+            isOwner={isOwner}
           />
           {files?.map((f, i) => {
             return (
@@ -113,14 +119,18 @@ export default function SinglePipe() {
                 title={`Attachment #${i + 1}`}
                 tag={pipe.tag}
                 getFiles={getFiles}
+                isOwner={isOwner}
               />
             );
           })}
-          <File
-            title={`Attachment #${files?.length + 1}`}
-            tag={pipe.tag}
-            getFiles={getFiles}
-          />
+          {isOwner && (
+            <File
+              title={`Attachment #${files?.length + 1}`}
+              tag={pipe.tag}
+              getFiles={getFiles}
+              isOwner={isOwner}
+            />
+          )}
         </div>
       </div>
     </div>

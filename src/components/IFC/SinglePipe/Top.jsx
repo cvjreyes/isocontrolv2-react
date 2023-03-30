@@ -8,10 +8,11 @@ import { api } from "../../../helpers/api";
 
 import Button2 from "../../general/Button2";
 
-function TopComp({ pipe, setMessage, getPipeInfo }) {
+function TopComp({ pipe, setMessage, getPipeInfo, isOwner }) {
   const navigate = useNavigate();
 
   const updatePipe = async (key, val, id) => {
+    if (!isOwner) return;
     const { ok } = await api("post", "/ifc/update_pipe", {
       key,
       val: val ? 0 : 1,
@@ -42,6 +43,7 @@ function TopComp({ pipe, setMessage, getPipeInfo }) {
           margin="2px 10px 0"
           bgColor={pipe.process && "#28A745"}
           onClick={() => updatePipe("process", pipe.process, pipe.id)}
+          className={isOwner ? "pointer" : "default"}
         />
         <Button2
           text="I"
@@ -52,6 +54,7 @@ function TopComp({ pipe, setMessage, getPipeInfo }) {
           onClick={() =>
             updatePipe("instrumentation", pipe.instrumentation, pipe.id)
           }
+          className={isOwner ? "pointer" : "default"}
         />
       </div>
     </div>

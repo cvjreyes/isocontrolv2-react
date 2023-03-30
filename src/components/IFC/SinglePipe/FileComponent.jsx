@@ -11,6 +11,7 @@ export default function FileComponent({
   downloadFile,
   setMessage,
   deleteFile,
+  isOwner,
   setFile,
   title,
   file,
@@ -50,7 +51,7 @@ export default function FileComponent({
           import.meta.env.VITE_NODE_PORT
         }/files/${file.filename}`}
       >
-        {file.title !== "Master" && (
+        {file.title !== "Master" && isOwner && (
           <img
             alt="delete"
             src={crossImg}
@@ -67,33 +68,37 @@ export default function FileComponent({
         )}
         <div
           className="fileIconWrapper"
-          style={{ marginTop: file.title === "Master" ? "60px" : "-30px" }}
+          style={{
+            marginTop: file.title === "Master" || !isOwner ? "60px" : "-30px",
+          }}
         >
           <img alt="pdf" src={icons[ext]} />
           <p>{tag}</p>
         </div>
       </a>
-      <div className="btnsWrapper">
-        <div
-          className="iconWrapper pointer"
-          onClick={() => downloadFile(file.filename)}
-        >
-          <img
-            alt="download"
-            src="https://img.icons8.com/fluency-systems-regular/48/null/downloading-updates.png"
-          />
+      {isOwner && (
+        <div className="btnsWrapper">
+          <div
+            className="iconWrapper pointer"
+            onClick={() => downloadFile(file.filename)}
+          >
+            <img
+              alt="download"
+              src="https://img.icons8.com/fluency-systems-regular/48/null/downloading-updates.png"
+            />
+          </div>
+          <div
+            className="iconWrapper pointer"
+            {...getRootProps()}
+            multiple={false}
+          >
+            <img
+              alt="replace"
+              src="https://img.icons8.com/material-outlined/24/null/replace.png"
+            />
+          </div>
         </div>
-        <div
-          className="iconWrapper pointer"
-          {...getRootProps()}
-          multiple={false}
-        >
-          <img
-            alt="replace"
-            src="https://img.icons8.com/material-outlined/24/null/replace.png"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

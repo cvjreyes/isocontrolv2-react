@@ -8,7 +8,15 @@ import WithToast from "../../../modals/Toast";
 import WithModal from "../../../modals/YesNo";
 import { api } from "../../../helpers/api";
 
-function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
+function FileComp({
+  setModalContent,
+  setMessage,
+  getFiles,
+  isOwner,
+  title,
+  file,
+  tag,
+}) {
   const { pipe_id } = useParams();
 
   const [fileToSend, setFile] = useState(null);
@@ -67,9 +75,10 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
         downloadFile={downloadFile}
         setFile={setFile}
         setMessage={setMessage}
+        isOwner={isOwner}
       />
     );
-  } else {
+  } else if (isOwner) {
     return (
       <UploadFileComp
         title={title}
@@ -78,9 +87,10 @@ function FileComp({ title, file, setModalContent, tag, setMessage, getFiles }) {
         tag={tag}
         saveFile={saveFile}
         setMessage={setMessage}
+        isOwner={isOwner}
       />
     );
-  }
+  } else return null;
 }
 
 // using this components to use modals
