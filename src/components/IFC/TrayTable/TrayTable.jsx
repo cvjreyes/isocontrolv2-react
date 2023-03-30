@@ -90,6 +90,7 @@ export default function TrayTable({
       "::-webkit-scrollbar": { display: "none" },
       ".cell": { padding: "0 5%" },
       "*": { fontSize: "13px", textAlign: "center" },
+      ".actions": { display: "flex", alignItems: "center" },
     },
   };
 

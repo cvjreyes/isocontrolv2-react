@@ -12,7 +12,7 @@ export default function TrayTableRow({
   titles,
   addToDataClaim,
   dataToClaim,
-  updatePipe,
+  // updatePipe,
 }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -51,24 +51,34 @@ export default function TrayTableRow({
           );
         } else if (title.key === "actions") {
           return (
-            <div key={title.key} className="flexCenter cell">
+            <div key={title.key} className="cell actions">
               <Button2
                 text="P"
-                width="50px"
+                width="40px"
                 border="1px solid black"
-                margin="2px 10px 0"
+                margin="2px 5px 0 0"
                 bgColor={row.process && "#28A745"}
-                onClick={() => updatePipe("process", row.process, row.id)}
+                className="default"
+                // onClick={() => updatePipe("process", row.process, row.id)}
               />
               <Button2
                 text="I"
-                width="50px"
+                width="40px"
                 border="1px solid black"
-                margin="2px 10px 0"
+                margin="2px 5px 0 0"
                 bgColor={row.instrumentation && "#28A745"}
-                onClick={() =>
-                  updatePipe("instrumentation", row.instrumentation, row.id)
-                }
+                className="default"
+                // onClick={() =>
+                // updatePipe("instrumentation", row.instrumentation, row.id)
+                // }
+              />
+              <Button2
+                text="V"
+                width="40px"
+                border="1px solid black"
+                margin="2px 5px 0 0"
+                bgColor={row.toValidate && "#28A745"}
+                className="default"
               />
             </div>
           );

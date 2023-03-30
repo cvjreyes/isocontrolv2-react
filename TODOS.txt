@@ -1,13 +1,22 @@
 DOING 🔁
-- download several pipe's files
 
 TODO ❌
 - sección llamada Instrumentación solo visible para rol: instrumentacion => ahi podrás subir archivo nombre = tag + -INST
   - también tienes la opción de marcar como 'aceptado' o 'rechazado' lo cual afectará al color del botón en las tablas
 - sección llamada Process solo visible para rol: process => ahi podrás subir archivo nombre = tag + -PROC
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
+- sidebar segun roles
+- retorno individual a bandeja concreta
+  - añadir actions en my tray => con funcionalidad de cambio
+  - if NOT design => show return btn => onClick => open modal => select tray to return to ( only PREVIOUS to current ) => confirm / cancel
+- pipe editable solo si eres el owner ( else readonly )
+  - crear variable isOwner => pasarla a children => funcionalidad on/off dependiendo de isOwner
+- añadir single pipe view en my tray => siempre editable
+- cambiar trash por cancelled
 
 DONE ✔
+- actions en trays read only
+- download several pipe's files
 - download all dentro de una línea
 - adjuntos => nombre = tag + .extension
 - si archivo es clean => nombre = tag-CL
