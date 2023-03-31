@@ -32,6 +32,11 @@ export default function ModelledRow({
     ".actions": { display: "flex", alignItems: "center" },
   };
 
+  const showVerifyBtn =
+    row.status === "Design" ||
+    row.status === "Stress" ||
+    row.status === "Supports";
+
   return (
     <div css={rowStyle}>
       {titles.map((title) => {
@@ -80,14 +85,18 @@ export default function ModelledRow({
                   updatePipe("instrumentation", row.instrumentation, row.id)
                 }
               />
-              <Button1
-                text="V"
-                width="40px"
-                border="1px solid black"
-                margin="2px 5px 0 0"
-                bgColor={row.toValidate && "#FFCA42"}
-                onClick={() => updatePipe("toValidate", row.toValidate, row.id)}
-              />
+              {showVerifyBtn && (
+                <Button1
+                  text="V"
+                  width="40px"
+                  border="1px solid black"
+                  margin="2px 5px 0 0"
+                  bgColor={row.toValidate && "#FFCA42"}
+                  onClick={() =>
+                    updatePipe("toValidate", row.toValidate, row.id)
+                  }
+                />
+              )}
               {row.status !== "Design" && (
                 <Button1
                   text="R"
