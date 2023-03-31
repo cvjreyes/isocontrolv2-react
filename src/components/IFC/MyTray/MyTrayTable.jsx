@@ -2,15 +2,20 @@
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import Loading from "react-loading";
+import { api } from "../../../helpers/api";
 
+import WithToast from "../../../modals/Toast";
 import NoResults from "../../general/NoResults";
 import MyTrayRow from "./MyTrayRow";
 
-export default function MyTrayTable({
-  data,
+function MyTrayTableComp({
   addToDataClaim,
+  returnToTray,
   dataToClaim,
+  setMessage,
+  getMyPipes,
   selectAll,
+  data,
 }) {
   const titles = [
     { text: "Claim", key: "claim" },
@@ -20,9 +25,10 @@ export default function MyTrayTable({
     { text: "Current Tray", key: "status" },
     { text: "Next Step", key: "next_step" },
     { text: "%", key: "progress" },
+    { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr";
+  const gridSize = ".3fr 1.5fr 0.3fr 0.5fr 0.5fr 0.5fr 0.3fr 0.75fr";
 
   const modelledStyle = {
     padding: "10px 1% 0",
@@ -51,6 +57,17 @@ export default function MyTrayTable({
         display: "none",
       },
     },
+  };
+
+  const updatePipe = async (key, val, id) => {
+    const { ok } = await api("post", "/ifc/update_pipe", {
+      key,
+      val: val ? 0 : 1,
+      id,
+    });
+    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
+    setMessage({ txt: "Changes saved!", type: "success" });
+    getMyPipes();
   };
 
   return (
@@ -84,14 +101,17 @@ export default function MyTrayTable({
       <div className="table">
         {data ? (
           data.length > 0 ? (
-            data.map((row) => (
+            data.map((row, i) => (
               <MyTrayRow
-                key={row.id}
+                i={i}
                 row={row}
+                key={row.id}
                 titles={titles}
-                addToDataClaim={addToDataClaim}
-                dataToClaim={dataToClaim}
                 gridSize={gridSize}
+                updatePipe={updatePipe}
+                dataToClaim={dataToClaim}
+                returnToTray={returnToTray}
+                addToDataClaim={addToDataClaim}
               />
             ))
           ) : (
@@ -102,5 +122,14 @@ export default function MyTrayTable({
         )}
       </div>
     </div>
+  );
+}
+
+// using this components to use modals
+export default function MyTrayTable(props) {
+  return (
+    <WithToast>
+      <MyTrayTableComp {...props} />
+    </WithToast>
   );
 }

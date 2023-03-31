@@ -90,10 +90,10 @@ export default function TrayHead({
             imgFilter="invert(100%) brightness(200%)"
           />
         )}
-        {!buttonText && (
+        {(!userHasRoles(user, ["Speciality Lead"]) || !buttonText) && (
           <Button2
             onClick={handleClaim}
-            text={"Claim"}
+            text={buttonText || "Claim"}
             width="100px"
             bgColor="transparent"
             border="none"

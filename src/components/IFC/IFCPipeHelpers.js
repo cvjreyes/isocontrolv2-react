@@ -1,4 +1,4 @@
-const progressNumbers = {
+export const progressNumbers = {
   TL1: {
     design: 0,
     materials: 85,
@@ -26,7 +26,7 @@ const progressNumbers = {
 };
 
 export const calculateNextStep = (status, type) => {
-  const list = Object.keys(progressNumbers[type]);
+  const list = Object.keys(this.progressNumbers[type]);
   const tempStatus = status.replace("-", "").replace("*", "").toLowerCase();
   const idx = list.findIndex((item) => tempStatus == item);
   const nextStep = list[idx + 1];

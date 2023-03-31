@@ -40,6 +40,7 @@ function CancelledComp({ setMessage }) {
   };
 
   const handleCancel = async () => {
+    console.log("test");
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to restore", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));

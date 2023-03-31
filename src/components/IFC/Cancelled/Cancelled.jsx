@@ -16,7 +16,7 @@ function CancelledComp({ setMessage }) {
 
   useEffect(() => {
     const getCancelledIFDPipes = async () => {
-      const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
+      const { body: pipes } = await api("get", "/ifc/get_some_pipes/1");
       const rows = pipes.map((row) => ({
         ...row,
         tag: buildTag(row),
@@ -35,6 +35,7 @@ function CancelledComp({ setMessage }) {
 
   const updatePipesDisplay = () => {
     const tempData = data.filter((x) => !dataToClaim.includes(x.id));
+    console.log(tempData);
     setData(tempData);
     filter(tempData);
   };
@@ -43,7 +44,7 @@ function CancelledComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to restore", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/restore_pipes", {
+    const { ok } = await api("post", "/ifc/restore_pipes", {
       data: dataToSend,
     });
     if (ok) {
@@ -68,9 +69,10 @@ function CancelledComp({ setMessage }) {
     setDataToClaim(tempDataToClaim);
   };
 
-  const filter = () => {
-    if (Object.values(filterInfo).every((x) => !x)) return setDisplayData(data);
-    let tempData = [...data];
+  const filter = (passedData) => {
+    let tempData = passedData || [...data];
+    if (Object.values(filterInfo).every((x) => !x))
+      return setDisplayData(tempData);
     let resultData = [];
     tempData.forEach((item) => {
       let exists = [];
@@ -126,16 +128,17 @@ function CancelledComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="Cancelled"
-      data={displayData}
-      handleClaim={handleCancel}
       addToDataClaim={addToDataClaim}
+      handleClaim={handleCancel}
       dataToClaim={dataToClaim}
-      buttonText="Restore"
+      setMessage={setMessage}
+      filterInfo={filterInfo}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      buttonText="Restore"
+      data={displayData}
       orderBy={orderBy}
+      title="Cancelled"
     />
   );
 }

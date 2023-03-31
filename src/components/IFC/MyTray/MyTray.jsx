@@ -4,12 +4,15 @@ import MyTrayHead from "./MyTrayHead";
 import MyTrayTable from "./MyTrayTable";
 
 import WithToast from "../../../modals/Toast";
+import ReturnToTray from "../../../modals/ReturnToTray";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
 import { api } from "../../../helpers/api";
 
 function MyTrayComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
+  const [isModalOpen, setOpenModal] = useState(false);
+  const [pipe, setPipe] = useState(null);
 
   const getMyPipes = async () => {
     const { body: pipes } = await api("get", "/ifc/get_my_pipes");
@@ -99,6 +102,11 @@ function MyTrayComp({ setMessage }) {
     setDataToClaim(data.map((x) => x.id));
   };
 
+  const returnToTray = (i) => {
+    setOpenModal(!isModalOpen);
+    setPipe(data[i]);
+  };
+
   return (
     <div>
       <MyTrayHead
@@ -111,7 +119,16 @@ function MyTrayComp({ setMessage }) {
         addToDataClaim={addToDataClaim}
         dataToClaim={dataToClaim}
         selectAll={selectAll}
+        getMyPipes={getMyPipes}
+        returnToTray={returnToTray}
       />
+      {isModalOpen && (
+        <ReturnToTray
+          closeModal={() => setOpenModal(false)}
+          pipe={pipe}
+          getMyPipes={getMyPipes}
+        />
+      )}
     </div>
   );
 }
