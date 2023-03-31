@@ -6,9 +6,9 @@ TODO ❌
 - sección llamada Process solo visible para rol: process => ahi podrás subir archivo nombre = tag + -PROC
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - sidebar segun roles
-- file icon while file being downloaded
 
 DONE ✔
+- file icon while file being downloaded
 - retorno individual a bandeja concreta
 - pipe editable solo si eres el owner ( else readonly )
 - añadir single pipe view en my tray => siempre editable

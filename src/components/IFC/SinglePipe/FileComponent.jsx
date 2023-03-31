@@ -14,7 +14,9 @@ export default function FileComponent({
   isOwner,
   setFile,
   title,
+  icons,
   file,
+  ext,
   tag,
 }) {
   const onDrop = useCallback(
@@ -31,14 +33,6 @@ export default function FileComponent({
     []
   );
   const { getRootProps } = useDropzone({ onDrop, multiple: false });
-
-  const icons = {
-    pdf: "https://img.icons8.com/color/48/null/pdf.png",
-    txt: "https://img.icons8.com/ios/50/null/edit-text-file.png",
-  };
-
-  // last index of '.'
-  const ext = file.filename.slice(-3);
 
   return (
     <div css={fileWrapperStyle}>
@@ -72,7 +66,7 @@ export default function FileComponent({
             marginTop: file.title === "Master" || !isOwner ? "60px" : "-30px",
           }}
         >
-          <img alt="pdf" src={icons[ext]} />
+          <img alt="file type" src={icons[ext]} />
           <p>{tag}</p>
         </div>
       </a>

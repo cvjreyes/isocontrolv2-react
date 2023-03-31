@@ -15,6 +15,8 @@ export default function UploadFileComp({
   saveFile,
   setFile,
   title,
+  icons,
+  ext,
   tag,
 }) {
   const onDrop = useCallback((acceptedFiles) => {
@@ -41,7 +43,7 @@ export default function UploadFileComp({
       >
         {fileToSend ? (
           <div className="fileIconWrapper">
-            <img alt="pdf" src="https://img.icons8.com/color/48/null/pdf.png" />
+            <img alt="file type" src={icons[ext]} />
             <p>{tag}</p>
           </div>
         ) : (

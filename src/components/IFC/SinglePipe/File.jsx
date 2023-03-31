@@ -64,30 +64,47 @@ function FileComp({
     });
   };
 
+  const icons = {
+    pdf: "https://img.icons8.com/color/48/null/pdf.png",
+    txt: "https://img.icons8.com/ios/50/null/edit-text-file.png",
+  };
+
+  const idx = fileToSend
+    ? fileToSend?.path.lastIndexOf(".")
+    : file?.filename.lastIndexOf(".");
+
+  const ext = fileToSend
+    ? fileToSend?.path.slice(idx + 1)
+    : file?.filename.slice(idx + 1);
+
   if (file && !fileToSend) {
     return (
       <FileComponent
-        title={title}
-        file={file}
         setModalContent={setModalContent}
-        tag={tag}
-        deleteFile={deleteFile}
         downloadFile={downloadFile}
-        setFile={setFile}
         setMessage={setMessage}
+        deleteFile={deleteFile}
+        setFile={setFile}
         isOwner={isOwner}
+        title={title}
+        icons={icons}
+        file={file}
+        tag={tag}
+        ext={ext}
       />
     );
   } else if (isOwner) {
     return (
       <UploadFileComp
-        title={title}
         setFile={(f) => setFile(f)}
         fileToSend={fileToSend}
-        tag={tag}
-        saveFile={saveFile}
         setMessage={setMessage}
+        saveFile={saveFile}
         isOwner={isOwner}
+        title={title}
+        icons={icons}
+        tag={tag}
+        ext={ext}
       />
     );
   } else return null;
