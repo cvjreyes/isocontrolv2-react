@@ -125,16 +125,21 @@ export default function TrayTable({
     zip.generateAsync({ type: "blob" }).then((blob) => saveAs(blob, "files"));
   };
 
+  const handleRevision = async () => {
+    console.log("revision clicked");
+  };
+
   return (
     <div css={trayStyle}>
       <TrayHead
+        handleRevision={handleRevision}
+        handleUnclaim={handleUnclaim}
         handleClaim={handleClaim}
+        downloadAll={downloadAll}
         buttonText={buttonText}
+        orderBy={orderBy}
         title={title}
         data={data}
-        orderBy={orderBy}
-        handleUnclaim={handleUnclaim}
-        downloadAll={downloadAll}
       />
       <div className="wrapper">
         <div className="grid">

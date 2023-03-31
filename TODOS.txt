@@ -7,6 +7,13 @@ TODO ❌
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - sidebar segun roles
 - mode download / claim in ifc trays => with owner should be downlaodable but no claimable
+- revision:
+  - create button only in issued ✔
+  - only visible for speciality lead ✔
+  - click on button ✔
+  - call to server
+  - línea queda bloqueada
+  - se crea nueva línea con revision pipe.revision + 1
 
 DONE ✔
 - verify functionality

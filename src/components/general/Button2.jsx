@@ -25,6 +25,7 @@ export default function Button2({
   alt,
   imgFilter,
   imgWidth,
+  imgTransform,
 }) {
   const buttonStyle = {
     width: width || "100%",
@@ -43,6 +44,7 @@ export default function Button2({
     img: {
       width: imgWidth || "20px",
       filter: imgFilter,
+      transform: imgTransform,
     },
   };
 

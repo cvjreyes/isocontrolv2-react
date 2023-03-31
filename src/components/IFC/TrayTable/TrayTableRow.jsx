@@ -93,7 +93,7 @@ export default function TrayTableRow({
           >
             <div>
               {title.key === "revision"
-                ? `*R${row[title.key]}`
+                ? `R${row[title.key]}`
                 : row[title.key] || "-"}
             </div>
           </div>
