@@ -10,12 +10,16 @@ import Button2 from "../../general/Button2";
 export default function TrayTableRow({
   row,
   titles,
-  addToDataClaim,
   dataToClaim,
-  // updatePipe,
+  addToDataClaim,
 }) {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const showVerifyBtn =
+    row.status.toLowerCase() === "design" ||
+    row.status.toLowerCase() === "stress" ||
+    row.status.toLowerCase() === "supports";
 
   return (
     <div className="grid">
@@ -59,7 +63,6 @@ export default function TrayTableRow({
                 margin="2px 5px 0 0"
                 bgColor={row.process && "#28A745"}
                 className="default"
-                // onClick={() => updatePipe("process", row.process, row.id)}
               />
               <Button2
                 text="I"
@@ -68,18 +71,17 @@ export default function TrayTableRow({
                 margin="2px 5px 0 0"
                 bgColor={row.instrumentation && "#28A745"}
                 className="default"
-                // onClick={() =>
-                // updatePipe("instrumentation", row.instrumentation, row.id)
-                // }
               />
-              <Button2
-                text="V"
-                width="40px"
-                border="1px solid black"
-                margin="2px 5px 0 0"
-                bgColor={row.toValidate && "#28A745"}
-                className="default"
-              />
+              {showVerifyBtn && (
+                <Button2
+                  text="V"
+                  width="40px"
+                  border="1px solid black"
+                  margin="2px 5px 0 0"
+                  bgColor={row.toValidate && "#FFCA42"}
+                  className="default"
+                />
+              )}
             </div>
           );
         }

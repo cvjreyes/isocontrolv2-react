@@ -7,6 +7,7 @@ TODO ❌
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - sidebar segun roles
 - mode download / claim in ifc trays => with owner should be downlaodable but no claimable
+- verify functionality
 
 DONE ✔
 - file icon while file being uploaded

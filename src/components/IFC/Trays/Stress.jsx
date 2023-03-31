@@ -19,6 +19,19 @@ function StressComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getStressIFDPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifd/get_pipes_from_tray/stress"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getStressIFDPipes();
   }, []);
 
@@ -26,17 +39,6 @@ function StressComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getStressIFDPipes = async () => {
-    const { body: pipes } = await api("get", "/ifd/get_pipes_from_tray/stress");
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -161,7 +163,6 @@ function StressComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getStressIFDPipes}
       setMessage={setMessage}
     />
   );

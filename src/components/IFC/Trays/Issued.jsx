@@ -19,6 +19,19 @@ function IssuedComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getIssuedIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_from_tray/issued"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getIssuedIFCPipes();
   }, []);
 
@@ -26,17 +39,6 @@ function IssuedComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getIssuedIFCPipes = async () => {
-    const { body: pipes } = await api("get", "/ifc/get_pipes_from_tray/issued");
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -161,7 +163,6 @@ function IssuedComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getIssuedIFCPipes}
       setMessage={setMessage}
     />
   );

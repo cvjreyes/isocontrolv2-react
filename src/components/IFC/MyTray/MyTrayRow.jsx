@@ -10,7 +10,6 @@ export default function ModelledRow({
   returnToTray,
   dataToClaim,
   updatePipe,
-  getMyPipes,
   gridSize,
   titles,
   row,

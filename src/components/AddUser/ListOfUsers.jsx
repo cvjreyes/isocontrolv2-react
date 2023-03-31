@@ -160,7 +160,7 @@ const usersStyle = {
     "> div": {
       width: "100%",
       overflowY: "auto",
-      height: "74vh",
+      height: "60vh",
       /* Hide scrollbar for IE, Edge and Firefox */
       msOverflowStyle: "none" /* IE and Edge */,
       scrollbarWidth: "none" /* Firefox */,

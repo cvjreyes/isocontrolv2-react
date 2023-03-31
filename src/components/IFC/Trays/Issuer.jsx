@@ -19,6 +19,19 @@ function IssuerComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getIssuerIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_from_tray/issuer"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getIssuerIFCPipes();
   }, []);
 
@@ -26,17 +39,6 @@ function IssuerComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getIssuerIFCPipes = async () => {
-    const { body: pipes } = await api("get", "/ifc/get_pipes_from_tray/issuer");
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -161,7 +163,6 @@ function IssuerComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getIssuerIFCPipes}
       setMessage={setMessage}
     />
   );

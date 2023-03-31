@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from "@emotion/react";
+import { jsx, keyframes } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
 import WithToast from "../../../modals/Toast";
@@ -8,7 +8,7 @@ import { api } from "../../../helpers/api";
 
 import Button2 from "../../general/Button2";
 
-function TopComp({ pipe, setMessage, getPipeInfo, isOwner }) {
+function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
   const navigate = useNavigate();
 
   const updatePipe = async (key, val, id) => {
@@ -22,6 +22,23 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner }) {
     setMessage({ txt: "Changes saved!", type: "success" });
     getPipeInfo();
   };
+
+  const handleVerify = () => {
+    if (!isTrayLead) return;
+  };
+
+  const isTrayLead = user?.roles.some(
+    ({ name: role }) =>
+      role.toLowerCase().includes("lead") &&
+      role.toLowerCase().includes(pipe.status.toLowerCase())
+  );
+
+  console.log(pipe.status);
+
+  const showVerifyBtn =
+    pipe.status.toLowerCase() === "design" ||
+    pipe.status.toLowerCase() === "stress" ||
+    pipe.status.toLowerCase() === "supports";
 
   return (
     <div css={topStyle}>
@@ -56,6 +73,17 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner }) {
           }
           className={isOwner ? "pointer" : "default"}
         />
+        {showVerifyBtn && (
+          <Button2
+            text="V"
+            width="50px"
+            border="1px solid black"
+            margin="2px 10px 0"
+            // bgColor={pipe.toValidate && "#FFCA42"}
+            onClick={handleVerify}
+            className={`${isTrayLead ? "pointer" : "default"} verifyBtn`}
+          />
+        )}
       </div>
     </div>
   );
@@ -69,6 +97,12 @@ export default function Top(props) {
     </WithToast>
   );
 }
+
+const blink = keyframes`
+0% { background-color: rgba(255,202,66, 1); }
+50% { background-color: rgba(255,202,66, 0.5); }
+100% { background-color: rgba(255,202,66, 1); }
+`;
 
 const topStyle = {
   display: "grid",
@@ -87,5 +121,13 @@ const topStyle = {
   ".btnWrapper": {
     display: "flex",
     justifyContent: "center",
+    ".verifyBtn": {
+      backgroundColor: "yellow",
+      transition: "all 1s ease",
+      animation: `${blink} 1s infinite ease`,
+      ":hover": {
+        backgroundColor: "blue",
+      },
+    },
   },
 };

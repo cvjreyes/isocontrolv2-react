@@ -23,7 +23,6 @@ export default function TrayTable({
   setMessage,
   selectAll,
   orderBy,
-  getData,
   filter,
   title,
   data,
@@ -92,17 +91,6 @@ export default function TrayTable({
       "*": { fontSize: "13px", textAlign: "center" },
       ".actions": { display: "flex", alignItems: "center" },
     },
-  };
-
-  const updatePipe = async (key, val, id) => {
-    const { ok } = await api("post", "/ifc/update_pipe", {
-      key,
-      val: val ? 0 : 1,
-      id,
-    });
-    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
-    setMessage({ txt: "Changes saved!", type: "success" });
-    getData();
   };
 
   const downloadAll = async () => {
@@ -204,12 +192,11 @@ export default function TrayTable({
             data.length > 0 ? (
               data.map((row) => (
                 <RowTray
-                  key={row.id}
-                  row={row}
-                  titles={titles}
                   addToDataClaim={addToDataClaim}
                   dataToClaim={dataToClaim}
-                  updatePipe={updatePipe}
+                  titles={titles}
+                  key={row.id}
+                  row={row}
                 />
               ))
             ) : (

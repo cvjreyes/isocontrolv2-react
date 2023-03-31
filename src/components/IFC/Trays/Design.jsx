@@ -20,6 +20,19 @@ function DesignComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getDesignIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_from_tray/design"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getDesignIFCPipes();
   }, []);
 
@@ -27,17 +40,6 @@ function DesignComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getDesignIFCPipes = async () => {
-    const { body: pipes } = await api("get", "/ifc/get_pipes_from_tray/design");
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -162,7 +164,6 @@ function DesignComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getDesignIFCPipes}
       setMessage={setMessage}
     />
   );

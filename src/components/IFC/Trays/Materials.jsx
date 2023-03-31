@@ -19,6 +19,19 @@ function MaterialsComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getMaterialsIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_from_tray/materials"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getMaterialsIFCPipes();
   }, []);
 
@@ -26,20 +39,6 @@ function MaterialsComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getMaterialsIFCPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifc/get_pipes_from_tray/materials"
-    );
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -164,7 +163,6 @@ function MaterialsComp({ setMessage }) {
       filter={handleFilter}
       filterInfo={filterInfo}
       orderBy={orderBy}
-      getData={getMaterialsIFCPipes}
       setMessage={setMessage}
     />
   );

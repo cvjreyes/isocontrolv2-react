@@ -95,7 +95,12 @@ export default function SinglePipe() {
         />
       </div>
       <div className="body">
-        <Top pipe={pipe} getPipeInfo={getPipeInfo} isOwner={isOwner} />
+        <Top
+          getPipeInfo={getPipeInfo}
+          isOwner={isOwner}
+          pipe={pipe}
+          user={user}
+        />
         <div className="content">
           <File
             title="Master"
