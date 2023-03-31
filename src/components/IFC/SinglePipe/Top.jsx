@@ -23,8 +23,16 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
     getPipeInfo();
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (!isTrayLead) return;
+    const { ok } = await api("post", "/ifc/update_pipe", {
+      key: "toValidate",
+      val: pipe.toValidate ? 0 : 1,
+      id: pipe.id,
+    });
+    if (!ok) return setMessage({ txt: "Something went wrong", type: "error" });
+    setMessage({ txt: "Changes saved!", type: "success" });
+    getPipeInfo();
   };
 
   const isTrayLead = user?.roles.some(
@@ -33,12 +41,17 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
       role.toLowerCase().includes(pipe.status.toLowerCase())
   );
 
-  console.log(pipe.status);
-
   const showVerifyBtn =
     pipe.status.toLowerCase() === "design" ||
     pipe.status.toLowerCase() === "stress" ||
     pipe.status.toLowerCase() === "supports";
+
+  const verifyBtnStyle = {
+    button: {
+      transition: "all 1s ease",
+      animation: pipe.toValidate && `${blink} 1s infinite ease`,
+    },
+  };
 
   return (
     <div css={topStyle}>
@@ -73,16 +86,18 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           }
           className={isOwner ? "pointer" : "default"}
         />
-        {showVerifyBtn && (
-          <Button2
-            text="V"
-            width="50px"
-            border="1px solid black"
-            margin="2px 10px 0"
-            // bgColor={pipe.toValidate && "#FFCA42"}
-            onClick={handleVerify}
-            className={`${isTrayLead ? "pointer" : "default"} verifyBtn`}
-          />
+        {showVerifyBtn && isTrayLead && (
+          <div css={verifyBtnStyle}>
+            <Button2
+              text="V"
+              width="50px"
+              border="1px solid black"
+              margin="2px 10px 0"
+              bgColor="transparent"
+              onClick={handleVerify}
+              className={"verifyBtn"}
+            />
+          </div>
         )}
       </div>
     </div>
@@ -99,9 +114,9 @@ export default function Top(props) {
 }
 
 const blink = keyframes`
-0% { background-color: rgba(255,202,66, 1); }
-50% { background-color: rgba(255,202,66, 0.5); }
-100% { background-color: rgba(255,202,66, 1); }
+  0% { background-color: rgba(255,202,66, 1); }
+  50% { background-color: rgba(255,202,66, 0.5); }
+  100% { background-color: rgba(255,202,66, 1); }
 `;
 
 const topStyle = {
@@ -121,13 +136,6 @@ const topStyle = {
   ".btnWrapper": {
     display: "flex",
     justifyContent: "center",
-    ".verifyBtn": {
-      backgroundColor: "yellow",
-      transition: "all 1s ease",
-      animation: `${blink} 1s infinite ease`,
-      ":hover": {
-        backgroundColor: "blue",
-      },
-    },
+    ".verifyBtn": {},
   },
 };
