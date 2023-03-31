@@ -35,7 +35,6 @@ function CancelledComp({ setMessage }) {
 
   const updatePipesDisplay = () => {
     const tempData = data.filter((x) => !dataToClaim.includes(x.id));
-    console.log(tempData);
     setData(tempData);
     filter(tempData);
   };

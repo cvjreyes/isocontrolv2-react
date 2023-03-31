@@ -124,7 +124,6 @@ export default function TrayTable({
 
     const zip = new JSZip();
     for (let i = 0; i < files.length; i++) {
-      // console.log(i, files[i], dataToSend[i].tag);
       const folder = zip.folder(dataToSend[i].tag); // folder name where all files will be placed in
       files[i].forEach((url) => {
         const blobPromise = fetch(url).then((r) => {
