@@ -7,11 +7,9 @@ TODO ❌
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - sidebar segun roles
 - file icon while file being downloaded
-- retorno individual a bandeja concreta
-  - añadir actions en my tray => con funcionalidad de cambio
-  - if NOT design => show return btn => onClick => open modal => select tray to return to ( only PREVIOUS to current ) => confirm / cancel
 
 DONE ✔
+- retorno individual a bandeja concreta
 - pipe editable solo si eres el owner ( else readonly )
 - añadir single pipe view en my tray => siempre editable
 - cambiar trash por cancelled
