@@ -120,9 +120,10 @@ function SDesignComp({ setMessage }) {
   };
 
   const selectAll = () => {
+    const tempData = data.filter((x) => !x.inIFC);
     const rows = userHasRoles(user, ["Speciality Lead"])
-      ? [...data]
-      : data.filter((x) => !x.owner);
+      ? [...tempData]
+      : tempData.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
