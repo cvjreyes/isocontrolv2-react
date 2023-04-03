@@ -11,7 +11,9 @@ NACHO:
 - sidebar segun roles
 
 DONE ✔
-- revision ✔
+- my tray return to specific tray
+- % IFC
+- revision 
 - verify functionality
 - file icon while file being uploaded
 - retorno individual a bandeja concreta

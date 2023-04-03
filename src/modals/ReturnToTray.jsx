@@ -14,7 +14,7 @@ export default function Modal({ closeModal, pipe, getMyPipes }) {
   const escFunction = (e) => e.key === "Escape" && resetModalContent();
 
   const list = Object.keys(progressNumbers[pipe.type]);
-  const idx = list.indexOf(pipe.status.toLowerCase());
+  const idx = list.indexOf(pipe.status.toLowerCase().replace(" ", ""));
   const options = list.splice(0, idx).map((x) => {
     const str = x.charAt(0).toUpperCase() + x.slice(1);
     return { value: str, label: str };
