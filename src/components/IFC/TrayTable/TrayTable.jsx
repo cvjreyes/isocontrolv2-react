@@ -12,6 +12,7 @@ import { userHasRoles } from "../../../helpers/user";
 import NoResults from "../../general/NoResults";
 import TrayHead from "./TrayHead";
 import RowTray from "./TrayTableRow";
+import { rolesPerTray } from "../SidebarContent";
 
 export default function TrayTable({
   addToDataClaim,
@@ -133,6 +134,9 @@ export default function TrayTable({
     getData();
   };
 
+  const roles = rolesPerTray[title.replace(" ", "")];
+  const editable = user.roles.some((x) => roles.includes(x.name));
+
   return (
     <div css={trayStyle}>
       <TrayHead
@@ -153,9 +157,10 @@ export default function TrayTable({
                 <div
                   key={title.text}
                   className="flexCenter cell pointer"
-                  onClick={selectAll}
+                  onClick={() => editable && selectAll()}
                 >
                   <input
+                    disabled={!editable}
                     className="pointer"
                     type="checkbox"
                     checked={
@@ -203,6 +208,7 @@ export default function TrayTable({
                 <RowTray
                   addToDataClaim={addToDataClaim}
                   dataToClaim={dataToClaim}
+                  editable={editable}
                   titles={titles}
                   key={row.id}
                   row={row}

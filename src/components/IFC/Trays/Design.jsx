@@ -154,17 +154,17 @@ function DesignComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="S-Design"
-      data={displayData}
+      addToDataClaim={addToDataClaim}
       handleUnclaim={handleUnclaim}
       handleClaim={handleClaim}
-      addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      filterInfo={filterInfo}
+      setMessage={setMessage}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
-      setMessage={setMessage}
+      title="Design"
     />
   );
 }

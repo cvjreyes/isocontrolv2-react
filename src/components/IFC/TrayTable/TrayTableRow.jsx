@@ -10,6 +10,7 @@ import Button2 from "../../general/Button2";
 export default function TrayTableRow({
   row,
   titles,
+  editable,
   dataToClaim,
   addToDataClaim,
 }) {
@@ -22,6 +23,10 @@ export default function TrayTableRow({
     row.status.toLowerCase() === "supports";
 
   const rowStyle = { backgroundColor: row.isBlocked ? "lightgray" : "" };
+  const clickable =
+    editable &&
+    !row.isBlocked &&
+    (!row.owner || (row.owner && userHasRoles(user, ["Speciality Lead"])));
 
   return (
     <div className="grid" css={rowStyle}>
@@ -31,17 +36,10 @@ export default function TrayTableRow({
             <div
               key={title.key}
               className="cell flexCenter pointer"
-              onClick={() =>
-                !row.isBlocked &&
-                (!row.owner || userHasRoles(user, ["Speciality Lead"])) &&
-                addToDataClaim(row.id)
-              }
+              onClick={() => clickable && addToDataClaim(row.id)}
             >
               <input
-                disabled={
-                  (!userHasRoles(user, ["Speciality Lead"]) && row.owner) ||
-                  row.isBlocked
-                }
+                disabled={!clickable}
                 type="checkbox"
                 checked={dataToClaim.includes(row.id)}
                 onChange={() => addToDataClaim(row.id)}

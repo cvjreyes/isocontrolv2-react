@@ -1,14 +1,17 @@
 DOING 🔁
 
 TODO ❌
-- sección llamada Instrumentación solo visible para rol: instrumentacion => ahi podrás subir archivo nombre = tag + -INST
+- instrumentacion => subir archivo nombre = tag + -INST
+- process => subir archivo nombre = tag + -PROC
   - también tienes la opción de marcar como 'aceptado' o 'rechazado' lo cual afectará al color del botón en las tablas
-- sección llamada Process solo visible para rol: process => ahi podrás subir archivo nombre = tag + -PROC
 - mode download / claim in ifc trays => with owner should be downlaodable but no claimable
 
 NACHO:
+- registro en isocontrol
+- testeo de roles en IFC
 
 DONE ✔
+- trays editables solo si coincide con role
 - unclaimable if already owner
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - my tray return to specific tray
