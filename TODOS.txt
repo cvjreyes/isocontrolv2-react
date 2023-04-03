@@ -10,6 +10,7 @@ NACHO:
 - sidebar segun roles
 
 DONE ✔
+- unclaimable if already owner
 - pipes in SDesign that are in IFC should be ACTUALLY BLOCKED
 - my tray return to specific tray
 - % IFC

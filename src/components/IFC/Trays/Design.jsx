@@ -58,13 +58,13 @@ function DesignComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifc/claim_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_pipes", {
       data: dataToSend,
     });
+    setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
       return updatePipesDisplay(true);
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const handleUnclaim = async () => {
