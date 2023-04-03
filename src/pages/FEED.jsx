@@ -14,10 +14,6 @@ export default function FEED() {
       title: "FEED",
       links: [{ text: "Line Control", to: "/feed/line_control" }],
     },
-    {
-      title: "Reporting",
-      links: [{ text: "Feed Progress", to: "/feed/progress" }],
-    },
   ];
 
   return (

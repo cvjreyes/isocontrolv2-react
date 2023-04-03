@@ -5,7 +5,6 @@ export const data = [
       { text: "Main", to: "/ifc/main" },
       { text: "My Tray", to: "/ifc/my-tray" },
       { text: "Cancelled", to: "/ifc/cancelled" },
-      // { text: "On Hold", to: "/ifc/hold" },
     ],
   },
   {
@@ -19,9 +18,5 @@ export const data = [
       { text: "To Issue", to: "/ifc/to-issue" },
       { text: "Issued", to: "/ifc/issued" },
     ],
-  },
-  {
-    title: "Reporting",
-    links: [{ text: "IFC Progress", to: "/ifc/ifc_progress" }],
   },
 ];

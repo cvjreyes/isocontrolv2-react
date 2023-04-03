@@ -7,7 +7,6 @@ TODO ❌
 - mode download / claim in ifc trays => with owner should be downlaodable but no claimable
 
 NACHO:
-- sidebar segun roles
 
 DONE ✔
 - unclaimable if already owner

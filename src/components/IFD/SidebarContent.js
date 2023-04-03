@@ -18,8 +18,4 @@ export const data = [
       { text: "S-Design", to: "/ifd/s-design" },
     ],
   },
-  {
-    title: "Reporting",
-    links: [{ text: "IFD Progress", to: "/ifd/ifd_progress" }],
-  },
 ];
