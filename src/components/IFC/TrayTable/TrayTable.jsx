@@ -22,6 +22,7 @@ export default function TrayTable({
   buttonText,
   setMessage,
   selectAll,
+  getData,
   orderBy,
   filter,
   title,
@@ -126,7 +127,10 @@ export default function TrayTable({
   };
 
   const handleRevision = async () => {
-    console.log("revision clicked");
+    if (dataToClaim.length < 1)
+      return setMessage({ txt: "No pipes to download", type: "warn" });
+    await api("post", "/ifc/revision/", { data: dataToClaim });
+    getData();
   };
 
   return (

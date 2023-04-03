@@ -18,20 +18,18 @@ function IssuedComp({ setMessage }) {
   const [dataToClaim, setDataToClaim] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
 
+  const getIssuedIFCPipes = async () => {
+    const { body: pipes } = await api("get", "/ifc/get_pipes_from_tray/issued");
+    const rows = pipes.map((row) => ({
+      ...row,
+      tag: buildTag(row),
+      updated_at: buildDate(row),
+    }));
+    setData(rows);
+    setDisplayData(rows);
+  };
+
   useEffect(() => {
-    const getIssuedIFCPipes = async () => {
-      const { body: pipes } = await api(
-        "get",
-        "/ifc/get_pipes_from_tray/issued"
-      );
-      const rows = pipes.map((row) => ({
-        ...row,
-        tag: buildTag(row),
-        updated_at: buildDate(row),
-      }));
-      setData(rows);
-      setDisplayData(rows);
-    };
     getIssuedIFCPipes();
   }, []);
 
@@ -119,9 +117,10 @@ function IssuedComp({ setMessage }) {
   };
 
   const selectAll = () => {
+    const tempData = data.filter((x) => !x.isBlocked);
     const rows = userHasRoles(user, ["Speciality Lead"])
-      ? [...data]
-      : data.filter((x) => !x.owner);
+      ? [...tempData]
+      : tempData.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
@@ -153,17 +152,18 @@ function IssuedComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="Issued"
-      data={displayData}
-      handleUnclaim={handleUnclaim}
-      handleClaim={handleClaim}
       addToDataClaim={addToDataClaim}
+      handleUnclaim={handleUnclaim}
+      getData={getIssuedIFCPipes}
+      handleClaim={handleClaim}
       dataToClaim={dataToClaim}
+      setMessage={setMessage}
+      filterInfo={filterInfo}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
-      setMessage={setMessage}
+      title="Issued"
     />
   );
 }

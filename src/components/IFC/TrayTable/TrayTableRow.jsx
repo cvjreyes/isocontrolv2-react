@@ -21,8 +21,10 @@ export default function TrayTableRow({
     row.status.toLowerCase() === "stress" ||
     row.status.toLowerCase() === "supports";
 
+  const rowStyle = { backgroundColor: row.isBlocked ? "lightgray" : "" };
+
   return (
-    <div className="grid">
+    <div className="grid" css={rowStyle}>
       {titles.map((title) => {
         if (title.key === "claim") {
           return (
@@ -30,12 +32,16 @@ export default function TrayTableRow({
               key={title.key}
               className="cell flexCenter pointer"
               onClick={() =>
+                !row.isBlocked &&
                 (!row.owner || userHasRoles(user, ["Speciality Lead"])) &&
                 addToDataClaim(row.id)
               }
             >
               <input
-                disabled={!userHasRoles(user, ["Speciality Lead"]) && row.owner}
+                disabled={
+                  (!userHasRoles(user, ["Speciality Lead"]) && row.owner) ||
+                  row.isBlocked
+                }
                 type="checkbox"
                 checked={dataToClaim.includes(row.id)}
                 onChange={() => addToDataClaim(row.id)}
