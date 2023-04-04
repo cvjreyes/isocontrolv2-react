@@ -70,10 +70,6 @@ export default function App() {
             path="/progress/:section"
             element={<PrivateRoute component={Progress} />}
           />
-          <Route
-            path="/progress/*"
-            element={<Navigate to="/progress/FEED" replace />}
-          />
 
           <Route
             exact

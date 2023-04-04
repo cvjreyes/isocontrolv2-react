@@ -22,7 +22,6 @@ export default function FEED() {
         <Sidebar data={data} />
         <Routes>
           <Route path="/line_control/*" element={<FEEDPipes />} />
-          <Route path="/progress/*" element={<FeedProgress />} />
           <Route path="/*" element={<Navigate to="/feed/line_control" />} />
         </Routes>
       </div>

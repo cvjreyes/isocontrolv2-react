@@ -16,7 +16,7 @@ import Materials from "../components/IFC/Trays/Materials";
 import Issuer from "../components/IFC/Trays/Issuer";
 import ToIssue from "../components/IFC/Trays/ToIssue";
 import Issued from "../components/IFC/Trays/Issued";
-import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
+// import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
 import SinglePipe from "../components/IFC/SinglePipe/SinglePipe";
 import Process from "../components/IFC/Trays/Process";
 import Instrumentation from "../components/IFC/Trays/Instrumentation";
@@ -39,7 +39,6 @@ export default function IFC() {
           <Route path="/issued" element={<Issued />} />
           <Route path="/process" element={<Process />} />
           <Route path="/instrumentation" element={<Instrumentation />} />
-          <Route path="/ifc_progress/*" element={<IFCProgress />} />
           <Route path="/pipe/:pipe_id" element={<SinglePipe />} />
           <Route path="/*" element={<Navigate to="/ifc/main" />} />
         </Routes>
