@@ -61,9 +61,15 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           src="https://img.icons8.com/ios-filled/50/null/chevron-left.png"
         />
       </div>
-      <div>
-        <b>Tag: </b>
-        {pipe.tag}
+      <div className="center">
+        <div>
+          <b>Tag: </b>
+          <span>{pipe.tag}</span>
+        </div>
+        <div>
+          <b>Owner: </b>
+          <span>{pipe.owner || "-"}</span>
+        </div>
       </div>
       <div className="btnWrapper">
         <Button2
@@ -95,7 +101,6 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
               margin="2px 10px 0"
               bgColor="transparent"
               onClick={handleVerify}
-              className={"verifyBtn"}
             />
           </div>
         )}
@@ -133,9 +138,15 @@ const topStyle = {
     transition: "all 50ms linear",
     ":hover": { padding: "9px" },
   },
+  ".center": {
+    textAlign: "right",
+    "> div": {
+      display: "grid",
+      gridTemplateColumns: "1fr 5fr",
+    },
+  },
   ".btnWrapper": {
     display: "flex",
     justifyContent: "center",
-    ".verifyBtn": {},
   },
 };
