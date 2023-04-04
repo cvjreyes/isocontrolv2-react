@@ -102,6 +102,12 @@ export default function SinglePipe() {
           user={user}
         />
         <div className="content">
+          {!master && !clean && files?.length === 0 && !isOwner && (
+            <div className="noResults">
+              <img src="https://img.icons8.com/ios/50/null/signing-a-document.png" />
+              <p>No documents uploaded yet</p>
+            </div>
+          )}
           <File
             title="Master"
             file={master}
@@ -161,6 +167,18 @@ const singlePipeStyle = {
       gridTemplateColumns: "repeat(auto-fit, minmax(100px, 220px))",
       height: "589px",
       overflowY: "auto",
+      ".noResults": {
+        marginTop: "50px",
+        width: "200%",
+        height: "fit-content",
+        display: "flex",
+        alignItems: "center",
+        img: {
+          width: "40px",
+          height: "40px",
+          marginRight: "15px",
+        },
+      },
     },
   },
 };
