@@ -70,6 +70,10 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           <b>Owner: </b>
           <span>{pipe.owner || "-"}</span>
         </div>
+        <div>
+          <b>Process Owner: </b>
+          <span>{pipe.process_owner || "-"}</span>
+        </div>
       </div>
       <div className="btnWrapper">
         <Button2
@@ -100,7 +104,8 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
               border="1px solid black"
               margin="2px 10px 0"
               bgColor="transparent"
-              onClick={handleVerify}
+              onClick={() => (pipe.toValidate || isOwner) && handleVerify()}
+              className={`${pipe.toValidate || isOwner ? "" : "default"}`}
             />
           </div>
         )}
@@ -126,8 +131,8 @@ const blink = keyframes`
 
 const topStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(3, 1fr)",
-  alignItems: "center",
+  gridTemplateColumns: "1fr 3fr 1fr",
+  alignItems: "start",
   ".backWrapper": {
     width: "40px",
     height: "40px",
@@ -142,7 +147,13 @@ const topStyle = {
     textAlign: "right",
     "> div": {
       display: "grid",
-      gridTemplateColumns: "1fr 5fr",
+      gridTemplateColumns: "2fr 5fr",
+      marginTop: "5px",
+      ":first-of-type": { marginTop: 0 },
+      "span:last-child": {
+        textAlign: "left",
+        marginLeft: "10px",
+      },
     },
   },
   ".btnWrapper": {

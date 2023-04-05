@@ -23,15 +23,9 @@ export default function SinglePipe() {
   const [master, setMaster] = useState(null);
   const [clean, setClean] = useState(null);
   const [isOwner, setIsOwner] = useState(null);
-  // console.log(
-  //   "has role process: ",
-  //   user.roles.some((x) => x.name === "Process")
-  // );
-  // console.log("is pipe in process: ", !!pipe?.process);
 
   const canEditProcess =
     user.roles.some((x) => x.name === "Process") && !!pipe?.process;
-  console.log({ canEditProcess });
   const getPipeInfo = async () => {
     const { body } = await api("get", `/ifc/get_pipe_info/${pipe_id}`);
     const row = { ...body, tag: buildTag(body) };

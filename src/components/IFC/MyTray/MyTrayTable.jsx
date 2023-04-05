@@ -60,6 +60,13 @@ function MyTrayTableComp({
   };
 
   const updatePipe = async (key, val, id) => {
+    const found = data.find((x) => x.id === id);
+    if (found.process_owner) {
+      return setMessage({
+        txt: "Pipe is already claimed by Process",
+        type: "warn",
+      });
+    }
     const { ok } = await api("post", "/ifc/update_pipe", {
       key,
       val: val ? 0 : 1,

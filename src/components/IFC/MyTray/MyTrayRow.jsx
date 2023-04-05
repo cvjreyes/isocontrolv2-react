@@ -71,7 +71,7 @@ export default function ModelledRow({
                 width="40px"
                 border="1px solid black"
                 margin="2px 5px 0 0"
-                bgColor={row.process && "#28A745"}
+                bgColor={row.process && "lightgray"}
                 onClick={() => updatePipe("process", row.process, row.id)}
               />
               <Button1

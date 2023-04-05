@@ -3,7 +3,7 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
-import TrayTable from "../TrayTable/TrayTable";
+import ProcessTable from "./ProcessTable";
 
 import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
@@ -20,16 +20,29 @@ function ProcessComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const fillProcessOwner = async (process_owner) => {
+      const { body } = await api(
+        "get",
+        `/ifc/fill_process_owner/${process_owner}`
+      );
+      return body.name;
+    };
     const getProcessIFCPipes = async () => {
       const { body: pipes } = await api(
         "get",
         "/ifc/get_pipes_with_action/process"
       );
-      const rows = pipes.map((row) => ({
-        ...row,
-        tag: buildTag(row),
-        updated_at: buildDate(row),
-      }));
+      const rows = [];
+      for (const row of pipes) {
+        rows.push({
+          ...row,
+          tag: buildTag(row),
+          updated_at: buildDate(row),
+          process_owner: row.process_owner
+            ? await fillProcessOwner(row.process_owner)
+            : null,
+        });
+      }
       setData(rows);
       setDisplayData(rows);
     };
@@ -45,7 +58,7 @@ function ProcessComp({ setMessage }) {
     const tempData = [...data];
     tempData.map((x) => {
       if (dataToClaim.includes(x.id)) {
-        x.owner = claim ? user.name : null;
+        x.process_owner = claim ? user.name : null;
       }
     });
     setData(tempData);
@@ -58,26 +71,13 @@ function ProcessComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok, body } = await api("post", "/ifc/claim_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_process", {
       data: dataToSend,
     });
     setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
       return updatePipesDisplay(true);
     }
-  };
-
-  const handleUnclaim = async () => {
-    if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to claim", type: "warn" });
-    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifc/unclaim_pipes", {
-      data: dataToSend,
-    });
-    if (ok) {
-      return updatePipesDisplay(false);
-    }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const addToDataClaim = (id) => {
@@ -153,9 +153,8 @@ function ProcessComp({ setMessage }) {
   };
 
   return (
-    <TrayTable
+    <ProcessTable
       addToDataClaim={addToDataClaim}
-      handleUnclaim={handleUnclaim}
       handleClaim={handleClaim}
       dataToClaim={dataToClaim}
       filterInfo={filterInfo}
