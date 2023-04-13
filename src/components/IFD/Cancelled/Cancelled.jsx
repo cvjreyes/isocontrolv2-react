@@ -1,25 +1,31 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
 import TrayTable from "../TrayTable/TrayTable";
-import { userHasRoles } from "../../../helpers/user";
 
-function SDesignComp({ setMessage }) {
-  const { user } = useContext(AuthContext);
-
+function CancelledComp({ setMessage }) {
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
-    getSDesignIFDPipes();
+    const getCancelledIFDPipes = async () => {
+      const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
+    getCancelledIFDPipes();
   }, []);
 
   useEffect(() => {
@@ -27,55 +33,23 @@ function SDesignComp({ setMessage }) {
     filter();
   }, [filterInfo]);
 
-  const getSDesignIFDPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifd/get_pipes_from_tray/sdesign"
-    );
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
-
-  const updatePipesDisplay = (claim) => {
-    const tempData = [...data];
-    tempData.map((x) => {
-      if (dataToClaim.includes(x.id)) {
-        x.owner = claim ? user.name : null;
-      }
-    });
+  const updatePipesDisplay = () => {
+    const tempData = data.filter((x) => !dataToClaim.includes(x.id));
     setData(tempData);
     filter(tempData);
-    setDataToClaim([]);
-    return setMessage({ txt: "Changes saved!", type: "success" });
   };
 
-  const handleClaim = async () => {
+  const handleCancel = async () => {
     if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to claim", type: "warn" });
+      return setMessage({ txt: "No pipes to restore", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_pipes", {
+    const { ok } = await api("post", "/ifd/restore_pipes", {
       data: dataToSend,
     });
     if (ok) {
-      return updatePipesDisplay(true);
-    }
-    return setMessage({ txt: "Something went wrong", type: "error" });
-  };
-
-  const handleUnclaim = async () => {
-    if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to claim", type: "warn" });
-    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_pipes", {
-      data: dataToSend,
-    });
-    if (ok) {
-      return updatePipesDisplay(false);
+      updatePipesDisplay();
+      setDataToClaim([]);
+      return setMessage({ txt: "Changes saved!", type: "success" });
     }
     return setMessage({ txt: "Something went wrong", type: "error" });
   };
@@ -120,10 +94,7 @@ function SDesignComp({ setMessage }) {
   };
 
   const selectAll = () => {
-    const tempData = data.filter((x) => !x.inIFC);
-    const rows = userHasRoles(user, ["Speciality Lead"])
-      ? [...tempData]
-      : tempData.filter((x) => !x.owner);
+    const rows = data.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
@@ -155,12 +126,12 @@ function SDesignComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="S-Design"
+      title="Cancelled"
       data={displayData}
-      handleUnclaim={handleUnclaim}
-      handleClaim={handleClaim}
+      handleClaim={handleCancel}
       addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      buttonText="Restore"
       selectAll={selectAll}
       filter={handleFilter}
       filterInfo={filterInfo}
@@ -170,10 +141,10 @@ function SDesignComp({ setMessage }) {
 }
 
 // using this components to use modals
-export default function SDesign() {
+export default function Cancelled() {
   return (
     <WithToast>
-      <SDesignComp />
+      <CancelledComp />
     </WithToast>
   );
 }

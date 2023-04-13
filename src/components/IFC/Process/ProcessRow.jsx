@@ -17,16 +17,16 @@ export default function TrayTableRow({
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const showVerifyBtn =
-    row.status.toLowerCase() === "design" ||
-    row.status.toLowerCase() === "stress" ||
-    row.status.toLowerCase() === "supports";
-
   const rowStyle = { backgroundColor: row.isBlocked ? "lightgray" : "" };
   const clickable =
     editable &&
     !row.isBlocked &&
-    (!row.owner || (row.owner && userHasRoles(user, ["Speciality Lead"])));
+    (!row.process_owner ||
+      (row.process_owner && userHasRoles(user, ["Speciality Lead"])));
+
+  const isProcessOwner = row.process_owner === user.name;
+  let navigateTo = `/ifc/pipe/${row.id}`;
+  isProcessOwner && (navigateTo += "/process");
 
   return (
     <div className="grid" css={rowStyle}>
@@ -52,7 +52,7 @@ export default function TrayTableRow({
             <div
               key={title.key}
               className="flexCenter cell pointer"
-              onClick={() => navigate(`/pipe/${row.id}`)}
+              onClick={() => navigate(navigateTo)}
             >
               <div>{row[title.key] || 0}%</div>
             </div>
@@ -76,16 +76,6 @@ export default function TrayTableRow({
                 bgColor={row.instrumentation && "#28A745"}
                 className="default"
               />
-              {showVerifyBtn && (
-                <Button2
-                  text="V"
-                  width="40px"
-                  border="1px solid black"
-                  margin="2px 5px 0 0"
-                  bgColor={row.toValidate && "#FFCA42"}
-                  className="default"
-                />
-              )}
             </div>
           );
         }
@@ -93,7 +83,7 @@ export default function TrayTableRow({
           <div
             key={title.key}
             className="flexCenter cell pointer"
-            onClick={() => navigate(`/ifc/pipe/${row.id}`)}
+            onClick={() => navigate(navigateTo)}
           >
             <div>
               {title.key === "revision"

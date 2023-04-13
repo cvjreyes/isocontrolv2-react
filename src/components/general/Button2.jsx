@@ -11,6 +11,7 @@ export default function Button2({
   border,
   borderRadius,
   width,
+  display,
   height,
   margin,
   className,
@@ -25,8 +26,10 @@ export default function Button2({
   alt,
   imgFilter,
   imgWidth,
+  imgTransform,
 }) {
   const buttonStyle = {
+    display,
     width: width || "100%",
     height,
     padding: padding || "10px 20px",
@@ -43,6 +46,7 @@ export default function Button2({
     img: {
       width: imgWidth || "20px",
       filter: imgFilter,
+      transform: imgTransform,
     },
   };
 

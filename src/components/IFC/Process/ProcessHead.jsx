@@ -9,8 +9,6 @@ import { userHasRoles } from "../../../helpers/user";
 import Button2 from "../../general/Button2";
 
 export default function TrayHead({
-  handleRevision,
-  handleUnclaim,
   handleClaim,
   downloadAll,
   buttonText,
@@ -72,45 +70,6 @@ export default function TrayHead({
         <h3 className="bold">{title}</h3>
       </div>
       <div className="flexCenter">
-        {userHasRoles(user, ["Speciality Lead"]) && title === "Issued" && (
-          <Button2
-            onClick={handleRevision}
-            text="Revision"
-            width="110px"
-            bgColor="transparent"
-            border="none"
-            color="white"
-            fontWeight="600"
-            fontSize="14px"
-            textMargin="0 0 0 6px"
-            margin="0 0 0 3%"
-            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-            // img
-            alt="Unclaim"
-            src="http://cdn.onlinewebfonts.com/svg/img_469993.png"
-            imgFilter="invert(100%) brightness(200%)"
-          />
-        )}
-        {userHasRoles(user, ["Speciality Lead"]) && (
-          <Button2
-            onClick={handleUnclaim}
-            text={buttonText || "Unclaim"}
-            width="100px"
-            bgColor="transparent"
-            border="none"
-            color="white"
-            fontWeight="600"
-            fontSize="14px"
-            textMargin="0 0 0 6px"
-            margin="0 0 0 3%"
-            hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-            // img
-            alt="Unclaim"
-            src={"https://img.icons8.com/material-outlined/24/null/move-up.png"}
-            imgFilter="invert(100%) brightness(200%)"
-            imgTransform="rotate(180deg)"
-          />
-        )}
         {(!userHasRoles(user, ["Speciality Lead"]) || !buttonText) && (
           <Button2
             onClick={handleClaim}

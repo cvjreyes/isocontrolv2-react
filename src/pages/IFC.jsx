@@ -8,7 +8,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import { data } from "../components/IFC/SidebarContent";
 import IFCMain from "../components/IFC/Main/IFCMain";
 import MyTray from "../components/IFC/MyTray/MyTray";
-import Trash from "../components/IFC/Trash/Trash";
+import Cancelled from "../components/IFC/Cancelled/Cancelled";
 import Design from "../components/IFC/Trays/Design";
 import Stress from "../components/IFC/Trays/Stress";
 import Supports from "../components/IFC/Trays/Supports";
@@ -16,8 +16,11 @@ import Materials from "../components/IFC/Trays/Materials";
 import Issuer from "../components/IFC/Trays/Issuer";
 import ToIssue from "../components/IFC/Trays/ToIssue";
 import Issued from "../components/IFC/Trays/Issued";
-import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
-import SinglePipe from "../components/IFC/SinglePipe";
+// import IFCProgress from "../components/IFC/IFCProgress/IFCProgress";
+import SinglePipe from "../components/IFC/SinglePipe/SinglePipe";
+import Process from "../components/IFC/Process/Process";
+import ProcessView from "../components/IFC/Process/ProcessView";
+import Instrumentation from "../components/IFC/Trays/Instrumentation";
 
 export default function IFC() {
   return (
@@ -27,7 +30,7 @@ export default function IFC() {
         <Routes>
           <Route exact path="/main/*" element={<IFCMain />} />
           <Route path="/my-tray" element={<MyTray />} />
-          <Route path="/trash" element={<Trash />} />
+          <Route path="/cancelled" element={<Cancelled />} />
           <Route path="/design" element={<Design />} />
           <Route path="/stress" element={<Stress />} />
           <Route path="/supports" element={<Supports />} />
@@ -35,7 +38,9 @@ export default function IFC() {
           <Route path="/issuer" element={<Issuer />} />
           <Route path="/to-issue" element={<ToIssue />} />
           <Route path="/issued" element={<Issued />} />
-          <Route path="/ifc_progress/*" element={<IFCProgress />} />
+          <Route path="/process" element={<Process />} />
+          <Route path="/instrumentation" element={<Instrumentation />} />
+          <Route path="/pipe/:pipe_id/process" element={<ProcessView />} />
           <Route path="/pipe/:pipe_id" element={<SinglePipe />} />
           <Route path="/*" element={<Navigate to="/ifc/main" />} />
         </Routes>

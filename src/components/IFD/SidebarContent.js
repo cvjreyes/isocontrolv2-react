@@ -4,7 +4,7 @@ export const data = [
     links: [
       { text: "Main", to: "/ifd/main" },
       { text: "My Tray", to: "/ifd/my-tray" },
-      { text: "Trash", to: "/ifd/trash" },
+      { text: "Cancelled", to: "/ifd/cancelled" },
     ],
   },
   {
@@ -16,12 +16,6 @@ export const data = [
       { text: "Stress", to: "/ifd/stress" },
       { text: "Supports", to: "/ifd/supports" },
       { text: "S-Design", to: "/ifd/s-design" },
-    ],
-  },
-  {
-    title: "Reporting",
-    links: [
-      { text: "IFD Progress", to: "/ifd/ifd_progress" },
     ],
   },
 ];

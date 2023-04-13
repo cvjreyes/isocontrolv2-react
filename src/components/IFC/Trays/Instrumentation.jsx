@@ -3,14 +3,15 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
+import TrayTable from "../TrayTable/TrayTable";
+
+import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
-import TrayTable from "../TrayTable/TrayTable";
 import { userHasRoles } from "../../../helpers/user";
 
-function SDesignComp({ setMessage }) {
+function InstrumentationComp({ setMessage }) {
   const { user } = useContext(AuthContext);
 
   const [data, setData] = useState([]);
@@ -19,27 +20,26 @@ function SDesignComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
-    getSDesignIFDPipes();
+    const getInstrumentationIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_with_action/instrumentation"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
+    getInstrumentationIFCPipes();
   }, []);
 
   useEffect(() => {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getSDesignIFDPipes = async () => {
-    const { body: pipes } = await api(
-      "get",
-      "/ifd/get_pipes_from_tray/sdesign"
-    );
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -58,20 +58,20 @@ function SDesignComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_pipes", {
       data: dataToSend,
     });
+    setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
       return updatePipesDisplay(true);
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const handleUnclaim = async () => {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_pipes", {
+    const { ok } = await api("post", "/ifc/unclaim_pipes", {
       data: dataToSend,
     });
     if (ok) {
@@ -120,10 +120,9 @@ function SDesignComp({ setMessage }) {
   };
 
   const selectAll = () => {
-    const tempData = data.filter((x) => !x.inIFC);
     const rows = userHasRoles(user, ["Speciality Lead"])
-      ? [...tempData]
-      : tempData.filter((x) => !x.owner);
+      ? [...data]
+      : data.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
@@ -155,25 +154,26 @@ function SDesignComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="S-Design"
-      data={displayData}
+      addToDataClaim={addToDataClaim}
       handleUnclaim={handleUnclaim}
       handleClaim={handleClaim}
-      addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      filterInfo={filterInfo}
+      setMessage={setMessage}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
+      title="Instrumentation"
     />
   );
 }
 
 // using this components to use modals
-export default function SDesign() {
+export default function Instrumentation() {
   return (
     <WithToast>
-      <SDesignComp />
+      <InstrumentationComp />
     </WithToast>
   );
 }

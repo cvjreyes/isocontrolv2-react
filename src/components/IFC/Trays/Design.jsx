@@ -3,11 +3,12 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
+import TrayTable from "../TrayTable/TrayTable";
+
+import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
-import TrayTable from "../TrayTable/TrayTable";
 import { userHasRoles } from "../../../helpers/user";
 
 function DesignComp({ setMessage }) {
@@ -19,6 +20,19 @@ function DesignComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
+    const getDesignIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_from_tray/design"
+      );
+      const rows = pipes.map((row) => ({
+        ...row,
+        tag: buildTag(row),
+        updated_at: buildDate(row),
+      }));
+      setData(rows);
+      setDisplayData(rows);
+    };
     getDesignIFCPipes();
   }, []);
 
@@ -26,17 +40,6 @@ function DesignComp({ setMessage }) {
     // cuando escrbimos en el filtro => actualizar displayData
     filter();
   }, [filterInfo]);
-
-  const getDesignIFCPipes = async () => {
-    const { body: pipes } = await api("get", "/ifc/get_pipes_from_tray/design");
-    const rows = pipes.map((row) => ({
-      ...row,
-      tag: buildTag(row),
-      updated_at: buildDate(row),
-    }));
-    setData(rows);
-    setDisplayData(rows);
-  };
 
   const updatePipesDisplay = (claim) => {
     const tempData = [...data];
@@ -55,13 +58,13 @@ function DesignComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifc/claim_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_pipes", {
       data: dataToSend,
     });
+    setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
       return updatePipesDisplay(true);
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const handleUnclaim = async () => {
@@ -151,18 +154,17 @@ function DesignComp({ setMessage }) {
 
   return (
     <TrayTable
-      title="S-Design"
-      data={displayData}
+      addToDataClaim={addToDataClaim}
       handleUnclaim={handleUnclaim}
       handleClaim={handleClaim}
-      addToDataClaim={addToDataClaim}
       dataToClaim={dataToClaim}
+      filterInfo={filterInfo}
+      setMessage={setMessage}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
-      getData={getDesignIFCPipes}
-      setMessage={setMessage}
+      title="Design"
     />
   );
 }

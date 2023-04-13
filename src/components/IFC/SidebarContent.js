@@ -4,8 +4,7 @@ export const data = [
     links: [
       { text: "Main", to: "/ifc/main" },
       { text: "My Tray", to: "/ifc/my-tray" },
-      { text: "Trash", to: "/ifc/trash" },
-      // { text: "On Hold", to: "/ifc/hold" },
+      { text: "Cancelled", to: "/ifc/cancelled" },
     ],
   },
   {
@@ -18,10 +17,20 @@ export const data = [
       { text: "Issuer", to: "/ifc/issuer" },
       { text: "To Issue", to: "/ifc/to-issue" },
       { text: "Issued", to: "/ifc/issued" },
+      { text: "Process", to: "/ifc/process" },
+      { text: "Instrumentation", to: "/ifc/instrumentation" },
     ],
   },
-  {
-    title: "Reporting",
-    links: [{ text: "IFC Progress", to: "/ifc/ifc_progress" }],
-  },
 ];
+
+export const rolesPerTray = {
+  Design: ["Design", "Design Lead", "Speciality Lead"],
+  Materials: ["Materials", "Speciality Lead"],
+  Stress: ["Stress", "Stress Lead", "Speciality Lead"],
+  Supports: ["Supports", "Supports Lead", "Speciality Lead"],
+  Issuer: ["Issuer", "Speciality Lead"],
+  ToIssue: ["Speciality Lead"],
+  Issued: ["Speciality Lead"],
+  Process: ["Process", "Speciality Lead"],
+  Instrumentation: ["Instrument", "Speciality Lead"],
+};

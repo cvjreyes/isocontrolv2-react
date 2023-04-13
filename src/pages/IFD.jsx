@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from "react-router";
 
 import IFDMain from "../components/IFD/Main/IFDMain";
 import MyTray from "../components/IFD/MyTray/MyTray";
-import Trash from "../components/IFD/Trash/Trash";
+import Cancelled from "../components/IFD/Cancelled/Cancelled";
 import Modelled from "../components/IFD/Trays/Modelled";
 import SStress from "../components/IFD/Trays/SStress";
 import RStress from "../components/IFD/Trays/RStress";
@@ -15,7 +15,7 @@ import SDesign from "../components/IFD/Trays/SDesign";
 import { data } from "../components/IFD/SidebarContent";
 import Sidebar from "../components/sidebar/Sidebar";
 import Main from "../layouts/Main";
-import IFDProgress from "../components/IFD/ifdProgress/IFDProgress";
+// import IFDProgress from "../components/IFD/ifdProgress/IFDProgress";
 // import IFDLayout from "../layouts/IFDLayout";
 
 export default function IFD() {
@@ -27,14 +27,13 @@ export default function IFD() {
         <Routes>
           <Route exact path="/main/*" element={<IFDMain />} />
           <Route path="/my-tray" element={<MyTray />} />
-          <Route path="/trash" element={<Trash />} />
+          <Route path="/cancelled" element={<Cancelled />} />
           <Route path="/modelled" element={<Modelled />} />
           <Route path="/s-stress" element={<SStress />} />
           <Route path="/r-stress" element={<RStress />} />
           <Route path="/stress" element={<Stress />} />
           <Route path="/supports" element={<Supports />} />
           <Route path="/s-design" element={<SDesign />} />
-          <Route path="/ifd_progress/*" element={<IFDProgress />} />
           <Route path="/*" element={<Navigate to="/ifd/main" />} />
         </Routes>
         {/* </IFDLayout> */}

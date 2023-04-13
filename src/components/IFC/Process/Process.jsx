@@ -1,31 +1,52 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
+import ProcessTable from "./ProcessTable";
+
+import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import TrayTable from "../TrayTable/TrayTable";
+import { userHasRoles } from "../../../helpers/user";
 
-function TrashComp({ setMessage }) {
+function ProcessComp({ setMessage }) {
+  const { user } = useContext(AuthContext);
+
   const [data, setData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [dataToClaim, setDataToClaim] = useState([]);
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
-    const getTrashedIFDPipes = async () => {
-      const { body: pipes } = await api("get", "/ifd/get_some_pipes/1");
-      const rows = pipes.map((row) => ({
-        ...row,
-        tag: buildTag(row),
-        updated_at: buildDate(row),
-      }));
+    const fillProcessOwner = async (process_owner) => {
+      const { body } = await api(
+        "get",
+        `/ifc/fill_process_owner/${process_owner}`
+      );
+      return body.name;
+    };
+    const getProcessIFCPipes = async () => {
+      const { body: pipes } = await api(
+        "get",
+        "/ifc/get_pipes_with_action/process"
+      );
+      const rows = [];
+      for (const row of pipes) {
+        rows.push({
+          ...row,
+          tag: buildTag(row),
+          updated_at: buildDate(row),
+          process_owner: row.process_owner
+            ? await fillProcessOwner(row.process_owner)
+            : null,
+        });
+      }
       setData(rows);
       setDisplayData(rows);
     };
-    getTrashedIFDPipes();
+    getProcessIFCPipes();
   }, []);
 
   useEffect(() => {
@@ -33,25 +54,30 @@ function TrashComp({ setMessage }) {
     filter();
   }, [filterInfo]);
 
-  const updatePipesDisplay = () => {
-    const tempData = data.filter((x) => !dataToClaim.includes(x.id));
+  const updatePipesDisplay = (claim) => {
+    const tempData = [...data];
+    tempData.map((x) => {
+      if (dataToClaim.includes(x.id)) {
+        x.process_owner = claim ? user.name : null;
+      }
+    });
     setData(tempData);
     filter(tempData);
+    setDataToClaim([]);
+    return setMessage({ txt: "Changes saved!", type: "success" });
   };
 
-  const handleTrash = async () => {
+  const handleClaim = async () => {
     if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to restore", type: "warn" });
+      return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/restore_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_process", {
       data: dataToSend,
     });
+    setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
-      updatePipesDisplay();
-      setDataToClaim([]);
-      return setMessage({ txt: "Changes saved!", type: "success" });
+      return updatePipesDisplay(true);
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const addToDataClaim = (id) => {
@@ -94,7 +120,9 @@ function TrashComp({ setMessage }) {
   };
 
   const selectAll = () => {
-    const rows = data.filter((x) => !x.owner);
+    const rows = userHasRoles(user, ["Speciality Lead"])
+      ? [...data]
+      : data.filter((x) => !x.owner);
     if (dataToClaim.length === rows.length) return setDataToClaim([]);
     setDataToClaim(rows.map((x) => x.id));
   };
@@ -125,26 +153,26 @@ function TrashComp({ setMessage }) {
   };
 
   return (
-    <TrayTable
-      title="Trash"
-      data={displayData}
-      handleClaim={handleTrash}
+    <ProcessTable
       addToDataClaim={addToDataClaim}
+      handleClaim={handleClaim}
       dataToClaim={dataToClaim}
-      buttonText="Restore"
+      filterInfo={filterInfo}
+      setMessage={setMessage}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
+      title="Process"
     />
   );
 }
 
 // using this components to use modals
-export default function Trash() {
+export default function Process() {
   return (
     <WithToast>
-      <TrashComp />
+      <ProcessComp />
     </WithToast>
   );
 }

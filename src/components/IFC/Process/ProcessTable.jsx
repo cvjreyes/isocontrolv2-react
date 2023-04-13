@@ -10,20 +10,18 @@ import { api } from "../../../helpers/api";
 import { userHasRoles } from "../../../helpers/user";
 
 import NoResults from "../../general/NoResults";
-import TrayHead from "./TrayHead";
-import RowTray from "./TrayTableRow";
+import ProcessHead from "./ProcessHead";
+import RowProcess from "./ProcessRow";
 import { rolesPerTray } from "../SidebarContent";
 
-export default function TrayTable({
+export default function ProcessTable({
   addToDataClaim,
-  handleUnclaim,
   dataToClaim,
   handleClaim,
   filterInfo,
   buttonText,
   setMessage,
   selectAll,
-  getData,
   orderBy,
   filter,
   title,
@@ -38,11 +36,12 @@ export default function TrayTable({
     { text: "Type", key: "type" },
     { text: "Date", key: "updated_at" },
     { text: "User", key: "owner" },
+    { text: "Process Owner", key: "process_owner" },
     { text: "%", key: "progress" },
     { text: "Actions", key: "actions" },
   ];
 
-  const gridSize = ".25fr 1.2fr .3fr 0.3fr 0.5fr 1.2fr 0.25fr 0.75fr";
+  const gridSize = ".25fr 1.2fr .3fr 0.3fr 0.5fr 1fr 1fr 0.25fr 0.75fr";
 
   const trayStyle = {
     h3: {
@@ -127,21 +126,12 @@ export default function TrayTable({
     zip.generateAsync({ type: "blob" }).then((blob) => saveAs(blob, "files"));
   };
 
-  const handleRevision = async () => {
-    if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to download", type: "warn" });
-    await api("post", "/ifc/revision/", { data: dataToClaim });
-    getData();
-  };
-
   const roles = rolesPerTray[title.replace(" ", "")];
-  const editable = user.roles.some((x) => roles?.includes(x.name));
+  const editable = user.roles.some((x) => roles.includes(x.name));
 
   return (
     <div css={trayStyle}>
-      <TrayHead
-        handleRevision={handleRevision}
-        handleUnclaim={handleUnclaim}
+      <ProcessHead
         handleClaim={handleClaim}
         downloadAll={downloadAll}
         buttonText={buttonText}
@@ -205,7 +195,7 @@ export default function TrayTable({
           {data ? (
             data.length > 0 ? (
               data.map((row) => (
-                <RowTray
+                <RowProcess
                   addToDataClaim={addToDataClaim}
                   dataToClaim={dataToClaim}
                   editable={editable}

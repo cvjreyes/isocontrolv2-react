@@ -111,15 +111,15 @@ export default function TrayTable({
                   onClick={selectAll}
                 >
                   <input
-                    className="pointer"
+                    readOnly
                     type="checkbox"
+                    className="pointer"
                     checked={
                       userHasRoles(user, ["Speciality Lead"])
                         ? data.length === dataToClaim.length && data.length > 0
                         : data.filter((x) => !x.owner).length ===
                             dataToClaim.length && dataToClaim.length > 0
                     }
-                    readOnly
                   />
                 </div>
               );
