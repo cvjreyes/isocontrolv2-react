@@ -135,7 +135,7 @@ export default function TrayTable({
   };
 
   const roles = rolesPerTray[title.replace(" ", "")];
-  const editable = user.roles.some((x) => roles.includes(x.name));
+  const editable = user.roles.some((x) => roles?.includes(x.name));
 
   return (
     <div css={trayStyle}>

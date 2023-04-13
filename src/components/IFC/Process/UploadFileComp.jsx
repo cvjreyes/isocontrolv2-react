@@ -55,17 +55,30 @@ export default function UploadFileComp({
           </div>
         )}
       </div>
-      <Button2
-        text="Save"
-        src={saveImg}
-        color="white"
-        border="none"
-        textMargin="0 5px"
-        margin="10px 0 0"
-        bgColor="linear-gradient(322deg, rgba(0,105,223,1) 0%, rgba(0,112,237,1) 21%, rgba(22,128,247,1) 100%)"
-        hoverShadow="inset 5px 5px 10px #0061ce, inset -5px -5px 10px #007fff"
-        onClick={saveFile}
-      />
+      <div className="btnWrapper">
+        <Button2
+          text="Accept"
+          width="48%"
+          display="inline"
+          color="white"
+          border="none"
+          margin="10px 0 0"
+          bgColor="#78B38A"
+          hoverShadow="inset 12px 12px 24px #669875, inset -12px -12px 24px #8ace9f"
+          onClick={() => saveFile(1)}
+        />
+        <Button2
+          text="Deny"
+          width="48%"
+          display="inline"
+          color="white"
+          border="none"
+          margin="10px 0 0"
+          bgColor="#FF3358"
+          hoverShadow="inset 12px 12px 24px #d92b4b, inset -12px -12px 24px #ff3b65"
+          onClick={() => saveFile(0)}
+        />
+      </div>
     </div>
   );
 }
@@ -103,5 +116,9 @@ const newFileStyle = {
       background: "linear-gradient(145deg, #ffffff, #e6e1da)",
       boxShadow: "20px 20px 60px #d9d5ce, -20px -20px 60px #ffffff",
     },
+  },
+  ".btnWrapper": {
+    display: "flex",
+    justifyContent: "space-between",
   },
 };

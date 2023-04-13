@@ -24,8 +24,6 @@ export default function SinglePipe() {
   const [clean, setClean] = useState(null);
   const [isOwner, setIsOwner] = useState(null);
 
-  const canEditProcess =
-    user.roles.some((x) => x.name === "Process") && !!pipe?.process;
   const getPipeInfo = async () => {
     const { body } = await api("get", `/ifc/get_pipe_info/${pipe_id}`);
     const row = { ...body, tag: buildTag(body) };
@@ -103,12 +101,6 @@ export default function SinglePipe() {
           pipe={pipe}
           user={user}
         />
-        <div>Can Edit Process: {JSON.stringify(canEditProcess)}</div>
-        <div>
-          <p>Process:</p>
-          <button>Accept</button>
-          <button>Deny</button>
-        </div>
         <div className="content">
           {!master && !clean && files?.length === 0 && !isOwner && (
             <div className="noResults">
@@ -135,7 +127,11 @@ export default function SinglePipe() {
               <File
                 key={f.id}
                 file={f}
-                title={`Attachment #${i + 1}`}
+                title={
+                  f.title.toLowerCase().includes("attachment")
+                    ? `Attachment #${i + 1}`
+                    : f.title
+                }
                 tag={pipe.tag}
                 getFiles={getFiles}
                 isOwner={isOwner}

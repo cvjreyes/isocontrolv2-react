@@ -70,10 +70,6 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           <b>Owner: </b>
           <span>{pipe.owner || "-"}</span>
         </div>
-        <div>
-          <b>Process Owner: </b>
-          <span>{pipe.process_owner || "-"}</span>
-        </div>
       </div>
       <div className="btnWrapper">
         <Button2

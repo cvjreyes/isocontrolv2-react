@@ -11,6 +11,7 @@ export default function Button2({
   border,
   borderRadius,
   width,
+  display,
   height,
   margin,
   className,
@@ -28,6 +29,7 @@ export default function Button2({
   imgTransform,
 }) {
   const buttonStyle = {
+    display,
     width: width || "100%",
     height,
     padding: padding || "10px 20px",

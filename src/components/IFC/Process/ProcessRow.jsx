@@ -24,6 +24,10 @@ export default function TrayTableRow({
     (!row.process_owner ||
       (row.process_owner && userHasRoles(user, ["Speciality Lead"])));
 
+  const isProcessOwner = row.process_owner === user.name;
+  let navigateTo = `/ifc/pipe/${row.id}`;
+  isProcessOwner && (navigateTo += "/process");
+
   return (
     <div className="grid" css={rowStyle}>
       {titles.map((title) => {
@@ -48,7 +52,7 @@ export default function TrayTableRow({
             <div
               key={title.key}
               className="flexCenter cell pointer"
-              onClick={() => navigate(`/pipe/${row.id}//process`)}
+              onClick={() => navigate(navigateTo)}
             >
               <div>{row[title.key] || 0}%</div>
             </div>
@@ -79,7 +83,7 @@ export default function TrayTableRow({
           <div
             key={title.key}
             className="flexCenter cell pointer"
-            onClick={() => navigate(`/ifc/pipe/${row.id}//process`)}
+            onClick={() => navigate(navigateTo)}
           >
             <div>
               {title.key === "revision"
