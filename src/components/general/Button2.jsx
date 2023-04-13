@@ -33,7 +33,7 @@ export default function Button2({
     width: width || "100%",
     height,
     padding: padding || "10px 20px",
-    background: bgColor,
+    background: bgColor || "transparent",
     border,
     borderRadius: borderRadius || "6px",
     margin,

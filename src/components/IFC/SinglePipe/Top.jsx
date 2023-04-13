@@ -13,6 +13,16 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
 
   const updatePipe = async (key, val, id) => {
     if (!isOwner) return;
+    if (key === "process" && pipe.process_owner)
+      return setMessage({
+        txt: "Pipe is already claimed by process!",
+        type: "warn",
+      });
+    if (key === "process" && pipe.is_process_accepted)
+      return setMessage({
+        txt: "Pipe is already accepted!",
+        type: "warn",
+      });
     const { ok } = await api("post", "/ifc/update_pipe", {
       key,
       val: val ? 0 : 1,
@@ -53,8 +63,10 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
     },
   };
 
-  const processColor = pipe.process
+  const processColor = pipe.process_owner
     ? "#FFCA42"
+    : pipe.process
+    ? "lightgray"
     : typeof pipe.is_process_accepted === "object"
     ? "transparent"
     : pipe.is_process_accepted

@@ -3,14 +3,15 @@
 import { jsx } from "@emotion/react";
 import { useState, useEffect, useContext } from "react";
 
+import ProcessTable from "./ProcessTable";
+
+import { AuthContext } from "../../../context/AuthContext";
 import WithToast from "../../../modals/Toast";
 import { api } from "../../../helpers/api";
 import { buildDate, buildTag } from "../../FEED/feedPipesHelpers";
-import { AuthContext } from "../../../context/AuthContext";
-import TrayTable from "../TrayTable/TrayTable";
 import { userHasRoles } from "../../../helpers/user";
 
-function SupportsComp({ setMessage }) {
+function ProcessComp({ setMessage }) {
   const { user } = useContext(AuthContext);
 
   const [data, setData] = useState([]);
@@ -19,20 +20,33 @@ function SupportsComp({ setMessage }) {
   const [filterInfo, setFilterInfo] = useState({});
 
   useEffect(() => {
-    const getSupportsIFDPipes = async () => {
+    const fillProcessOwner = async (process_owner) => {
+      const { body } = await api(
+        "get",
+        `/ifc/fill_process_owner/${process_owner}`
+      );
+      return body.name;
+    };
+    const getProcessIFCPipes = async () => {
       const { body: pipes } = await api(
         "get",
-        "/ifc/get_pipes_from_tray/supports"
+        "/ifc/get_pipes_with_action/process"
       );
-      const rows = pipes.map((row) => ({
-        ...row,
-        tag: buildTag(row),
-        updated_at: buildDate(row),
-      }));
+      const rows = [];
+      for (const row of pipes) {
+        rows.push({
+          ...row,
+          tag: buildTag(row),
+          updated_at: buildDate(row),
+          process_owner: row.process_owner
+            ? await fillProcessOwner(row.process_owner)
+            : null,
+        });
+      }
       setData(rows);
       setDisplayData(rows);
     };
-    getSupportsIFDPipes();
+    getProcessIFCPipes();
   }, []);
 
   useEffect(() => {
@@ -44,7 +58,7 @@ function SupportsComp({ setMessage }) {
     const tempData = [...data];
     tempData.map((x) => {
       if (dataToClaim.includes(x.id)) {
-        x.owner = claim ? user.name : null;
+        x.process_owner = claim ? user.name : null;
       }
     });
     setData(tempData);
@@ -57,26 +71,13 @@ function SupportsComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_pipes", {
+    const { ok, body } = await api("post", "/ifc/claim_process", {
       data: dataToSend,
     });
+    setMessage({ txt: body, type: ok ? "success" : "error" });
     if (ok) {
       return updatePipesDisplay(true);
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
-  };
-
-  const handleUnclaim = async () => {
-    if (dataToClaim.length < 1)
-      return setMessage({ txt: "No pipes to claim", type: "warn" });
-    const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_pipes", {
-      data: dataToSend,
-    });
-    if (ok) {
-      return updatePipesDisplay(false);
-    }
-    return setMessage({ txt: "Something went wrong", type: "error" });
   };
 
   const addToDataClaim = (id) => {
@@ -152,27 +153,26 @@ function SupportsComp({ setMessage }) {
   };
 
   return (
-    <TrayTable
-      title="Supports"
-      data={displayData}
-      handleUnclaim={handleUnclaim}
-      handleClaim={handleClaim}
+    <ProcessTable
       addToDataClaim={addToDataClaim}
+      handleClaim={handleClaim}
       dataToClaim={dataToClaim}
+      filterInfo={filterInfo}
+      setMessage={setMessage}
       selectAll={selectAll}
       filter={handleFilter}
-      filterInfo={filterInfo}
+      data={displayData}
       orderBy={orderBy}
-      setMessage={setMessage}
+      title="Process"
     />
   );
 }
 
 // using this components to use modals
-export default function Supports() {
+export default function Process() {
   return (
     <WithToast>
-      <SupportsComp />
+      <ProcessComp />
     </WithToast>
   );
 }

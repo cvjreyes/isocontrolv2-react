@@ -65,7 +65,7 @@ export default function ModelledRow({
           );
         } else if (title.key === "actions") {
           const processColor = row.process
-            ? "#FFCA42"
+            ? "lightgray"
             : typeof row.is_process_accepted === "object"
             ? "transparent"
             : row.is_process_accepted
@@ -87,7 +87,7 @@ export default function ModelledRow({
                 width="40px"
                 border="1px solid black"
                 margin="2px 5px 0 0"
-                bgColor={row.instrumentation && "#FFCA42"}
+                bgColor={row.instrumentation && "lightgray"}
                 onClick={() =>
                   updatePipe("instrumentation", row.instrumentation, row.id)
                 }

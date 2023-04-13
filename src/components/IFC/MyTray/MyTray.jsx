@@ -67,6 +67,7 @@ function MyTrayComp({ setMessage }) {
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     if (dataToSend.some((x) => x.status === "Issued"))
       return setMessage({ txt: "Some pipe already completed", type: "warn" });
+    return console.log(dataToSend);
     const { ok } = await api("post", "/ifc/next_step", {
       data: dataToSend,
     });
