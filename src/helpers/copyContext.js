@@ -1,66 +1,8 @@
-export function copyToClipboard(id, table) {
-  const copiedEle = document.getElementById(id);
-  // create row
-  const row = document.createElement("tr");
-  // append row to table
-  table.appendChild(row);
-  // select all inputs in copied element
-  const inputList = copiedEle.querySelectorAll("input");
-  // select all dropdowns in copied element
-  const valuesList = copiedEle.getElementsByClassName("select-element");
-
-  const totalList = id.includes("feed")
-    ? buildFeedList(inputList, valuesList)
-    : buildIFDList(inputList, valuesList);
-
-  // loop through selected inputs
-  totalList.forEach((item) => {
-    // create cell
-    const cell = document.createElement("td");
-    // add value to cell
-    cell.innerHTML = item;
-    // append cell to row
-    row.appendChild(cell);
-  });
-  // convert table to pastable html!
-  const html = table.outerHTML;
-
-  // ESTO SIRVE PARA HACER EXPORT!!!
-  // window.open("data:application/vnd.ms-excel," + encodeURIComponent(html));
-
-  // create Blob
-  const blob = new Blob([html], { type: "text/html" });
-  // write blob to clipboard ( copied! )
-  try {
-    navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-    // console.log(document);
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-const buildIFDList = (inputList, valuesList) => {
-  return [
-    valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
-    inputList[1].value, // tag
-    valuesList[1].children[2].children[0].children[0].innerHTML, // owner
-    valuesList[2].children[2].children[0].children[0].innerHTML, // area
-    inputList[4].value, // unit
-    inputList[5].value, // fluid
-    inputList[6].value, // seq
-    inputList[7].value, // diameter
-    inputList[8].value, // spec
-    inputList[9].value, // type
-    inputList[10].value, // insulation
-    valuesList[3].children[2].children[0].children[0].innerHTML, // train
-    inputList[12].value, // status
-  ];
-};
-
-export function copyFn(pipe, table) {
+export function copyFn(pipe, table, view) {
   const arr = [
     pipe.line_reference,
     pipe.tag,
+    pipe.owner ? pipe.owner : null,
     pipe.area,
     pipe.unit,
     pipe.fluid,
@@ -72,10 +14,12 @@ export function copyFn(pipe, table) {
     pipe.train,
     pipe.status,
   ];
+  const filteredArray =
+    view == "feed" ? arr.filter((item) => item !== null) : arr;
 
   const row = document.createElement("tr");
   table.appendChild(row);
-  arr.forEach((item) => {
+  filteredArray.forEach((item) => {
     const cell = document.createElement("td");
     cell.innerHTML = item;
     row.appendChild(cell);

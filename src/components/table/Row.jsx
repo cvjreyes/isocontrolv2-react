@@ -135,7 +135,7 @@ const Row = React.memo(
           if (x.key === "empty")
             return (
               <div
-                onClick={() => showCopiedFunc() && copyToClipBoard(id, item.id)}
+                onClick={() => showCopiedFunc() && copyToClipBoard(item.id)}
                 key={`${i}${y}`}
                 className="pointer id"
                 css={idWrapper}

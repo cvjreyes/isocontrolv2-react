@@ -365,7 +365,7 @@ function FEEDPipesComp({ setMessage, setModalContent }) {
         <Route
           path="/"
           element={
-            <CopyContext data={displayData} id={"feed"}>
+            <CopyContext data={displayData} view={id}>
               <FeedPipesExcelTableWrapper
                 title="FEED"
                 displayData={displayData}

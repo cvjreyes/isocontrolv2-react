@@ -387,7 +387,7 @@ function IFDMainComp({ setMessage, setModalContent }) {
         <Route
           path="/"
           element={
-            <CopyContext data={displayData} id={id}>
+            <CopyContext data={displayData} view={id}>
               <IFDTableWrapper
                 title="IFD"
                 id={id}
