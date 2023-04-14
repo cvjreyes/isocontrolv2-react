@@ -58,7 +58,9 @@ export default function TrayTableRow({
             </div>
           );
         } else if (title.key === "actions") {
-          const processColor = row.process
+          const processColor = row.process_owner
+            ? "#FFCA42"
+            : row.process
             ? "lightgray"
             : typeof row.is_process_accepted === "object"
             ? "transparent"

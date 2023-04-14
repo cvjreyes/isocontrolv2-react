@@ -57,7 +57,7 @@ function SupportsComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/claim_pipes", {
+    const { ok } = await api("post", "/ifc/claim_pipes", {
       data: dataToSend,
     });
     if (ok) {
@@ -70,7 +70,7 @@ function SupportsComp({ setMessage }) {
     if (dataToClaim.length < 1)
       return setMessage({ txt: "No pipes to claim", type: "warn" });
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
-    const { ok } = await api("post", "/ifd/unclaim_pipes", {
+    const { ok } = await api("post", "/ifc/unclaim_pipes", {
       data: dataToSend,
     });
     if (ok) {
