@@ -8,10 +8,10 @@ export function copyToClipboard(id, table) {
   const inputList = copiedEle.querySelectorAll("input");
   // select all dropdowns in copied element
   const valuesList = copiedEle.getElementsByClassName("select-element");
-  const totalList =
-    copiedEle.children.length === 13
-      ? buildFeedList(inputList, valuesList)
-      : buildIFDList(inputList, valuesList);
+
+  const totalList = id.includes("feed")
+    ? buildFeedList(inputList, valuesList)
+    : buildIFDList(inputList, valuesList);
 
   // loop through selected inputs
   totalList.forEach((item) => {

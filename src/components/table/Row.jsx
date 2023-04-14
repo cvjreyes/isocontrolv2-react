@@ -161,11 +161,11 @@ const Row = React.memo(
           }
           return (
             <DropdownCell
-              key={`${i}${y}`}
               i={i}
               y={y}
-              item={item}
               x={x}
+              item={item}
+              key={`${i}${y}`}
               changed={changed}
               deleting={deleting}
               handleChange={handleChange}

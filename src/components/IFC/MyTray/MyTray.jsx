@@ -67,17 +67,17 @@ function MyTrayComp({ setMessage }) {
     const dataToSend = data.filter((x) => dataToClaim.includes(x.id));
     if (dataToSend.some((x) => x.status === "Issued"))
       return setMessage({ txt: "Some pipe already completed", type: "warn" });
-    return console.log(dataToSend);
-    const { ok } = await api("post", "/ifc/next_step", {
+    const { ok, body } = await api("post", "/ifc/next_step", {
       data: dataToSend,
     });
+    console.log({ ok, body });
     if (ok) {
       const tempData = data.filter((x) => !dataToClaim.includes(x.id));
       setData(tempData);
       setDataToClaim([]);
       return setMessage({ txt: "Changes saved!", type: "success" });
     }
-    return setMessage({ txt: "Something went wrong", type: "error" });
+    return setMessage({ txt: body, type: "error" });
   };
 
   const returnPipe = async () => {
