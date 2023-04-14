@@ -70,7 +70,6 @@ function MyTrayComp({ setMessage }) {
     const { ok, body } = await api("post", "/ifc/next_step", {
       data: dataToSend,
     });
-    console.log({ ok, body });
     if (ok) {
       const tempData = data.filter((x) => !dataToClaim.includes(x.id));
       setData(tempData);

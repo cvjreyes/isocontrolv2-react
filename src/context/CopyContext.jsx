@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { copyToClipboard } from "../helpers/copyContext";
+import { copyFn } from "../helpers/copyContext";
 
 export default function CopyContext({ children, data, id }) {
   const [copyMulti, setCopyMulti] = useState(false);
@@ -16,16 +16,18 @@ export default function CopyContext({ children, data, id }) {
     table.current = document.createElement("table");
     setCopied([]);
     let finished = false;
-    data.forEach((_, i) => {
-      copyToClipboard(`${id}${i}`, table.current);
+    data.forEach((pipe, i) => {
+      copyFn(pipe, table.current);
       if (i === data.length - 1) finished = true;
     });
     table.current = document.createElement("table");
   };
 
-  const copyToClipBoard = (id) => {
+  const copyToClipBoard = (view, id) => {
+    const pipe = data.find((x) => x.id === id);
     let newTable = document.createElement("table");
-    copyToClipboard(id, copyMulti ? table.current : newTable);
+    copyFn(pipe, copyMulti ? table.current : newTable);
+
     if (copyMulti) {
       const tempCopied = [...copied];
       tempCopied.push(id);

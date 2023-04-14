@@ -39,23 +39,6 @@ export function copyToClipboard(id, table) {
   }
 }
 
-const buildFeedList = (inputList, valuesList) => {
-  return [
-    valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
-    inputList[1].value, // tag
-    valuesList[1].children[2].children[0].children[0].innerHTML, // area
-    inputList[3].value, // unit
-    inputList[4].value, // fluid
-    inputList[5].value, // sequential
-    inputList[6].value, // diameter
-    inputList[7].value, // spec
-    inputList[8].value, // type
-    inputList[9].value, // insulation
-    valuesList[2].children[2].children[0].children[0].innerHTML, // train
-    valuesList[3].children[2].children[0].children[0].innerHTML, // status
-  ];
-};
-
 const buildIFDList = (inputList, valuesList) => {
   return [
     valuesList[0].children[2].children[0].children[0].innerHTML, // line_reference
@@ -73,3 +56,35 @@ const buildIFDList = (inputList, valuesList) => {
     inputList[12].value, // status
   ];
 };
+
+export function copyFn(pipe, table) {
+  const arr = [
+    pipe.line_reference,
+    pipe.tag,
+    pipe.area,
+    pipe.unit,
+    pipe.fluid,
+    pipe.seq,
+    pipe.diameter,
+    pipe.spec,
+    pipe.type,
+    pipe.insulation,
+    pipe.train,
+    pipe.status,
+  ];
+
+  const row = document.createElement("tr");
+  table.appendChild(row);
+  arr.forEach((item) => {
+    const cell = document.createElement("td");
+    cell.innerHTML = item;
+    row.appendChild(cell);
+  });
+  const html = table.outerHTML;
+  const blob = new Blob([html], { type: "text/html" });
+  try {
+    navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+  } catch (e) {
+    console.error(e);
+  }
+}

@@ -42,16 +42,7 @@ export default function FeedPipesExcelTableHeader({
     <div css={rowStyle}>
       {columns.map((x) => {
         if (x.key === "empty") {
-          return (
-            <div
-              key={x.key}
-              css={copyWrapper}
-              className="pointer"
-              onClick={() => setCopyMulti((prev) => !prev)}
-            >
-              {/* <img src="https://img.icons8.com/external-becris-lineal-becris/64/null/external-copy-mintab-for-ios-becris-lineal-becris.png" /> */}
-            </div>
-          );
+          return <div key={x.key} css={copyWrapper} />;
         }
         return (
           <div className="bold" style={{ width: x.width }} key={x.key}>

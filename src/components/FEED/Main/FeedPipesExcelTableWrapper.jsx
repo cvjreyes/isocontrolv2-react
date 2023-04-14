@@ -36,7 +36,7 @@ export default function FeedPipesExcelTableWrapper({
   setIsViewMode,
   exportToExcel,
 }) {
-  // ! (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
+  // ? (añadir paginación && opción quitar paginación || intersection observer) && lazy loading
 
   return (
     <div css={tableWrapperStyle}>
