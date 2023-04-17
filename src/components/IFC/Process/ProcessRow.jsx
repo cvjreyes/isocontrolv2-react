@@ -58,6 +58,16 @@ export default function TrayTableRow({
             </div>
           );
         } else if (title.key === "actions") {
+          const processColor = row.process_owner
+            ? "#FFCA42"
+            : row.process
+            ? "lightgray"
+            : typeof row.is_process_accepted === "object"
+            ? "transparent"
+            : row.is_process_accepted
+            ? "#28A745"
+            : !row.is_process_accepted && "red";
+
           return (
             <div key={title.key} className="cell actions">
               <Button2
@@ -65,7 +75,7 @@ export default function TrayTableRow({
                 width="40px"
                 border="1px solid black"
                 margin="2px 5px 0 0"
-                bgColor={row.process && "lightgray"}
+                bgColor={processColor}
                 className="default"
               />
               <Button2
@@ -73,7 +83,7 @@ export default function TrayTableRow({
                 width="40px"
                 border="1px solid black"
                 margin="2px 5px 0 0"
-                bgColor={row.instrumentation && "#28A745"}
+                bgColor={row.instrumentation && "lightgray"}
                 className="default"
               />
             </div>

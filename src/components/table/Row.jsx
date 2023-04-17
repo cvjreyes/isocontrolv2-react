@@ -135,7 +135,7 @@ const Row = React.memo(
           if (x.key === "empty")
             return (
               <div
-                onClick={() => showCopiedFunc() && copyToClipBoard(rowId)}
+                onClick={() => showCopiedFunc() && copyToClipBoard(item.id)}
                 key={`${i}${y}`}
                 className="pointer id"
                 css={idWrapper}
@@ -161,11 +161,11 @@ const Row = React.memo(
           }
           return (
             <DropdownCell
-              key={`${i}${y}`}
               i={i}
               y={y}
-              item={item}
               x={x}
+              item={item}
+              key={`${i}${y}`}
               changed={changed}
               deleting={deleting}
               handleChange={handleChange}

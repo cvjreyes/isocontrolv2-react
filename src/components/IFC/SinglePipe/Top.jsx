@@ -13,6 +13,16 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
 
   const updatePipe = async (key, val, id) => {
     if (!isOwner) return;
+    if (key === "process" && pipe.process_owner)
+      return setMessage({
+        txt: "Pipe is already claimed by process!",
+        type: "warn",
+      });
+    if (key === "process" && pipe.is_process_accepted)
+      return setMessage({
+        txt: "Pipe is already accepted!",
+        type: "warn",
+      });
     const { ok } = await api("post", "/ifc/update_pipe", {
       key,
       val: val ? 0 : 1,
@@ -53,6 +63,16 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
     },
   };
 
+  const processColor = pipe.process_owner
+    ? "#FFCA42"
+    : pipe.process
+    ? "lightgray"
+    : typeof pipe.is_process_accepted === "object"
+    ? "transparent"
+    : pipe.is_process_accepted
+    ? "#28A745"
+    : !pipe.is_process_accepted && "red";
+
   return (
     <div css={topStyle}>
       <div onClick={() => navigate(-1)} className="backWrapper pointer">
@@ -77,7 +97,7 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           width="50px"
           border="1px solid black"
           margin="2px 10px 0"
-          bgColor={pipe.process && "#28A745"}
+          bgColor={processColor}
           onClick={() => updatePipe("process", pipe.process, pipe.id)}
           className={isOwner ? "pointer" : "default"}
         />
@@ -86,7 +106,7 @@ function TopComp({ pipe, setMessage, getPipeInfo, isOwner, user }) {
           width="50px"
           border="1px solid black"
           margin="2px 10px 0"
-          bgColor={pipe.instrumentation && "#28A745"}
+          bgColor={pipe.instrumentation && "#FFCA42"}
           onClick={() =>
             updatePipe("instrumentation", pipe.instrumentation, pipe.id)
           }

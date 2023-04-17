@@ -23,7 +23,7 @@ export default function FeedPipesHead({
   setMessage,
   progress,
   setIsViewMode,
-  exportToExcel
+  exportToExcel,
 }) {
   const selectRef = useRef(null);
   const navigate = useNavigate();

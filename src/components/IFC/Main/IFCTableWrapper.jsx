@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import Table from "../../table/Table";
 import Loading from "../../general/Loading";
 import IFCPipesHead from "./IFCPipesHead";
-import FeedPipesExcelTableHeader from "../../FEED/main/FeedPipesExcelTableHeader";
+import FeedPipesExcelTableHeader from "../../FEED/Main/FeedPipesExcelTableHeader";
 import { columnsData } from "../ColumnsData";
 
 export default function IFDTableWrapper({
